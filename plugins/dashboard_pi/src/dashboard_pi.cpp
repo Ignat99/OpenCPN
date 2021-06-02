@@ -1035,7 +1035,7 @@ void dashboard_pi::SetPositionFix( PlugIn_Position_Fix &pfix )
         SendSentenceToAllInstruments( OCPN_DBP_STC_SOG, toUsrSpeed_Plugin( pfix.Sog, g_iDashSpeedUnit ), getUsrSpeedUnit_Plugin( g_iDashSpeedUnit ) );
         SendSentenceToAllInstruments( OCPN_DBP_STC_COG, pfix.Cog, _T("\u00B0") );
         dMagneticCOG = pfix.Cog - pfix.Var;
-        SendSentenceToAllInstruments( OCPN_DBP_STC_MCOG, dMagneticCOG , _T("\u00B0M") );
+//        SendSentenceToAllInstruments( OCPN_DBP_STC_MCOG, dMagneticCOG , _T("\u00B0M") );
     }
     if( mPriVar >= 1 ) {
         if( !wxIsNaN( pfix.Var ) ){
@@ -2086,6 +2086,7 @@ bool DashboardWindow::isInstrumentListEqual( const wxArrayInt& list )
 void DashboardWindow::SetInstrumentList( wxArrayInt list )
 {
     /* options
+     ID_DPB_I_TOTAL_QUANTITY: show total quantity value.
      ID_DBP_I_WEIGHT: show weight value.
      ID_DBP_I_UNIT_WEIGHT: show unit weight value.
      ID_DBP_D_SOG: config max value, show STW optional
@@ -2105,10 +2106,15 @@ void DashboardWindow::SetInstrumentList( wxArrayInt list )
         int id = list.Item( i );
         DashboardInstrument *instrument = NULL;
         switch( id ){
+            case ID_DPB_I_TOTAL_QUANTITY:
+                instrument = new DashboardInstrument_Weight( this, wxID_ANY,
+                        getInstrumentCaption( id ), OCPN_DBP_TOTAL_QUANTITY, _T("%5.2f") );
+                break;
             case ID_DPB_I_UNIT_WEIGHT:
                 instrument = new DashboardInstrument_Weight( this, wxID_ANY,
-                        getInstrumentCaption( id ), OCPN_DBP_WEIGHT, _T("%5.2f") );
+                        getInstrumentCaption( id ), OCPN_DBP_UNIT_WEIGHT, _T("%5.2f") );
                 break;
+
             case ID_DPB_I_WEIGHT:
                 instrument = new DashboardInstrument_Weight( this, wxID_ANY,
                         getInstrumentCaption( id ), OCPN_DBP_WEIGHT, _T("%5.2f") );
@@ -2136,10 +2142,10 @@ void DashboardWindow::SetInstrumentList( wxArrayInt list )
                 instrument = new DashboardInstrument_Single( this, wxID_ANY,
                         getInstrumentCaption( id ), OCPN_DBP_STC_COG, _T("%.0f") );
                 break;
-            case ID_DBP_M_COG:
-                instrument = new DashboardInstrument_Single( this, wxID_ANY,
-                        getInstrumentCaption( id ), OCPN_DBP_STC_MCOG, _T("%.0f") );
-                break;
+//            case ID_DBP_M_COG:
+//                instrument = new DashboardInstrument_Single( this, wxID_ANY,
+//                        getInstrumentCaption( id ), OCPN_DBP_STC_MCOG, _T("%.0f") );
+//                break;
             case ID_DBP_D_COG:
                 instrument = new DashboardInstrument_Compass( this, wxID_ANY,
                         getInstrumentCaption( id ), OCPN_DBP_STC_COG );

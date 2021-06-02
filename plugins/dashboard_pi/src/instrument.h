@@ -90,9 +90,10 @@ enum
     OCPN_DBP_STC_VLW1 = 1 << 26, // Trip Log
     OCPN_DBP_STC_VLW2 = 1 << 27,  // Sum Log
     OCPN_DBP_STC_MDA = 1 << 28,  // Bareometic pressure
-    OCPN_DBP_STC_MCOG = 1 << 29,  // Magnetic Course over Ground
+//    OCPN_DBP_STC_MCOG = 1 << 29,  // Magnetic Course over Ground
     OCPN_DBP_WEIGHT = 1 << 30, // Weight screen
-    OCPN_DBP_UNIT_WEIGHT = 1 << 31 // Unit weight screen
+    OCPN_DBP_UNIT_WEIGHT = 1 << 31, // Unit weight screen
+    OCPN_DBP_TOTAL_QUANTITY = 1 << 29 // Total quantity screen
 };
 
 class DashboardInstrument : public wxControl
