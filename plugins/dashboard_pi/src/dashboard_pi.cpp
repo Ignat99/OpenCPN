@@ -79,7 +79,7 @@ enum {
     ID_DBP_D_RSA, ID_DBP_I_SAT, ID_DBP_D_GPS, ID_DBP_I_PTR, ID_DBP_I_CLK, ID_DBP_I_SUN,
     ID_DBP_D_MON, ID_DBP_I_ATMP, ID_DBP_I_AWA, ID_DBP_I_TWA, ID_DBP_I_TWD, ID_DBP_I_TWS,
     ID_DBP_D_TWD, ID_DBP_I_HDM, ID_DBP_D_HDT, ID_DBP_D_WDH, ID_DBP_I_VLW1, ID_DBP_I_VLW2, ID_DBP_D_MDA, ID_DBP_I_MDA,ID_DBP_D_BPH, ID_DBP_I_FOS,
-    ID_DBP_M_COG, ID_DPB_I_WEIGHT,
+    ID_DBP_M_COG, ID_DPB_I_WEIGHT, ID_DPB_I_TOTAL_QUANTITY, ID_DPB_I_QUANTITY, ID_DPB_I_UNIT_WEIGHT,
     ID_DBP_LAST_ENTRY //this has a reference in one of the routines; defining a "LAST_ENTRY" and setting the reference to it, is one codeline less to change (and find) when adding new instruments :-)
 };
 
@@ -93,6 +93,12 @@ bool IsObsolete( int id ) {
 wxString getInstrumentCaption( unsigned int id )
 {
     switch( id ){
+        case ID_DPB_I_TOTAL_QUANTITY:
+            return _("Total quantity");
+        case ID_DPB_I_QUANTITY:
+            return _("Quantity");
+        case ID_DPB_I_UNIT_WEIGHT:
+            return _("Unit weight");
         case ID_DPB_I_WEIGHT:
             return _("Weight");
         case ID_DBP_I_POS:
@@ -185,6 +191,9 @@ void getListItemForInstrument( wxListItem &item, unsigned int id )
     item.SetData( id );
     item.SetText( getInstrumentCaption( id ) );
     switch( id ){
+        case ID_DPB_I_TOTAL_QUANTITY:
+        case ID_DPB_I_QUANTITY:
+        case ID_DPB_I_UNIT_WEIGHT:
         case ID_DPB_I_WEIGHT:
         case ID_DBP_I_POS:
         case ID_DBP_I_SOG:
@@ -2077,6 +2086,8 @@ bool DashboardWindow::isInstrumentListEqual( const wxArrayInt& list )
 void DashboardWindow::SetInstrumentList( wxArrayInt list )
 {
     /* options
+     ID_DBP_I_WEIGHT: show weight value.
+     ID_DBP_I_UNIT_WEIGHT: show unit weight value.
      ID_DBP_D_SOG: config max value, show STW optional
      ID_DBP_D_COG:  +SOG +HDG? +BRG?
      ID_DBP_D_AWS: config max value. Two arrows for AWS+TWS?
@@ -2094,6 +2105,10 @@ void DashboardWindow::SetInstrumentList( wxArrayInt list )
         int id = list.Item( i );
         DashboardInstrument *instrument = NULL;
         switch( id ){
+            case ID_DPB_I_UNIT_WEIGHT:
+                instrument = new DashboardInstrument_Weight( this, wxID_ANY,
+                        getInstrumentCaption( id ), OCPN_DBP_WEIGHT, _T("%5.2f") );
+                break;
             case ID_DPB_I_WEIGHT:
                 instrument = new DashboardInstrument_Weight( this, wxID_ANY,
                         getInstrumentCaption( id ), OCPN_DBP_WEIGHT, _T("%5.2f") );
