@@ -1,4 +1,3 @@
-
 /******************************************************************************
  *
  * Project:  OpenCPN
@@ -62,17 +61,12 @@ wxImage Image_Rotate(wxImage &base_image, double angle, const wxPoint & centre_o
 #endif
 
 #ifdef __WXMSW__
-#define __PIX_CACHE_WXIMAGE__
-//#define __PIX_CACHE_DIBSECTION__
-//#define     ocpnUSE_DIBSECTION
-//#define     ocpnUSE_ocpnBitmap
+#define __PIX_CACHE_DIBSECTION__
+#define     ocpnUSE_DIBSECTION
+#define     ocpnUSE_ocpnBitmap
 #endif
 
 #ifdef __WXOSX__
-#define __PIX_CACHE_WXIMAGE__
-#endif
-
-#ifdef __WXQT__
 #define __PIX_CACHE_WXIMAGE__
 #endif
 
@@ -188,7 +182,6 @@ class PixelCache
         int GetLinePitch() const { return line_pitch_bytes; }
         int GetWidth(void){ return m_width; }
         int GetHeight(void){ return m_height; }
-        size_t GetLength(void);
 
       //    Data storage
     private:

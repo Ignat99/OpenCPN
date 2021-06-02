@@ -30,11 +30,6 @@
 #include "email.h"
 
 #include "GribRequestDialog.h"
-#include "GribOverlayFactory.h"
-
-#include "TexFont.h"
-
-#define RESOLUTIONS 4
 
 enum { SAILDOCS,ZYGRIB };                   //grib providers
 enum { GFS,COAMPS,RTOFS };                  //forecast models
@@ -47,18 +42,15 @@ wxString toMailFormat ( int NEflag, int a )                 //convert position t
     return s;
 }
 
-extern bool m_OldZoneSelMode;
-extern int m_ZoneSelMode;
-
 //----------------------------------------------------------------------------------------------------------
 //          GRIB Request Implementation
 //----------------------------------------------------------------------------------------------------------
-
-GribRequestSetting::GribRequestSetting(GRIBUICtrlBar &parent )
+GribRequestSetting::GribRequestSetting(GRIBUIDialog &parent )
     : GribRequestSettingBase(&parent),
       m_parent(parent)
 {
     InitRequestConfig();
+    m_sScrolledDialog->SetScrollRate( 0, 5);
 }
 
 void GribRequestSetting::InitRequestConfig()
@@ -67,35 +59,39 @@ void GribRequestSetting::InitRequestConfig()
 
     if(pConf) {
         pConf->SetPath ( _T( "/PlugIns/GRIB" ) );
-        wxString l;
-        int m;
-        pConf->Read ( _T( "MailRequestConfig" ), &m_RequestConfigBase, _T( "000220XX........0" ) );
-        pConf->Read ( _T( "MailSenderAddress" ), &l, _T("") );
-        m_pSenderAddress->ChangeValue( l );
-        pConf->Read ( _T( "MailRequestAddresses" ), &m_MailToAddresses, _T("query@saildocs.com;gribauto@zygrib.org") );
-        pConf->Read ( _T( "ZyGribLogin" ), &l, _T("") );
-        m_pLogin->ChangeValue( l );
-        pConf->Read ( _T( "ZyGribCode" ), &l, _T("") );
-        m_pCode->ChangeValue( l );
-        pConf->Read ( _T( "SendMailMethod" ), &m_SendMethod, 0 );
-        pConf->Read ( _T( "MovingGribSpeed" ), &m, 0 );
-        m_sMovingSpeed->SetValue( m );
-        pConf->Read ( _T( "MovingGribCourse" ), &m, 0 );
-        m_sMovingCourse->SetValue( m );
-        m_cManualZoneSel->SetValue( m_OldZoneSelMode );           //has been read in GriUbICtrlBar dialog implementation or updated previously
-        fgZoneCoordinatesSizer->ShowItems( m_OldZoneSelMode );
-        if( m_cManualZoneSel->GetValue() ) {
-            pConf->Read ( _T( "RequestZoneMaxLat" ), &m, 0 );
-            m_spMaxLat->SetValue( m );
-            pConf->Read ( _T( "RequestZoneMinLat" ), &m, 0 );
-            m_spMinLat->SetValue( m );
-            pConf->Read ( _T( "RequestZoneMaxLon" ), &m, 0 );
-            m_spMaxLon->SetValue( m );
-            pConf->Read ( _T( "RequestZoneMinLon" ), &m, 0 );
-            m_spMinLon->SetValue( m );
+    wxString l;
+    int m;
+    pConf->Read ( _T( "MailRequestConfig" ), &m_RequestConfigBase, _T( "000220XX........0" ) );
+    pConf->Read ( _T( "MailSenderAddress" ), &l, _T("") );
+    m_pSenderAddress->ChangeValue( l );
+    pConf->Read ( _T( "MailRequestAddresses" ), &m_MailToAddresses, _T("query@saildocs.com;gribauto@zygrib.org") );
+    pConf->Read ( _T( "ZyGribLogin" ), &l, _T("") );
+    m_pLogin->ChangeValue( l );
+    pConf->Read ( _T( "ZyGribCode" ), &l, _T("") );
+    m_pCode->ChangeValue( l );
+    pConf->Read ( _T( "SendMailMethod" ), &m_SendMethod, 0 );
+    pConf->Read ( _T( "MovingGribSpeed" ), &m, 0 );
+    m_sMovingSpeed->SetValue( m );
+    pConf->Read ( _T( "MovingGribCourse" ), &m, 0 );
+    m_sMovingCourse->SetValue( m );
+    bool mm;
+    pConf->Read ( _T( "ManualRequestZoneSizing" ), &mm, false );
+    m_cManualZoneSel->SetValue( mm );
+    fgZoneCoordinatesSizer->ShowItems( mm );
+    m_toggleSelection->Show( mm );
+    if( m_cManualZoneSel->GetValue() ) {
+        pConf->Read ( _T( "RequestZoneMaxLat" ), &m, 0 );
+        m_spMaxLat->SetValue( m );
+        pConf->Read ( _T( "RequestZoneMinLat" ), &m, 0 );
+        m_spMinLat->SetValue( m );
+        pConf->Read ( _T( "RequestZoneMaxLon" ), &m, 0 );
+        m_spMaxLon->SetValue( m );
+        pConf->Read ( _T( "RequestZoneMinLon" ), &m, 0 );
+        m_spMinLon->SetValue( m );
 
-            SetCoordinatesText();
-        }
+        SetCoordinatesText();
+    }
+
     //if GriDataConfig has been corrupted , take the standard one to fix a crash
     if( m_RequestConfigBase.Len() != wxString (_T( "000220XX.............." ) ).Len() )
         m_RequestConfigBase = _T( "000220XX.............." );
@@ -131,6 +127,7 @@ void GribRequestSetting::InitRequestConfig()
     m_pCode->SetToolTip(_("Get this Code in zyGrib's forum ( This is not your password! )"));
     m_sMovingSpeed->SetToolTip(_("Enter your forescasted Speed (in Knots)"));
     m_sMovingCourse->SetToolTip(_("Enter your forecasted Course"));
+    m_toggleSelection->SetToolTip(_("Allow Start or Stop drawing an area by dragging on the map"));
 
     long i,j,k;
     ( (wxString) m_RequestConfigBase.GetChar(0) ).ToLong( &i );             //MailTo
@@ -155,6 +152,8 @@ void GribRequestSetting::InitRequestConfig()
     m_tMouseEventTimer.Connect(wxEVT_TIMER, wxTimerEventHandler( GribRequestSetting::OnMouseEventTimer ), NULL, this);
 
     m_RenderZoneOverlay = 0;
+    m_toggleSelection->SetValue( false );
+    m_ScrollYMargin = -1;
 
     ApplyRequestConfig( i, j ,k);
 
@@ -172,35 +171,31 @@ void GribRequestSetting::InitRequestConfig()
 
 void GribRequestSetting::OnClose( wxCloseEvent& event )
 {
-    m_RenderZoneOverlay = 0;                                    //eventually stop graphical zone display
+    m_RenderZoneOverlay = 0;
     RequestRefresh( m_parent.pParent );
-
-    m_ZoneSelMode = m_OldZoneSelMode ? START_SELECTION : AUTO_SELECTION;                  //allow to be back to old value if changes have not been saved
-    m_parent.SetRequestBitmap( m_ZoneSelMode );                                           //set appopriate bitmap
-
     this->Hide();
 }
 
 void GribRequestSetting::SetRequestDialogSize()
 {
-    int y;
-    /*first let's size the mail display space*/
-    GetTextExtent( _T("abc"), NULL, &y, 0, 0, OCPNGetFont(_("Dialog"), 10) );
-    m_MailImage->SetMinSize( wxSize( -1, ( (y * m_MailImage->GetNumberOfLines()) + 10 ) ) );
-
-    /*then as default sizing do not work with wxScolledWindow let's compute it*/
+    int h, w;
+#ifndef __WXMSW__                   //default resizing do not work properly on no Windows plateforms
+    GetTextExtent( _T("abc"), NULL, &h, 0, 0, OCPNGetFont(_("Dialog"), 10) );
+    m_MailImage->SetMinSize( wxSize( -1, (h * m_MailImage->GetNumberOfLines()) + 5 ) );
+#endif
+    /*default sizing do not work with wxScolledWindow so we need to compute it
+    using a conditional Y margin to stabilise the display width and a fixed X margin to include differents OS bars*/
+    m_ScrollYMargin = m_ScrollYMargin == -1 ? 0 : m_sScrolledDialog->GetScrollLines( wxVERTICAL )? 0 : 20;
+    int ScrollXMargin = 130;
     wxSize scroll = m_fgScrollSizer->Fit(m_sScrolledDialog);                                   // the area size to be scrolled
-
-    int w = GetOCPNCanvasWindow()->GetClientSize().x;           // the display size
-    int h = GetOCPNCanvasWindow()->GetClientSize().y;
-    int dMargin = 80;                                      //set a margin
-    h -= ( m_rButton->GetSize().GetY() + dMargin );         //height available for the scrolled window
-    w -= dMargin;                                           //width available for the scrolled window
-    m_sScrolledDialog->SetMinSize( wxSize( wxMin( w, scroll.GetWidth() ), h ) );		//set scrolled area size with margin
-
-	Layout();
-    Fit();
-    Refresh();
+    m_fgScrollSizer->Fit( this );
+    ::wxDisplaySize( &w, &h);                                                                  // the screen size
+    h -= m_rButton->GetSize().GetY() + m_fgFixedSizer->GetSize().GetY() + ScrollXMargin;       //height available for the scrolled window
+    m_sScrolledDialog->SetMinSize( wxSize( scroll.GetWidth() + m_ScrollYMargin,                //set scrolled area size with margins
+            wxMin(scroll.GetHeight(), h )) );
+    //
+    this->Fit();
+    this->Refresh();
 }
 
 void GribRequestSetting::SetVpSize(PlugIn_ViewPort *vp)
@@ -227,25 +222,16 @@ void GribRequestSetting::SetVpSize(PlugIn_ViewPort *vp)
 
 bool GribRequestSetting::MouseEventHook( wxMouseEvent &event )
 {
-    if( m_ZoneSelMode == AUTO_SELECTION || m_ZoneSelMode == START_SELECTION ) return false;
+    if( !this->IsShown() ) return false;
+    if( !m_toggleSelection->GetValue() ) return false;
 
     if( event.Moving()) return false;                           //maintain status bar and tracking dialog updated
 
-    if( event.LeftDown() ) {
+    if( event.LeftDown() )
         m_parent.pParent->SetFocus();
-        m_ZoneSelMode = DRAW_SELECTION;                         //restart a new drawing
-        m_parent.SetRequestBitmap( m_ZoneSelMode );
-        if( this->IsShown() ) this->Hide();                     //eventually hide diaog in case of mode change
-        m_RenderZoneOverlay = 0;                                //eventually hide previous drawing
-    }
 
-    if( event.LeftUp () && m_RenderZoneOverlay == 2 ) {
-        m_ZoneSelMode = COMPLETE_SELECTION;                     //ask to complete selection
-        m_parent.SetRequestBitmap( m_ZoneSelMode );
-        SetCoordinatesText();
-        m_MailImage->SetValue( WriteMail() );
+    if( event.LeftUp () && m_RenderZoneOverlay == 2 )
         m_RenderZoneOverlay = 1;
-    }
 
     if( event.Dragging() ) {
         if( m_RenderZoneOverlay < 2 ) {
@@ -260,6 +246,8 @@ bool GribRequestSetting::MouseEventHook( wxMouseEvent &event )
 
 void GribRequestSetting::OnMouseEventTimer( wxTimerEvent & event)
 {
+    RequestRefresh( m_parent.pParent );
+
     //compute zone starting point lon/lat for zone drawing
     double lat,lon;
     GetCanvasLLPix( m_Vp, m_StartPoint, &lat, &lon);
@@ -282,7 +270,8 @@ void GribRequestSetting::OnMouseEventTimer( wxTimerEvent & event)
         m_spMinLon->SetValue( (int) floor(lon) );
     }
 
-    RequestRefresh( m_parent.pParent );
+    SetCoordinatesText();
+    m_MailImage->SetValue( WriteMail() );
 }
 
 void GribRequestSetting::SetCoordinatesText()
@@ -293,9 +282,13 @@ void GribRequestSetting::SetCoordinatesText()
     m_stMinLatNS->SetLabel( m_spMinLat->GetValue() < 0 ? _("S")  : _("N") );
 }
 
-void GribRequestSetting::StopGraphicalZoneSelection()
+void GribRequestSetting::OnTooggleSelection( wxCommandEvent& event )
 {
-    m_RenderZoneOverlay = 0;                                                //eventually stop graphical zone display
+    if( !m_toggleSelection->GetValue() ) {
+        m_RenderZoneOverlay = 0;                                                //eventually stop graphical zone display
+        m_toggleSelection->SetLabel( _("Start graphic Sel.") );
+    } else
+        m_toggleSelection->SetLabel( _("Stop graphic Sel.") );
 
     RequestRefresh( m_parent.pParent );
 }
@@ -313,10 +306,10 @@ void GribRequestSetting::OnVpChange(PlugIn_ViewPort *vp)
 void GribRequestSetting::ApplyRequestConfig( unsigned rs, unsigned it, unsigned tr )
 {
     //some useful  strings
-    const wxString res[][RESOLUTIONS] = {
-        {_T("0.25"), _T("0.5"), _T("1.0"), _T("2.0")},
-        {_T("0.2"), _T("0.8"), _T("1.6"), wxEmptyString},
-        {_T("0.05"), _T("0.25"), _T("1.0"), wxEmptyString}
+    const wxString res[][3] = {
+        {_T("0.5"), _T("1.0"), _T("2.0")},
+        {_T("0.2"), _T("0.8"), _T("1.6")},
+        {_T("0.05"), _T("0.25"), _T("1.0")}
     };
 
     IsZYGRIB = m_pMailTo->GetCurrentSelection() == ZYGRIB;
@@ -326,9 +319,8 @@ void GribRequestSetting::ApplyRequestConfig( unsigned rs, unsigned it, unsigned 
 
     //populate resolution choice
     m_pResolution->Clear();
-    for( int i = 0; i < RESOLUTIONS; i++ ) {
-        if( res[m_pModel->GetCurrentSelection()][i] != wxEmptyString )
-            m_pResolution->Append(res[m_pModel->GetCurrentSelection()][i]);
+    for( int i = 0; i<3; i++ ) {
+        m_pResolution->Append(res[m_pModel->GetCurrentSelection()][i]);
     }
      m_pResolution->SetSelection(rs);
 
@@ -403,21 +395,20 @@ void GribRequestSetting::OnTopChange(wxCommandEvent &event)
 
 void GribRequestSetting::OnZoneSelectionModeChange( wxCommandEvent& event )
 {
-    StopGraphicalZoneSelection();                       //eventually stop graphical zone display
-
-    if( !m_ZoneSelMode )
-        SetVpSize( m_Vp );                              //recompute zone
-
-    //set temporarily zone selection mode if manual selection set, put it directly in "drawing" position
-    m_ZoneSelMode = m_cManualZoneSel->GetValue() ? DRAW_SELECTION : AUTO_SELECTION;
-    m_parent.SetRequestBitmap( m_ZoneSelMode );               //set appopriate bitmap
-    fgZoneCoordinatesSizer->ShowItems( m_ZoneSelMode != AUTO_SELECTION ); //show coordinate if necessary
+    if( !m_cManualZoneSel->GetValue() ) {
+        m_toggleSelection->SetValue( false );
+        wxCommandEvent evt;
+        OnTooggleSelection( evt );                    //eventually stop graphical zone display
+        SetVpSize( m_Vp );                            //recompute zone
+    }
+    fgZoneCoordinatesSizer->ShowItems( m_cManualZoneSel->GetValue() );
+    m_toggleSelection->Show( m_cManualZoneSel->GetValue() );
 
     if(m_AllowSend) m_MailImage->SetValue( WriteMail() );
 
     SetRequestDialogSize();
 }
-/*
+
 bool GribRequestSetting::DoRenderZoneOverlay()
 {
     wxPoint p;
@@ -426,75 +417,22 @@ bool GribRequestSetting::DoRenderZoneOverlay()
     int x = (m_StartPoint.x < p.x) ? m_StartPoint.x : p.x;
     int y = (m_StartPoint.y < p.y) ? m_StartPoint.y : p.y;
 
-    int zw = fabs( (double ) p.x - m_StartPoint.x );
-    int zh = fabs( (double ) p.y - m_StartPoint.y );
+    int w = fabs( (double ) p.x - m_StartPoint.x );
+    int h = fabs( (double ) p.y - m_StartPoint.y );
 
-    wxPoint center;
-    center.x = x + (zw / 2);
-    center.y = y + (zh / 2);
-
-    wxFont *font = OCPNGetFont(_("Dialog"), 10);
-    wxColour pen_color, back_color;
+    wxColour pen_color;
     GetGlobalColor( _T ( "DASHR" ), &pen_color );
-    GetGlobalColor( _T ( "YELO1" ), &back_color );
-
-    int label_offsetx = 5, label_offsety = 1;
-
-    double size;
-    EstimateFileSize( &size );
-
-    wxString label( _("Coord. ") );
-    label.Append( toMailFormat(1, m_spMaxLat->GetValue()) + _T(" "));
-    label.Append( toMailFormat(0, m_spMinLon->GetValue()) + _T(" "));
-    label.Append( toMailFormat(1, m_spMinLat->GetValue()) + _T(" "));
-    label.Append( toMailFormat(0, m_spMaxLon->GetValue()) + _T("\n"));
-    label.Append( _T("Estim. Size ") ).Append((wxString::Format( _T("%1.2f " ) , size ) + _("MB") ) );
 
     if( m_pdc ) {
         wxPen pen(pen_color);
         pen.SetWidth(3);
         m_pdc->SetPen( pen );
         m_pdc->SetBrush( *wxTRANSPARENT_BRUSH);
-        m_pdc->DrawRectangle(x, y, zw, zh);
-
-
-
-        int w, h, sl;
-#ifdef __WXMAC__
-        wxScreenDC sdc;
-        sdc.GetMultiLineTextExtent(label, &w, &h, &sl, font);
-#else
-        m_pdc->GetMultiLineTextExtent(label, &w, &h, &sl, font);
-#endif
-        w += 2*label_offsetx, h += 2*label_offsety;
-        x = center.x - (w / 2);
-        y = center.y - (h / 2);
-
-        wxBitmap bm(w, h);
-        wxMemoryDC mdc(bm);
-        mdc.Clear();
-
-        mdc.SetFont( *font );
-        mdc.SetBrush(back_color);
-        mdc.SetPen(*wxTRANSPARENT_PEN);
-        mdc.SetTextForeground(wxColor( 0, 0, 0 ));
-        mdc.DrawRectangle(0, 0, w, h);
-        mdc.DrawLabel( label, wxRect( label_offsetx, label_offsety, w, h ) );
-
-        wxImage im = bm.ConvertToImage();
-        im.InitAlpha();
-        w = im.GetWidth(), h = im.GetHeight();
-        for( int j = 0; j < h; j++ )
-			for( int i = 0; i < w; i++ )
-				im.SetAlpha( i, j, 155 );
-
-        m_pdc->DrawBitmap(im, x, y, true);
+        m_pdc->DrawRectangle(x, y, w, h);
 
     } else {
 
 #ifdef ocpnUSE_GL
-    TexFont m_TexFontlabel;
-    m_TexFontlabel.Build(*font);
 
     glColor3ub(pen_color.Red(), pen_color.Green(), pen_color.Blue() );
 
@@ -509,39 +447,16 @@ bool GribRequestSetting::DoRenderZoneOverlay()
 
    glBegin( GL_LINES );
    glVertex2d( x, y );
-   glVertex2d( x+zw, y );
-   glVertex2d( x+zw, y );
-   glVertex2d( x+zw, y+zh );
-   glVertex2d( x+zw, y+zh );
-   glVertex2d( x, y+zh );
-   glVertex2d( x, y+zh );
+   glVertex2d( x+w, y );
+   glVertex2d( x+w, y );
+   glVertex2d( x+w, y+h );
+   glVertex2d( x+w, y+h );
+   glVertex2d( x, y+h );
+   glVertex2d( x, y+h );
    glVertex2d( x, y );
    glEnd();
 
-   int w, h;
-   glColor4ub(back_color.Red(), back_color.Green(), back_color.Blue(), 155 );
-   m_TexFontlabel.GetTextExtent(label, &w, &h );
-
-    w += 2*label_offsetx, h += 2*label_offsety;
-    x = center.x - (w / 2);
-    y = center.y - (h / 2);
-*/
-   /* draw text background */
-/*
-   glBegin(GL_QUADS);
-   glVertex2i(x,   y);
-   glVertex2i(x+w, y);
-   glVertex2i(x+w, y+h);
-   glVertex2i(x,   y+h);
-   glEnd();
-*/
-   /* draw text */
-/*
-   glColor3ub( 0, 0, 0 );
-
-   glEnable(GL_TEXTURE_2D);
-   m_TexFontlabel.RenderString(label, x + label_offsetx, y + label_offsety);
-   glDisable(GL_TEXTURE_2D);
+   glPopAttrib();
 
    glDisable( GL_BLEND );
 
@@ -549,7 +464,7 @@ bool GribRequestSetting::DoRenderZoneOverlay()
     }
     return true;
 }
-*/
+
 bool GribRequestSetting::RenderGlZoneOverlay()
 {
     if( m_RenderZoneOverlay == 0 ) return false;
@@ -571,6 +486,8 @@ void GribRequestSetting::OnMovingClick( wxCommandEvent& event )
     if(m_AllowSend) m_MailImage->SetValue( WriteMail() );
     SetRequestDialogSize();
 
+    //this->Layout();
+    //this->Fit();
     this->Refresh();
 }
 
@@ -578,7 +495,9 @@ void GribRequestSetting::OnCoordinatesChange( wxSpinEvent& event )
 {
     SetCoordinatesText();
 
-    StopGraphicalZoneSelection();                           //eventually stop graphical zone display
+    m_toggleSelection->SetValue( false );
+    wxCommandEvent evt;
+    OnTooggleSelection( evt );                           //eventually stop graphical zone display
 
     if( !m_AllowSend ) return;
 
@@ -606,8 +525,9 @@ void GribRequestSetting::OnTimeRangeChange(wxCommandEvent &event)
         if( m_pTimeRange->GetCurrentSelection() > 6 ) {         //time range more than 8 days
             m_pWaves->SetValue(0);
             m_pWaves->Enable(false);
-            OCPNMessageBox_PlugIn(this, _("You request a forecast for more than 8 days horizon.\nThis is conflicting with Wave data which will be removed from your request.\nDon't forget that beyond the first 8 days, the resolution will be only 2.5\u00B0x2.5\u00B0 and the time intervall 12 hours."),
-                _("Warning!") );
+            wxMessageDialog mes(this, _("You request a forecast for more than 8 days horizon.\nThis is conflicting with Wave data which will be removed from your request.\nDon't forget that beyond the first 8 days, the resolution will be only 2.5\u00B0x2.5\u00B0 and the time intervall 12 hours."),
+                _("Warning!"), wxOK);
+            mes.ShowModal();
         } else
             m_pWaves->Enable(true);
     }
@@ -695,17 +615,12 @@ void GribRequestSetting::OnSaveMail( wxCommandEvent& event )
         pConf->Write ( _T( "RequestZoneMinLon" ), m_spMinLon->GetValue() );
 
     }
-    m_OldZoneSelMode = m_cManualZoneSel->GetValue();
-
-    wxCloseEvent evt;
-    OnClose ( evt );
+        wxCloseEvent evt;
+        OnClose ( evt );
 }
 
 wxString GribRequestSetting::WriteMail()
 {
-    //define size limits for zyGrib
-    int limit = IsZYGRIB ? 2 : 0;                                            //new limit  2 mb
-
     m_MailError_Nb = 0;
     //some useful strings
     const wxString s[] = { _T(","), _T(" ") };        //separators
@@ -806,42 +721,32 @@ wxString GribRequestSetting::WriteMail()
         }
     }
 
-    double size;
-    m_MailError_Nb += EstimateFileSize( &size );
-
-    m_tFileSize->SetLabel(wxString::Format( _T("%1.2f " ) , size ) + _("MB") );
-
-    if( IsZYGRIB ) {
-        m_tLimit->SetLabel(wxString( _T("( ") ) + _("Max") + wxString::Format(_T(" %d "), limit) + _("MB") + _T(" )") );
-        if(size > limit) m_MailError_Nb += 2;
-    } else
-        m_tLimit->SetLabel(wxEmptyString);
-
+    m_MailError_Nb += EstimateFileSize();
     return wxString( r_topmess + r_parameters );
 }
 
-int GribRequestSetting::EstimateFileSize( double *size )
+int GribRequestSetting::EstimateFileSize()
 {
+    //define size limits for zyGrib
+    int limit = IsZYGRIB ? 2 : 0;                                            //new limit  2 mb
+
     //too small zone ? ( mini 2 * resolutions )
     double reso,time,inter;
     m_pResolution->GetStringSelection().ToDouble(&reso);
     m_pTimeRange->GetStringSelection().ToDouble(&time);
     m_pInterval->GetStringSelection().ToDouble(&inter);
 
-    double maxlon = m_spMaxLon->GetValue(), minlon = m_spMinLon->GetValue();
-    double maxlat = m_spMaxLat->GetValue(), minlat = m_spMinLat->GetValue();
+    if( m_spMaxLon->GetValue() - m_spMinLon->GetValue() < 0 || m_spMaxLat->GetValue() - m_spMinLat->GetValue() < 0 )
+        return 3;                               // maxlat must be > minlat & maxlon must be > minlon
 
-    if( maxlat - minlat < 0 )
-        return 3;                               // maxlat must be > minlat
+	if ( m_spMaxLon->GetValue() - m_spMinLon->GetValue() > 180 || m_spMaxLat->GetValue() - m_spMinLat->GetValue() > 180 )
+        return 4;                               //ovoid too big area
 
-    if ((maxlon > minlon ? 0 : 360) + maxlon - minlon > 180 || ( maxlat - minlat > 180 ))
-        return 4;                           //ovoid too big area
-
-    if ( fabs(maxlon - minlon) < 2*reso || maxlat - minlat < 2*reso  )
+	if ( m_spMaxLon->GetValue() - m_spMinLon->GetValue() < 2*reso || m_spMaxLat->GetValue() - m_spMinLat->GetValue() < 2*reso  )
         return 5;                           //ovoid too small area
 
-    int npts = (int) (  ceil(((double)(maxlat - minlat )/reso))
-                      * ceil(((double)(maxlon - minlon )/reso)) );
+    int npts = (int) (  ceil(((double)(m_spMaxLat->GetValue() - m_spMinLat->GetValue() )/reso))
+                       * ceil(((double)(m_spMaxLon->GetValue() - m_spMinLon->GetValue() )/reso)) );
 
     if(m_pModel->GetCurrentSelection() == COAMPS )                                           //limited area for COAMPS
         npts = wxMin(npts, (int) (  ceil(40.0/reso) * ceil(40.0/reso) ) );
@@ -887,8 +792,8 @@ int GribRequestSetting::EstimateFileSize( double *size )
     nbits = 5;
     estime += nbCape*(head+(nbits*npts)/8+2 );
 
-    nbits = 6;
-    estime += nbwave*(head+(nbits*npts)/8+2 );
+	nbits = 6;
+	estime += nbwave*(head+(nbits*npts)/8+2 );
 
     if( m_pAltitudeData->IsChecked() ) {
         int nbalt = 0;
@@ -902,15 +807,25 @@ int GribRequestSetting::EstimateFileSize( double *size )
     }
 
 
-    if(size) *size = estime / (1024.*1024.);
+	estime /= (1024.*1024.);
+
+    m_tFileSize->SetLabel(wxString::Format( _T("%1.2f " ) , estime ) + _("MB") );
+
+    if( IsZYGRIB ) {
+        m_tLimit->SetLabel(wxString( _T("( ") ) + _("Max") + wxString::Format(_T(" %d "), limit) + _("MB") + _T(" )") );
+        if(estime > limit) return 2;
+    } else
+        m_tLimit->SetLabel(wxEmptyString);
 
     return 0;
 }
 
 void GribRequestSetting::OnSendMaiL( wxCommandEvent& event  )
 {
-    StopGraphicalZoneSelection();                    //eventually stop graphical zone display
 
+    m_toggleSelection->SetValue( false );
+    wxCommandEvent evt;
+    OnTooggleSelection( evt );                    //eventually stop graphical zone display
     if(!m_AllowSend) {
         m_rButtonCancel->Show();
         m_rButtonApply->Show();
@@ -929,8 +844,6 @@ void GribRequestSetting::OnSendMaiL( wxCommandEvent& event  )
         _("Too big file! zyGrib limit is 2Mb!"), _("Error! Max Lat lower than Min Lat or Max Lon lower than Min Lon!"),
         _("Too large area! Each side must be less than 180\u00B0!"), _("Too small area for this resolution!") };
 
-    ::wxBeginBusyCursor();
-
     m_MailImage->SetForegroundColour(wxColor( 255, 0, 0 ));
     m_AllowSend = false;
 
@@ -947,9 +860,6 @@ void GribRequestSetting::OnSendMaiL( wxCommandEvent& event  )
         m_rButtonYes->SetLabel(_("Continue..."));
         m_rButton->Layout();
         SetRequestDialogSize();
-
-        ::wxEndBusyCursor();
-
         return;
     }
 
@@ -982,6 +892,4 @@ void GribRequestSetting::OnSendMaiL( wxCommandEvent& event  )
     m_rButtonYes->SetLabel(_("Continue..."));
     m_rButton->Layout();
     SetRequestDialogSize();
-
-    ::wxEndBusyCursor();
 }

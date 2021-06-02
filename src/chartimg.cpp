@@ -5,7 +5,7 @@
  * Author:   David Register
  *
  ***************************************************************************
- *   Copyright (C) 2015 by David S. Register                               *
+ *   Copyright (C) 2010 by David S. Register   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -68,6 +68,7 @@ struct sigaction sa_all_previous;
 
 sigjmp_buf           env_chart;                 // the context saved by sigsetjmp();
 
+
 void catch_signals_chart(int signo)
 {
       switch(signo)
@@ -83,13 +84,6 @@ void catch_signals_chart(int signo)
 
 #endif
 
-//  Missing from MSW include files
-#ifdef _MSC_VER
-typedef __int32 int32_t;
-typedef unsigned __int32 uint32_t;
-typedef __int64 int64_t;
-typedef unsigned __int64 uint64_t;
-#endif
 
 // ----------------------------------------------------------------------------
 // Random Prototypes
@@ -196,14 +190,6 @@ ChartBase::~ChartBase()
       free( m_pCOVRTable );
       free( m_pCOVRTablePoints );
 
-      //    Free the No COVR tables
-
-      for(unsigned int j=0 ; j<(unsigned int)m_nNoCOVREntries ; j++)
-            free( m_pNoCOVRTable[j] );
-
-      free( m_pNoCOVRTable );
-      free( m_pNoCOVRTablePoints );
-
 }
 /*
 int ChartBase::Continue_BackgroundHiDefRender(void)
@@ -265,7 +251,7 @@ bool ChartDummy::GetChartExtent(Extent *pext)
     return true;
 }
 
-bool ChartDummy::RenderRegionViewOnGL(const wxGLContext &glc, const ViewPort& VPoint, const OCPNRegion &RectRegion, const LLRegion &Region)
+bool ChartDummy::RenderRegionViewOnGL(const wxGLContext &glc, const ViewPort& VPoint, const OCPNRegion &Region)
 {
       return true;
 }
@@ -319,10 +305,6 @@ void ChartDummy::GetValidCanvasRegion(const ViewPort& VPoint, OCPNRegion *pValid
       pValidRegion->Union(0, 0, 1, 1);
 }
 
-LLRegion ChartDummy::GetValidRegion()
-{
-    return LLRegion();
-}
 
 
 
@@ -350,7 +332,7 @@ InitReturn ChartGEO::Init( const wxString& name, ChartInitFlag init_flags)
 
       char buffer[BUF_LEN_MAX];
 
-      ifs_hdr = new wxFFileInputStream(name);          // open the file as a read-only stream
+      ifs_hdr = new wxFileInputStream(name);          // open the file as a read-only stream
 
       m_filesize = wxFileName::GetSize( name );
       
@@ -574,7 +556,7 @@ InitReturn ChartGEO::Init( const wxString& name, ChartInitFlag init_flags)
       wxFileName NOS_filename(*pBitmapFilePath);
       if(NOS_filename.FileExists())
       {
-            ifss_bitmap = new wxFFileInputStream(*pBitmapFilePath); // open the bitmap file
+            ifss_bitmap = new wxFileInputStream(*pBitmapFilePath); // open the bitmap file
             ifs_bitmap = new wxBufferedInputStream(*ifss_bitmap);
       }
 //    File as fetched verbatim from the .geo file doesn't exist.
@@ -649,7 +631,7 @@ found_uclc_file:
 
             delete pBitmapFilePath;                   // fix up the member element
             pBitmapFilePath = new wxString(NOS_filename.GetFullPath());
-            ifss_bitmap = new wxFFileInputStream(*pBitmapFilePath); // open the bitmap file
+            ifss_bitmap = new wxFileInputStream(*pBitmapFilePath); // open the bitmap file
             ifs_bitmap = new wxBufferedInputStream(*ifss_bitmap);
 
       }           //else
@@ -742,33 +724,31 @@ found_uclc_file:
 
           return INIT_FAIL_REMOVE;
       }
-
+      
       if(m_datum_str.IsEmpty()){
           wxString msg(_T("   Chart datum not specified on chart "));
           msg.Append(m_FullPath);
           wxLogMessage(msg);
-          wxLogMessage(_T("   Default datum (WGS84) substituted."));
           
-          //          return INIT_FAIL_REMOVE;
+          return INIT_FAIL_REMOVE;
       }
-      else {
-          char d_str[100];
-          strncpy(d_str, m_datum_str.mb_str(), 99);
-          d_str[99] = 0;
+      
+      char d_str[100];
+      strncpy(d_str, m_datum_str.mb_str(), 99);
+      d_str[99] = 0;
+      
+      int datum_index = GetDatumIndex(d_str);
+
+      if(datum_index < 0){
+          wxString msg(_T("   Chart datum {"));
+          msg += m_datum_str;
+          msg += _T("} invalid on chart ");
+          msg.Append(m_FullPath);
+          wxLogMessage(msg);
           
-          int datum_index = GetDatumIndex(d_str);
-          
-          if(datum_index < 0){
-              wxString msg(_T("   Chart datum {"));
-              msg += m_datum_str;
-              msg += _T("} invalid on chart ");
-              msg.Append(m_FullPath);
-              wxLogMessage(msg);
-              wxLogMessage(_T("   Default datum (WGS84) substituted."));
-              
-              //          return INIT_FAIL_REMOVE;
-              }
-          }
+//          return INIT_FAIL_REMOVE;
+      }
+      
 
 //    Convert captured plypoint information into chart COVR structures
       m_nCOVREntries = 1;
@@ -843,7 +823,7 @@ InitReturn ChartKAP::Init( const wxString& name, ChartInitFlag init_flags )
 
       char buffer[BUF_LEN_MAX];
 
-      ifs_hdr = new wxFFileInputStream(name);          // open the Header file as a read-only stream
+      ifs_hdr = new wxFileInputStream(name);          // open the Header file as a read-only stream
 
       m_filesize = wxFileName::GetSize( name );
       
@@ -856,7 +836,7 @@ InitReturn ChartKAP::Init( const wxString& name, ChartInitFlag init_flags )
       m_FullPath = name;
       m_Description = m_FullPath;
 
-      ifss_bitmap = new wxFFileInputStream(name); // Open again, as the bitmap
+      ifss_bitmap = new wxFileInputStream(name); // Open again, as the bitmap
       ifs_bitmap = new wxBufferedInputStream(*ifss_bitmap);
 
       //    Clear georeferencing coefficients
@@ -917,7 +897,6 @@ InitReturn ChartKAP::Init( const wxString& name, ChartInitFlag init_flags )
       Size_X = Size_Y = 0;
 
       int done_header_parse = 0;
-      wxCSConv iso_conv(wxT("ISO-8859-1"));                 // we will need a converter
 
       while(done_header_parse == 0)
       {
@@ -937,6 +916,9 @@ InitReturn ChartKAP::Init( const wxString& name, ChartInitFlag init_flags )
 
                   continue;
             }
+
+
+            wxCSConv iso_conv(wxT("ISO-8859-1"));                 // we will need a converter
 
             wxString str_buf(buffer,  wxConvUTF8);
             if(!str_buf.Len())                                    // failed conversion
@@ -1405,74 +1387,24 @@ InitReturn ChartKAP::Init( const wxString& name, ChartInitFlag init_flags )
           wxString msg(_T("   Chart datum not specified on chart "));
           msg.Append(m_FullPath);
           wxLogMessage(msg);
-          wxLogMessage(_T("   Default datum (WGS84) substituted."));
+          
+          return INIT_FAIL_REMOVE;
+      }
+      
+      char d_str[100];
+      strncpy(d_str, m_datum_str.mb_str(), 99);
+      d_str[99] = 0;
+      
+      int datum_index = GetDatumIndex(d_str);
+      
+      if(datum_index < 0){
+          wxString msg(_T("   Chart datum {"));
+          msg += m_datum_str;
+          msg += _T("} invalid on chart ");
+          msg.Append(m_FullPath);
+          wxLogMessage(msg);
           
 //          return INIT_FAIL_REMOVE;
-      }
-      else {
-        char d_str[100];
-        strncpy(d_str, m_datum_str.mb_str(), 99);
-        d_str[99] = 0;
-        
-        int datum_index = GetDatumIndex(d_str);
-        
-        if(datum_index < 0){
-            wxString msg(_T("   Chart datum {"));
-            msg += m_datum_str;
-            msg += _T("} invalid on chart ");
-            msg.Append(m_FullPath);
-            wxLogMessage(msg);
-            wxLogMessage(_T("   Default datum (WGS84) substituted."));
-            
-    //          return INIT_FAIL_REMOVE;
-        }
-      }
-
-      /* Augment ply points
-           This is needed for example on polyconic charts or skewed charts because
-           straight lines in the chart coordinates can not use simple
-           interpolation in lat/lon or mercator coordinate space to draw the
-           borders or be used for quilting operation.
-           TODO: should this be added as a subroutine for GEO chartso? */
-      if((m_projection != PROJECTION_MERCATOR && m_projection != PROJECTION_TRANSVERSE_MERCATOR)
-          || m_Chart_Skew > 2) {
-          
-          //   Analyze Refpoints early because we need georef coefficient here.
-          AnalyzeRefpoints( false );              // no post test needed
-     
-          int count = nPlypoint;
-          nPlypoint = 0;
-          Plypoint *pOldPlyTable = pPlyTable;
-          pPlyTable = NULL;
-          double lastplylat = 0.0, lastplylon = 0.0, x1 = 0.0, y1 = 0.0, x2, y2;
-          double plylat, plylon;
-          for( int i = 0; i < count+1; i++ ) {
-              plylat = pOldPlyTable[i%count].ltp;
-              plylon = pOldPlyTable[i%count].lnp;
-              latlong_to_chartpix(plylat, plylon, x2, y2);
-              if( i > 0 ) {
-                  if( lastplylon - plylon > 180. )
-                      lastplylon -= 360.;
-                  else if( lastplylon - plylon < -180. )
-                      lastplylon += 360.;
-
-                  // use 2 degree steps
-                  double steps = ceil( (fabs(lastplylat-plylat) + fabs(lastplylon-plylon)) / 2 );
-                  for( double c = 0; c < steps; c++ ) {
-                      double d = c/steps, lat, lon;
-                      wxPoint2DDouble s;
-                      double x = (1-d)*x1 + d*x2, y = (1-d)*y1 + d*y2;
-                      chartpix_to_latlong(x, y, &lat, &lon);
-                      pPlyTable = (Plypoint *)realloc(pPlyTable, sizeof(Plypoint) * (nPlypoint+1));
-                      pPlyTable[nPlypoint].ltp = lat;
-                      pPlyTable[nPlypoint].lnp = lon;
-                      nPlypoint++;
-                  }
-              }
-              x1 = x2, y1 = y2;
-              lastplylat = plylat, lastplylon = plylon;
-          }
-          free(pOldPlyTable);
       }
 
 //    Convert captured plypoint information into chart COVR structures
@@ -1574,12 +1506,8 @@ ChartBaseBSB::ChartBaseBSB()
       n_pwx = 0;
       n_pwy = 0;
 
-#ifdef __OCPN__ANDROID__
-      bUseLineCache = false;
-#else
-      bUseLineCache = true;
-#endif
 
+      bUseLineCache = true;
       m_Chart_Skew = 0.0;
 
       pPixCache = NULL;
@@ -1666,8 +1594,9 @@ ChartBaseBSB::~ChartBaseBSB()
             for(int ylc = 0 ; ylc < Size_Y ; ylc++)
             {
                   pt = &pLineCache[ylc];
-                  free (pt->pTileOffset);
-                  free (pt->pPix);
+                  if(pt->pPix)
+                        free (pt->pPix);
+                  free( pt->pRGB );
             }
             free (pLineCache);
       }
@@ -1860,30 +1789,18 @@ InitReturn ChartBaseBSB::PostInit(void)
       ifs_bitmap->SeekI((Size_Y+1) * -4, wxFromEnd);                 // go to Beginning of offset table
       pline_table[Size_Y] = ifs_bitmap->TellI();                     // fill in useful last table entry
 
-      unsigned char *tmp = (unsigned char*)malloc(Size_Y * sizeof(int));
-      ifs_bitmap->Read(tmp, Size_Y * sizeof(int));
-      if ( ifs_bitmap->LastRead() != Size_Y * sizeof(int)) {
-             wxString msg(_("   Chart File corrupt in PostInit() on chart "));
-             msg.Append(m_FullPath);
-             wxLogMessage(msg);
-             free(tmp);
-              
-             return INIT_FAIL_REMOVE;
-      }
-
       int offset;
-      unsigned char *b = tmp;
       for(int ifplt=0 ; ifplt<Size_Y ; ifplt++)
       {
           offset = 0;
-          offset += *b++ * 256 * 256 * 256;
-          offset += *b++ * 256 * 256 ;
-          offset += *b++ * 256 ;
-          offset += *b++;
+          offset += (unsigned char)ifs_bitmap->GetC() * 256 * 256 * 256;
+          offset += (unsigned char)ifs_bitmap->GetC() * 256 * 256 ;
+          offset += (unsigned char)ifs_bitmap->GetC() * 256 ;
+          offset += (unsigned char)ifs_bitmap->GetC();
 
           pline_table[ifplt] = offset;
       }
-      free(tmp);
+
       //    Try to validate the line index
 
       bool bline_index_ok = true;
@@ -1991,8 +1908,10 @@ InitReturn ChartBaseBSB::PostInit(void)
             {
                   pt = &pLineCache[ylc];
                   pt->bValid = false;
+                  pt->xstart = 0;
+                  pt->xlength = 1;
                   pt->pPix = NULL;        //(unsigned char *)malloc(1);
-                  pt->pTileOffset = NULL;
+                  pt->pRGB = NULL;
             }
       }
       else
@@ -2006,8 +1925,6 @@ InitReturn ChartBaseBSB::PostInit(void)
       else if(test_str.IsSameAs(_T("METERS"), FALSE))
           m_depth_unit_id = DEPTH_UNIT_METERS;
       else if(test_str.IsSameAs(_T("METRES"), FALSE))                  // Special case for alternate spelling
-          m_depth_unit_id = DEPTH_UNIT_METERS;
-      else if(test_str.IsSameAs(_T("METRIC"), FALSE))
           m_depth_unit_id = DEPTH_UNIT_METERS;
       else if(test_str.IsSameAs(_T("FATHOMS"), FALSE))
           m_depth_unit_id = DEPTH_UNIT_FATHOMS;
@@ -2029,15 +1946,14 @@ InitReturn ChartBaseBSB::PostInit(void)
       else
           m_datum_index = datum_index;
 
-      //    Establish defaults, may be overridden later
-      m_lon_datum_adjust = (-m_dtm_lon) / 3600.;
-      m_lat_datum_adjust = (-m_dtm_lat) / 3600.;
-          
       //   Analyze Refpoints
       int analyze_ret_val = AnalyzeRefpoints();
       if(0 != analyze_ret_val)
             return INIT_FAIL_REMOVE;
 
+      //    Establish defaults, may be overridden later
+      m_lon_datum_adjust = (-m_dtm_lon) / 3600.;
+      m_lat_datum_adjust = (-m_dtm_lat) / 3600.;
 
       bReadyToRender = true;
       return INIT_OK;
@@ -2100,11 +2016,12 @@ void ChartBaseBSB::InvalidateLineCache(void)
                   pt = &pLineCache[ylc];
                   if(pt)
                   {
-                      free (pt->pPix);
-                      pt->pPix = NULL;
-                      free (pt->pTileOffset);
-                      pt->pTileOffset = NULL;
-                      pt->bValid = false;
+                        if(pt->pPix)
+                        {
+                              free (pt->pPix);
+                              pt->pPix = NULL;
+                        }
+                        pt->bValid = 0;
                   }
             }
       }
@@ -2829,8 +2746,6 @@ int ChartBaseBSB::latlong_to_pix_vp(double lat, double lon, double &pixx, double
 void ChartBaseBSB::latlong_to_chartpix(double lat, double lon, double &pixx, double &pixy)
 {
       double alat, alon;
-      pixx = 0.0;
-      pixy = 0.0;
 
       if(bHaveEmbeddedGeoref)
       {
@@ -2998,29 +2913,141 @@ void ChartBaseBSB::chartpix_to_latlong(double pixx, double pixy, double *plat, d
 
 }
 
-void ChartBaseBSB::ComputeSourceRectangle(const ViewPort &vp, wxRect *pSourceRect)
+void ChartBaseBSB::ComputeSourceRectangle(const ViewPort &vp, wxRealPoint *pPos, wxRealPoint *pSize)
 {
-      m_raster_scale_factor = GetRasterScaleFactor(vp);
+
+    //      This funny contortion is necessary to allow scale factors < 1, i.e. overzoom
+      double binary_scale_factor = (wxRound(100000 * GetPPM() / vp.view_scale_ppm)) / 100000.;
+
+      m_raster_scale_factor = binary_scale_factor;
+
       double xd, yd;
       latlong_to_chartpix(vp.clat, vp.clon, xd, yd);
 
-      wxRealPoint pos, size;
+      pPos->x = xd - (vp.pix_width  * binary_scale_factor / 2);
+      pPos->y = yd - (vp.pix_height * binary_scale_factor / 2);
 
-      pos.x = xd - (vp.pix_width  * m_raster_scale_factor / 2);
-      pos.y = yd - (vp.pix_height * m_raster_scale_factor / 2);
+      pSize->x = vp.pix_width  * binary_scale_factor;
+      pSize->y = vp.pix_height * binary_scale_factor;
 
-      size.x = vp.pix_width  * m_raster_scale_factor;
-      size.y = vp.pix_height * m_raster_scale_factor;
+//    printf("Compute Rsrc:  vp.clat:  %g  clon: %g     Rsrc.y: %d  Rsrc.x:  %d\n", vp.clat, vp.clon, pSourceRect->y, pSourceRect->x);
 
-      *pSourceRect = wxRect(wxRound(pos.x), wxRound(pos.y), wxRound(size.x), wxRound(size.y));
 }
 
-
-double ChartBaseBSB::GetRasterScaleFactor(const ViewPort &vp)
+void ChartBaseBSB::ComputeSourceRectangle(const ViewPort &vp, wxRect *pSourceRect)
 {
-    //      This funny contortion is necessary to allow scale factors < 1, i.e. overzoom
-      return (wxRound(100000 * GetPPM() / vp.view_scale_ppm)) / 100000.;
+    wxRealPoint pos, size;
+    ComputeSourceRectangle(vp, &pos, &size);
+    *pSourceRect = wxRect(wxRound(pos.x), wxRound(pos.y), wxRound(size.x), wxRound(size.y));
 }
+
+#if 0
+void ChartBaseBSB::ComputeSourceRectangle(const ViewPort &vp, wxRect *pSourceRect)
+{
+
+//    int pixxd, pixyd;
+
+    //      This funny contortion is necessary to allow scale factors < 1, i.e. overzoom
+    double binary_scale_factor = (wxRound(100000 * GetPPM() / vp.view_scale_ppm)) / 100000.;
+
+    m_raster_scale_factor = binary_scale_factor;
+
+//    if(m_b_cdebug)printf(" ComputeSourceRect... PPM: %g  vp.view_scale_ppm: %g   m_raster_scale_factor: %g\n", GetPPM(), vp.view_scale_ppm, m_raster_scale_factor);
+
+    if(bHaveEmbeddedGeoref)
+    {
+
+          /* change longitude phase (CPH) */
+          double lonp = (vp.clon < 0) ? vp.clon + m_cph : vp.clon - m_cph;
+          double xd = polytrans( wpx, lonp + m_lon_datum_adjust,  vp.clat + m_lat_datum_adjust );
+          double yd = polytrans( wpy, lonp + m_lon_datum_adjust,  vp.clat + m_lat_datum_adjust );
+//          pixxd = (int)wxRound(xd);
+//          pixyd = (int)wxRound(yd);
+
+//          pSourceRect->x = pixxd - (int)wxRound(vp.pix_width  * binary_scale_factor / 2);
+//          pSourceRect->y = pixyd - (int)wxRound(vp.pix_height * binary_scale_factor / 2);
+
+          pSourceRect->x = wxRound(xd - (vp.pix_width  * binary_scale_factor / 2));
+          pSourceRect->y = wxRound(yd - (vp.pix_height * binary_scale_factor / 2));
+
+          pSourceRect->width =  (int)wxRound(vp.pix_width  * binary_scale_factor) ;
+          pSourceRect->height = (int)wxRound(vp.pix_height * binary_scale_factor) ;
+
+    }
+
+    else
+    {
+        if(m_projection == PROJECTION_MERCATOR)
+        {
+                  //      Apply poly solution to vp center point
+              double easting, northing;
+              double xlon = vp.clon;
+              if(m_bIDLcross)
+              {
+                    if(xlon < 0)
+                        xlon += 360.;
+              }
+              toSM_ECC(vp.clat + m_lat_datum_adjust, xlon + m_lon_datum_adjust, m_proj_lat, m_proj_lon, &easting, &northing);
+              double xc = polytrans( cPoints.wpx, easting, northing );
+              double yc = polytrans( cPoints.wpy, easting, northing );
+
+                  //    convert screen pixels to chart pixmap relative
+              pSourceRect->x = (int)(xc - (vp.pix_width / 2)*binary_scale_factor);
+              pSourceRect->y = (int)(yc - (vp.pix_height / 2)*binary_scale_factor);
+
+              pSourceRect->width =  (int)(vp.pix_width  * binary_scale_factor) ;
+              pSourceRect->height = (int)(vp.pix_height * binary_scale_factor) ;
+
+ //             printf("Compute Rsrc:  vp.clat:  %g    Rsrc.y: %d  \n", vp.clat, pSourceRect->y);
+
+        }
+
+        else if(m_projection == PROJECTION_POLYCONIC)
+        {
+                  //      Apply poly solution to vp center point
+              double easting, northing;
+              double xlon = vp.clon;
+              if(m_bIDLcross)
+              {
+                    if(xlon < 0)
+                          xlon += 360.;
+              }
+              toPOLY(vp.clat + m_lat_datum_adjust, xlon + m_lon_datum_adjust, m_proj_lat, m_proj_lon, &easting, &northing);
+              double xc = polytrans( cPoints.wpx, easting, northing );
+              double yc = polytrans( cPoints.wpy, easting, northing );
+
+                  //    convert screen pixels to chart pixmap relative
+              pSourceRect->x = (int)(xc - (vp.pix_width / 2)*binary_scale_factor);
+              pSourceRect->y = (int)(yc - (vp.pix_height / 2)*binary_scale_factor);
+
+              pSourceRect->width =  (int)(vp.pix_width  * binary_scale_factor) ;
+              pSourceRect->height = (int)(vp.pix_height * binary_scale_factor) ;
+
+         }
+
+        else if(m_projection == PROJECTION_TRANSVERSE_MERCATOR)
+        {
+                  //      Apply poly solution to vp center point
+              double easting, northing;
+              toTM(vp.clat + m_lat_datum_adjust, vp.clon + m_lon_datum_adjust, m_proj_lat, m_proj_lon, &easting, &northing);
+              double xc = polytrans( cPoints.wpx, easting, northing );
+              double yc = polytrans( cPoints.wpy, easting, northing );
+
+                  //    convert screen pixels to chart pixmap relative
+              pSourceRect->x = (int)(xc - (vp.pix_width / 2)*binary_scale_factor);
+              pSourceRect->y = (int)(yc - (vp.pix_height / 2)*binary_scale_factor);
+
+              pSourceRect->width =  (int)(vp.pix_width  * binary_scale_factor) ;
+              pSourceRect->height = (int)(vp.pix_height * binary_scale_factor) ;
+
+        }
+    }
+
+//    printf("Compute Rsrc:  vp.clat:  %g  clon: %g     Rsrc.y: %d  Rsrc.x:  %d\n", vp.clat, vp.clon, pSourceRect->y, pSourceRect->x);
+
+}
+#endif
+
 
 void ChartBaseBSB::SetVPRasterParms(const ViewPort &vpt)
 {
@@ -3147,27 +3174,6 @@ void ChartBaseBSB::GetValidCanvasRegion(const ViewPort& VPoint, OCPNRegion *pVal
       pValidRegion->Union(rxl, ryt, rxr - rxl, ryb - ryt);
 }
 
-LLRegion ChartBaseBSB::GetValidRegion()
-{
-    // should we cache this?
-    double ll[8];
-    chartpix_to_latlong(0,      0,      ll+0, ll+1);
-    chartpix_to_latlong(0,      Size_Y, ll+2, ll+3);
-    chartpix_to_latlong(Size_X, Size_Y, ll+4, ll+5);
-    chartpix_to_latlong(Size_X, 0,      ll+6, ll+7);
-
-    // for now don't allow raster charts to cross both 0 meridian and IDL (complicated to deal with)
-    for(int i=1; i<6; i+=2)
-        if(fabs(ll[i] - ll[i+2]) > 180) {
-            // we detect crossing idl here, make all longitudes positive
-            for(int i=1; i<8; i+=2)
-                if(ll[i] < 0)
-                    ll[i] += 360;
-            break;
-        }
-
-    return LLRegion(4, ll);
-}
 
 bool ChartBaseBSB::GetViewUsingCache( wxRect& source, wxRect& dest, const OCPNRegion& Region, ScaleTypeEnum scale_type )
 {
@@ -3268,129 +3274,133 @@ bool ChartBaseBSB::GetViewUsingCache( wxRect& source, wxRect& dest, const OCPNRe
 
 
       //    "Blit" the valid pixels out of the way
-    if( pPixCache )
-    {
-        int height = pPixCache->GetHeight();
-        int width = pPixCache->GetWidth();
-        int buffer_stride_bytes = pPixCache->GetLinePitch();
-        
-        unsigned char *ps;
-        unsigned char *pd;
-        
-        if(stride_rows > 0)                             // pan down
-        {
-            ps = pPixCache->GetpData() +  (abs(scaled_stride_rows) * buffer_stride_bytes);
-            if(stride_pixels > 0)
-                ps += scaled_stride_pixels * BPP/8;
-            
-            pd = pPixCache->GetpData();
-            if(stride_pixels <= 0)
-                pd += abs(scaled_stride_pixels) * BPP/8;
-            
-            for(int iy=0 ; iy< (height - abs(scaled_stride_rows)) ; iy++)
-            {
-                memmove(pd, ps, (width - abs(scaled_stride_pixels)) *BPP/8);
-                ps += buffer_stride_bytes;
-                pd += buffer_stride_bytes;
-            }
-            
-        }
-        else
-        {
-            ps = pPixCache->GetpData() + ((height - abs(scaled_stride_rows)-1) * buffer_stride_bytes);
+      int height = pPixCache->GetHeight();
+      int width = pPixCache->GetWidth();
+      int buffer_stride_bytes = pPixCache->GetLinePitch();
+      
+      unsigned char *ps;
+      unsigned char *pd;
+
+      if(stride_rows > 0)                             // pan down
+      {
+          ps = pPixCache->GetpData() +  (abs(scaled_stride_rows) * buffer_stride_bytes);
+           if(stride_pixels > 0)
+                 ps += scaled_stride_pixels * BPP/8;
+
+           pd = pPixCache->GetpData();
+           if(stride_pixels <= 0)
+                 pd += abs(scaled_stride_pixels) * BPP/8;
+
+           for(int iy=0 ; iy< (height - abs(scaled_stride_rows)) ; iy++)
+           {
+                 memmove(pd, ps, (width - abs(scaled_stride_pixels)) *BPP/8);
+
+                 ps += buffer_stride_bytes;
+                 pd += buffer_stride_bytes;
+           }
+
+      }
+      else
+      {
+          ps = pPixCache->GetpData() + ((height - abs(scaled_stride_rows)-1) * buffer_stride_bytes);
             if(stride_pixels > 0)               // make a hole on right
-                ps += scaled_stride_pixels * BPP/8;
-            
+                  ps += scaled_stride_pixels * BPP/8;
+
             pd = pPixCache->GetpData() +  ((height -1) * buffer_stride_bytes);
             if(stride_pixels <= 0)              // make a hole on the left
-                pd += abs(scaled_stride_pixels) * BPP/8;
-            
-            
+                  pd += abs(scaled_stride_pixels) * BPP/8;
+
+
             for(int iy=0 ; iy< (height - abs(scaled_stride_rows)) ; iy++)
             {
-                memmove(pd, ps, (width - abs(scaled_stride_pixels)) *BPP/8);
-                ps -= buffer_stride_bytes;
-                pd -= buffer_stride_bytes;
+                  memmove(pd, ps, (width - abs(scaled_stride_pixels)) *BPP/8);
+
+                  ps -= buffer_stride_bytes;
+                  pd -= buffer_stride_bytes;
             }
-        }
-        
-        //    Y Pan
-        if(source.y != cache_rect.y)
-        {
+      }
+
+
+
+
+
+
+
+//    Y Pan
+      if(source.y != cache_rect.y)
+      {
             wxRect sub_dest = dest;
             sub_dest.height = abs(scaled_stride_rows);
-            
+
             if(stride_rows > 0)                             // pan down
             {
-                sub_dest.y = height - scaled_stride_rows;
-                
+                  sub_dest.y = height - scaled_stride_rows;
+
             }
             else
             {
-                sub_dest.y = 0;
-                
+                  sub_dest.y = 0;
+
             }
-            
+
             //    Get the new bits needed
-            
+
             //    A little optimization...
             //    No sense in fetching bits that are not part of the ultimate render region
             wxRegionContain rc = Region.Contains(sub_dest);
             if((wxPartRegion == rc) || (wxInRegion == rc))
             {
-                GetAndScaleData(pPixCache->GetpData(), pPixCache->GetLength(), source, source.width, sub_dest, width, cs1d, pan_scale_type_y);
+                  GetAndScaleData(pPixCache->GetpData(), source, source.width, sub_dest, width, cs1d, pan_scale_type_y);
             }
             pPixCache->Update();
-            
-            //    Update the cached parameters, Y only
-            
+
+//    Update the cached parameters, Y only
+
             cache_rect.y = source.y;
-            //          cache_rect = source;
+//          cache_rect = source;
             cache_rect_scaled = dest;
             cached_image_ok = 1;
-            
-        }                 // Y Pan
-        
-        
-        
-        
-        //    X Pan
-        if(source.x != cache_rect.x)
-        {
+
+      }                 // Y Pan
+
+
+
+
+//    X Pan
+      if(source.x != cache_rect.x)
+      {
             wxRect sub_dest = dest;
             sub_dest.width = abs(scaled_stride_pixels);
-            
+
             if(stride_pixels > 0)                           // pan right
             {
-                sub_dest.x = width - scaled_stride_pixels;
+                  sub_dest.x = width - scaled_stride_pixels;
             }
             else                                                  // pan left
             {
-                sub_dest.x = 0;
+                  sub_dest.x = 0;
             }
-            
+
             //    Get the new bits needed
-            
+
             //    A little optimization...
             //    No sense in fetching bits that are not part of the ultimate render region
             wxRegionContain rc = Region.Contains(sub_dest);
             if((wxPartRegion == rc) || (wxInRegion == rc))
             {
-                GetAndScaleData(pPixCache->GetpData(), pPixCache->GetLength(), source, source.width, sub_dest, width, cs1d, pan_scale_type_x);
+                  GetAndScaleData(pPixCache->GetpData(), source, source.width, sub_dest, width, cs1d, pan_scale_type_x);
             }
-            
+
             pPixCache->Update();
-            
-            //    Update the cached parameters
+
+//    Update the cached parameters
             cache_rect = source;
             cache_rect_scaled = dest;
             cached_image_ok = 1;
-            
-        }           // X pan
-        
-        return true;
-    }
-    return false;
+
+      }           // X pan
+
+      return true;
 }
 
 
@@ -3420,7 +3430,7 @@ bool ChartBaseBSB::RenderViewOnDC(wxMemoryDC& dc, const ViewPort& VPoint)
 
 
 
-bool ChartBaseBSB::RenderRegionViewOnGL(const wxGLContext &glc, const ViewPort& VPoint, const OCPNRegion &RectRegion, const LLRegion &Region)
+bool ChartBaseBSB::RenderRegionViewOnGL(const wxGLContext &glc, const ViewPort& VPoint, const OCPNRegion &Region)
 {
       return true;
 }
@@ -3432,7 +3442,7 @@ bool ChartBaseBSB::RenderRegionViewOnDC(wxMemoryDC& dc, const ViewPort& VPoint, 
 
       wxRect dest(0,0,VPoint.pix_width, VPoint.pix_height);
 //      double factor = ((double)Rsrc.width)/((double)dest.width);
-      double factor = GetRasterScaleFactor(VPoint);
+      double factor = m_raster_scale_factor;
       if(m_b_cdebug)
       {
             printf("%d RenderRegion  ScaleType:  %d   factor:  %g\n", s_dc++, RENDER_HIDEF, factor );
@@ -3452,7 +3462,7 @@ bool ChartBaseBSB::RenderRegionViewOnDC(wxMemoryDC& dc, const ViewPort& VPoint, 
             cached_image_ok = false;
             m_vp_render_last.Invalidate();
       }
-/*
+
       if(pPixCache)
       {
             if((pPixCache->GetWidth() != dest.width) || (pPixCache->GetHeight() != dest.height))
@@ -3463,7 +3473,7 @@ bool ChartBaseBSB::RenderRegionViewOnDC(wxMemoryDC& dc, const ViewPort& VPoint, 
       }
       else
             pPixCache = new PixelCache(dest.width, dest.height, BPP);
-*/
+
 
       m_cached_scale_ppm = VPoint.view_scale_ppm;
       m_last_vprect = dest;
@@ -3512,33 +3522,11 @@ bool ChartBaseBSB::RenderRegionViewOnDC(wxMemoryDC& dc, const ViewPort& VPoint, 
 
      if((!IsRenderCacheable( Rsrc, dest ) && ( n_rect > 4 ) && (n_rect < 20)) || ( factor < 1))
      {
-         if(m_b_cdebug)printf("   RenderRegion by rect iterator   n_rect: %d\n", n_rect);
-                              
-           // Verify that the persistent pixel cache is at least as large as the largest rectangle in the region
-           wxRect dest_check_rect = dest;
-           OCPNRegionIterator upd_check ( Region ); // get the requested rect list
-           while ( upd_check.HaveRects() )
-           {
-               wxRect rect = upd_check.GetRect();
-               dest_check_rect.Union(rect);
-               upd_check.NextRect();
-           }
- 
-            if(pPixCache)
-            {
-                if((pPixCache->GetWidth() != dest_check_rect.width) || (pPixCache->GetHeight() != dest_check_rect.height))
-                {
-                    delete pPixCache;
-                    pPixCache = new PixelCache(dest_check_rect.width, dest_check_rect.height, BPP);
-                }
-            }
-            else
-                pPixCache = new PixelCache(dest_check_rect.width, dest_check_rect.height, BPP);
-
-           
            ScaleTypeEnum ren_type = RENDER_LODEF;
 
+           if(m_b_cdebug)printf("   RenderRegion by rect iterator   n_rect: %d\n", n_rect);
 
+//           PixelCache *pPixCacheTemp = new PixelCache(dest.width, dest.height, BPP);
 
       //    Decompose the region into rectangles, and fetch them into the target dc
            OCPNRegionIterator upd ( Region ); // get the requested rect list
@@ -3546,27 +3534,20 @@ bool ChartBaseBSB::RenderRegionViewOnDC(wxMemoryDC& dc, const ViewPort& VPoint, 
            while ( upd.HaveRects() )
            {
                  wxRect rect = upd.GetRect();
-                 
-                 //  Floating point math can lead to negative rectangle origin.
-                 //  If this happens, we arbitrarily shift the rectangle to be positive semidefinite.
-                 //  This will cause at most a 1 pixlel error onscreen.
-                 if(rect.y < 0) rect.Offset(0, -rect.y);
-                 if(rect.x < 0) rect.Offset(-rect.x, 0);
-           
-                 
-                 GetAndScaleData(pPixCache->GetpData(), pPixCache->GetLength(),
-                        Rsrc, Rsrc.width, rect, pPixCache->GetWidth(), factor, ren_type);
-                 
+                 GetAndScaleData(pPixCache->GetpData(), Rsrc, Rsrc.width, rect, dest.width, factor, ren_type);
                  ir++;
                  upd.NextRect();;
            }
+
+//           delete pPixCache;                           // new cache is OK
+//           pPixCache = pPixCacheTemp;
 
            pPixCache->Update();
 
       //    Update cache parameters
            cache_rect = Rsrc;
            cache_scale_method = ren_type;
-           cached_image_ok = false;            // Never cache this type of render
+           cached_image_ok = false;//true;            // Never cache this type of render
 
       //    Select the data into the dc
            pPixCache->SelectIntoDC(dc);
@@ -3575,21 +3556,8 @@ bool ChartBaseBSB::RenderRegionViewOnDC(wxMemoryDC& dc, const ViewPort& VPoint, 
      }
 
 
-     //     Default is to try using the cache
-     
-     if(pPixCache)
-     {
-         if((pPixCache->GetWidth() != dest.width) || (pPixCache->GetHeight() != dest.height))
-         {
-             delete pPixCache;
-             pPixCache = new PixelCache(dest.width, dest.height, BPP);
-         }
-     }
-     else
-         pPixCache = new PixelCache(dest.width, dest.height, BPP);
-     
-     
 
+     //     Default is to try using the cache
      if(m_b_cdebug)printf("  Render Region By GVUC\n");
 
      //     A performance enhancement.....
@@ -3620,7 +3588,7 @@ wxImage *ChartBaseBSB::GetImage()
             wxRect source_rect(0,i,Size_X, 1);
             wxRect dest_rect(0,0,Size_X, 1);
 
-            GetAndScaleData(img->GetData(), img_size_x * Size_Y * 3, source_rect, Size_X, dest_rect, Size_X, 1.0, RENDER_HIDEF);
+            GetAndScaleData(img->GetData(), source_rect, Size_X, dest_rect, Size_X, 1.0, RENDER_HIDEF);
 
             ppnx += img_size_x * 3;
       }
@@ -3648,7 +3616,7 @@ bool ChartBaseBSB::GetView( wxRect& source, wxRect& dest, ScaleTypeEnum scale_ty
            pPixCache = pPixCacheTemp;
       }
 */
-      GetAndScaleData(pPixCache->GetpData(), pPixCache->GetLength(), source, source.width, dest, dest.width, factor, scale_type);
+      GetAndScaleData(pPixCache->GetpData(), source, source.width, dest, dest.width, factor, scale_type);
       pPixCache->Update();
 
 //    Update cache parameters
@@ -3664,7 +3632,7 @@ bool ChartBaseBSB::GetView( wxRect& source, wxRect& dest, ScaleTypeEnum scale_ty
 }
 
 
-bool ChartBaseBSB::GetAndScaleData(unsigned char *ppn, size_t data_size, wxRect& source, int source_stride,
+bool ChartBaseBSB::GetAndScaleData(unsigned char *ppn, wxRect& source, int source_stride,
                                    wxRect& dest, int dest_stride, double scale_factor, ScaleTypeEnum scale_type)
 {
 
@@ -3927,22 +3895,15 @@ bool ChartBaseBSB::GetAndScaleData(unsigned char *ppn, size_t data_size, wxRect&
 
                         i = dest.x;
 
-                        // Check data bounds to be sure of not overrunning the upstream buffer
-                        if( (target_data_x + ( dest.width * BPP/8)) > (target_data + data_size) ) {
-                            j = dest.y + dest.height;
-                        }
-                        else{ 
-                            while( i < dest.x + dest.width ){
-                                memcpy( target_data_x,
-                                            source_data + BPP/8*(y_offset + (int)((i + x_vernier_i) * m_raster_scale_factor)),
-                                        BPP/8 );
-                                                            
-                                target_data_x += BPP/8;
+                        while( i < dest.x + dest.width )
+                        {
+                              memcpy( target_data_x,
+                                          source_data + BPP/8*(y_offset + (int)((i + x_vernier_i) * m_raster_scale_factor)),
+                                    BPP/8 );
+                              target_data_x += BPP/8;
 
-                                i++;
-                            }
+                              i++;
                         }
-                        
                         j++;
                   }
             }
@@ -4047,7 +4008,7 @@ bool ChartBaseBSB::GetChartBits(wxRect& source, unsigned char *pPix, int sub_sam
 //    Read and return count of a line of BSB header file
 //-----------------------------------------------------------------------------------------------
 
-int ChartBaseBSB::ReadBSBHdrLine(wxFFileInputStream* ifs, char* buf, int buf_len_max)
+int ChartBaseBSB::ReadBSBHdrLine(wxFileInputStream* ifs, char* buf, int buf_len_max)
 
 {
       char  read_char;
@@ -4189,7 +4150,7 @@ int   ChartBaseBSB::BSBScanScanline(wxInputStream *pinStream )
 //      Here is a little hand-crafted memset() substitue for known short strings.
 //      It will be inlined by MSVC compiler using /02 settings 
 
-inline void memset_short(unsigned char *dst, unsigned char cbyte, int count)
+void memset_short(unsigned char *dst, unsigned char cbyte, int count)
 {
 #ifdef __MSVC__
     __asm {
@@ -4205,38 +4166,6 @@ inline void memset_short(unsigned char *dst, unsigned char cbyte, int count)
     memset(dst, cbyte, count);
 #endif    
 }
-// could use a larger value for slightly less ram but slower random access,
-// this is chosen as it is also the opengl tile size so should work well
-#define TILE_SIZE 512
-
-//#define USE_OLD_CACHE  // removed this (and simplify code below) once the new method is verified
-//#define PRINT_TIMINGS  // enable for profiling
-
-#ifdef PRINT_TIMINGS
-class OCPNStopWatch
-{
-    public:
-        OCPNStopWatch() { Reset(); }
-        void Reset() { clock_gettime(CLOCK_REALTIME, &tp); }
-
-    double Time() {
-        timespec tp_end;
-        clock_gettime(CLOCK_REALTIME, &tp_end);
-        return (tp_end.tv_sec - tp.tv_sec) * 1.e3 + (tp_end.tv_nsec - tp.tv_nsec) / 1.e6;
-    }
-
-private:
-    timespec tp;
-};
-#endif
-
-#define FAIL \
-    do { \
-      free(pt->pTileOffset); \
-      free(pt->pPix); \
-      pt->bValid = false; \
-      return 0; \
-    } while(0)
 
 //-----------------------------------------------------------------------
 //    Get a BSB Scan Line Using Cache and scan line index if available
@@ -4244,159 +4173,120 @@ private:
 int   ChartBaseBSB::BSBGetScanline( unsigned char *pLineBuf, int y, int xs, int xl, int sub_samp)
 
 {
-      unsigned char *prgb = pLineBuf;
-      int nValueShift, iPixel = 0;
+      int nLineMarker, nValueShift, iPixel = 0;
       unsigned char byValueMask, byCountMask;
       unsigned char byNext;
-      CachedLine *pt = NULL, cached_line;
+      CachedLine *pt = NULL;
       unsigned char *pCL;
       int rgbval;
       unsigned char *lp;
+      unsigned char *xtemp_line;
       register int ix = xs;
 
       if(bUseLineCache && pLineCache)
       {
 //    Is the requested line in the cache, and valid?
-          pt = &pLineCache[y];
-      } else {
-          pt = &cached_line;
-          pt->bValid = false;
+            pt = &pLineCache[y];
+            if(!pt->bValid)                                 // not valid, so get it
+            {
+                  if(pt->pPix)
+                        free(pt->pPix);
+                  pt->pPix = (unsigned char *)malloc(Size_X);
+            }
+
+            xtemp_line = pt->pPix;
       }
+      else
+            xtemp_line = (unsigned char *)malloc(Size_X);
 
-#ifdef PRINT_TIMINGS
-      OCPNStopWatch sw;
-      static double ttime;
-      static int cnt;
-      cnt++;
-#endif
 
-      if(!pt->bValid) // not valid, allocate
+      if((bUseLineCache && !pt->bValid) || (!bUseLineCache))
       {
-          int thisline_size = pline_table[y+1] - pline_table[y] ;
-
-#ifdef USE_OLD_CACHE
-          pt->pPix = (unsigned char *)malloc(Size_X);
-#else
-          pt->pTileOffset = (TileOffsetCache *)calloc(sizeof(TileOffsetCache)*(Size_X/TILE_SIZE + 1), 1);
-          pt->pPix = (unsigned char *)malloc(thisline_size);
-#endif
-          if(pline_table[y] == 0 || pline_table[y+1] == 0)
-              FAIL;
-
-          // as of 2015, in wxWidgets buffered streams don't test for a zero seek
-          // so we check here to possibly avoid this seek with a measured performance gain
-          if(ifs_bitmap->TellI() != pline_table[y] &&
-             wxInvalidOffset == ifs_bitmap->SeekI(pline_table[y], wxFromStart))
-              FAIL;
-
-#ifdef USE_OLD_CACHE
-          if(thisline_size > ifs_bufsize)
+          if(pline_table[y] == 0)
           {
-              unsigned char * tmp = ifs_buf;
-              if(!(ifs_buf = (unsigned char *)realloc(ifs_buf, thisline_size))) {
-                  free(tmp);
-                  FAIL;
-              }
-              ifs_bufsize = thisline_size;
+              free (xtemp_line);
+              return 0;
           }
 
-          lp = ifs_buf;
-#else
-          lp = pt->pPix;
-#endif
-          ifs_bitmap->Read(lp, thisline_size);
-
-#ifdef USE_OLD_CACHE
-          pCL = pt->pPix;
-#else
-          if(!bUseLineCache) {
-              ix = 0;
-              //      skip the line number.
-              do byNext = *lp++; while( (byNext & 0x80) != 0 );
-              goto nocachestart;
-          }
-          pCL = ifs_buf;
-
-          if(Size_X > ifs_bufsize)
+          if(pline_table[y+1] == 0)
           {
-              unsigned char * tmp = ifs_buf;
-              if(!(ifs_buf = (unsigned char *)realloc(ifs_buf, Size_X))) {
-                  free(tmp);
-                  FAIL;
-              }
-              ifs_bufsize = Size_X;
+              free (xtemp_line);
+              return 0;
           }
-#endif
-          //    At this point, the unexpanded, raw line is at *lp, and the expansion destination is pCL
-          
-          //      skip the line number.
-          do byNext = *lp++; while( (byNext & 0x80) != 0 );
 
-          //      Setup masking values.
-          nValueShift = 7 - nColorSize;
-          byValueMask = (((1 << nColorSize)) - 1) << nValueShift;
-          byCountMask = (1 << (7 - nColorSize)) - 1;
+            int thisline_size = pline_table[y+1] - pline_table[y] ;
 
-          //      Read and expand runs.
-          unsigned int iPixel = 0;
+            if(thisline_size > ifs_bufsize)
+            {
+                unsigned char * tmp = ifs_buf;
+                ifs_buf = (unsigned char *)realloc(ifs_buf, thisline_size);
+                if (NULL == ifs_buf)
+                {
+                    free(tmp);
+                    tmp = NULL;
+                    free (xtemp_line);
+                    return 0;
+                }
+            }
 
-#ifndef USE_OLD_CACHE
-          pt->pTileOffset[0].offset = lp - pt->pPix;
-          pt->pTileOffset[0].pixel = 0;
-          unsigned int tileindex = 1, nextTile = TILE_SIZE;
-#endif
-          unsigned int nRunCount;
-          while( ((byNext = *lp++) != 0 ) && (iPixel < (unsigned int)Size_X))
-#ifdef USE_OLD_CACHE
-          {
-              nPixValue = (byNext & byValueMask) >> nValueShift;
+            if( wxInvalidOffset == ifs_bitmap->SeekI(pline_table[y], wxFromStart))
+            {
+                free (xtemp_line);
+                return 0;
+            }
 
-              nRunCount = byNext & byCountMask;
+            ifs_bitmap->Read(ifs_buf, thisline_size);
+            lp = ifs_buf;
 
-              while( (byNext & 0x80) != 0 )
-              {
+//    At this point, the unexpanded, raw line is at *lp, and the expansion destination is xtemp_line
+
+//      Read the line number.
+            nLineMarker = 0;
+            do
+            {
                   byNext = *lp++;
-                  nRunCount = nRunCount * 128 + (byNext & 0x7f);
-              }
+                  nLineMarker = nLineMarker * 128 + (byNext & 0x7f);
+            } while( (byNext & 0x80) != 0 );
 
-              nRunCount++;
+//      Setup masking values.
+            nValueShift = 7 - nColorSize;
+            byValueMask = (((1 << nColorSize)) - 1) << nValueShift;
+            byCountMask = (1 << (7 - nColorSize)) - 1;
 
-              if( iPixel + nRunCount > (unsigned int)Size_X ) // protection against corrupt data
-                  nRunCount = nRunCount - iPixel;
+//      Read and expand runs.
 
-              //          Store nPixValue in the destination
-              memset_short(pCL + iPixel, nPixValue, nRunCount);
-              iPixel += nRunCount;
-          }
-#else
-          // build tile offset table for faster random access
-          {
-              unsigned char *offset = lp - 1;
-              nRunCount = byNext & byCountMask;
+            pCL = xtemp_line;
 
-              while( (byNext & 0x80) != 0 )
-              {
-                  byNext = *lp++;
-                  nRunCount = nRunCount * 128 + (byNext & 0x7f);
-              }
+            while( ((byNext = *lp++) != 0 ) && (iPixel < Size_X))
+            {
+                  int   nPixValue;
+                  int nRunCount;
+                  nPixValue = (byNext & byValueMask) >> nValueShift;
 
-              nRunCount++;
+                  nRunCount = byNext & byCountMask;
 
-              if( iPixel + nRunCount > (unsigned int)Size_X ) // protection against corrupt data
-                  nRunCount = Size_X - iPixel;
+                  while( (byNext & 0x80) != 0 )
+                  {
+                        byNext = *lp++;
+                        nRunCount = nRunCount * 128 + (byNext & 0x7f);
+                  }
 
-              while( iPixel + nRunCount > nextTile) {
-                  pt->pTileOffset[tileindex].offset = offset - pt->pPix;
-                  pt->pTileOffset[tileindex].pixel = iPixel;
-                  tileindex++;
-                  nextTile += TILE_SIZE;
-              }
-              iPixel += nRunCount;
-          }
-#endif
+                  if( iPixel + nRunCount + 1 > Size_X )     // protection
+                        nRunCount = Size_X - iPixel - 1;
 
-          pt->bValid = true;
+                  if(nRunCount < 0)                         // against corrupt data
+                      nRunCount = 0;
+
+//          Store nPixValue in the destination
+                  memset_short(pCL, nPixValue, nRunCount+1);
+                  pCL += nRunCount+1;
+                  iPixel += nRunCount+1;
+
+            }
       }
+
+      if(bUseLineCache)
+            pt->bValid = true;
 
 #if 0
       //    Here is some test code, using full RGB line buffers in LineCache
@@ -4451,11 +4341,11 @@ int   ChartBaseBSB::BSBGetScanline( unsigned char *pLineBuf, int y, int xs, int 
 
 //          Line is valid, de-reference thru proper pallete directly to target
 
-      if(xl > Size_X)
-            xl = Size_X;
+      if(xl > Size_X-1)
+            xl = Size_X-1;
 
-#ifdef USE_OLD_CACHE
-      pCL = pt->pPix + xs;
+      pCL = xtemp_line + xs;
+      unsigned char *prgb = pLineBuf;
 
       //    Optimization for most usual case
       if((BPP == 24) && (1 == sub_samp))
@@ -4475,6 +4365,7 @@ int   ChartBaseBSB::BSBGetScanline( unsigned char *pLineBuf, int y, int xs, int 
                         ix  ++;
                   }
             }
+
       }
       else
       {
@@ -4501,7 +4392,7 @@ int   ChartBaseBSB::BSBGetScanline( unsigned char *pLineBuf, int y, int xs, int 
 
       if(xs < xl-1)
       {
-        unsigned char *pCLast = pt->pPix + (xl - 1);
+        unsigned char *pCLast = xtemp_line + (xl - 1);
         unsigned char *prgb_last = pLineBuf + ((xl - 1)-xs) * BPP/8;
 
         rgbval = (int)(pPalette[*pCLast]);        // last pixel
@@ -4512,173 +4403,11 @@ int   ChartBaseBSB::BSBGetScanline( unsigned char *pLineBuf, int y, int xs, int 
         a = (rgbval >> 16) & 0xff;
         *prgb_last = a;
       }
-#else
-      {
-          int tileindex = xs / TILE_SIZE;
-          int tileoffset = pt->pTileOffset[tileindex].offset;
 
-          lp = pt->pPix + tileoffset;
-          ix = pt->pTileOffset[tileindex].pixel;
-      }
+      if(!bUseLineCache)
+          free (xtemp_line);
 
-nocachestart:
-      unsigned int i = 0;
-
-      nValueShift = 7 - nColorSize;
-      byValueMask = (((1 << nColorSize)) - 1) << nValueShift;
-      byCountMask = (1 << (7 - nColorSize)) - 1;
-      int nPixValue = 0; // satisfy stupid compiler warning
-      bool bLastPixValueValid = false;
-
-      while(ix < xl - 1 ) {
-          byNext = *lp++;
-
-          nPixValue = (byNext & byValueMask) >> nValueShift;
-          unsigned int nRunCount = byNext & byCountMask;
-
-          while( (byNext & 0x80) != 0 )
-          {
-              byNext = *lp++;
-              nRunCount = nRunCount * 128 + (byNext & 0x7f);
-          }
-
-          nRunCount++;
-
-          if(ix < xs) {
-              if(ix + nRunCount <= (unsigned int)xs) {
-                  ix += nRunCount;
-                  continue;
-              }
-              nRunCount -= xs - ix;
-              ix = xs;
-          }
-
-          if(ix + nRunCount >= (unsigned int)xl) {
-              nRunCount = xl - 1 - ix;
-              bLastPixValueValid = true;
-          }
-
-          rgbval = (int)(pPalette[nPixValue]);
-
-          //    Optimization for most usual case
-// currently this is the only case possible...
-//          if((BPP == 24) && (1 == sub_samp))
-          {
-              int count = nRunCount;
-              if( count < 16 ) {
-                  // for short runs, use simple loop
-                  while(count--) {
-                      *(uint32_t*)prgb = rgbval;
-                      prgb += 3;
-                  } 
-              } else if(rgbval == 0 || rgbval == 0xffffff) {
-                  // optimization for black or white (could work for any gray too)
-                  memset(prgb, rgbval, nRunCount*3);
-                  prgb += nRunCount*3;
-              } else {
-                  // note: this may not be optimal for all processors and compilers
-                  // I optimized for x86_64 using gcc with -O3
-                  // it is probably possible to gain even faster performance by ensuring alignment
-                  // to 16 or 32byte boundary (depending on processor) then using inline assembly
-
-#ifdef ARMHF          
-//  ARM needs 8 byte alignment for *(uint64_T *x) = *(uint64_T *y)
-//  because the compiler will (probably) use the ldrd/strd instuction pair.
-//  So, advance the prgb pointer until it is 8-byte aligned,
-//  and then carry on if enough bytes are left to process as 64 bit elements
-                  
-                  if((long)prgb & 7){
-                    while(count--) {
-                        *(uint32_t*)prgb = rgbval;
-                        prgb += 3;
-                        if( !((long)prgb & 7) ){
-                            if(count >= 8)
-                                break;
-                        }
-                    }
-                  }
-#endif                  
-                  
-
-                  // fill first 24 bytes
-                  uint64_t *b = (uint64_t*)prgb;
-                  for(int i=0; i < 8; i++) {
-                      *(uint32_t*)prgb = rgbval;
-                      prgb += 3;
-                  }
-                  count -= 8;
-
-                  // fill in blocks of 24 bytes
-                  uint64_t *y = (uint64_t*)prgb;
-                  int count_d8 = count >> 3;
-                  prgb += 24*count_d8;
-                  while(count_d8--) {
-                      *y++ = b[0];
-                      *y++ = b[1];
-                      *y++ = b[2];
-                  }
-
-                  // fill remaining bytes
-                  int rcount = count & 0x7;
-                  while(rcount--) {
-                      *(uint32_t*)prgb = rgbval;
-                      prgb += 3;
-                  }
-              }
-          }
-#if 0
-          else {
-              int dest_inc_val_bytes = (BPP/8) * sub_samp;
-              for(;i<nRunCount; i+=sub_samp) {
-                  *(uint32_t*)prgb = rgbval;
-                  prgb+=dest_inc_val_bytes ;
-              }
-              i -= nRunCount;
-          }
-#endif
-
-          ix += nRunCount;
-      }
-
-// Get the last pixel explicitely
-//  irrespective of the sub_sampling factor
-
-    if(ix < xl) {
-        if(!bLastPixValueValid) {
-            byNext = *lp++;
-            nPixValue = (byNext & byValueMask) >> nValueShift;
-        }
-        rgbval = (int)(pPalette[nPixValue]);        // last pixel
-        unsigned char a = rgbval & 0xff;
-
-        *prgb++ = a;
-        a = (rgbval >> 8) & 0xff;
-        *prgb++ = a;
-        a = (rgbval >> 16) & 0xff;
-        *prgb = a;
-    }
-#endif
-
-#ifdef PRINT_TIMINGS
-    ttime += sw.Time();
-
-    if(cnt == 500000) {
-        static int d;
-        printf("cache time: %d %f\n", d, ttime / 1000.0);
-        cnt = 0;
-        d++;
-//        ttime = 0;
-    }
-#endif
-
-    if(!bUseLineCache) {
-#ifndef USE_OLD_CACHE
-        free(pt->pTileOffset);
-#endif
-        free(pt->pPix);
-    }
-
-    return 1;
+      return 1;
 }
 
 
@@ -4929,7 +4658,7 @@ bool ChartBaseBSB::AnalyzeSkew(void)
 }
 
 
-int   ChartBaseBSB::AnalyzeRefpoints(bool b_testSolution)
+int   ChartBaseBSB::AnalyzeRefpoints(void)
 {
       int i,n;
       double elt, elg;
@@ -5301,10 +5030,7 @@ int   ChartBaseBSB::AnalyzeRefpoints(bool b_testSolution)
            m_Chart_Skew = apparent_skew;
        }
 #endif       
-
-        if(!b_testSolution)
-            return(0);
-        
+       
         // Do a last little test using a synthetic ViewPort of nominal size.....
         ViewPort vp;
         vp.clat = pRefTable[0].latr;

@@ -34,7 +34,6 @@
 #include <windows.h>
 #endif
 
-#include <wx/dynarray.h>
 
 typedef struct  {
       double x;
@@ -53,8 +52,6 @@ typedef struct {
           
       extern "C" int mysnprintf( char *buffer, int count, const char *format, ... );
       extern "C" int NextPow2(int size);
-      extern "C" void DouglasPeucker(double *PointList, int fp, int lp, double epsilon, wxArrayInt *keep);
-      
 #else /* __cplusplus */
       extern int G_PtInPolygon(MyPoint *, int, float, float) ;
       extern int mysnprintf( char *buffer, int count, const char *format, ... );

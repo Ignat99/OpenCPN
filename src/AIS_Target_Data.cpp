@@ -127,7 +127,6 @@ AIS_Target_Data::AIS_Target_Data()
     b_isEuroInland = false;
     b_blue_paddle = false;
 
-    b_NoTrack = false;
     b_OwnShip = false;
     b_PersistTrack = false;
     b_in_ack_timeout = false;
@@ -613,11 +612,11 @@ wxString AIS_Target_Data::BuildQueryResult( void )
         html << rowEnd << _T("</table></td></tr>")
         << vertSpacer;
 
+    wxString tcpaStr;
+    if( bCPA_Valid ) tcpaStr << _T("</b> ") << _("in ") << _T("<b>") << FormatTimeAdaptive( (int)(TCPA*60.) );
+
     if( bCPA_Valid ) {
-        wxString tcpaStr;
-        tcpaStr << _T("</b> ") << _("in ") << _T("</td><td align=right><b>") << FormatTimeAdaptive( (int)(TCPA*60.) );
-                                                                  
-        html<< /*vertSpacer << */rowStart << _T("<font size=-2>") <<_("CPA") << _T("</font>") << rowEnd
+        html<< vertSpacer << rowStart << _T("<font size=-2>") <<_("CPA") << _T("</font>") << rowEnd
             << rowStartH << _T("<b>") << cc1->FormatDistanceAdaptive( CPA )
             << tcpaStr << rowEnd;
     }
@@ -890,8 +889,6 @@ wxString AIS_Target_Data::GetCountryCode( bool b_CntryLongStr )  //false = Short
   int mmsi_start = MMSI / 1000000;
   if (mmsi_start == 111) mmsi_start = (MMSI - 111000000)/1000 ; //SAR Aircraft start with 111 and has a MID.
 
-#if wxUSE_XLOCALE || !wxCHECK_VERSION(3,0,0)
-
   switch(mmsi_start) {
     case 201: return b_CntryLongStr ? _("Albania") : _T("AL") ;
     case 202: return b_CntryLongStr ? _("Andorra") : _T("AD") ;
@@ -1017,9 +1014,8 @@ wxString AIS_Target_Data::GetCountryCode( bool b_CntryLongStr )  //false = Short
     case 369: return b_CntryLongStr ? _("United States of America") : _T("US") ;
     case 370: 
     case 371: 
-    case 372:
-    case 373:
-    case 374: return b_CntryLongStr ? _("Panama") : _T("PA") ;
+    case 372: 
+    case 373: return b_CntryLongStr ? _("Panama") : _T("PA") ;
     case 375: 
     case 376: 
     case 377: return b_CntryLongStr ? _("Saint Vincent and the Grenadines") : _T("VC") ;
@@ -1139,7 +1135,7 @@ wxString AIS_Target_Data::GetCountryCode( bool b_CntryLongStr )  //false = Short
     case 636: return b_CntryLongStr ? _("Liberia") : _T("LR") ;
     case 637: return b_CntryLongStr ? _("Liberia") : _T("LR") ;
     case 638: return b_CntryLongStr ? _("South Sudan (Republic of)") : _T("SS") ;
-    case 642: return b_CntryLongStr ? _("Libya") : _T("LY") ;
+    case 642: return b_CntryLongStr ? _("Libyan Arab Jamahiriya") : _T("LY") ;
     case 644: return b_CntryLongStr ? _("Lesotho") : _T("LS") ;
     case 645: return b_CntryLongStr ? _("Mauritius") : _T("MU") ;
     case 647: return b_CntryLongStr ? _("Madagascar") : _T("MG") ;
@@ -1186,8 +1182,4 @@ wxString AIS_Target_Data::GetCountryCode( bool b_CntryLongStr )  //false = Short
 
     default: return wxEmptyString;
   }
-#else
-  return wxEmptyString;
-#endif    
-  
 }

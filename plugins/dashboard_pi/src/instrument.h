@@ -90,8 +90,7 @@ enum
     OCPN_DBP_STC_VLW2 = 1 << 27,  // Sum Log
     OCPN_DBP_STC_MDA = 1 << 28,  // Bareometic pressure
     OCPN_DBP_STC_MCOG = 1 << 29,  // Magnetic Course over Ground
-	OCPN_DBP_STC_PITCH = 1 << 30, //Pitch
-	OCPN_DBP_STC_HEEL = 1 << 31   //Heel 
+    OCPN_DBP_WEIGHT = 1 << 30 // Weight screen
 };
 
 class DashboardInstrument : public wxControl
@@ -136,6 +135,24 @@ protected:
 
       void Draw(wxGCDC* dc);
 };
+
+class DashboardInstrument_Weight : public DashboardInstrument
+{
+public:
+      DashboardInstrument_Weight(wxWindow *pparent, wxWindowID id, wxString title, int cap, wxString format);
+      ~DashboardInstrument_Weight(){}
+
+      wxSize GetSize( int orient, wxSize hint );
+      void SetData(int st, double data, wxString unit);
+
+protected:
+      wxString          m_data;
+      wxString          m_format;
+      int               m_DataHeight;
+
+      void Draw(wxGCDC* dc);
+};
+
 
 class DashboardInstrument_Position : public DashboardInstrument
 {

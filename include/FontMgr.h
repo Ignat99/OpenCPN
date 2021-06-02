@@ -50,10 +50,7 @@ class FontMgr
         const wxString & GetNativeDesc(int i) const;
         wxString GetFullConfigDesc( int i ) const;
         static wxString GetFontConfigKey( const wxString &description );
-        
-        wxArrayString &GetAuxKeyArray(){ return m_AuxKeyArray; }
-        bool AddAuxKey( wxString key );
-        
+    
         void LoadFontNative(wxString *pConfigString, wxString *pNativeDesc);
         bool SetFont(const wxString &TextElement, wxFont *pFont, wxColour color);
         void ScrubList( );
@@ -67,13 +64,12 @@ class FontMgr
         FontMgr & operator=(const FontMgr &) { return *this; }
         
     private:
-        wxString GetSimpleNativeFont(int size, wxString face);
+        wxString GetSimpleNativeFont(int size);
     
         static FontMgr * instance;
     
         FontList *m_fontlist;
         wxFont   *pDefFont;
-        wxArrayString m_AuxKeyArray;
 };
 
 #endif

@@ -49,22 +49,6 @@ Select::~Select()
 
 }
 
-bool Select::IsSelectableRoutePointValid(RoutePoint *pRoutePoint )
-{
-    SelectItem *pFindSel;
-
-//    Iterate on the select list
-    wxSelectableItemListNode *node = pSelectList->GetFirst();
-
-    while( node ) {
-        pFindSel = node->GetData();
-        if( pFindSel->m_seltype == SELTYPE_ROUTEPOINT  && (RoutePoint *) pFindSel->m_pData1 == pRoutePoint)
-            return true;
-        node = node->GetNext();
-    }
-    return false;
-}
-
 bool Select::AddSelectableRoutePoint( float slat, float slon, RoutePoint *pRoutePointAdd )
 {
     SelectItem *pSelItem = new SelectItem;
@@ -585,21 +569,6 @@ SelectItem *Select::FindSelection( float slat, float slon, int fseltype )
 
 bool Select::IsSelectableSegmentSelected( float slat, float slon, SelectItem *pFindSel )
 {
-    bool valid = false;
-    wxSelectableItemListNode *node = pSelectList->GetFirst();
-
-    while( node ) {
-        if( pFindSel == node->GetData() ) {
-            valid = true;
-            break;
-        }
-        node = node->GetNext();
-    }
-
-    if (valid == false) {
-        // not in the list anymore
-        return false;
-    }
     CalcSelectRadius();
 
     float a = pFindSel->m_slat;

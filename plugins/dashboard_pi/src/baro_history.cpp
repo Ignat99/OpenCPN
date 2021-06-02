@@ -26,7 +26,6 @@
  */
 
 #include "baro_history.h"
-#include "wx28compat.h"
 
 // For compilers that support precompilation, includes "wx/wx.h".
 #include <wx/wxprec.h>
@@ -234,12 +233,12 @@ void DashboardInstrument_BaroHistory::DrawBackground(wxGCDC* dc)
   dc->SetPen(pen);
   dc->DrawLine(m_LeftLegend+3, m_TopLineHeight, m_WindowRect.width-3-m_RightLegend, m_TopLineHeight); // the upper line
   dc->DrawLine(m_LeftLegend+3, (int)(m_TopLineHeight+m_DrawAreaRect.height), m_WindowRect.width-3-m_RightLegend, (int)(m_TopLineHeight+m_DrawAreaRect.height));
-  pen.SetStyle(wxPENSTYLE_DOT);
+  pen.SetStyle(wxDOT);
   dc->SetPen(pen);
   dc->DrawLine(m_LeftLegend+3, (int)(m_TopLineHeight+m_DrawAreaRect.height*0.25), m_WindowRect.width-3-m_RightLegend, (int)(m_TopLineHeight+m_DrawAreaRect.height*0.25));
   dc->DrawLine(m_LeftLegend+3, (int)(m_TopLineHeight+m_DrawAreaRect.height*0.75), m_WindowRect.width-3-m_RightLegend, (int)(m_TopLineHeight+m_DrawAreaRect.height*0.75));
 #ifdef __WXMSW__  
-  pen.SetStyle(wxPENSTYLE_SHORT_DASH);
+  pen.SetStyle(wxSHORT_DASH);
   dc->SetPen(pen);
 #endif  
   dc->DrawLine(m_LeftLegend+3, (int)(m_TopLineHeight+m_DrawAreaRect.height*0.5), m_WindowRect.width-3-m_RightLegend, (int)(m_TopLineHeight+m_DrawAreaRect.height*0.5));
@@ -285,7 +284,7 @@ void DashboardInstrument_BaroHistory::DrawForeground(wxGCDC* dc)
  // dc->DrawText(wxString::Format(_(" Max %.1f Min %.1f since %02d:%02d  Overall Max %.1f Min %.1f "),m_MaxPress,m_MinPress,hour,min,m_TotalMaxPress,m_TotalMinPress), m_LeftLegend+3+2+degw, m_TopLineHeight-degh+5);
  // Cant get the min sice to work...
  dc->DrawText(wxString::Format(_(" Max %.1f since %02d:%02d  Overall Max %.1f Min %.1f "),m_MaxPress,hour,min,m_TotalMaxPress,m_TotalMinPress), m_LeftLegend+3+2+degw, m_TopLineHeight-degh+5);
-  pen.SetStyle(wxPENSTYLE_SOLID);
+  pen.SetStyle(wxSOLID);
   pen.SetColour(wxColour(61,61,204,96)); //blue, transparent
   pen.SetWidth(1);
   dc->SetPen( pen );
@@ -340,7 +339,7 @@ void DashboardInstrument_BaroHistory::DrawForeground(wxGCDC* dc)
   //---------------------------------------------------------------------------------
   GetGlobalColor(_T("UBLCK"), &col);
   pen.SetColour(col);
-  pen.SetStyle(wxPENSTYLE_DOT);
+  pen.SetStyle(wxDOT);
   dc->SetPen(pen);
   dc->SetTextForeground(col);
   dc->SetFont(*g_pFontSmall);

@@ -38,7 +38,7 @@ class emboss_data
             int         height;
             int         x, y;
 
-            unsigned int      gltexind;
+            GLuint      gltexind;
             int         glwidth, glheight; // next power of 2 larger than width/height
 };
 

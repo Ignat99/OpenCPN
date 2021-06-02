@@ -38,7 +38,9 @@ PositionParser::PositionParser(const wxString & src)
 }
 
 bool PositionParser::FindSeparator(const wxString & src)
-{ 
+{
+    int length = src.Length();
+    wxStringTokenizer t;
 
     // Used when format is similar to "12 34.56 N 12 34.56 E"
     wxString posPartOfSeparator = _T("");
@@ -74,99 +76,45 @@ bool PositionParser::FindSeparator(const wxString & src)
     // Now try various separators.
 
     separator = _T(", ");
-    wxStringTokenizer tk1(src, separator);
-    if (tk1.CountTokens() == 2) {
-        latitudeString = tk1.GetNextToken();
-        latitudeString.Trim(true);
-        latitudeString.Trim(false);
-        longitudeString = tk1.GetNextToken();
-        longitudeString.Trim(true);
-        longitudeString.Trim(false);
-
-        return true;
-    }
+    t = wxStringTokenizer( src, separator );
+    if( t.CountTokens() == 2 ) goto found;
 
     separator = _T(",");
-    wxStringTokenizer tk2 (src, separator);
-    if (tk2.CountTokens() == 2) {
-        latitudeString = tk2.GetNextToken();
-        latitudeString.Trim(true);
-        latitudeString.Trim(false);
-        longitudeString = tk2.GetNextToken();
-        longitudeString.Trim(true);
-        longitudeString.Trim(false);
-
-        return true;
-    }   
+    t = wxStringTokenizer( src, separator );
+    if( t.CountTokens() == 2 ) goto found;
 
     separator = _T(" ");
-    wxStringTokenizer tk3(src, separator);
-    if (tk3.CountTokens() == 2) {
-        latitudeString = tk3.GetNextToken();
-        latitudeString.Trim(true);
-        latitudeString.Trim(false);
-        longitudeString = tk3.GetNextToken();
-        longitudeString.Trim(true);
-        longitudeString.Trim(false);
+    t = wxStringTokenizer( src, separator );
+    if( t.CountTokens() == 2 ) goto found;
 
-        return true;
-    }
-    
     separator = _T("\t");
-    wxStringTokenizer tk4(src, separator);
-    if (tk4.CountTokens() == 2) {
-        latitudeString = tk4.GetNextToken();
-        latitudeString.Trim(true);
-        latitudeString.Trim(false);
-        longitudeString = tk4.GetNextToken();
-        longitudeString.Trim(true);
-        longitudeString.Trim(false);
+    t = wxStringTokenizer( src, separator );
+    if( t.CountTokens() == 2 ) goto found;
 
-        return true;
-    }
-   
     separator = _T("\n");
-    wxStringTokenizer tk5(src, separator);
-    if (tk5.CountTokens() == 2) {
-        latitudeString = tk5.GetNextToken();
-        latitudeString.Trim(true);
-        latitudeString.Trim(false);
-        longitudeString = tk5.GetNextToken();
-        longitudeString.Trim(true);
-        longitudeString.Trim(false);
+    t = wxStringTokenizer( src, separator );
+    if( t.CountTokens() == 2 ) goto found;
 
-        return true;
-    }
-  
-    separator = _T("N");   
+    separator = _T("N");
+    t = wxStringTokenizer( src, separator );
     posPartOfSeparator = _T("N");
-    wxStringTokenizer tk6(src, separator);
-    if (tk6.CountTokens() == 2) {
-        latitudeString = tk6.GetNextToken() << posPartOfSeparator;
-        latitudeString.Trim(true);
-        latitudeString.Trim(false);
-        longitudeString = tk6.GetNextToken();
-        longitudeString.Trim(true);
-        longitudeString.Trim(false);
+    if( t.CountTokens() == 2 ) goto found;
 
-        return true;
-    }
-   
-    separator = _T("S");   
+    separator = _T("S");
+    t = wxStringTokenizer( src, separator );
     posPartOfSeparator = _T("S");
-    wxStringTokenizer tk7(src, separator);
-    if (tk7.CountTokens() == 2) {
-        latitudeString = tk7.GetNextToken() << posPartOfSeparator;
-        latitudeString.Trim(true);
-        latitudeString.Trim(false);
-        longitudeString = tk7.GetNextToken();
-        longitudeString.Trim(true);
-        longitudeString.Trim(false);
-
-        return true;
-    }   
+    if( t.CountTokens() == 2 ) goto found;
 
     // Give up.
     return false;
+
+found: latitudeString = t.GetNextToken() << posPartOfSeparator;
+    latitudeString.Trim( true );
+    latitudeString.Trim( false );
+    longitudeString = t.GetNextToken();
+    longitudeString.Trim( true );
+    longitudeString.Trim( false );
+
+    return true;
 }
 

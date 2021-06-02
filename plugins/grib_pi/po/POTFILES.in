@@ -26,4 +26,3 @@ src/GribRecord.h
 src/icons.cpp
 src/GribTable.cpp
 src/GribRequestDialog.cpp
-src/CursorData.cpp

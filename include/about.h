@@ -53,13 +53,14 @@ class about: public wxDialog
       DECLARE_EVENT_TABLE()
 
   public:
-    explicit about( );
-    explicit about( wxWindow* parent, wxString License_Data_Locn,
+    about( );
+    about( wxWindow* parent, wxString *pLicense_Data_Locn,
            wxWindowID id = ID_DIALOG,
            const wxString& caption = SYMBOL_ABOUT_TITLE,
            const wxPoint& pos = wxDefaultPosition,
            const wxSize& size = wxSize(500, 500),
-           long style = wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX );
+           long style = wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX);
+
    bool Create( wxWindow* parent,
                 wxWindowID id = ID_DIALOG,
                  const wxString& caption = SYMBOL_ABOUT_TITLE,
@@ -67,35 +68,27 @@ class about: public wxDialog
                  const wxSize& size = wxSize(500, 500),
                  long style = wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX );
 
-   void RecalculateSize( void );
-   
-  private:
-    void CreateControls( void );
-    void Populate( void );
+    void CreateControls();
     void OnXidOkClick( wxCommandEvent& event );
     void OnPageChange(wxNotebookEvent& event);
     void OnDonateClick( wxCommandEvent& event );
     void OnCopyClick( wxCommandEvent& event );
-    void OnClose( wxCloseEvent& event );
-    void SetColorScheme( void );
+    void Update();
 
-    wxString m_DataLocn;
-    wxWindow *m_parent;
-    bool m_btips_loaded;
+    wxString          *m_pDataLocn;
+    wxWindow          *m_parent;
+    wxHtmlWindow      *m_ptips_window;
+    bool              m_btips_loaded;
 
     wxPanel* itemPanelAbout;
     wxPanel* itemPanelAuthors;
     wxPanel* itemPanelLicense;
     wxPanel* itemPanelTips;
 
+    wxTextCtrl *pAboutTextCtl;
     wxTextCtrl *pAuthorTextCtl;
     wxTextCtrl *pLicenseTextCtl;
     wxNotebook *pNotebook;
-    wxHtmlWindow *pAboutHTMLCtl;
-    wxHtmlWindow *pLicenseHTMLCtl;
-    wxHtmlWindow *pAuthorHTMLCtl;
-    
-    wxSize m_displaySize;
 
 };
 

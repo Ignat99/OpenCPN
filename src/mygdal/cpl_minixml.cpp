@@ -907,8 +907,7 @@ CPLSerializeXMLNode( CPLXMLNode *psNode, int nIndent,
         int             bHasNonAttributeChildren = FALSE;
         CPLXMLNode      *psChild;
 
-        if(nIndent)
-            memset( *ppszText + *pnLength, ' ', nIndent );
+        memset( *ppszText + *pnLength, ' ', nIndent );
         *pnLength += nIndent;
         (*ppszText)[*pnLength] = '\0';
 
@@ -962,8 +961,7 @@ CPLSerializeXMLNode( CPLXMLNode *psNode, int nIndent,
 
             if( !bJustText )
             {
-                if(nIndent)
-                    memset( *ppszText + *pnLength, ' ', nIndent );
+                memset( *ppszText + *pnLength, ' ', nIndent );
                 *pnLength += nIndent;
                 (*ppszText)[*pnLength] = '\0';
             }

@@ -112,7 +112,6 @@
 #include "vwt.hpp"
 #include "zda.hpp"
 #include "vlw.hpp"
-#include "xdr.hpp" //transducer data
 #include "xte.hpp"
 /*
 #include "ROT.hpp"
@@ -244,9 +243,9 @@ class NMEA0183
       WNC Wnc;
 */
       WPL Wpl;
-
+/*
       XDR Xdr;
-/*    XTE Xte;
+      XTE Xte;
       XTR Xtr;
 */
       ZDA Zda;

@@ -33,9 +33,6 @@
 #include <stdlib.h>
 
 #include "chartsymbols.h"
-#ifdef ocpnUSE_GL
-#include <wx/glcanvas.h>
-#endif
 
 extern bool g_bopengl;
 

@@ -49,7 +49,6 @@ public:
     bool        m_bignore;
     bool        m_bMOB;
     bool        m_bVDM;
-    bool        m_bFollower;
     bool        m_bPersistentTrack;
 };
 
@@ -76,8 +75,6 @@ public:
     std::map<int, Track*> m_persistent_tracks;
     
 private:
-    wxString ProcessNMEA4Tags( wxString msg);
-    
     void OnActivate(wxActivateEvent& event);
     void OnTimerAIS(wxTimerEvent& event);
     void OnTimerAISAudio(wxTimerEvent& event);

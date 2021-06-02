@@ -22,8 +22,6 @@
  ***************************************************************************
  */
 
-#include "wx/tokenzr.h"
-
 #include "AIS_Decoder.h"
 #include "AIS_Target_Data.h"
 #include "AISTargetAlertDialog.h"
@@ -31,7 +29,6 @@
 #include "georef.h"
 #include "OCPN_DataStreamEvent.h"
 #include <fstream>
-#include "OCPNPlatform.h"
 
 #if !defined(NAN)
 static const long long lNaN = 0xfff8000000000000;
@@ -84,10 +81,9 @@ extern bool g_bAIS_CPA_Alert;
 extern bool g_bAIS_CPA_Alert_Audio;
 extern ArrayOfMMSIProperties   g_MMSI_Props_Array;
 extern Route    *pAISMOBRoute;
-extern wxString AISTargetNameFileName;
+extern wxString *pAISTargetNameFileName;
 extern MyConfig *pConfig;
 extern RouteList *pRouteList;
-extern OCPNPlatform     *g_Platform;
 
 bool g_benableAISNameCache;
 
@@ -117,7 +113,7 @@ AIS_Decoder::AIS_Decoder( wxFrame *parent )
     AISTargetNames = new AIS_Target_Name_Hash;
     
     if(g_benableAISNameCache){
-        std::ifstream infile( AISTargetNameFileName.mb_str() );
+        std::ifstream infile( pAISTargetNameFileName->mb_str() );
         if( infile ) {
             std::string line;
             while ( getline( infile, line ) ) {
@@ -143,7 +139,6 @@ AIS_Decoder::AIS_Decoder( wxFrame *parent )
     TimerAIS.SetOwner(this, TIMER_AIS1);
     TimerAIS.Start(TIMER_AIS_MSEC,wxTIMER_CONTINUOUS);
     
-    m_ptentative_dsctarget = NULL;
     m_dsc_timer.SetOwner( this, TIMER_DSC );
     
 
@@ -250,37 +245,12 @@ void AIS_Decoder::BuildERIShipTypeHash(void)
       make_hash_ERI(1910, _("Hydrofoil"));
 }
 
-
-//----------------------------------------------------------------------------------
-//     Strip NMEA V4 tags from message
-//----------------------------------------------------------------------------------
-wxString AIS_Decoder::ProcessNMEA4Tags( wxString msg)
-{
-    int idxFirst =  msg.Find('\\');
-    
-    if(wxNOT_FOUND == idxFirst)
-        return msg;
-    
-    if(idxFirst < (int)msg.Length()-1){
-        int idxSecond = msg.Mid(idxFirst + 1).Find('\\') + 1;
-        if(wxNOT_FOUND != idxSecond){
-            if(idxSecond < (int)msg.Length()-1){
-                
-               // wxString tag = msg.Mid(idxFirst+1, (idxSecond - idxFirst) -1);
-                return msg.Mid(idxSecond + 1);
-            }
-        }
-    }
-    
-    return msg;
-}
-
 //----------------------------------------------------------------------------------
 //     Handle events from AIS DataStream
 //----------------------------------------------------------------------------------
 void AIS_Decoder::OnEvtAIS( OCPN_DataStreamEvent& event )
 {
-    wxString message = ProcessNMEA4Tags(wxString(event.GetNMEAString().c_str(), wxConvUTF8) );
+    wxString message = wxString(event.GetNMEAString().c_str(), wxConvUTF8);
 
     int nr = 0;
     if( !message.IsEmpty() )
@@ -962,10 +932,12 @@ AIS_Error AIS_Decoder::Decode( const wxString& str )
                 MMSIProperties *props =  g_MMSI_Props_Array.Item(i);
                 if(mmsi == props->MMSI)
                 {
-                    pTargetData->b_OwnShip = (props->m_bVDM) ? true : false;
-                    pTargetData->b_PersistTrack = (props->m_bPersistentTrack) ? true : false;
-                    pTargetData->b_NoTrack = (props->TrackType == TRACKTYPE_NEVER) ? true : false;                    
-                    break;
+                    if(props->m_bPersistentTrack)
+                        pTargetData->b_PersistTrack = true;
+                    if(props->m_bVDM)
+                        pTargetData->b_OwnShip = true;
+                    else
+                        break;
                 }
             }
                 
@@ -994,7 +966,7 @@ AIS_Error AIS_Decoder::Decode( const wxString& str )
                             wxString ship_name = trimAISField( pTargetData->ShipName );
                             ( *AISTargetNames )[mmsi] = ship_name;
                         // Write the MMSI->ShipName hash file
-                            std::ofstream outfile( AISTargetNameFileName.mb_str(), std::ios_base::app );
+                            std::ofstream outfile( pAISTargetNameFileName->mb_str(), std::ios_base::app );
                             if( outfile.is_open() ) {
                                 outfile << mmsi << "," << ship_name.mb_str() << "\r\n";
                             }
@@ -1012,7 +984,7 @@ AIS_Error AIS_Decoder::Decode( const wxString& str )
                                 //   (i.e. this one), takes precedence.
                                 // This also means that duplicates may be present in the cache file over time.
                                 //   A subject for later analysis...
-                                std::ofstream outfile( AISTargetNameFileName.mb_str(), std::ios_base::app );
+                                std::ofstream outfile( pAISTargetNameFileName->mb_str(), std::ios_base::app );
                                 if( outfile.is_open() ) {
                                     outfile << mmsi << "," << ship_name.mb_str() << ",Mismatch" << "\r\n";
                                 }
@@ -1125,9 +1097,6 @@ AIS_Target_Data *AIS_Decoder::ProcessDSx( const wxString& str, bool b_take_dsc )
         token = tkz.GetNextToken();         // expansion indicator
         
         dsc_quadrant = (int) (dsc_tmp / 1000000000.0);
-        
-        if(dsc_quadrant > 3)                // Position is "Unspecified", or 9999999999
-            return NULL;
         
         dsc_lat = (int) ( dsc_tmp / 100000.0 );
         dsc_lon = dsc_tmp - dsc_lat * 100000.0;
@@ -1289,7 +1258,8 @@ bool AIS_Decoder::Parse_VDXBitstring( AIS_Bitstring *bstr, AIS_Target_Data *ptd 
     bool b_posn_report = false;
 
     wxDateTime now = wxDateTime::Now();
-    now.MakeGMT( );                    
+    now.MakeGMT( true );                    // no DST
+    if( now.IsDST() ) now.Subtract( wxTimeSpan( 1, 0, 0, 0 ) );
     int message_ID = bstr->GetInt( 1, 6 );        // Parse on message ID
     ptd->MID = message_ID;
     ptd->MMSI = bstr->GetInt( 9, 30 );           // MMSI is always in the same spot in the bitstream
@@ -1378,11 +1348,7 @@ bool AIS_Decoder::Parse_VDXBitstring( AIS_Bitstring *bstr, AIS_Target_Data *ptd 
                 //    On receipt of Msg 3, force any existing SART target out of acknowledge mode
                 //    by adjusting its ack_time to yesterday
                 //    This will cause any previously "Acknowledged" SART to re-alert.
-                
-                //    On reflection, re-alerting seems a little excessive in real life use.
-                //    After all, the target is on-screen, and in the AIS target list.
-                //    So lets just honor the programmed ACK timout value for SART targets as well
-                //ptd->m_ack_time = wxDateTime::Now() - wxTimeSpan::Day();
+                ptd->m_ack_time = wxDateTime::Now() - wxTimeSpan::Day();
             }
 
             parse_result = true;                // so far so good
@@ -1977,20 +1943,6 @@ void AIS_Decoder::UpdateAllAlarms( void )
                     continue;
                 }
 
-                //    No alert for my Follower
-                bool hit = false;
-                for(unsigned int i=0 ; i < g_MMSI_Props_Array.GetCount() ; i++){
-                    MMSIProperties *props =  g_MMSI_Props_Array.Item(i);
-                    if(td->MMSI == props->MMSI){
-                        if (props->m_bFollower) {
-                            hit = true;
-                            td->n_alert_state = AIS_NO_ALERT;
-                        }
-                        break;
-                    }
-                }
-                if (hit) continue;
-
                 //    Skip distant targets if requested
                 if( g_bCPAMax ) {
                     if( td->Range_NM > g_CPAMax_NM ) {
@@ -2194,8 +2146,6 @@ void AIS_Decoder::OnTimerAIS( wxTimerEvent& event )
     AIS_Target_Hash *current_targets = GetTargetList();
 
     it = ( *current_targets ).begin();
-    wxArrayInt remove_array;                    // collector for MMSI of targets to be removed
-    
     while( it != ( *current_targets ).end() ) {
         bool b_new_it = false;
 
@@ -2236,24 +2186,20 @@ void AIS_Decoder::OnTimerAIS( wxTimerEvent& event )
 
                 //      If we have not seen a static report in 3 times the removal spec,
                 //      then remove the target from all lists.
-                if( target_static_age > removelost_Mins * 60 * 3 ) 
-                    remove_array.Add(td->MMSI);         //Add this target to removal list
+                if( target_static_age > removelost_Mins * 60 * 3 ) {
+                    current_targets->erase( it );
+                    delete td;
+
+                    //      Reset the iterator on item erase.
+                    it = ( *current_targets ).begin();
+                    b_new_it = true;
+                }
             }
         }
 
-        ++it;
+        if( !b_new_it ) ++it;
     }
 
-    //  Remove all the targets collected in remove_array in one pass
-    for(unsigned int i=0 ; i < remove_array.GetCount() ; i++){
-        AIS_Target_Hash::iterator itd = current_targets->find( remove_array[i] );
-        if(itd != current_targets->end() ){
-            AIS_Target_Data *td = itd->second;
-            current_targets->erase(itd);
-            delete td;
-        }
-    }
-    
     UpdateAllCPA();
     UpdateAllAlarms();
 
@@ -2355,9 +2301,9 @@ void AIS_Decoder::OnTimerAIS( wxTimerEvent& event )
                 AISTargetAlertDialog *pAISAlertDialog = new AISTargetAlertDialog();
                 pAISAlertDialog->Create( palert_target->MMSI, m_parent_frame, this,
                                          b_jumpto, b_createWP, b_ack,
-                                         -1, _("AIS Alert"));
-                g_Platform->PositionAISAlert(pAISAlertDialog);
-                
+                                         -1, _("AIS Alert"), wxPoint( g_ais_alert_dialog_x, g_ais_alert_dialog_y ),
+                    wxSize( g_ais_alert_dialog_sx, g_ais_alert_dialog_sy ) );
+
                 g_pais_alert_dialog_active = pAISAlertDialog;
                 pAISAlertDialog->Show();                     // Show modeless, so it stays on the screen
             }
@@ -2477,7 +2423,7 @@ MMSIProperties::MMSIProperties( wxString &spec )
         if(s.Upper() == _T("IGNORE"))
             m_bignore = true;
     }
-
+    
     s = tkz.GetNextToken();
     if(s.Len()){
         if(s.Upper() == _T("MOB"))
@@ -2489,13 +2435,7 @@ MMSIProperties::MMSIProperties( wxString &spec )
         if(s.Upper() == _T("VDM"))
             m_bVDM = true;
     }
-
-    s = tkz.GetNextToken();
-    if (s.Len()){
-        if (s.Upper() == _T("FOLLOWER"))
-            m_bFollower = true;
-    }
-
+    
     s = tkz.GetNextToken();
     if(s.Len()){
         if(s.Upper() == _T("PERSIST"))
@@ -2515,7 +2455,6 @@ void MMSIProperties::Init(void )
     m_bignore = false;
     m_bMOB = false;
     m_bVDM = false;
-    m_bFollower = false;
     m_bPersistentTrack = false;
 }
 
@@ -2539,7 +2478,7 @@ wxString MMSIProperties::Serialize( void )
         sMMSI << _T("ignore");
     }
     sMMSI << _T(";");
-
+    
     if(m_bMOB){
         sMMSI << _T("MOB");
     }
@@ -2547,12 +2486,8 @@ wxString MMSIProperties::Serialize( void )
     
     if(m_bVDM){
         sMMSI << _T("VDM");
-    }    
-    sMMSI << _T(";");
-
-    if (m_bFollower){ 
-        sMMSI << _T("Follower");
     }
+    
     sMMSI << _T(";");
     
     if(m_bPersistentTrack){

@@ -44,8 +44,6 @@
 
 #include "ocpn_types.h"
 #include "ocpndc.h"
-#include "viewport.h"
-#include "cutil.h"
 
 #ifdef __MSVC__
 #pragma warning(disable: 4251)   // relates to std::string fpath
@@ -62,9 +60,9 @@
 #endif
 
 //-------------------------------------------------------------------------
-class wxLineF {
+class QLineF {
 public:
-    wxLineF( double x1, double y1, double x2, double y2 ) {
+    QLineF( double x1, double y1, double x2, double y2 ) {
         m_p1 = wxRealPoint( x1, y1 );
         m_p2 = wxRealPoint( x2, y2 );
     }
@@ -94,25 +92,22 @@ typedef std::vector<contour> contour_list;
 
 //==========================================================================
 
-
 class GshhsPolyCell {
 public:
 
     GshhsPolyCell( FILE *fpoly, int x0, int y0, PolygonFileHeader *header );
     ~GshhsPolyCell();
 
-    void ClearPolyV();
-
     void drawMapPlain( ocpnDC &pnt, double dx, ViewPort &vp, wxColor seaColor,
-                       wxColor landColor, bool idl );
+                       wxColor landColor, int cellcount );
 
     void drawSeaBorderLines( ocpnDC &pnt, double dx, ViewPort &vp );
-    std::vector<wxLineF> * getCoasts() { return &coasts; }
+    std::vector<QLineF> * getCoasts() { return &coasts; }
     contour_list &getPoly1() { return poly1; }
 
     /* we remap the segments into a high resolution map to
        greatly reduce intersection testing time */
-    std::vector<wxLineF> *high_res_map[GSSH_SUBM*GSSH_SUBM];
+    std::vector<QLineF> *high_res_map[GSSH_SUBM*GSSH_SUBM];
 
 private:
     int nbpoints;
@@ -120,19 +115,12 @@ private:
 
     FILE *fpoly;
 
-    std::vector<wxLineF> coasts;
+    std::vector<QLineF> coasts;
     PolygonFileHeader *header;
     contour_list poly1, poly2, poly3, poly4, poly5;
 
-    // used for opengl vertex cache
-    float_2Dpt *polyv[6];
-    int polyc[6];
-
     void DrawPolygonFilled( ocpnDC &pnt, contour_list * poly, double dx, ViewPort &vp,
-            wxColor const &color );
-#ifdef ocpnUSE_GL        
-    void DrawPolygonFilledGL( contour_list * p, float_2Dpt **pv, int *pvc, ViewPort &vp,  wxColor const &color, bool idl );
-#endif
+            wxColor color );
     void DrawPolygonContour( ocpnDC &pnt, contour_list * poly, double dx, ViewPort &vp );
 
     void ReadPoly( contour_list &poly );
@@ -144,13 +132,13 @@ public:
     GshhsPolyReader( int quality );
     ~GshhsPolyReader();
 
-    void drawGshhsPolyMapPlain( ocpnDC &pnt, ViewPort &vp, wxColor const &seaColor,
-            wxColor const &landColor );
+    void drawGshhsPolyMapPlain( ocpnDC &pnt, ViewPort &vp, wxColor seaColor,
+            wxColor landColor );
 
     void drawGshhsPolyMapSeaBorders( ocpnDC &pnt, ViewPort &vp );
 
     void InitializeLoadQuality( int quality ); // 5 levels: 0=low ... 4=full
-    bool crossing1( wxLineF trajectWorld );
+    bool crossing1( QLineF trajectWorld );
     int currentQuality;
     int ReadPolyVersion();
     int GetPolyVersion() { return polyHeader.version; }
@@ -163,8 +151,6 @@ private:
     void readPolygonFileHeader( FILE *polyfile, PolygonFileHeader *header );
 
     wxMutex mutex1, mutex2;
-
-    ViewPort last_rendered_vp;
 };
 
 // GSHHS file format:
@@ -229,7 +215,7 @@ public:
     GshhsReader();
     ~GshhsReader();
 
-    void drawContinents( ocpnDC &pnt, ViewPort &vp, wxColor const &seaColor, wxColor const &landColor );
+    void drawContinents( ocpnDC &pnt, ViewPort &vp, wxColor seaColor, wxColor landColor );
 
     void drawSeaBorders( ocpnDC &pnt, ViewPort &vp );
     void drawBoundaries( ocpnDC &pnt, ViewPort &vp );
@@ -245,8 +231,8 @@ public:
 
     int getQuality() { return quality; }
 
-    //    bool crossing( wxLineF traject, wxLineF trajectWorld ) const;
-    bool crossing1( wxLineF trajectWorld );
+//    bool crossing( QLineF traject, QLineF trajectWorld ) const;
+    bool crossing1( QLineF trajectWorld );
     int ReadPolyVersion();
     bool qualityAvailable[6];
 
@@ -276,7 +262,7 @@ private:
 };
 
 
-inline bool GshhsReader::crossing1(wxLineF trajectWorld )
+inline bool GshhsReader::crossing1(QLineF trajectWorld )
 {
     return this->gshhsPoly_reader->crossing1(trajectWorld );
 }

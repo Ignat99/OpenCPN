@@ -31,7 +31,7 @@
 class TTYScroll : public wxScrolledWindow
 {
     public:
-        TTYScroll(wxWindow *parent, int n_lines, wxTextCtrl &tFilter);
+        TTYScroll(wxWindow *parent, int n_lines);
         virtual ~TTYScroll();
         virtual void OnDraw(wxDC& dc);
         virtual void Add(const wxString &line);
@@ -44,7 +44,6 @@ class TTYScroll : public wxScrolledWindow
         size_t m_nLines;  // the number of lines we draw
 
         wxArrayString *m_plineArray;
-        wxTextCtrl    &m_tFilter;
         bool           bpause;
 };
 

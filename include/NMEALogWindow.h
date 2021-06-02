@@ -63,7 +63,6 @@ class NMEALogWindow : public WindowDestroyListener
         void CheckPos(int display_width, int display_height);
         virtual void DestroyWindow();
         static void Shutdown();
-        wxWindow *GetTTYWindow( void ){ return (wxWindow *)window; }
         
     private: // prevent class from being copied, needed by singleton
         NMEALogWindow();

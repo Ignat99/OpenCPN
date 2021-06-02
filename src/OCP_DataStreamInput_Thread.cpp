@@ -102,13 +102,6 @@ void OCP_DataStreamInput_Thread::OnExit(void)
 //      Sadly, the thread itself must implement the underlying OS serial port
 //      in a very machine specific way....
 
-#ifdef __WXQT__
-#define __POSIX__
-#include <termios.h>
-#include <unistd.h>
-#endif
-
-
 #ifdef __POSIX__
 //    Entry Point
 void *OCP_DataStreamInput_Thread::Entry()
@@ -315,14 +308,6 @@ void *OCP_DataStreamInput_Thread::Entry()
 
     bool not_done;
     HANDLE hSerialComm = (HANDLE)(-1);
-    int max_timeout = 5;
-    int loop_timeout = 2000;
-    int n_reopen_wait = 2000;
-    bool nl_found = false;
-    bool b_burst_read = false;
-    int dcb_read_toc = 2000;
-    int dcb_read_tom = MAXDWORD;
-    bool b_sleep = false;
 
        //    Request the com port from the comm manager
     if ((m_gps_fd = OpenComPortPhysical(m_PortName, m_baud)) < 0)
@@ -334,12 +319,14 @@ void *OCP_DataStreamInput_Thread::Entry()
         msg.Append(msg_error);
 
         ThreadMessage(msg);
-        m_gps_fd = 0;
+        m_gps_fd = NULL;
 //        goto thread_exit;
     }
 
     hSerialComm = (HANDLE)m_gps_fd;
 
+    int n_reopen_wait = 2000;
+    
     COMMTIMEOUTS timeouts;
 
     //  Short read timeout for faster response
@@ -353,7 +340,7 @@ void *OCP_DataStreamInput_Thread::Entry()
     if(m_gps_fd){
         if (!SetCommTimeouts(hSerialComm, &timeouts)){ // Error setting time-outs.
             CloseComPortPhysical(m_gps_fd);
-            m_gps_fd = 0;
+            m_gps_fd = NULL;
         }            
     }
 
@@ -376,6 +363,7 @@ void *OCP_DataStreamInput_Thread::Entry()
     DWORD dwToWrite;
 
     int n_timeout = 0;
+    int max_timeout = 100;
     
     bool fWaitingOnRead = false;
     bool fWaitingOnWrite = false;
@@ -419,7 +407,7 @@ void *OCP_DataStreamInput_Thread::Entry()
                 if (!SetCommTimeouts(hSerialComm, &timeouts)){ // Error setting time-outs.
                       int errt = GetLastError();                // so just retry
                       CloseComPortPhysical(m_gps_fd);
-                      m_gps_fd = 0;
+                      m_gps_fd = NULL;
                       
                 }
                 
@@ -547,7 +535,7 @@ void *OCP_DataStreamInput_Thread::Entry()
             if (!ReadFile(hSerialComm, szBuf, READ_BUF_SIZE, &dwRead, &osReader)) {
                 if (GetLastError() != ERROR_IO_PENDING) {  // read not delayed?
                         CloseComPortPhysical(m_gps_fd);
-                        m_gps_fd = 0;
+                        m_gps_fd = NULL;
                         fWaitingOnRead = FALSE;
                         n_reopen_wait = 2000;
                 }
@@ -1035,7 +1023,7 @@ int OCP_DataStreamInput_Thread::OpenComPortPhysical(const wxString &com_name, in
         return (0 - abs((int)::GetLastError()));
     }
 
-    return (wxIntPtr)hSerialComm;
+    return (int)hSerialComm;
 }
 
 int OCP_DataStreamInput_Thread::CloseComPortPhysical(int fd)

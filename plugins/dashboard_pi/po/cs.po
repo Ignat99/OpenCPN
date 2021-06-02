@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: opencpn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-09-24 20:40-0500\n"
-"PO-Revision-Date: 2015-11-01 13:54-0500\n"
+"POT-Creation-Date: 2015-01-06 17:25-0600\n"
+"PO-Revision-Date: 2015-01-07 17:17-0500\n"
 "Last-Translator: nohal <pavel@kalian.cz>\n"
 "Language-Team: Czech\n"
 "Language: cs_CZ\n"
@@ -13,11 +13,10 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 "X-Generator: crowdin.com\n"
 "X-Crowdin-Project: opencpn\n"
-"X-Crowdin-Language: cs\n"
 "X-Crowdin-File: /plugins/dashboard_pi/po/dashboard_pi.pot\n"
 
-#: src/clock.cpp:126 src/dial.cpp:505 src/gps.cpp:142 src/wind.cpp:65
-#: src/wind_history.cpp:433
+#: src/clock.cpp:126 src/dial.cpp:504 src/gps.cpp:141 src/wind.cpp:64
+#: src/wind_history.cpp:401
 msgid "N"
 msgstr "S"
 
@@ -39,7 +38,7 @@ msgstr "COG"
 
 #: src/dashboard_pi.cpp:105
 msgid "Mag COG"
-msgstr "Mag COG"
+msgstr ""
 
 #: src/dashboard_pi.cpp:107
 msgid "GPS Compass"
@@ -65,365 +64,343 @@ msgstr "Mag HDG"
 msgid "App. Wind Angle & Speed"
 msgstr "Zdánlivý úhel a rychlost větru"
 
-#: src/dashboard_pi.cpp:120
-msgid "App & True Wind Angle"
-msgstr "Úhel skutečného a zdánlivého větru"
-
-#: src/dashboard_pi.cpp:122 src/dashboard_pi.cpp:124
+#: src/dashboard_pi.cpp:120 src/dashboard_pi.cpp:122
 msgid "App. Wind Speed"
 msgstr "Rychlost větru"
 
-#: src/dashboard_pi.cpp:126
+#: src/dashboard_pi.cpp:124
 msgid "True Wind Angle & Speed"
 msgstr "Skutečný úhel a rychlost větru"
 
-#: src/dashboard_pi.cpp:128 src/dashboard_pi.cpp:130
+#: src/dashboard_pi.cpp:126 src/dashboard_pi.cpp:128
 msgid "Depth"
 msgstr "Hloubka"
 
-#: src/dashboard_pi.cpp:132 src/dashboard_pi.cpp:134
+#: src/dashboard_pi.cpp:130 src/dashboard_pi.cpp:132
 msgid "Barometric pressure"
 msgstr "Barometrický tlak"
 
-#: src/dashboard_pi.cpp:136
+#: src/dashboard_pi.cpp:134
 msgid "Water Temp."
 msgstr "Teplota vody"
 
-#: src/dashboard_pi.cpp:138
+#: src/dashboard_pi.cpp:136
 msgid "Air Temp."
 msgstr "Teplota"
 
-#: src/dashboard_pi.cpp:140
+#: src/dashboard_pi.cpp:138
 msgid "App. Wind Angle"
 msgstr "Úhel větru"
 
-#: src/dashboard_pi.cpp:142
+#: src/dashboard_pi.cpp:140
 msgid "True Wind Angle"
 msgstr "Úhel větru"
 
-#: src/dashboard_pi.cpp:144
+#: src/dashboard_pi.cpp:142
 msgid "True Wind Direction"
 msgstr "Skutečný směr větru"
 
-#: src/dashboard_pi.cpp:146
+#: src/dashboard_pi.cpp:144
 msgid "True Wind Speed"
 msgstr "Rychlost větru"
 
-#: src/dashboard_pi.cpp:148
+#: src/dashboard_pi.cpp:146
 msgid "True Wind Dir. & Speed"
 msgstr "Skutečný směr a rychlost větru"
 
-#: src/dashboard_pi.cpp:150 src/dashboard_pi.cpp:152
+#: src/dashboard_pi.cpp:148 src/dashboard_pi.cpp:150
 msgid "VMG"
 msgstr "VMG"
 
-#: src/dashboard_pi.cpp:154 src/dashboard_pi.cpp:156
+#: src/dashboard_pi.cpp:152 src/dashboard_pi.cpp:154
 msgid "Rudder Angle"
 msgstr "Výchylka kormidla"
 
-#: src/dashboard_pi.cpp:158
+#: src/dashboard_pi.cpp:156
 msgid "GPS in View"
 msgstr "GPS v dohledu"
 
-#: src/dashboard_pi.cpp:160
+#: src/dashboard_pi.cpp:158
 msgid "GPS Status"
 msgstr "Stav GPS"
 
-#: src/dashboard_pi.cpp:162
+#: src/dashboard_pi.cpp:160
 msgid "Cursor"
 msgstr "Kurzor"
 
-#: src/dashboard_pi.cpp:164
+#: src/dashboard_pi.cpp:162
 msgid "Clock"
 msgstr "Hodiny"
 
-#: src/dashboard_pi.cpp:166
+#: src/dashboard_pi.cpp:164
 msgid "Sunrise/Sunset"
 msgstr "Východ/západ slunce"
 
-#: src/dashboard_pi.cpp:168
+#: src/dashboard_pi.cpp:166
 msgid "Moon phase"
 msgstr "Fáze měsíce"
 
-#: src/dashboard_pi.cpp:170
+#: src/dashboard_pi.cpp:168
 msgid "Wind history"
 msgstr "Historie větru"
 
-#: src/dashboard_pi.cpp:172
+#: src/dashboard_pi.cpp:170
 msgid "Barometric history"
 msgstr "Historie tlaku"
 
-#: src/dashboard_pi.cpp:174
+#: src/dashboard_pi.cpp:172
 msgid "Trip Log"
 msgstr "Trip Log"
 
-#: src/dashboard_pi.cpp:176
+#: src/dashboard_pi.cpp:174
 msgid "Sum Log"
 msgstr "Celkový log"
 
-#: src/dashboard_pi.cpp:178
+#: src/dashboard_pi.cpp:176
 msgid "From Ownship"
 msgstr "Od lodi"
 
-#: src/dashboard_pi.cpp:180
-msgid "Pitch"
-msgstr "Houpání"
-
-#: src/dashboard_pi.cpp:182
-msgid "Heel"
-msgstr "Náklon"
-
-#: src/dashboard_pi.cpp:352 src/dashboard_pi.cpp:465 src/dashboard_pi.cpp:1397
-#: src/dashboard_pi.cpp:1406 src/dashboard_pi.cpp:1564 src/dashboard_pi.cpp:1603
-#: src/dashboard_pi.cpp:1867
+#: src/dashboard_pi.cpp:343 src/dashboard_pi.cpp:456 src/dashboard_pi.cpp:1309
+#: src/dashboard_pi.cpp:1318 src/dashboard_pi.cpp:1476
+#: src/dashboard_pi.cpp:1515 src/dashboard_pi.cpp:1779
 msgid "Dashboard"
 msgstr "Palubní deska"
 
-#: src/dashboard_pi.cpp:470
+#: src/dashboard_pi.cpp:461
 msgid "Dashboard PlugIn for OpenCPN"
 msgstr "Doplněk Palubní deska pro OpenCPN"
 
-#: src/dashboard_pi.cpp:475
-msgid "Dashboard PlugIn for OpenCPN\n"
-"Provides navigation instrument display from NMEA source."
-msgstr "Doplněk Palubní deska pro OpenCPN\n"
-"Poskytuje zobrazení navigačních přístrojů Provides navigation instrumz NMEA zdroje."
+#: src/dashboard_pi.cpp:466
+msgid "Dashboard PlugIn for OpenCPN\nProvides navigation instrument display from NMEA source."
+msgstr "Doplněk Palubní deska pro OpenCPN\nPoskytuje zobrazení navigačních přístrojů Provides navigation instrumz NMEA zdroje."
 
-#: src/dashboard_pi.cpp:1540
+#: src/dashboard_pi.cpp:1452
 msgid "Dashboard preferences"
 msgstr "Možnosti palubní desky"
 
-#: src/dashboard_pi.cpp:1610
+#: src/dashboard_pi.cpp:1522
 msgid "show this dashboard"
 msgstr "zobrazit tuto palubní desku"
 
-#: src/dashboard_pi.cpp:1616
+#: src/dashboard_pi.cpp:1528
 msgid "Caption:"
 msgstr "Popis:"
 
-#: src/dashboard_pi.cpp:1624
+#: src/dashboard_pi.cpp:1536
 msgid "Orientation:"
 msgstr "Orientace:"
 
-#: src/dashboard_pi.cpp:1628 src/dashboard_pi.cpp:2060
+#: src/dashboard_pi.cpp:1540 src/dashboard_pi.cpp:1972
 msgid "Vertical"
 msgstr "Vertikální"
 
-#: src/dashboard_pi.cpp:1629 src/dashboard_pi.cpp:2062
+#: src/dashboard_pi.cpp:1541 src/dashboard_pi.cpp:1974
 msgid "Horizontal"
 msgstr "Horizontální"
 
-#: src/dashboard_pi.cpp:1636 src/dashboard_pi.cpp:1644 src/dashboard_pi.cpp:1986
+#: src/dashboard_pi.cpp:1548 src/dashboard_pi.cpp:1556
+#: src/dashboard_pi.cpp:1898
 msgid "Instruments"
 msgstr "Přístroje"
 
-#: src/dashboard_pi.cpp:1652
+#: src/dashboard_pi.cpp:1564
 msgid "Add"
 msgstr "Přidat"
 
-#: src/dashboard_pi.cpp:1665
+#: src/dashboard_pi.cpp:1577
 msgid "Delete"
 msgstr "Smazat"
 
-#: src/dashboard_pi.cpp:1671
+#: src/dashboard_pi.cpp:1583
 msgid "Up"
 msgstr "Nahoru"
 
-#: src/dashboard_pi.cpp:1676
+#: src/dashboard_pi.cpp:1588
 msgid "Down"
 msgstr "Dolů"
 
-#: src/dashboard_pi.cpp:1686
+#: src/dashboard_pi.cpp:1598
 msgid "Appearance"
 msgstr "Vzhled"
 
-#: src/dashboard_pi.cpp:1688
+#: src/dashboard_pi.cpp:1600
 msgid "Fonts"
 msgstr "Písma"
 
-#: src/dashboard_pi.cpp:1694
+#: src/dashboard_pi.cpp:1606
 msgid "Title:"
 msgstr "Nadpis:"
 
-#: src/dashboard_pi.cpp:1700
+#: src/dashboard_pi.cpp:1612
 msgid "Data:"
 msgstr "Data:"
 
-#: src/dashboard_pi.cpp:1706
+#: src/dashboard_pi.cpp:1618
 msgid "Label:"
 msgstr "Nadpis:"
 
-#: src/dashboard_pi.cpp:1712
+#: src/dashboard_pi.cpp:1624
 msgid "Small:"
 msgstr "Malý:"
 
-#: src/dashboard_pi.cpp:1720
+#: src/dashboard_pi.cpp:1632
 msgid "Units, Ranges, Formats"
 msgstr "Jednotky, rozsahy, formáty"
 
-#: src/dashboard_pi.cpp:1726
+#: src/dashboard_pi.cpp:1638
 msgid "Speedometer max value:"
 msgstr "Rychloměr"
 
-#: src/dashboard_pi.cpp:1731
+#: src/dashboard_pi.cpp:1643
 msgid "Boat speed units:"
 msgstr "Jednotka rychlosti lodi:"
 
-#: src/dashboard_pi.cpp:1734 src/dashboard_pi.cpp:1752
+#: src/dashboard_pi.cpp:1646 src/dashboard_pi.cpp:1664
 msgid "Honor OpenCPN settings"
 msgstr "Podle nastavení OpenCPN"
 
-#: src/dashboard_pi.cpp:1734 src/dashboard_pi.cpp:1761
+#: src/dashboard_pi.cpp:1646 src/dashboard_pi.cpp:1673
 msgid "Kts"
 msgstr "Kts"
 
-#: src/dashboard_pi.cpp:1734 src/dashboard_pi.cpp:1761
+#: src/dashboard_pi.cpp:1646 src/dashboard_pi.cpp:1673
 msgid "mph"
 msgstr "mph"
 
-#: src/dashboard_pi.cpp:1734 src/dashboard_pi.cpp:1761
+#: src/dashboard_pi.cpp:1646 src/dashboard_pi.cpp:1673
 msgid "km/h"
 msgstr "km/h"
 
-#: src/dashboard_pi.cpp:1734 src/dashboard_pi.cpp:1761
+#: src/dashboard_pi.cpp:1646 src/dashboard_pi.cpp:1673
 msgid "m/s"
 msgstr "m/s"
 
-#: src/dashboard_pi.cpp:1740
+#: src/dashboard_pi.cpp:1652
 msgid "Depth units:"
 msgstr "Jednotky hloubky:"
 
-#: src/dashboard_pi.cpp:1743 src/dashboard_pi.cpp:1752
+#: src/dashboard_pi.cpp:1655 src/dashboard_pi.cpp:1664
 msgid "Meters"
 msgstr "Metry"
 
-#: src/dashboard_pi.cpp:1743
+#: src/dashboard_pi.cpp:1655
 msgid "Feet"
 msgstr "Stopy"
 
-#: src/dashboard_pi.cpp:1743
+#: src/dashboard_pi.cpp:1655
 msgid "Fathoms"
 msgstr "Fathomy (Sáhy)"
 
-#: src/dashboard_pi.cpp:1743
+#: src/dashboard_pi.cpp:1655
 msgid "Centimeters"
 msgstr "Centimetry"
 
-#: src/dashboard_pi.cpp:1743
+#: src/dashboard_pi.cpp:1655
 msgid "Inches"
 msgstr "Palce"
 
-#: src/dashboard_pi.cpp:1749
+#: src/dashboard_pi.cpp:1661
 msgid "Distance units:"
 msgstr "Jednotky vzdálenosti:"
 
-#: src/dashboard_pi.cpp:1752
+#: src/dashboard_pi.cpp:1664
 msgid "Nautical miles"
 msgstr "Námořní míle"
 
-#: src/dashboard_pi.cpp:1752
+#: src/dashboard_pi.cpp:1664
 msgid "Statute miles"
 msgstr "Statutární míle"
 
-#: src/dashboard_pi.cpp:1752
+#: src/dashboard_pi.cpp:1664
 msgid "Kilometers"
 msgstr "Kilometery"
 
-#: src/dashboard_pi.cpp:1758
+#: src/dashboard_pi.cpp:1670
 msgid "Wind speed units:"
 msgstr "Rychlost větru"
 
-#: src/dashboard_pi.cpp:1969
+#: src/dashboard_pi.cpp:1881
 msgid "Add instrument"
 msgstr "Přidat přístroj"
 
-#: src/dashboard_pi.cpp:1975
+#: src/dashboard_pi.cpp:1887
 msgid "Select instrument to add:"
 msgstr "Výber přístroj pro přidání:"
 
-#: src/dashboard_pi.cpp:2069
+#: src/dashboard_pi.cpp:1981
 msgid "Preferences..."
 msgstr "Předvolby..."
 
-#: src/dial.cpp:505 src/wind.cpp:65 src/wind_history.cpp:439
+#: src/dial.cpp:504 src/wind.cpp:64 src/wind_history.cpp:407
 msgid "NE"
 msgstr "SV"
 
-#: src/dial.cpp:505 src/gps.cpp:146 src/wind.cpp:65 src/wind_history.cpp:445
+#: src/dial.cpp:504 src/gps.cpp:145 src/wind.cpp:64 src/wind_history.cpp:413
 msgid "E"
 msgstr "V"
 
-#: src/dial.cpp:505 src/wind.cpp:65 src/wind_history.cpp:451
+#: src/dial.cpp:504 src/wind.cpp:64 src/wind_history.cpp:419
 msgid "SE"
 msgstr "JV"
 
-#: src/dial.cpp:505 src/gps.cpp:150 src/wind.cpp:65 src/wind_history.cpp:457
+#: src/dial.cpp:504 src/gps.cpp:149 src/wind.cpp:64 src/wind_history.cpp:425
 msgid "S"
 msgstr "J"
 
-#: src/dial.cpp:505 src/wind.cpp:65 src/wind_history.cpp:463
+#: src/dial.cpp:504 src/wind.cpp:64 src/wind_history.cpp:431
 msgid "SW"
 msgstr "JZ"
 
-#: src/dial.cpp:505 src/gps.cpp:154 src/wind.cpp:65 src/wind_history.cpp:469
+#: src/dial.cpp:504 src/gps.cpp:153 src/wind.cpp:64 src/wind_history.cpp:437
 msgid "W"
 msgstr "Z"
 
-#: src/dial.cpp:505 src/wind.cpp:65 src/wind_history.cpp:475
+#: src/dial.cpp:504 src/wind.cpp:64 src/wind_history.cpp:443
 msgid "NW"
 msgstr "SZ"
 
-#: src/instrument.cpp:237
+#: src/instrument.cpp:232
 msgid " true"
 msgstr " skutečný"
 
-#: src/instrument.cpp:239
+#: src/instrument.cpp:234
 msgid " mag"
 msgstr " mag"
 
-#: src/wind_history.cpp:56 src/wind_history.cpp:107
-msgid "--"
-msgstr ""
-
-#: src/wind_history.cpp:331
-#, c-format
-msgid "--- %s"
-msgstr ""
-
-#: src/wind_history.cpp:436
+#: src/wind_history.cpp:404
 msgid "NNE"
 msgstr "SV"
 
-#: src/wind_history.cpp:442
+#: src/wind_history.cpp:410
 msgid "ENE"
 msgstr "SV"
 
-#: src/wind_history.cpp:448
+#: src/wind_history.cpp:416
 msgid "ESE"
 msgstr "JV"
 
-#: src/wind_history.cpp:454
+#: src/wind_history.cpp:422
 msgid "SSE"
 msgstr "JV"
 
-#: src/wind_history.cpp:460
+#: src/wind_history.cpp:428
 msgid "SSW"
 msgstr "JZ"
 
-#: src/wind_history.cpp:466
+#: src/wind_history.cpp:434
 msgid "WSW"
 msgstr "JZ"
 
-#: src/wind_history.cpp:472
+#: src/wind_history.cpp:440
 msgid "WNW"
 msgstr "SZ"
 
-#: src/wind_history.cpp:478
+#: src/wind_history.cpp:446
 msgid "NNW"
 msgstr "SZ"
 
-#: src/wind_history.cpp:575
+#: src/wind_history.cpp:543
 #, c-format
-msgid "Max %.1f %s since %02d:%02d  Overall %.1f %s"
-msgstr "Max %.1f %s od %02d:%02d Celkově %.1f %s"
+msgid "Max %.1f since %02d:%02d  Overall %.1f"
+msgstr "Max %.1f od %02d:%02d  Celkově %.1f"
 

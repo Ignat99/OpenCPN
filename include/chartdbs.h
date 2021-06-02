@@ -26,23 +26,18 @@
 #ifndef __CHARTDBS_H__
 #define __CHARTDBS_H__
 
-//#include "chart1.h"
-#include "ocpn_types.h"
-#include "bbox.h"
+#include "wx/dynarray.h"
+#include "wx/file.h"
+#include "wx/stream.h"
+#include "wx/wfstream.h"
+#include "wx/tokenzr.h"
+#include "wx/dir.h"
+#include "wx/filename.h"
+
+#include "chartbase.h"
+#include "chart1.h"
 
 class wxProgressDialog;
-class ChartBase;
-
-//    A small class used in an array to describe chart directories
-class ChartDirInfo
-{
-public:
-    wxString    fullpath;
-    wxString    magic_number;
-};
-
-WX_DECLARE_OBJARRAY(ChartDirInfo, ArrayOfCDI);
-
 ///////////////////////////////////////////////////////////////////////
 
 static const int DB_VERSION_PREVIOUS = 17;
@@ -308,8 +303,6 @@ public:
     ArrayOfCDI& GetChartDirArray(){ return m_dir_array; }
     wxArrayString &GetChartDirArrayString(){ return m_chartDirs; }
     void SetChartDirArray( ArrayOfCDI array ){ m_dir_array = array; }
-    bool CompareChartDirArray( ArrayOfCDI& test_array );
-    wxString GetMagicNumberCached(wxString dir);
     
     void UpdateChartClassDescriptorArray(void);
 
@@ -385,8 +378,8 @@ private:
 class ChartGroupElement;
 class ChartGroup;
 
-WX_DEFINE_ARRAY_PTR(ChartGroupElement*, ChartGroupElementArray);
-WX_DEFINE_ARRAY_PTR(ChartGroup*, ChartGroupArray);
+WX_DECLARE_OBJARRAY(ChartGroupElement*, ChartGroupElementArray);
+WX_DECLARE_OBJARRAY(ChartGroup*, ChartGroupArray);
 
 class ChartGroupElement
 {

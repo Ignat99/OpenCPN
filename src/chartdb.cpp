@@ -33,8 +33,6 @@
 
 #include <wx/stopwatch.h>
 #include <wx/regex.h>
-#include "wx/tokenzr.h"
-#include "wx/dir.h"
 
 #include "chartdb.h"
 #include "chartimg.h"
@@ -46,14 +44,10 @@
 
 #include <wx/progdlg.h>
 
-#include "chcanv.h"
-
 #ifdef USE_S57
 #include "s57chart.h"
 #include "cm93.h"
 #endif
-
-extern ColorScheme GetColorScheme();
 
 class s52plib;
 
@@ -66,6 +60,7 @@ extern ChartCanvas  *cc1;
 extern int          g_GroupIndex;
 extern s52plib      *ps52plib;
 extern ChartDB      *ChartData;
+
 
 bool G_FloatPtInPolygon(MyFlPoint *rgpts, int wnumpts, float x, float y) ;
 bool GetMemoryStatus(int *mem_total, int *mem_used);
@@ -152,7 +147,7 @@ void ChartStack::AddChart( int db_add )
                         {
                             ChartTableEntry *pn = ChartData->GetpChartTableEntry(GetDBIndex(jd));
                             if( pm->GetFileTime() && pn->GetFileTime()) {
-                                if( labs(pm->GetFileTime() - pn->GetFileTime()) < 60 ) {           // simple test
+                                if( abs(pm->GetFileTime() - pn->GetFileTime()) < 60 ) {           // simple test
                                     if(pn->GetpFileName()->IsSameAs(*(pm->GetpFileName())))
                                         SetDBIndex(jd, -1);           // mark to remove
                                 }
@@ -219,15 +214,15 @@ void ChartStack::AddChart( int db_add )
 // ChartDB implementation
 // ============================================================================
 
-ChartDB::ChartDB()
+ChartDB::ChartDB(MyFrame *parent)
 {
+      pParent = parent;
       pChartCache = new wxArrayPtrVoid;
 
       SetValid(false);                           // until loaded or created
       UnLockCache();
       
       m_b_busy = false;
-      m_ticks = 0;
 
       //    Report cache policy
       if(g_memCacheLimit)
@@ -262,46 +257,25 @@ bool ChartDB::LoadBinary(const wxString & filename, ArrayOfCDI& dir_array_check)
       // Check chartDirs against dir_array_check
 }
 
-void ChartDB::DeleteCacheEntry(CacheEntry *pce, bool bDelTexture, const wxString &msg)
-{
-     ChartBase *ch = (ChartBase *)pce->pChart;
-
-     if (msg != wxEmptyString) {
-         wxLogMessage(_T("%s%s"), msg.c_str(), ch->GetFullPath().c_str());
-     }
-
-     // If this chart should happen to be in the thumbnail window....
-     if(pthumbwin)
-     {
-         if (pthumbwin->pThumbChart == ch)
-            pthumbwin->pThumbChart = NULL;
-     }
-
-     // The glCanvas may be cacheing some information for this chart
-     if (g_bopengl && cc1)
-         cc1->PurgeGLCanvasChartCache(ch, bDelTexture);
-     pChartCache->Remove(pce);
-     delete ch;
-     delete pce;
-}
-
-void ChartDB::DeleteCacheEntry(int i, bool bDelTexture, const wxString &msg)
-{
-     CacheEntry *pce = (CacheEntry *)(pChartCache->Item(i));
-     if (pce)
-         DeleteCacheEntry(pce, bDelTexture, msg);
-}
-
 void ChartDB::PurgeCache()
 {
 //    Empty the cache
       wxLogMessage(_T("Chart cache purge"));
 
-      if( wxMUTEX_NO_ERROR == m_cache_mutex.Lock() ){
+      if( wxMUTEX_NO_ERROR == m_cache_mutex.TryLock() ){
         unsigned int nCache = pChartCache->GetCount();
         for(unsigned int i=0 ; i<nCache ; i++)
         {
-               DeleteCacheEntry(0, true);
+                CacheEntry *pce = (CacheEntry *)(pChartCache->Item(i));
+                ChartBase *Ch = (ChartBase *)pce->pChart;
+
+                //    The glCanvas may be cacheing some information for this chart
+                if(g_bopengl && cc1)
+                    cc1->PurgeGLCanvasChartCache(Ch, true);
+
+                delete Ch;
+                
+                delete pce;
         }
         pChartCache->Clear();
         
@@ -309,38 +283,9 @@ void ChartDB::PurgeCache()
       }
 }
 
-
-void ChartDB::PurgeCachePlugins()
-{
-    //    Empty the cache
-    wxLogMessage(_T("Chart cache PlugIn purge"));
-    
-    if( wxMUTEX_NO_ERROR == m_cache_mutex.Lock() ){
-        unsigned int nCache = pChartCache->GetCount();
-        unsigned int i = 0;
-        while(i < nCache){
-            CacheEntry *pce = (CacheEntry *)(pChartCache->Item(i));
-            ChartBase *Ch = (ChartBase *)pce->pChart;
-
-            if(CHART_TYPE_PLUGIN == Ch->GetChartType()){
-                DeleteCacheEntry(pce, true);
-            
-                nCache = pChartCache->GetCount();       // restart the while loop
-                i = 0;
-                
-            }
-            else
-                i++;
-        }
-       
-        m_cache_mutex.Unlock();
-    }
-}
-
-
 void ChartDB::ClearCacheInUseFlags(void)
 {
-    if( wxMUTEX_NO_ERROR == m_cache_mutex.Lock() ){
+    if( wxMUTEX_NO_ERROR == m_cache_mutex.TryLock() ){
         unsigned int nCache = pChartCache->GetCount();
         for(unsigned int i=0 ; i<nCache ; i++)
         {
@@ -363,13 +308,12 @@ void ChartDB::PurgeCacheUnusedCharts( double factor)
           if( wxMUTEX_NO_ERROR == m_cache_mutex.TryLock() ){
               
             //    Check memory status to see if above limit
-                int mem_used;
-                GetMemoryStatus(0, &mem_used);
+                int mem_total, mem_used;
+                GetMemoryStatus(&mem_total, &mem_used);
                 int mem_limit = g_memCacheLimit * factor;
 
                 int nl = pChartCache->GetCount();       // max loop count, by definition
                     
-                wxString msg(_T("Purging unused chart from cache: "));
                 while( (mem_used > mem_limit) && (nl>0) )
                 {
                     if( pChartCache->GetCount() < 2 ){
@@ -379,15 +323,31 @@ void ChartDB::PurgeCacheUnusedCharts( double factor)
                     
                     CacheEntry *pce = FindOldestDeleteCandidate( false );
                     if(pce){
-                        // don't purge background spooler
-                        DeleteCacheEntry(pce, false /*true*/, msg);
+                        ChartBase *Ch =  (ChartBase *)(pce->pChart);
+                        wxString msg(_T("Purging unused chart from cache: "));
+                        msg += Ch->GetFullPath();
+                        wxLogMessage(msg);
+                                        
+                        //  If this chart should happen to be in the thumbnail window....
+                        if(pthumbwin)
+                        {
+                            if(pthumbwin->pThumbChart == Ch)
+                                pthumbwin->pThumbChart = NULL;
+                        }
+                    
+                                //    The glCanvas may be cacheing some information (i.e. texture tiles) for this chart
+                        if(g_bopengl && cc1)
+                              cc1->PurgeGLCanvasChartCache(Ch);
+
+                                //    And delete the chart
+                        delete Ch;
+
+                                //remove the cache entry
+                        pChartCache->Remove(pce);
 
                     }
-                    else {
-                        break;
-                    }
                     
-                    GetMemoryStatus(0, &mem_used);
+                    GetMemoryStatus(&mem_total, &mem_used);
                     
                     nl--;
                 }
@@ -428,12 +388,10 @@ ChartBase *ChartDB::GetChart(const wxChar *theFilePath, ChartClassDescriptor &ch
       }
 #ifdef USE_S57
       else if (chartExt == wxT("000") || chartExt == wxT("S57")) {
-            LoadS57();
             pch = new s57chart;
       }
 #endif
       else if (chart_desc.m_descriptor_type == PLUGIN_DESCRIPTOR) {
-            LoadS57();
             ChartPlugInWrapper *cpiw = new ChartPlugInWrapper(chart_desc.m_class_name);
             pch = (ChartBase *)cpiw;
       }
@@ -567,7 +525,7 @@ int ChartDB::BuildChartStack(ChartStack * cstk, float lat, float lon)
                         {
                               const ChartTableEntry &cten = GetChartTableEntry(cstk->GetDBIndex(jd));
                               if( ctem.GetFileTime() && cten.GetFileTime()) {
-                                    if( labs(ctem.GetFileTime() - cten.GetFileTime()) < 60 ) {           // simple test
+                                    if( abs(ctem.GetFileTime() - cten.GetFileTime()) < 60 ) {           // simple test
                                         if(cten.GetpFileName()->IsSameAs(*(ctem.GetpFileName())))
                                            cstk->SetDBIndex(jd, -1);           // mark to remove
                                     }
@@ -856,7 +814,7 @@ bool ChartDB::IsChartInCache(int dbindex)
       bool bInCache = false;
 
 //    Search the cache
-      if( wxMUTEX_NO_ERROR == m_cache_mutex.Lock() ){
+      if( wxMUTEX_NO_ERROR == m_cache_mutex.TryLock() ){
           
         unsigned int nCache = pChartCache->GetCount();
         for(unsigned int i=0 ; i<nCache ; i++)
@@ -864,8 +822,7 @@ bool ChartDB::IsChartInCache(int dbindex)
                 CacheEntry *pce = (CacheEntry *)(pChartCache->Item(i));
                 if(pce->dbIndex == dbindex)
                 {
-                    if (pce->pChart != 0 && ((ChartBase *)pce->pChart)->IsReadyToRender())
-                        bInCache = true;
+                    bInCache = true;
                     break;
                 }
         }
@@ -879,7 +836,7 @@ bool ChartDB::IsChartInCache(int dbindex)
 bool ChartDB::IsChartInCache(wxString path)
 {
     bool bInCache = false;
-    if( wxMUTEX_NO_ERROR == m_cache_mutex.Lock() ){
+    if( wxMUTEX_NO_ERROR == m_cache_mutex.TryLock() ){
         
         //    Search the cache
         unsigned int nCache = pChartCache->GetCount();
@@ -888,8 +845,7 @@ bool ChartDB::IsChartInCache(wxString path)
             CacheEntry *pce = (CacheEntry *)(pChartCache->Item(i));
             if(pce->FullPath == path)
             {
-                if (pce->pChart != 0 && ((ChartBase *)pce->pChart)->IsReadyToRender())
-                    bInCache = true;
+                bInCache = true;
                 break;
             }
         }
@@ -902,7 +858,7 @@ bool ChartDB::IsChartInCache(wxString path)
 bool ChartDB::IsChartLocked( int index )
 {
     
-    if( wxMUTEX_NO_ERROR == m_cache_mutex.Lock() ){
+    if( wxMUTEX_NO_ERROR == m_cache_mutex.TryLock() ){
         unsigned int nCache = pChartCache->GetCount();
         for(unsigned int i=0 ; i<nCache ; i++)
         {
@@ -920,32 +876,29 @@ bool ChartDB::IsChartLocked( int index )
     return false;
 }
     
-bool ChartDB::LockCacheChart( int index )
+void ChartDB::LockCacheChart( int index )
 {
     //    Search the cache
-    bool ret = false;
-    if( wxMUTEX_NO_ERROR == m_cache_mutex.Lock() ){
+    if( wxMUTEX_NO_ERROR == m_cache_mutex.TryLock() ){
         
         unsigned int nCache = pChartCache->GetCount();
         for(unsigned int i=0 ; i<nCache ; i++)
         {
             CacheEntry *pce = (CacheEntry *)(pChartCache->Item(i));
-            if(pce->dbIndex == index )
+            if(pce->dbIndex == index)
             {
                 pce->n_lock++;
-                ret = true;
                 break;
             }
         }
         m_cache_mutex.Unlock();
     }
-    return ret;
 }
 
 void ChartDB::UnLockCacheChart( int index )
 {
     //    Search the cache
-    if( wxMUTEX_NO_ERROR == m_cache_mutex.Lock() ){
+    if( wxMUTEX_NO_ERROR == m_cache_mutex.TryLock() ){
         unsigned int nCache = pChartCache->GetCount();
         for(unsigned int i=0 ; i<nCache ; i++)
         {
@@ -964,7 +917,7 @@ void ChartDB::UnLockCacheChart( int index )
 void ChartDB::UnLockAllCacheCharts()
 {
     //    Walk the cache
-    if( wxMUTEX_NO_ERROR == m_cache_mutex.Lock() ){
+    if( wxMUTEX_NO_ERROR == m_cache_mutex.TryLock() ){
         
         unsigned int nCache = pChartCache->GetCount();
         for(unsigned int i=0 ; i<nCache ; i++)
@@ -998,12 +951,11 @@ ChartBase *ChartDB::OpenChartFromStack(ChartStack *pStack, int StackEntry, Chart
     return OpenChartUsingCache(pStack->GetDBIndex(StackEntry), init_flag);
 }
 
-ChartBase *ChartDB::OpenChartFromDBAndLock( int index, ChartInitFlag init_flag, bool lock )
+ChartBase *ChartDB::OpenChartFromDBAndLock( int index, ChartInitFlag init_flag )
 {
     wxCriticalSectionLocker locker(m_critSect);
     ChartBase *pret = OpenChartUsingCache(index, init_flag);
-    if (lock && pret)
-        LockCacheChart( index );
+    LockCacheChart( index );
     return pret;
 }
 
@@ -1015,23 +967,25 @@ CacheEntry *ChartDB::FindOldestDeleteCandidate( bool blog)
         unsigned int nCache = pChartCache->GetCount();
         if(nCache > 1)
         {
+            wxDateTime now = wxDateTime::Now();                   // get time for LRU use
+            
             if(blog)
                 wxLogMessage(_T("Searching chart cache for oldest entry"));
-            int LRUTime = m_ticks;
+            int LRUTime = now.GetTicks();
             int iOldest = 0;
             for(unsigned int i=0 ; i<nCache ; i++)
             {
                 CacheEntry *pce = (CacheEntry *)(pChartCache->Item(i));
                 if((ChartBase *)(pce->pChart) != Current_Ch)
                 {
-                    if(pce->RecentTime < LRUTime && !pce->n_lock)
+                    if(pce->RecentTime < LRUTime)
                     {
                         LRUTime = pce->RecentTime;
                         iOldest = i;
                     }
                 }
             }
-            int dt = m_ticks - LRUTime;
+            int dt = now.GetTicks() - LRUTime;
 
             CacheEntry *pce = (CacheEntry *)(pChartCache->Item(iOldest));
             ChartBase *pDeleteCandidate =  (ChartBase *)(pce->pChart);
@@ -1060,14 +1014,13 @@ ChartBase *ChartDB::OpenChartUsingCache(int dbindex, ChartInitFlag init_flag)
       const ChartTableEntry &cte = GetChartTableEntry(dbindex);
       wxString ChartFullPath(cte.GetpFullPath(), wxConvUTF8 );
       ChartTypeEnum chart_type = (ChartTypeEnum)cte.GetChartType();
-      ChartFamilyEnum chart_family = (ChartFamilyEnum)cte.GetChartFamily();
-      
+
       ChartBase *Ch = NULL;
-      CacheEntry *pce = NULL;
-      int old_lock = 0;
+      CacheEntry *pce;
+
+      wxDateTime now = wxDateTime::Now();                   // get time for LRU use
 
       bool bInCache = false;
-      m_ticks++;
 
 //    Search the cache
 
@@ -1093,69 +1046,80 @@ ChartBase *ChartDB::OpenChartUsingCache(int dbindex, ChartInitFlag init_flag)
           {
               if(Ch->IsReadyToRender())
               {
-                    if(pce){
-                        pce->RecentTime = m_ticks;           // chart is OK
-                        pce->b_in_use = true;
-                    }
+                    pce->RecentTime = now.GetTicks();           // chart is OK
+                    pce->b_in_use = true;
                     return Ch;
               }
               else
               {
-                    if(pthumbwin && pthumbwin->pThumbChart == Ch)
-                       pthumbwin->pThumbChart = NULL;
                     delete Ch;                                  // chart is not useable
-                    // but may be locked in quilt
                     if( wxMUTEX_NO_ERROR == m_cache_mutex.Lock() ){
-                        old_lock = pce->n_lock;
                         pChartCache->Remove(pce);                   // so remove it
-                        delete pce;
                         m_cache_mutex.Unlock();
                     }
-                    // XXX and if there's a mutex error?
                         
+                    delete pce;
                     bInCache = false;
               }
           }
           else                                                  // assume if in cache, the chart can do thumbnails
           {
-               if(pce){
-                   pce->RecentTime = m_ticks;
-                   pce->b_in_use = true;
-               }
+               pce->RecentTime = now.GetTicks();
+               pce->b_in_use = true;
                return Ch;
           }
       }
 
       if(!bInCache)                    // not in cache
       {
-          m_b_busy = true;
-          if( !m_b_locked && wxMUTEX_NO_ERROR == m_cache_mutex.Lock() ){
+          if( wxMUTEX_NO_ERROR == m_cache_mutex.Lock() ){
               
+            m_b_busy = true;
             
                 //    Use memory limited cache policy, if defined....
                 if(g_memCacheLimit)
                 {
 
             //    Check memory status to see if enough room to open another chart
-                    int mem_used;
-                    GetMemoryStatus(0, &mem_used);
+                    int mem_total, mem_used;
+                    GetMemoryStatus(&mem_total, &mem_used);
     //                  printf(" ChartdB Mem_total: %d  mem_used: %d  lock: %d\n", mem_total, mem_used, m_b_locked);
                     
-                    if((mem_used > g_memCacheLimit * 8 / 10) && (pChartCache->GetCount() > 2)) {
-                        wxString msg(_T("Removing oldest chart from cache: "));
-                        while (1)
-                        {
+                    if((mem_used > g_memCacheLimit * 8 / 10) && !m_b_locked && (pChartCache->GetCount() > 2)) {
+                        while (1){
                           CacheEntry *pce = FindOldestDeleteCandidate(true);
-                          if (pce == 0)
-                              break;                      // no possible delete candidate
-                          
-                          // purge texture cache, really need memory here
-                          DeleteCacheEntry(pce, true, msg);
-
-                          GetMemoryStatus(0, &mem_used);
-                          if((mem_used < g_memCacheLimit * 8 / 10) || (pChartCache->GetCount() <= 2)) 
-                              break;
+                          if(pce){
+                            ChartBase *pDeleteCandidate =  (ChartBase *)(pce->pChart);
+                            wxString msg(_T("Removing oldest chart from cache: "));
+                            msg += pDeleteCandidate->GetFullPath();
+                            wxLogMessage(msg);
+                            
+                            //  If this chart should happen to be in the thumbnail window....
+                            if(pthumbwin)
+                            {
+                                if(pthumbwin->pThumbChart == pDeleteCandidate)
+                                    pthumbwin->pThumbChart = NULL;
+                            }
+                            
+                            
+                            //    The glCanvas may be cacheing some information for this chart
+                            if(g_bopengl && cc1)
+                                cc1->PurgeGLCanvasChartCache(pDeleteCandidate);
+                            
+                            //    Delete the chart
+                            delete pDeleteCandidate;
                                 
+                                //remove the cache entry
+                            pChartCache->Remove(pce);
+                            
+                            GetMemoryStatus(&mem_total, &mem_used);
+    
+                            if((mem_used < g_memCacheLimit * 8 / 10) || (pChartCache->GetCount() <= 2)) 
+                                break;
+                                
+                          }
+                          else
+                              break;                      // no possible delete candidate
                         }  // while
                     }
                 }
@@ -1164,18 +1128,41 @@ ChartBase *ChartDB::OpenChartUsingCache(int dbindex, ChartInitFlag init_flag)
                 {
     //      Limit cache to n charts, tossing out the oldest when space is needed
                     unsigned int nCache = pChartCache->GetCount();
-                    if (nCache > (unsigned int)g_nCacheLimit && nCache > 2)
-                    {
-                        wxString msg(_T("Removing oldest chart from cache: "));
-                        while (nCache > (unsigned int)g_nCacheLimit)
-                        {
+                    
+                    if((nCache > (unsigned int)g_nCacheLimit) && !m_b_locked){
+                        while (1){
                             CacheEntry *pce = FindOldestDeleteCandidate( true );
-                            if (pce == 0)
-                                break;
-                            
-                            DeleteCacheEntry(pce, true, msg);
-                            nCache--;
-                        }
+                            if(pce){
+                                ChartBase *pDeleteCandidate =  (ChartBase *)(pce->pChart);
+                                wxString msg(_T("Removing oldest chart from cache: "));
+                                msg += pDeleteCandidate->GetFullPath();
+                                wxLogMessage(msg);
+                                
+                                //  If this chart should happen to be in the thumbnail window....
+                                if(pthumbwin)
+                                {
+                                    if(pthumbwin->pThumbChart == pDeleteCandidate)
+                                        pthumbwin->pThumbChart = NULL;
+                                }
+                                
+                                
+                                //    The glCanvas may be cacheing some information for this chart
+                                if(g_bopengl && cc1)
+                                    cc1->PurgeGLCanvasChartCache(pDeleteCandidate);
+                                
+                                //    Delete the chart
+                                    delete pDeleteCandidate;
+                                    
+                                    //remove the cache entry
+                                    pChartCache->Remove(pce);
+                                    
+                                    if(nCache <= (unsigned int)g_nCacheLimit)
+                                        break;
+                                    
+                            }
+                            else
+                                break;                      // no possible delete candidate
+                        }  // while
                     }
                     
                 }
@@ -1197,7 +1184,6 @@ ChartBase *ChartDB::OpenChartUsingCache(int dbindex, ChartInitFlag init_flag)
 #ifdef USE_S57
             else if(chart_type == CHART_TYPE_S57)
             {
-                  LoadS57();
                   Ch = new s57chart();
                   s57chart *Chs57 = dynamic_cast<s57chart*>(Ch);
 
@@ -1217,7 +1203,6 @@ ChartBase *ChartDB::OpenChartUsingCache(int dbindex, ChartInitFlag init_flag)
 #ifdef USE_S57
             else if(chart_type == CHART_TYPE_CM93)
             {
-                  LoadS57();
                   Ch = new cm93chart();
                   cm93chart *Chcm93 = dynamic_cast<cm93chart*>(Ch);
 
@@ -1235,7 +1220,6 @@ ChartBase *ChartDB::OpenChartUsingCache(int dbindex, ChartInitFlag init_flag)
 
             else if(chart_type == CHART_TYPE_CM93COMP)
             {
-                  LoadS57();
                   Ch = new cm93compchart();
 
                   cm93compchart *Chcm93 = dynamic_cast<cm93compchart*>(Ch);
@@ -1290,8 +1274,6 @@ ChartBase *ChartDB::OpenChartUsingCache(int dbindex, ChartInitFlag init_flag)
                   {
                         ChartPlugInWrapper *cpiw = new ChartPlugInWrapper(chart_class_name);
                         Ch = (ChartBase *)cpiw;
-                        if(chart_family == CHART_FAMILY_VECTOR)
-                            LoadS57();
                   }
             }
 
@@ -1303,24 +1285,17 @@ ChartBase *ChartDB::OpenChartUsingCache(int dbindex, ChartInitFlag init_flag)
             if(Ch)
             {
                   InitReturn ir;
-                  
-#ifdef USE_S57
-                  s52plib *plib = ps52plib;
-#else
-                  s52plib *plib = NULL;
-#endif                  
-                  
 
                   //    Vector charts need a PLIB for useful display....
-                  if((chart_family != CHART_FAMILY_VECTOR) ||
-                      ((chart_family == CHART_FAMILY_VECTOR) && plib) )
+                  if((Ch->GetChartFamily() != CHART_FAMILY_VECTOR) ||
+                      ((Ch->GetChartFamily() == CHART_FAMILY_VECTOR) && ps52plib) )
                   {
                         wxString msg(_T("Initializing Chart "));
                         msg.Append(ChartFullPath);
                         wxLogMessage(msg);
 
                         ir = Ch->Init(ChartFullPath, init_flag);    // using the passed flag
-                        Ch->SetColorScheme(/*pParent->*/GetColorScheme());
+                        Ch->SetColorScheme(pParent->GetColorScheme());
                   }
                   else
                   {
@@ -1335,17 +1310,16 @@ ChartBase *ChartDB::OpenChartUsingCache(int dbindex, ChartInitFlag init_flag)
                   if(INIT_OK == ir)
                   {
 
-//    always cache after a new chart has been created
-//    or it may leak CacheEntry in createthumbnail
-//                        if(FULL_INIT == init_flag)
+//    Only add to cache if requesting a full init
+                        if(FULL_INIT == init_flag)
                         {
                               pce = new CacheEntry;
                               pce->FullPath = ChartFullPath;
                               pce->pChart = Ch;
                               pce->dbIndex = dbindex;
 //                              printf("    Adding chart %d\n", dbindex);
-                              pce->RecentTime = m_ticks;
-                              pce->n_lock = old_lock;
+                              pce->RecentTime = now.GetTicks();
+                              pce->n_lock = 0;
 
                               if( wxMUTEX_NO_ERROR == m_cache_mutex.Lock() ){
                                 pChartCache->Add((void *)pce);
@@ -1396,7 +1370,7 @@ bool ChartDB::DeleteCacheChart(ChartBase *pDeleteCandidate)
 {
     bool retval = false;
     
-    if( wxMUTEX_NO_ERROR == m_cache_mutex.Lock() ){
+    if( wxMUTEX_NO_ERROR == m_cache_mutex.TryLock() ){
         
       if(Current_Ch != pDeleteCandidate)
       {
@@ -1414,7 +1388,29 @@ bool ChartDB::DeleteCacheChart(ChartBase *pDeleteCandidate)
 
             if(pce)
             {
-                  DeleteCacheEntry( pce);
+                        //  If this chart should happen to be in the thumbnail window....
+                  if(pthumbwin)
+                  {
+                        if(pthumbwin->pThumbChart == pDeleteCandidate)
+                              pthumbwin->pThumbChart = NULL;
+                  }
+
+                  //    The glCanvas may be cacheing some information for this chart
+                  if(g_bopengl && cc1)
+                      cc1->PurgeGLCanvasChartCache(pDeleteCandidate);
+                  
+                  //    Delete the chart
+                  delete pDeleteCandidate;
+
+                        //remove the cache entry
+                  pChartCache->Remove(pce);
+
+                  if(pthumbwin)
+                  {
+                        if(pthumbwin->pThumbChart == pDeleteCandidate)
+                              pthumbwin->pThumbChart = NULL;
+                  }
+
                   retval = true;
             }
       }
@@ -1433,7 +1429,7 @@ void ChartDB::ApplyColorSchemeToCachedCharts(ColorScheme cs)
       CacheEntry *pce;
      //    Search the cache
 
-      if( wxMUTEX_NO_ERROR == m_cache_mutex.Lock() ){
+      if( wxMUTEX_NO_ERROR == m_cache_mutex.TryLock() ){
           
         unsigned int nCache = pChartCache->GetCount();
         for(unsigned int i=0 ; i<nCache ; i++)
@@ -1643,8 +1639,6 @@ wxXmlDocument ChartDB::GetXMLDescription(int dbIndex, bool b_getGeom)
                   node->AddChild ( tnode );
             }
 
-#ifdef USE_S57
-            
             s57chart *pcs57 = dynamic_cast<s57chart*>(pc);
             if(pcs57)
             {
@@ -1669,7 +1663,6 @@ wxXmlDocument ChartDB::GetXMLDescription(int dbIndex, bool b_getGeom)
                   node->AddChild ( tnode );
 
             }
-#endif            
       }
 
 

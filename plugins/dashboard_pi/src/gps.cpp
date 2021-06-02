@@ -26,7 +26,6 @@
  */
 
 #include "gps.h"
-#include "wx28compat.h"
 
 // For compilers that support precompilation, includes "wx/wx.h".
 #include <wx/wxprec.h>
@@ -115,7 +114,7 @@ void DashboardInstrument_GPS::DrawFrame(wxGCDC* dc)
       dc->SetBrush(*wxTRANSPARENT_BRUSH);
 
       wxPen pen;
-      pen.SetStyle(wxPENSTYLE_SOLID);
+      pen.SetStyle(wxSOLID);
       wxColour cf;
       GetGlobalColor(_T("DASHF"), &cf);
       pen.SetColour(cf);
@@ -162,7 +161,7 @@ void DashboardInstrument_GPS::DrawFrame(wxGCDC* dc)
       dc->DrawLine(3, 100, size.x-3, 100);
       dc->DrawLine(3, 140, size.x-3, 140);
 
-      pen.SetStyle(wxPENSTYLE_DOT);
+      pen.SetStyle(wxDOT);
       dc->SetPen(pen);
       dc->DrawCircle(m_cx, m_cy, m_radius * sin(deg2rad(45)));
       dc->DrawCircle(m_cx, m_cy, m_radius * sin(deg2rad(20)));
