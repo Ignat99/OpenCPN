@@ -504,6 +504,36 @@ void dashboard_pi::SendSatInfoToAllInstruments( int cnt, int seq, SAT_INFO sats[
     }
 }
 
+void dashboard_pi::SetSentence( wxString &sentence )
+{
+    m_MyWeigh << sentence;
+
+    bool bGoodData = false;
+
+    if( m_MyWeigh.PreParse() )
+    {
+        if( m_MyWeigh.LastSentenceIDReceived == _T("U.W."))
+        {
+            if( m_MyWeigh.Parse() )
+            {
+                double unit_weigh = 0.0;
+                if(m_MyWeigh.Uw.IsDataValid == MTrue)
+                {
+                    unit_weigh = m_MyWeigh.Uw.UnitWeighKg;
+                    bGoodData = true;
+                    SendSentenceToAllInstruments( OCPN_DBP_WEIGH, toUsrDistance_Plugin( unit_weigh / 1.0, g_iDashDepthUnit ), getUsrDistanceUnit_Plugin( g_iDashDepthUnit ) );
+                }
+            }
+        }
+    }
+
+    if(bGoodData)
+    {
+//        Refresh(false);
+    }
+}
+
+
 void dashboard_pi::SetNMEASentence( wxString &sentence )
 {
     m_NMEA0183 << sentence;
@@ -2112,12 +2142,12 @@ void DashboardWindow::SetInstrumentList( wxArrayInt list )
                 break;
             case ID_DPB_I_UNIT_WEIGHT:
                 instrument = new DashboardInstrument_Weight( this, wxID_ANY,
-                        getInstrumentCaption( id ), OCPN_DBP_UNIT_WEIGHT, _T("%5.2f") );
+                        getInstrumentCaption( id ), OCPN_DBP_UNIT_WEIGH, _T("%5.2f") );
                 break;
 
             case ID_DPB_I_WEIGHT:
                 instrument = new DashboardInstrument_Weight( this, wxID_ANY,
-                        getInstrumentCaption( id ), OCPN_DBP_WEIGHT, _T("%5.2f") );
+                        getInstrumentCaption( id ), OCPN_DBP_WEIGH, _T("%5.2f") );
                 break;
             case ID_DBP_I_POS:
                 instrument = new DashboardInstrument_Position( this, wxID_ANY,

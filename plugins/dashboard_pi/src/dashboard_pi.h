@@ -51,6 +51,7 @@
 #include "../../../include/ocpn_plugin.h"
 
 #include "nmea0183/nmea0183.h"
+#include "myweigh/myweigh.h"
 #include "instrument.h"
 #include "speedometer.h"
 #include "compass.h"
@@ -135,6 +136,7 @@ public:
       wxString GetLongDescription();
 
 //    The optional method overrides
+      void SetSentence(wxString &sentence);
       void SetNMEASentence(wxString &sentence);
       void SetPositionFix(PlugIn_Position_Fix &pfix);
       void SetCursorLatLon(double lat, double lon);
@@ -167,6 +169,7 @@ private:
       int               m_hide_id;
 
       NMEA0183             m_NMEA0183;                 // Used to parse NMEA Sentences
+      MyWeigh              m_MyWeigh;
       short                mPriPosition, mPriCOGSOG, mPriHeadingM, mPriHeadingT, mPriVar, mPriDateTime, mPriAWA, mPriTWA, mPriDepth;
       double               mVar;
       // FFU

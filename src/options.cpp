@@ -1242,11 +1242,11 @@ void options::CreatePanel_NMEA( size_t parent, int border_size, int group_item_s
     m_stSerProtocol->Wrap( -1 );
     fgSizer1->Add( m_stSerProtocol, 0, wxALL, 5 );
 
-    wxString m_choiceSerialProtocolChoices[] = { _("NMEA 0183"), _("NMEA 2000"), _("Seatalk") };
+    wxString m_choiceSerialProtocolChoices[] = { _("NMEA 0183"), _("NMEA 2000"), _("Seatalk"), _("MyWeigh") };
     int m_choiceSerialProtocolNChoices = sizeof( m_choiceSerialProtocolChoices ) / sizeof( wxString );
-    m_choiceSerialProtocol = new wxChoice( m_pNMEAForm, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_choiceSerialProtocolNChoices, m_choiceSerialProtocolChoices, 0 );
-    m_choiceSerialProtocol->SetSelection( 0 );
-    m_choiceSerialProtocol->Enable( false );
+    m_choiceSerialProtocol = new wxChoice( m_pNMEAForm, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_choiceSerialProtocolNChoices, m_choiceSerialProtocolChoices, 3 );
+    m_choiceSerialProtocol->SetSelection( 3 );
+    m_choiceSerialProtocol->Enable( true );
 
     fgSizer1->Add( m_choiceSerialProtocol, 1, wxEXPAND|wxTOP, 5 );
 
@@ -1465,9 +1465,9 @@ void options::CreatePanel_NMEA( size_t parent, int border_size, int group_item_s
         }
     }
     
-    ShowNMEACommon( false );
-    ShowNMEASerial( false );
-    ShowNMEANet( false );
+    ShowNMEACommon( true );
+    ShowNMEASerial( true );
+    ShowNMEANet( true );
     connectionsaved = true;
 }
 
@@ -3571,7 +3571,7 @@ ConnectionParams *options::CreateConnectionParamsFromSelectedItem()
     else
         pConnectionParams->OutputSentenceListType = BLACKLIST;
     pConnectionParams->Port = m_comboPort->GetValue().BeforeFirst(' ');
-    pConnectionParams->Protocol = PROTO_NMEA0183;
+//    pConnectionParams->Protocol = PROTO_NMEA0183;
 
     pConnectionParams->bEnabled = m_connection_enabled;
     pConnectionParams->b_IsSetup = false;

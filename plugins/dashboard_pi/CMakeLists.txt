@@ -176,7 +176,15 @@ SET(SRC_NMEA0183
 )
 INCLUDE_DIRECTORIES(src/nmea0183)
 
-ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRC_DASHBOARD} ${SRC_NMEA0183} )
+SET(SRC_MYWEIGH
+                src/myweigh/myweigh.cpp
+                src/myweigh/myweigh.hpp
+                src/myweigh/uw.cpp
+                src/myweigh/uw.hpp
+        )
+INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/src/myweigh)
+
+ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRC_DASHBOARD} ${SRC_NMEA0183} ${SRC_MYWEIGH})
 
 IF(WIN32)
     SET(OPENCPN_IMPORT_LIB "../../${CMAKE_CFG_INTDIR}/${PARENT}")
