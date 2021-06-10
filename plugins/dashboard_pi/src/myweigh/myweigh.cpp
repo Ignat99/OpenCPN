@@ -81,7 +81,7 @@ void MyWeigh::set_container_pointers( void )
    {
       this_response = (RESPONSE *) response_table[ index ];
 
-      this_response->SetContainer( this );
+      this_response->SetContainer1( this );
 
       index++;
    }

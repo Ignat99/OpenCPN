@@ -48,7 +48,7 @@ MyWeigh::MyWeigh()
 {
    initialize();
 
-   response_table.Append( (RESPONSE *) &Uw );
+//   response_table.Append( (RESPONSE *) &Uw );
 
    sort_response_table();
    set_container_pointers();
@@ -81,7 +81,7 @@ void MyWeigh::set_container_pointers( void )
    {
       this_response = (RESPONSE *) response_table[ index ];
 
-      this_response->SetContainer( this );
+      this_response->SetContainer1( this );
 
       index++;
    }

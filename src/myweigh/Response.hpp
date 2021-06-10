@@ -30,8 +30,8 @@
  */
 
 
-#if ! defined( RESPONSE_CLASS_HEADER )
-#define RESPONSE_CLASS_HEADER
+#if ! defined( RESPONSE1_CLASS_HEADER )
+#define RESPONSE1_CLASS_HEADER
 
 /*
 ** Author: Samuel R. Blackburn
@@ -71,10 +71,10 @@ class RESPONSE
       virtual bool Parse( const SENTENCE& sentence ) = 0;
       virtual const wxString& PlainEnglish( void );
       virtual void SetErrorMessage( const wxString& );
-      virtual void SetContainer( MyWeigh *container );
+      virtual void SetContainer1( MyWeigh *container );
       virtual bool Write( SENTENCE& sentence );
 };
 
 
  
-#endif // RESPONSE_CLASS_HEADER
+#endif // RESPONSE1_CLASS_HEADER

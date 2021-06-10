@@ -54,7 +54,7 @@ RESPONSE::~RESPONSE()
    ErrorMessage.Empty();
 }
 
-void RESPONSE::SetContainer( MyWeigh *container )
+void RESPONSE::SetContainer1( MyWeigh *container )
 {
    container_p = container;
 }

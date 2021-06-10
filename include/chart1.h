@@ -39,6 +39,7 @@
 #include "ocpn_types.h"
 
 #include "nmea0183.h"
+#include "myweigh.h"
 
 WX_DEFINE_ARRAY_INT(int, ArrayOfInts);
 
@@ -472,6 +473,7 @@ class MyFrame: public wxFrame
     ChartCanvas         *m_pchart_canvas;
 
     NMEA0183        m_NMEA0183;                 // Used to parse messages from NMEA threads
+    MyWeigh         m_MyWeigh;
 
     wxDateTime       m_MMEAeventTime;
     unsigned long    m_ulLastNEMATicktime;

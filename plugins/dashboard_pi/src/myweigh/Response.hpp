@@ -71,7 +71,7 @@ class RESPONSE
       virtual bool Parse( const SENTENCE& sentence ) = 0;
       virtual const wxString& PlainEnglish( void );
       virtual void SetErrorMessage( const wxString& );
-      virtual void SetContainer( MyWeigh *container );
+      virtual void SetContainer1( MyWeigh *container );
       virtual bool Write( SENTENCE& sentence );
 };
 
