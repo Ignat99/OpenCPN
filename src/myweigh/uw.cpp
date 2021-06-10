@@ -100,7 +100,7 @@ bool UW::Write( SENTENCE& sentence )
    ** Let the parent do its thing
    */
 
-   RESPONSE::Write( sentence );
+   RESPONSE1::Write( sentence );
 
    sentence += TotalMileage;
    sentence += _T("N");

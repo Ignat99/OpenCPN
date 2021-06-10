@@ -73,15 +73,15 @@ void MyWeigh::set_container_pointers( void )
    int index = 0;
    int number_of_entries_in_table = response_table.GetCount();
 
-   RESPONSE *this_response = (RESPONSE *) NULL;
+   RESPONSE1 *this_response = (RESPONSE1 *) NULL;
 
    index = 0;
 
    while( index < number_of_entries_in_table )
    {
-      this_response = (RESPONSE *) response_table[ index ];
+      this_response = (RESPONSE1 *) response_table[ index ];
 
-      this_response->SetContainer1( this );
+      this_response->SetContainer( this );
 
       index++;
    }
@@ -224,7 +224,7 @@ bool MyWeigh::Parse( void )
 
       LastSentenceIDReceived = mnemonic;
 
-      RESPONSE *response_p = (RESPONSE *) NULL;
+      RESPONSE1 *response_p = (RESPONSE1 *) NULL;
 
 
 //          Traverse the response list to find a mnemonic match
@@ -235,13 +235,13 @@ bool MyWeigh::Parse( void )
 
         while(node)
         {
-           RESPONSE *resp = node->GetData();
+           RESPONSE1 *resp = node->GetData();
 
             comparison = mnemonic.Cmp( resp->Mnemonic );
 
             if ( comparison == 0 )
             {
-                        response_p = (RESPONSE *) resp;
+                        response_p = (RESPONSE1 *) resp;
                         return_value = response_p->Parse( sentence );
 
                         /*

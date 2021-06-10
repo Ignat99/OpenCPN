@@ -63,7 +63,7 @@
 
 //#include "uw.hpp"
 
-WX_DECLARE_LIST(RESPONSE, MRL1);
+WX_DECLARE_LIST(RESPONSE1, MRL1);
 
 class MyWeigh
 {

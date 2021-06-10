@@ -31,6 +31,7 @@
 
 
 #include "myweigh.h"
+#include "uw.hpp"
 
 /*
 ** Author: Ignat
@@ -99,7 +100,7 @@ bool UW::Write( SENTENCE& sentence )
    ** Let the parent do its thing
    */
 
-   RESPONSE::Write( sentence );
+   RESPONSE1::Write( sentence );
 
    sentence += TotalMileage;
    sentence += _T("N");
@@ -112,6 +113,8 @@ bool UW::Write( SENTENCE& sentence )
    return( TRUE );
 }
 
+
+/*
 const UW& UW::operator = ( const UW& source )
 {
    TotalMileage = source.TotalMileage;
@@ -119,3 +122,4 @@ const UW& UW::operator = ( const UW& source )
    UnitWeighKg  = source.UnitWeighKg;
       return( *this );
 }
+*/

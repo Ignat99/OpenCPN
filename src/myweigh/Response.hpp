@@ -43,7 +43,7 @@
 
 class MyWeigh;
 
-class RESPONSE
+class RESPONSE1
 {
 
    private:
@@ -52,8 +52,8 @@ class RESPONSE
 
    public:
 
-      RESPONSE();
-      virtual ~RESPONSE();
+      RESPONSE1();
+      virtual ~RESPONSE1();
 
       /*
       ** Data
@@ -71,7 +71,7 @@ class RESPONSE
       virtual bool Parse( const SENTENCE& sentence ) = 0;
       virtual const wxString& PlainEnglish( void );
       virtual void SetErrorMessage( const wxString& );
-      virtual void SetContainer1( MyWeigh *container );
+      virtual void SetContainer( MyWeigh *container );
       virtual bool Write( SENTENCE& sentence );
 };
 

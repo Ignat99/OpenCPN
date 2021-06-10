@@ -136,7 +136,7 @@ public:
       wxString GetLongDescription();
 
 //    The optional method overrides
-      void SetSentence(wxString &sentence);
+//      void SetSentence(wxString &sentence);
       void SetNMEASentence(wxString &sentence);
       void SetPositionFix(PlugIn_Position_Fix &pfix);
       void SetCursorLatLon(double lat, double lon);

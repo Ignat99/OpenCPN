@@ -61,9 +61,9 @@
 ** Response Classes
 */
 
-#include "uw.hpp"
+//#include "uw.hpp"
 
-WX_DECLARE_LIST(RESPONSE, MRL1);
+WX_DECLARE_LIST(RESPONSE1, MRL1);
 
 class MyWeigh
 {
@@ -90,7 +90,7 @@ class MyWeigh
       ** NMEA 0183 Sentences we understand
       */
 
-      UW Uw;
+//      UW Uw;
 
       wxString ErrorMessage; // Filled when Parse returns FALSE
       wxString LastSentenceIDParsed; // ID of the lst sentence successfully parsed

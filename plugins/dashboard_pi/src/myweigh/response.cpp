@@ -47,26 +47,26 @@ RESPONSE::RESPONSE()
    ErrorMessage.Empty();
 }
 
-RESPONSE::~RESPONSE()
+RESPONSE1::~RESPONSE1()
 {
    Mnemonic.Empty();
    Talker.Empty();
    ErrorMessage.Empty();
 }
 
-void RESPONSE::SetContainer1( MyWeigh *container )
+void RESPONSE1::SetContainer( MyWeigh *container )
 {
    container_p = container;
 }
 
-void RESPONSE::SetErrorMessage( const wxString& error_message )
+void RESPONSE1::SetErrorMessage( const wxString& error_message )
 {
    ErrorMessage  = Mnemonic;
    ErrorMessage += _T(", ");
    ErrorMessage += error_message;
 }
 
-bool RESPONSE::Write( SENTENCE& sentence )
+bool RESPONSE1::Write( SENTENCE& sentence )
 {
    /*
    ** All NMEA0183 sentences begin with the mnemonic...
@@ -84,7 +84,7 @@ bool RESPONSE::Write( SENTENCE& sentence )
    return( TRUE );
 }
 
-const wxString& RESPONSE::PlainEnglish( void )
+const wxString& RESPONSE1::PlainEnglish( void )
 {
    static wxString return_string;
 

@@ -405,7 +405,7 @@ public:
 
       virtual void SetPositionFix(PlugIn_Position_Fix &pfix);
       virtual void SetNMEASentence(wxString &sentence);
-      virtual void SetSentence(wxString &sentence);
+//      virtual void SetSentence(wxString &sentence);
       virtual void SetAISSentence(wxString &sentence);
 
       virtual void ProcessParentResize(int x, int y);

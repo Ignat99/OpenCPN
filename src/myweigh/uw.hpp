@@ -41,7 +41,7 @@
 ** You can use it any way you like.
 */
 
-class UW : public RESPONSE
+class UW : public RESPONSE1
 {
 
    public:

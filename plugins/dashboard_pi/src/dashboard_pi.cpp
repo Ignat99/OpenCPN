@@ -504,6 +504,7 @@ void dashboard_pi::SendSatInfoToAllInstruments( int cnt, int seq, SAT_INFO sats[
     }
 }
 
+/*
 void dashboard_pi::SetSentence( wxString &sentence )
 {
     m_MyWeigh << sentence;
@@ -533,7 +534,7 @@ void dashboard_pi::SetSentence( wxString &sentence )
     }
 }
 
-
+*/
 void dashboard_pi::SetNMEASentence( wxString &sentence )
 {
     m_NMEA0183 << sentence;
