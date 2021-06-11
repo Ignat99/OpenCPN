@@ -63,8 +63,8 @@ class UW : public RESPONSE1
       */
 
       virtual void Empty( void );
-      virtual bool Parse( const SENTENCE& sentence );
-      virtual bool Write( SENTENCE& sentence );
+      virtual bool Parse( const SENTENCE1& sentence );
+      virtual bool Write( SENTENCE1& sentence );
 
       /*
       ** Operators

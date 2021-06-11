@@ -55,17 +55,17 @@ static const long long lNaN = 0xfff8000000000000;
 */
 
 
-SENTENCE::SENTENCE()
+SENTENCE1::SENTENCE1()
 {
    Sentence.Empty();
 }
 
-SENTENCE::~SENTENCE()
+SENTENCE1::~SENTENCE1()
 {
    Sentence.Empty();
 }
 
-MyWeigh_BOOLEAN SENTENCE::Boolean( int field_number ) const
+MyWeigh_BOOLEAN SENTENCE1::Boolean( int field_number ) const
 {
 //   ASSERT_VALID( this );
 
@@ -75,19 +75,20 @@ MyWeigh_BOOLEAN SENTENCE::Boolean( int field_number ) const
 
    if ( field_data.StartsWith(_T("A")) )
    {
-      return( NTrue );
+      return( MTrue );
    }
    else if ( field_data.StartsWith(_T("V")) )
    {
-      return( NFalse );
+      return( MFalse );
    }
    else
    {
-      return( Unknown0183 );
+      return( UnknownMyWeigh );
    }
 }
 
-COMMUNICATIONS_MODE SENTENCE::CommunicationsMode( int field_number ) const
+/*
+COMMUNICATIONS_MODE SENTENCE1::CommunicationsMode( int field_number ) const
 {
 //   ASSERT_VALID( this );
 
@@ -140,8 +141,8 @@ COMMUNICATIONS_MODE SENTENCE::CommunicationsMode( int field_number ) const
       return( CommunicationsModeUnknown );
    }
 }
-
-unsigned char SENTENCE::ComputeChecksum( void ) const
+*/
+unsigned char SENTENCE1::ComputeChecksum( void ) const
 {
    unsigned char checksum_value = 0;
 
@@ -160,7 +161,7 @@ unsigned char SENTENCE::ComputeChecksum( void ) const
    return( checksum_value );
 }
 
-double SENTENCE::Double( int field_number ) const
+double SENTENCE1::Double( int field_number ) const
 {
  //  ASSERT_VALID( this );
       if(Field( field_number ).Len() == 0)
@@ -174,8 +175,8 @@ double SENTENCE::Double( int field_number ) const
       
 }
 
-
-EASTWEST SENTENCE::EastOrWest( int field_number ) const
+/*
+EASTWEST SENTENCE1::EastOrWest( int field_number ) const
 {
 //   ASSERT_VALID( this );
 
@@ -196,8 +197,8 @@ EASTWEST SENTENCE::EastOrWest( int field_number ) const
       return( EW_Unknown );
    }
 }
-
-const wxString& SENTENCE::Field( int desired_field_number ) const
+*/
+const wxString& SENTENCE1::Field( int desired_field_number ) const
 {
 //   ASSERT_VALID( this );
 
@@ -238,7 +239,7 @@ const wxString& SENTENCE::Field( int desired_field_number ) const
    return( return_string );
 }
 
-int SENTENCE::GetNumberOfDataFields( void ) const
+int SENTENCE1::GetNumberOfDataFields( void ) const
 {
 //   ASSERT_VALID( this );
 
@@ -266,7 +267,7 @@ int SENTENCE::GetNumberOfDataFields( void ) const
    return( (int) current_field_number );
 }
 
-void SENTENCE::Finish( void )
+void SENTENCE1::Finish( void )
 {
 //   ASSERT_VALID( this );
 
@@ -278,7 +279,7 @@ void SENTENCE::Finish( void )
    Sentence += temp_string;
 }
 
-int SENTENCE::Integer( int field_number ) const
+int SENTENCE1::Integer( int field_number ) const
 {
 //   ASSERT_VALID( this );
     wxCharBuffer abuf = Field( field_number).ToUTF8();
@@ -288,7 +289,7 @@ int SENTENCE::Integer( int field_number ) const
     return( ::atoi( abuf.data() ));
 }
 
-MyWeigh_BOOLEAN SENTENCE::IsChecksumBad( int checksum_field_number ) const
+MyWeigh_BOOLEAN SENTENCE1::IsChecksumBad( int checksum_field_number ) const
 {
 //   ASSERT_VALID( this );
 
@@ -300,19 +301,19 @@ MyWeigh_BOOLEAN SENTENCE::IsChecksumBad( int checksum_field_number ) const
 
    if ( checksum_in_sentence == _T("") )
    {
-      return( Unknown0183 );
+      return( UnknownMyWeigh );
    }
 
    wxString check = checksum_in_sentence.Mid( 1 );
    if ( ComputeChecksum() != HexValue( check ) )
    {
-      return( NTrue );
+      return( MTrue );
    }
 
-   return( NFalse );
+   return( MFalse );
 }
-
-LEFTRIGHT SENTENCE::LeftOrRight( int field_number ) const
+/*
+LEFTRIGHT SENTENCE1::LeftOrRight( int field_number ) const
 {
 //   ASSERT_VALID( this );
 
@@ -334,7 +335,7 @@ LEFTRIGHT SENTENCE::LeftOrRight( int field_number ) const
    }
 }
 
-NORTHSOUTH SENTENCE::NorthOrSouth( int field_number ) const
+NORTHSOUTH SENTENCE1::NorthOrSouth( int field_number ) const
 {
 //   ASSERT_VALID( this );
 
@@ -355,8 +356,9 @@ NORTHSOUTH SENTENCE::NorthOrSouth( int field_number ) const
       return( NS_Unknown );
    }
 }
-
-REFERENCE SENTENCE::Reference( int field_number ) const
+*/
+/*
+REFERENCE SENTENCE1::Reference( int field_number ) const
 {
 //   ASSERT_VALID( this );
 
@@ -389,8 +391,9 @@ REFERENCE SENTENCE::Reference( int field_number ) const
       return( ReferenceUnknown );
    }
 }
-
-TRANSDUCER_TYPE SENTENCE::TransducerType( int field_number ) const
+*/
+/*
+TRANSDUCER_TYPE SENTENCE1::TransducerType( int field_number ) const
 {
 //   ASSERT_VALID( this );
 
@@ -443,19 +446,19 @@ TRANSDUCER_TYPE SENTENCE::TransducerType( int field_number ) const
       return( TransducerUnknown );
    }
 }
-
+*/
 /*
 ** Operators
 */
 
-SENTENCE::operator wxString() const
+SENTENCE1::operator wxString() const
 {
 //   ASSERT_VALID( this );
 
    return( Sentence );
 }
 
-const SENTENCE& SENTENCE::operator = ( const SENTENCE& source )
+const SENTENCE1& SENTENCE1::operator = ( const SENTENCE1& source )
 {
 //   ASSERT_VALID( this );
 
@@ -464,7 +467,7 @@ const SENTENCE& SENTENCE::operator = ( const SENTENCE& source )
    return( *this );
 }
 
-const SENTENCE& SENTENCE::operator = ( const wxString& source )
+const SENTENCE1& SENTENCE1::operator = ( const wxString& source )
 {
 //   ASSERT_VALID( this );
 
@@ -473,7 +476,7 @@ const SENTENCE& SENTENCE::operator = ( const wxString& source )
    return( *this );
 }
 
-const SENTENCE& SENTENCE::operator += ( const wxString& source )
+const SENTENCE1& SENTENCE1::operator += ( const wxString& source )
 {
 //   ASSERT_VALID( this );
 
@@ -483,7 +486,7 @@ const SENTENCE& SENTENCE::operator += ( const wxString& source )
    return( *this );
 }
 
-const SENTENCE& SENTENCE::operator += ( double value )
+const SENTENCE1& SENTENCE1::operator += ( double value )
 {
 //   ASSERT_VALID( this );
 
@@ -497,7 +500,7 @@ const SENTENCE& SENTENCE::operator += ( double value )
    return( *this );
 }
 
-SENTENCE& SENTENCE::Add ( double value, int precision )
+SENTENCE1& SENTENCE1::Add ( double value, int precision )
 {
 //   ASSERT_VALID( this );
 
@@ -512,7 +515,9 @@ SENTENCE& SENTENCE::Add ( double value, int precision )
 
     return( *this );
 }
-const SENTENCE& SENTENCE::operator += ( COMMUNICATIONS_MODE mode )
+
+/*
+const SENTENCE1& SENTENCE1::operator += ( COMMUNICATIONS_MODE mode )
 {
 //   ASSERT_VALID( this );
 
@@ -577,8 +582,10 @@ const SENTENCE& SENTENCE::operator += ( COMMUNICATIONS_MODE mode )
 
    return( *this );
 }
+*/
 
-const SENTENCE& SENTENCE::operator += ( TRANSDUCER_TYPE transducer )
+/*
+const SENTENCE1& SENTENCE1::operator += ( TRANSDUCER_TYPE transducer )
 {
 //   ASSERT_VALID( this );
 
@@ -645,8 +652,9 @@ const SENTENCE& SENTENCE::operator += ( TRANSDUCER_TYPE transducer )
 
    return( *this );
 }
-
-const SENTENCE& SENTENCE::operator += ( NORTHSOUTH northing )
+*/
+/*
+const SENTENCE1& SENTENCE1::operator += ( NORTHSOUTH northing )
 {
 //   ASSERT_VALID( this );
 
@@ -663,8 +671,9 @@ const SENTENCE& SENTENCE::operator += ( NORTHSOUTH northing )
 
    return( *this );
 }
+*/
 
-const SENTENCE& SENTENCE::operator += ( int value )
+const SENTENCE1& SENTENCE1::operator += ( int value )
 {
 //   ASSERT_VALID( this );
 
@@ -678,7 +687,8 @@ const SENTENCE& SENTENCE::operator += ( int value )
    return( *this );
 }
 
-const SENTENCE& SENTENCE::operator += ( EASTWEST easting )
+/*
+const SENTENCE1& SENTENCE1::operator += ( EASTWEST easting )
 {
 //   ASSERT_VALID( this );
 
@@ -695,18 +705,19 @@ const SENTENCE& SENTENCE::operator += ( EASTWEST easting )
 
    return( *this );
 }
+*/
 
-const SENTENCE& SENTENCE::operator += ( NMEA0183_BOOLEAN boolean )
+const SENTENCE1& SENTENCE1::operator += ( MyWeigh_BOOLEAN boolean )
 {
 //   ASSERT_VALID( this );
 
     Sentence += _T(",");
 
-   if ( boolean == NTrue )
+   if ( boolean == MTrue )
    {
        Sentence += _T("A");
    }
-   else if ( boolean == NFalse )
+   else if ( boolean == MFalse )
    {
        Sentence += _T("V");
    }
@@ -714,7 +725,8 @@ const SENTENCE& SENTENCE::operator += ( NMEA0183_BOOLEAN boolean )
    return( *this );
 }
 
-const SENTENCE& SENTENCE::operator += ( LATLONG& source )
+/*
+const SENTENCE1& SENTENCE1::operator += ( LATLONG& source )
 {
 //   ASSERT_VALID( this );
 
@@ -722,3 +734,4 @@ const SENTENCE& SENTENCE::operator += ( LATLONG& source )
 
    return( *this );
 }
+*/

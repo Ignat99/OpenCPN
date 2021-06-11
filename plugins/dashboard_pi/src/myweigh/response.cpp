@@ -41,7 +41,7 @@
 */
 
 
-RESPONSE::RESPONSE()
+RESPONSE1::RESPONSE1()
 {
    Talker.Empty();
    ErrorMessage.Empty();
@@ -66,7 +66,7 @@ void RESPONSE1::SetErrorMessage( const wxString& error_message )
    ErrorMessage += error_message;
 }
 
-bool RESPONSE1::Write( SENTENCE& sentence )
+bool RESPONSE1::Write( SENTENCE1& sentence )
 {
    /*
    ** All NMEA0183 sentences begin with the mnemonic...

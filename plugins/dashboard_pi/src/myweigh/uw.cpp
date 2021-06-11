@@ -59,7 +59,7 @@ void UW::Empty( void )
    TripMileage  = 0.0;
    }
 
-bool UW::Parse( const SENTENCE& sentence )
+bool UW::Parse( const SENTENCE1& sentence )
 {
    /*
    UW - Unit Waigh 
@@ -94,7 +94,7 @@ bool UW::Parse( const SENTENCE& sentence )
    return( TRUE );
 }
 
-bool UW::Write( SENTENCE& sentence )
+bool UW::Write( SENTENCE1& sentence )
 {
    /*
    ** Let the parent do its thing

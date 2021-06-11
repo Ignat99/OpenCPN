@@ -70,7 +70,7 @@ class MyWeigh
 
    private:
 
-      SENTENCE sentence;
+      SENTENCE1 sentence;
 
       void initialize( void );
 

@@ -177,13 +177,19 @@ SET(SRC_NMEA0183
 INCLUDE_DIRECTORIES(src/nmea0183)
 
 SET(SRC_MYWEIGH
+                src/myweigh/Sentence.hpp
+                src/myweigh/sentence.cpp
+                src/myweigh/Response.hpp
+                src/myweigh/response.cpp
                 src/myweigh/myweigh.cpp
                 src/myweigh/myweigh.hpp
+                src/myweigh/myweigh.h
                 src/myweigh/uw.cpp
                 src/myweigh/uw.hpp
         )
 INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/src/myweigh)
 
+##ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRC_DASHBOARD} ${SRC_NMEA0183} ${SRC_MYWEIGH})
 ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRC_DASHBOARD} ${SRC_NMEA0183})
 
 IF(WIN32)

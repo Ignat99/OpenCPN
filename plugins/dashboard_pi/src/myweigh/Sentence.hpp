@@ -30,8 +30,8 @@
  */
 
 
-#if ! defined( SENTENCE_CLASS_HEADER )
-#define SENTENCE_CLASS_HEADER
+#if ! defined( SENTENCE1_CLASS_HEADER )
+#define SENTENCE1_CLASS_HEADER
 
 /*
 ** Author: Samuel R. Blackburn
@@ -43,14 +43,14 @@
 
 class LATLONG;
 
-class SENTENCE 
+class SENTENCE1 
 {
-//   DECLARE_DYNAMIC( SENTENCE )
+//   DECLARE_DYNAMIC( SENTENCE1 )
 
    public:
 
-      SENTENCE();
-      virtual ~SENTENCE();
+      SENTENCE1();
+      virtual ~SENTENCE1();
 
       /*
       ** Data
@@ -62,7 +62,8 @@ class SENTENCE
       ** Methods
       */
 
-//      virtual unsigned char ComputeChecksum( void ) const;
+      virtual MyWeigh_BOOLEAN Boolean( int field_number ) const;
+      virtual unsigned char ComputeChecksum( void ) const;
 //      virtual COMMUNICATIONS_MODE CommunicationsMode( int field_number ) const;
       virtual double Double( int field_number ) const;
 //      virtual EASTWEST EastOrWest( int field_number ) const;
@@ -75,24 +76,24 @@ class SENTENCE
 //      virtual NORTHSOUTH NorthOrSouth( int field_number ) const;
 //      virtual REFERENCE Reference( int field_number ) const;
 //      virtual TRANSDUCER_TYPE TransducerType( int field_number ) const;
-      virtual SENTENCE& Add ( double value, int precision); // Added to allow precision to be changed
+      virtual SENTENCE1& Add ( double value, int precision); // Added to allow precision to be changed
 
       /*
       ** Operators
       */
 
       operator wxString() const; 
-      virtual const SENTENCE& operator  = ( const SENTENCE& source );
-      virtual const SENTENCE& operator  = ( const wxString& source );
-      virtual const SENTENCE& operator += ( const wxString& source );
-      virtual const SENTENCE& operator += ( double value );
-//      virtual const SENTENCE& operator += ( NORTHSOUTH northing );
-//      virtual const SENTENCE& operator += ( COMMUNICATIONS_MODE mode );
-      virtual const SENTENCE& operator += ( int value );
-//      virtual const SENTENCE& operator += ( EASTWEST easting );
-//      virtual const SENTENCE& operator += ( TRANSDUCER_TYPE transducer );
-      virtual const SENTENCE& operator += ( MyWeigh_BOOLEAN boolean );
-//      virtual const SENTENCE& operator += ( LATLONG& source );
+      virtual const SENTENCE1& operator  = ( const SENTENCE1& source );
+      virtual const SENTENCE1& operator  = ( const wxString& source );
+      virtual const SENTENCE1& operator += ( const wxString& source );
+      virtual const SENTENCE1& operator += ( double value );
+//      virtual const SENTENCE1& operator += ( NORTHSOUTH northing );
+//      virtual const SENTENCE1& operator += ( COMMUNICATIONS_MODE mode );
+      virtual const SENTENCE1& operator += ( int value );
+//      virtual const SENTENCE1& operator += ( EASTWEST easting );
+//      virtual const SENTENCE1& operator += ( TRANSDUCER_TYPE transducer );
+      virtual const SENTENCE1& operator += ( MyWeigh_BOOLEAN boolean );
+//      virtual const SENTENCE1& operator += ( LATLONG& source );
 };
  
-#endif // SENTENCE_CLASS_HEADER
+#endif // SENTENCE1_CLASS_HEADER

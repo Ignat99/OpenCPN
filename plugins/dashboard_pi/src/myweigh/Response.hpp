@@ -68,11 +68,11 @@ class RESPONSE1
       */
 
       virtual void Empty( void ) = 0;
-      virtual bool Parse( const SENTENCE& sentence ) = 0;
+      virtual bool Parse( const SENTENCE1& sentence ) = 0;
       virtual const wxString& PlainEnglish( void );
       virtual void SetErrorMessage( const wxString& );
       virtual void SetContainer( MyWeigh *container );
-      virtual bool Write( SENTENCE& sentence );
+      virtual bool Write( SENTENCE1& sentence );
 };
 
 
