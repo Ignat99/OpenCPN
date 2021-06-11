@@ -1,11 +1,11 @@
 /***************************************************************************
  *
  * Project:  OpenCPN
- * Purpose:  MyWeigh Support Classes
- * Author:   Ignat
+ * Purpose:  NMEA0183 Support Classes
+ * Author:   Samuel R. Blackburn, David S. Register
  *
  ***************************************************************************
- *   Copyright (C) 2021 by Ignat           *
+ *   Copyright (C) 2010 by Samuel R. Blackburn, David S Register           *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -30,83 +30,51 @@
  */
 
 
-#if ! defined( MyWeigh_CLASS_HEADER )
-#define MyWeigh_CLASS_HEADER
+#if ! defined( RESPONSE1_CLASS_HEADER )
+#define RESPONSE1_CLASS_HEADER
 
 /*
-** Author: Ignat
+** Author: Samuel R. Blackburn
 ** CI$: 76300,326
-** Internet: ignat@claroflex.com
+** Internet: sammy@sed.csc.com
 **
 ** You can use it any way you like.
 */
 
-/*
-** General Purpose Classes
-*/
+class MyWeigh;
 
-#include "Sentence.hpp"
-#include "Response1.hpp"
-//#include "LatLong.hpp"
-//#include "LoranTD.hpp"
-//#include "Manufact.hpp"
-//#include "MList.hpp"
-//#include "OmegaPar.hpp"
-//#include "DeccaLOP.hpp"
-//#include "RatioPls.hpp"
-//#include "RadarDat.hpp"
-//#include "FreqMode.hpp"
-
-/*
-** Response Classes
-*/
-
-//#include "uw.hpp"
-
-WX_DECLARE_LIST(RESPONSE1, MRL1);
-
-class MyWeigh
+class RESPONSE1
 {
 
    private:
 
-      SENTENCE sentence;
-
-      void initialize( void );
-
-   protected:
-
-      MRL1 response_table;
-
-      void set_container_pointers( void );
-      void sort_response_table( void );
+      MyWeigh *container_p;
 
    public:
 
-      MyWeigh();
-      virtual ~MyWeigh();
+      RESPONSE1();
+      virtual ~RESPONSE1();
 
       /*
-      ** NMEA 0183 Sentences we understand
+      ** Data
       */
 
-//      UW Uw;
+      wxString ErrorMessage;
+      wxString Mnemonic;
+      wxString Talker;
 
-      wxString ErrorMessage; // Filled when Parse returns FALSE
-      wxString LastSentenceIDParsed; // ID of the lst sentence successfully parsed
-      wxString LastSentenceIDReceived; // ID of the last sentence received, may not have parsed successfully
+      /*
+      ** Methods
+      */
 
-      wxString TalkerID;
-      wxString ExpandedTalkerID;
-
-//      MANUFACTURER_LIST Manufacturers;
-
-      bool IsGood( void ) const;
-      bool Parse( void );
-      bool PreParse( void );
-
-      MyWeigh& operator << ( wxString& source );
-      MyWeigh& operator >> ( wxString& destination );
+      virtual void Empty( void ) = 0;
+      virtual bool Parse( const SENTENCE& sentence ) = 0;
+      virtual const wxString& PlainEnglish( void );
+      virtual void SetErrorMessage( const wxString& );
+      virtual void SetContainer( MyWeigh *container );
+      virtual bool Write( SENTENCE& sentence );
 };
 
-#endif // MyWeigh_CLASS_HEADER
+
+ 
+#endif // RESPONSE1_CLASS_HEADER

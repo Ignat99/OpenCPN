@@ -1166,11 +1166,12 @@ void PlugInManager::SendNMEASentenceToAllPlugIns(const wxString &sentence)
     for(unsigned int i = 0 ; i < plugin_array.GetCount() ; i++)
     {
         PlugInContainer *pic = plugin_array.Item(i);
+        pic->m_pplugin->SetSentence(decouple_sentence);
+
         if(pic->m_bEnabled && pic->m_bInitState)
         {
             if(pic->m_cap_flag & WANTS_NMEA_SENTENCES)
                 pic->m_pplugin->SetNMEASentence(decouple_sentence);
-//                pic->m_pplugin->SetSentence(decouple_sentence);
         }
     }
 }
@@ -2669,8 +2670,8 @@ void opencpn_plugin::SetPositionFix(PlugIn_Position_Fix &pfix)
 void opencpn_plugin::SetNMEASentence(wxString &sentence)
 {}
 
-//void opencpn_plugin::SetSentence(wxString &sentence)
-//{}
+void opencpn_plugin::SetSentence(wxString &sentence)
+{}
 
 void opencpn_plugin::SetAISSentence(wxString &sentence)
 {}

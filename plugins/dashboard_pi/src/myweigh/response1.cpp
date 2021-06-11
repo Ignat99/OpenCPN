@@ -1,11 +1,11 @@
 /***************************************************************************
  *
  * Project:  OpenCPN
- * Purpose:  MyWeigh Support Classes
- * Author:   Ignat
+ * Purpose:  NMEA0183 Support Classes
+ * Author:   Samuel R. Blackburn, David S. Register
  *
  ***************************************************************************
- *   Copyright (C) 2021 by Ignat           *
+ *   Copyright (C) 2010 by Samuel R. Blackburn, David S Register           *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -30,83 +30,65 @@
  */
 
 
-#if ! defined( MyWeigh_CLASS_HEADER )
-#define MyWeigh_CLASS_HEADER
+#include "myweigh.h"
 
 /*
-** Author: Ignat
+** Author: Samuel R. Blackburn
 ** CI$: 76300,326
-** Internet: ignat@claroflex.com
+** Internet: sammy@sed.csc.com
 **
 ** You can use it any way you like.
 */
 
-/*
-** General Purpose Classes
-*/
 
-#include "Sentence.hpp"
-#include "Response1.hpp"
-//#include "LatLong.hpp"
-//#include "LoranTD.hpp"
-//#include "Manufact.hpp"
-//#include "MList.hpp"
-//#include "OmegaPar.hpp"
-//#include "DeccaLOP.hpp"
-//#include "RatioPls.hpp"
-//#include "RadarDat.hpp"
-//#include "FreqMode.hpp"
-
-/*
-** Response Classes
-*/
-
-//#include "uw.hpp"
-
-WX_DECLARE_LIST(RESPONSE1, MRL1);
-
-class MyWeigh
+RESPONSE1::RESPONSE1()
 {
+   Talker.Empty();
+   ErrorMessage.Empty();
+}
 
-   private:
+RESPONSE1::~RESPONSE1()
+{
+   Mnemonic.Empty();
+   Talker.Empty();
+   ErrorMessage.Empty();
+}
 
-      SENTENCE sentence;
+void RESPONSE1::SetContainer( MyWeigh *container )
+{
+   container_p = container;
+}
 
-      void initialize( void );
+void RESPONSE1::SetErrorMessage( const wxString& error_message )
+{
+   ErrorMessage  = Mnemonic;
+   ErrorMessage += _T(", ");
+   ErrorMessage += error_message;
+}
 
-   protected:
+bool RESPONSE1::Write( SENTENCE& sentence )
+{
+   /*
+   ** All NMEA0183 sentences begin with the mnemonic...
+   */
 
-      MRL1 response_table;
+    sentence  = _T("$");
 
-      void set_container_pointers( void );
-      void sort_response_table( void );
+    if(NULL == container_p)
+          sentence.Sentence.Append(_T("--"));
+    else
+          sentence.Sentence.Append(container_p->TalkerID);
 
-   public:
+    sentence.Sentence.Append(Mnemonic);
 
-      MyWeigh();
-      virtual ~MyWeigh();
+   return( TRUE );
+}
 
-      /*
-      ** NMEA 0183 Sentences we understand
-      */
+const wxString& RESPONSE1::PlainEnglish( void )
+{
+   static wxString return_string;
 
-//      UW Uw;
+   return_string.Empty();
 
-      wxString ErrorMessage; // Filled when Parse returns FALSE
-      wxString LastSentenceIDParsed; // ID of the lst sentence successfully parsed
-      wxString LastSentenceIDReceived; // ID of the last sentence received, may not have parsed successfully
-
-      wxString TalkerID;
-      wxString ExpandedTalkerID;
-
-//      MANUFACTURER_LIST Manufacturers;
-
-      bool IsGood( void ) const;
-      bool Parse( void );
-      bool PreParse( void );
-
-      MyWeigh& operator << ( wxString& source );
-      MyWeigh& operator >> ( wxString& destination );
-};
-
-#endif // MyWeigh_CLASS_HEADER
+   return( return_string );
+}

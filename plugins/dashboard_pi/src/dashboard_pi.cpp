@@ -504,37 +504,43 @@ void dashboard_pi::SendSatInfoToAllInstruments( int cnt, int seq, SAT_INFO sats[
     }
 }
 
-/*
+
 void dashboard_pi::SetSentence( wxString &sentence )
 {
     m_MyWeigh << sentence;
 
     bool bGoodData = false;
 
-    if( m_MyWeigh.PreParse() )
-    {
-        if( m_MyWeigh.LastSentenceIDReceived == _T("U.W."))
-        {
-            if( m_MyWeigh.Parse() )
-            {
+//    if( m_MyWeigh.PreParse() )
+//    {
+//        if( m_MyWeigh.LastSentenceIDReceived == _T("U.W."))
+//        {
+//            if( m_MyWeigh.Parse() )
+//            {
                 double unit_weigh = 0.0;
-                if(m_MyWeigh.Uw.IsDataValid == MTrue)
-                {
-                    unit_weigh = m_MyWeigh.Uw.UnitWeighKg;
+//                if(m_MyWeigh.Uw.IsDataValid == MTrue)
+//                {
+//                    unit_weigh = m_MyWeigh.Uw.UnitWeighKg;
                     bGoodData = true;
-                    SendSentenceToAllInstruments( OCPN_DBP_WEIGH, toUsrDistance_Plugin( unit_weigh / 1.0, g_iDashDepthUnit ), getUsrDistanceUnit_Plugin( g_iDashDepthUnit ) );
-                }
-            }
-        }
-    }
+                    unit_weigh = 100.0;
+                    SendSentenceToAllInstruments( OCPN_DBP_WEIGH, unit_weigh, "kg" );
+                    unit_weigh = 500.0;
+                    SendSentenceToAllInstruments( OCPN_DBP_UNIT_WEIGH, unit_weigh, "kg/pcs" );
+                    unit_weigh = 25.0;
+//                  getUsrDistanceUnit_Plugin( g_iDashDepthUnit )
+                    SendSentenceToAllInstruments( OCPN_DBP_TOTAL_QUANTITY, unit_weigh, "pcs" );
+//                }
+//            }
+//        }
+//    }
 
-    if(bGoodData)
-    {
+//    if(bGoodData)
+//    {
 //        Refresh(false);
-    }
+//    }
 }
 
-*/
+
 void dashboard_pi::SetNMEASentence( wxString &sentence )
 {
     m_NMEA0183 << sentence;

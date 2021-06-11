@@ -299,9 +299,9 @@ wxSize DashboardInstrument_Weight::GetSize( int orient, wxSize hint )
       dc.GetTextExtent(_T("000"), &w, &m_DataHeight, 0, 0, g_pFontData);
 
       if( orient == wxHORIZONTAL ) {
-          return wxSize( DefaultWidth, wxMax(hint.y, m_TitleHeight+m_DataHeight) );
+          return wxSize( DefaultWidth+100, wxMax(hint.y, m_TitleHeight+m_DataHeight) );
       } else {
-          return wxSize( wxMax(hint.x, DefaultWidth), m_TitleHeight+m_DataHeight );
+          return wxSize( wxMax(hint.x, DefaultWidth)+100, m_TitleHeight+m_DataHeight );
       }
 }
 
