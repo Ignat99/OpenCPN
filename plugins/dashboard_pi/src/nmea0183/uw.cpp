@@ -45,6 +45,7 @@ UW::UW()
 {
    Mnemonic = _T("UW");
    Empty();
+   IsDataValid = NTrue;
 }
 
 UW::~UW()
