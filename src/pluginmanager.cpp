@@ -1162,7 +1162,8 @@ void PlugInManager::SetCanvasContextMenuItemGrey(int item, bool grey)
 
 void PlugInManager::SendNMEASentenceToAllPlugIns(const wxString &sentence)
 {
-    wxString decouple_sentence(sentence); // decouples 'const wxString &' and 'wxString &' to keep bin compat for plugins
+    wxString sentence1 = "G.W. :+ 0.1155kg";
+    wxString decouple_sentence(sentence1); // decouples 'const wxString &' and 'wxString &' to keep bin compat for plugins
     for(unsigned int i = 0 ; i < plugin_array.GetCount() ; i++)
     {
         PlugInContainer *pic = plugin_array.Item(i);

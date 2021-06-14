@@ -465,6 +465,16 @@ ADD_LIBRARY(NMEA0183 ${SRC_NMEA0183})
 INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/src/nmea0183)
 
 
+SET(SRC_MYWEIGH
+		src/myweigh/myweigh.cpp
+		src/myweigh/myweigh.hpp
+		src/myweigh/uw.cpp
+		src/myweigh/uw.hpp
+	)
+ADD_LIBRARY(MYWEIGH ${SRC_MYWEIGH})
+INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/src/myweigh)
+
+
 #IF(NOT WIN32)
 #OPTION (USE_GPSD "Enable GPSD Library" ON)
 #IF (USE_GPSD)
@@ -1175,6 +1185,7 @@ ENDIF(BUNDLE_DOCS MATCHES "ON")
 TARGET_LINK_LIBRARIES(${PACKAGE_NAME}
       ${wxWidgets_LIBRARIES}
       NMEA0183
+      MYWEIGH
       ${EXTRA_LIBS}
       )
 
@@ -1196,6 +1207,7 @@ If(NOT APPLE)
 TARGET_LINK_LIBRARIES(${PACKAGE_NAME}
       ${wxWidgets_LIBRARIES}
       NMEA0183
+      MYWEIGH
       ${EXTRA_LIBS}
       )
 ENDIF(NOT APPLE)

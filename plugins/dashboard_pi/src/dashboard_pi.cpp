@@ -507,23 +507,40 @@ void dashboard_pi::SendSatInfoToAllInstruments( int cnt, int seq, SAT_INFO sats[
 
 void dashboard_pi::SetSentence( wxString &sentence )
 {
-    m_MyWeigh << sentence;
+//    m_MyWeigh << sentence;
+    m_NMEA0183 << sentence;
+//    wxCharBuffer buf = sentence.ToUTF8();
+//    wxString mnemonic = buf+1;
+//    mnemonic = mnemonic+2;
 
     bool bGoodData = false;
 
-//    if( m_MyWeigh.PreParse() )
-//    {
-//        if( m_MyWeigh.LastSentenceIDReceived == _T("U.W."))
-//        {
-//            if( m_MyWeigh.Parse() )
+    if( m_NMEA0183.PreParse1() )
+    {
+        if( m_NMEA0183.LastSentenceIDReceived == _T("kg"))
+        {
+            if( m_NMEA0183.Parse1() )
+            {
+                double unit_weigh = 0.0;
+//                if(m_MyWeigh.Uw.IsDataValid == MTrue)
+//                {
+//                    unit_weigh = m_NMEA0183.Uw.UnitWeighKg;
+                    bGoodData = true;
+                    unit_weigh = 0.0;
+                    SendSentenceToAllInstruments( OCPN_DBP_WEIGH, unit_weigh, m_NMEA0183.LastSentenceIDReceived );
+//                }
+            }
+        }
+
+
+        if( m_NMEA0183.LastSentenceIDReceived == _T("cs"))
+        {
+//            if( m_NMEA0183.Parse1() )
 //            {
                 double unit_weigh = 0.0;
 //                if(m_MyWeigh.Uw.IsDataValid == MTrue)
 //                {
 //                    unit_weigh = m_MyWeigh.Uw.UnitWeighKg;
-                    bGoodData = true;
-                    unit_weigh = 100.0;
-                    SendSentenceToAllInstruments( OCPN_DBP_WEIGH, unit_weigh, "kg" );
                     unit_weigh = 500.0;
                     SendSentenceToAllInstruments( OCPN_DBP_UNIT_WEIGH, unit_weigh, "kg/pcs" );
                     unit_weigh = 25.0;
@@ -531,8 +548,9 @@ void dashboard_pi::SetSentence( wxString &sentence )
                     SendSentenceToAllInstruments( OCPN_DBP_TOTAL_QUANTITY, unit_weigh, "pcs" );
 //                }
 //            }
-//        }
-//    }
+        }
+
+    }
 
 //    if(bGoodData)
 //    {
