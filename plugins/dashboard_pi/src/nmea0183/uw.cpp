@@ -45,7 +45,6 @@ UW::UW()
 {
    Mnemonic = _T("UW");
    Empty();
-   IsDataValid = NTrue;
 }
 
 UW::~UW()
@@ -58,6 +57,8 @@ void UW::Empty( void )
 {
    TotalMileage = 0.0;
    TripMileage  = 0.0;
+   IsDataValid = NTrue;
+   UnitWeighKg = 10.0;
    }
 
 bool UW::Parse( const SENTENCE& sentence )
@@ -82,15 +83,15 @@ bool UW::Parse( const SENTENCE& sentence )
    ** First we check the checksum...
    */
 
-   if ( sentence.IsChecksumBad( 5 ) == TRUE )
-   {
-      SetErrorMessage( _T("Invalid Checksum") );
-      return( FALSE );
-   }
+//   if ( sentence.IsChecksumBad( 5 ) == TRUE )
+//   {
+//      SetErrorMessage( _T("Invalid Checksum") );
+//      return( FALSE );
+//   }
 
-   TotalMileage = sentence.Double( 1 );
-   TripMileage  = sentence.Double( 3 );
-   UnitWeighKg  = sentence.Double( 2 );
+//   TotalMileage = sentence.Double( 1 );
+   UnitWeighKg = sentence.Double( 1 );
+//   TripMileage  = sentence.Double( 3 );
 
    return( TRUE );
 }

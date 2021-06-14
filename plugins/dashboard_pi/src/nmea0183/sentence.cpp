@@ -135,6 +135,7 @@ unsigned char SENTENCE::ComputeChecksum( void ) const
    int index = 1; // Skip over the $ at the begining of the sentence
 
    while( index < string_length    &&
+       Sentence[ index ] != ' ' &&
        Sentence[ index ] != '*' &&
        Sentence[ index ] != CARRIAGE_RETURN &&
        Sentence[ index ] != LINE_FEED )
@@ -194,7 +195,7 @@ const wxString& SENTENCE::Field( int desired_field_number ) const
 
    while( current_field_number < desired_field_number && index < string_length )
    {
-      if ( Sentence[ index ] == ',' || Sentence[ index ] == '*' )
+      if ( Sentence[ index ] == ' ' || Sentence[ index ] == ',' || Sentence[ index ] == '*' )
       {
          current_field_number++;
       }
@@ -208,6 +209,7 @@ const wxString& SENTENCE::Field( int desired_field_number ) const
    if ( current_field_number == desired_field_number )
    {
       while( index < string_length    &&
+             Sentence[ index ] != ' ' &&
              Sentence[ index ] != ',' &&
              Sentence[ index ] != '*' &&
              Sentence[ index ] != 0x00 )
@@ -239,6 +241,11 @@ int SENTENCE::GetNumberOfDataFields( void ) const
       }
 
       if ( Sentence[ index ] == ',' )
+      {
+         current_field_number++;
+      }
+
+      if ( Sentence[ index ] == ' ' )
       {
          current_field_number++;
       }
