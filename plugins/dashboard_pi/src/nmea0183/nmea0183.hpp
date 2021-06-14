@@ -113,7 +113,7 @@
 #include "zda.hpp"
 #include "vlw.hpp"
 #include "xte.hpp"
-//#include "uw.hpp"
+#include "uw.hpp"
 /*
 #include "ROT.hpp"
 #include "RPM.hpp"
@@ -250,7 +250,7 @@ class NMEA0183
       XTR Xtr;
 */
       ZDA Zda;
-//      UW Uw;
+      UW Uw;
 /*
       ZFO Zfo;
       ZTG Ztg;

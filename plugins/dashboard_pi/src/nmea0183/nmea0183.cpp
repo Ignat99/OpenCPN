@@ -137,6 +137,9 @@ NMEA0183::NMEA0183()
    response_table.Append( (RESPONSE *) &Zfo );
    response_table.Append( (RESPONSE *) &Ztg );
 */
+   response_table.Append( (RESPONSE *) &Uw );
+
+
    sort_response_table();
    set_container_pointers();
 }
@@ -287,7 +290,7 @@ bool NMEA0183::PreParse1( void )
     wxCharBuffer buf = sentence.Sentence.ToUTF8();
     if( !buf.data() )                            // badly formed sentence?
         return false;
-    
+
       if ( IsGood1() )
       {
             wxString mnemonic = sentence.Field( 0 );
@@ -314,7 +317,7 @@ bool NMEA0183::PreParse( void )
     wxCharBuffer buf = sentence.Sentence.ToUTF8();
     if( !buf.data() )                            // badly formed sentence?
         return false;
-    
+
       if ( IsGood() )
       {
             wxString mnemonic = sentence.Field( 0 );
@@ -349,14 +352,15 @@ bool NMEA0183::Parse1( void )
       wxString mnemonic = sentence.Field( 0 );
 
 
-//      if ( mnemonic.Left( 1 ) == 'W' )
-//      {
-//          mnemonic = _T("W");
-//      }
-//      else
-//      {
+      if ( mnemonic.Left( 1 ) == '.' )
+      {
+          mnemonic = _T(".");
+      }
+      else
+      {
          mnemonic = mnemonic.Right( 8 );
-//      }
+//         mnemonic = mnemonic.Left( 1 );
+      }
 
 
       ErrorMessage = mnemonic;
@@ -364,15 +368,15 @@ bool NMEA0183::Parse1( void )
 
       LastSentenceIDReceived = mnemonic;
 
-//      RESPONSE *response_p = (RESPONSE *) NULL;
+      RESPONSE *response_p = (RESPONSE *) NULL;
 
 
 //          Traverse the response list to find a mnemonic match
 
-//       wxMRLNode *node = response_table.GetFirst();
+       wxMRLNode *node = response_table.GetFirst();
 
-//       int comparison  = 0;
-/*
+       int comparison  = 0;
+
         while(node)
         {
            RESPONSE *resp = node->GetData();
@@ -402,12 +406,12 @@ bool NMEA0183::Parse1( void )
 
               node = node->GetNext();
         }
-*/
+
    }
-//   else
-//   {
-//      return_value = FALSE;
-//   }
+   else
+   {
+      return_value = FALSE;
+   }
 
    return( return_value );
 }
