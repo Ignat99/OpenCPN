@@ -517,8 +517,8 @@ void dashboard_pi::SetSentence( wxString &sentence )
 
     if( m_NMEA0183.PreParse1() )
     {
-        if( m_NMEA0183.LastSentenceIDReceived == _T(".W. :+ "))
-        {
+//        if( m_NMEA0183.LastSentenceIDReceived == _T(".W. :+ "))
+//        {
             if( m_NMEA0183.Parse1() )
             {
                 double unit_weigh = 0.0;
@@ -529,7 +529,7 @@ void dashboard_pi::SetSentence( wxString &sentence )
                     SendSentenceToAllInstruments( OCPN_DBP_WEIGH, unit_weigh, m_NMEA0183.LastSentenceIDReceived );
                 }
             }
-        }
+//        }
 
 
         if( m_NMEA0183.LastSentenceIDReceived == _T(".W. :+"))

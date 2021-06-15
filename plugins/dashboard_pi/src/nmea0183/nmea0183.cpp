@@ -301,10 +301,14 @@ bool NMEA0183::PreParse1( void )
                   mnemonic = _T("otal:+ ");
             else {
 
-                if ( mnemonic.Left( 1 ) == 'W' && mnemonic.Right( 0 ) == ' ')
+                if ( mnemonic.Left( 7 ) == ' ')
                       mnemonic = _T(".W. :+ ");
-                else
-                      mnemonic = mnemonic.Right( 6 );
+                else {
+                    if  ( mnemonic.Left( 6 ) == '+')
+                          mnemonic = _T(".W. :+");
+                    else
+                      mnemonic = mnemonic.Right( 3 );
+                }
            }
 
 
@@ -357,14 +361,14 @@ bool NMEA0183::Parse1( void )
 
       LastSentenceIDReceived = mnemonic;
 
-      if ( mnemonic.Right( 0 ) == ' ' )
+      if ( mnemonic.Left( 7 ) == ".W. :+ " )
       {
           mnemonic = _T(".W. :+ ");
       }
       else
       {
 //         mnemonic = mnemonic.Right( 8 );
-         mnemonic = mnemonic.Left( 7 );
+         mnemonic = mnemonic.Left( 6 );
       }
 
 
