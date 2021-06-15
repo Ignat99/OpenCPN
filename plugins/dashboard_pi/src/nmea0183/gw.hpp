@@ -1,7 +1,7 @@
 /***************************************************************************
  *
  * Project:  OpenCPN
- * Purpose:  NMEA0183 Support Classes
+ * Purpose:  MyWeigh Support Classes
  * Author:   Samuel R. Blackburn, David S. Register
  *
  ***************************************************************************
@@ -30,8 +30,8 @@
  */
 
 
-#include "nmea0183.h"
-#include "uw.hpp"
+#if ! defined( GW_CLASS_HEADER )
+#define GW_CLASS_HEADER
 
 /*
 ** Author: Ignat
@@ -41,87 +41,36 @@
 ** You can use it any way you like.
 */
 
-UW::UW()
+class GW : public RESPONSE
 {
-   Mnemonic = _T(".W. :+");
-   Empty();
-}
 
-UW::~UW()
-{
-   Mnemonic.Empty();
-   Empty();
-}
+   public:
 
-void UW::Empty( void )
-{
-   TotalMileage = 0.0;
-   TripMileage  = 0.0;
-   IsDataValid = NTrue;
-   UnitWeighKg = 50.0;
-   }
+      GW();
+     ~GW();
 
-bool UW::Parse( const SENTENCE& sentence )
-{
-   /*
-   UW - Unit Waigh
+      /*
+      ** Data
+      */
 
-        1   2 3   4 5
-        |   | |   | |
- $--VLW,x.x,N,x.x,N*hh<CR><LF>
+      NMEA0183_BOOLEAN IsDataValid;
+      double   UnitWeighKg;
+      double   TotalMileage;
+      double   TripMileage;
+      
+      /*
+      ** Methods
+      */
 
- Field Number:
-  1) Total cumulative distance
-  2) N = Nautical Miles
-  3) Distance since Reset
-  4) N = Nautical Miles
-  5) Checksum
+      virtual void Empty( void );
+      virtual bool Parse( const SENTENCE& sentence );
+      virtual bool Write( SENTENCE& sentence );
 
-   */
+      /*
+      ** Operators
+      */
 
-   /*
-   ** First we check the checksum...
-   */
+      virtual const GW& operator = ( const GW& source );
+};
 
-//   if ( sentence.IsChecksumBad( 5 ) == TRUE )
-//   {
-//      SetErrorMessage( _T("Invalid Checksum") );
-//      return( FALSE );
-//   }
-
-//   TotalMileage = sentence.Double( 1 );
-   UnitWeighKg = sentence.Double( 1 );
-//   UnitWeighKg = 20.0;
-//   TripMileage  = sentence.Double( 3 );
-
-   return( TRUE );
-}
-
-bool UW::Write( SENTENCE& sentence )
-{
-   /*
-   ** Let the parent do its thing
-   */
-
-   RESPONSE::Write( sentence );
-
-   sentence += TotalMileage;
-   sentence += _T("N");
-   sentence += TripMileage;
-   sentence += _T("N");
-   sentence += UnitWeighKg;
-   sentence += _T("N");
-   sentence.Finish();
-
-   return( TRUE );
-}
-
-
-
-const UW& UW::operator = ( const UW& source )
-{
-   TotalMileage = source.TotalMileage;
-   TripMileage  = source.TripMileage;
-   UnitWeighKg  = source.UnitWeighKg;
-      return( *this );
-}
+#endif // GW_CLASS_HEADER

@@ -138,6 +138,7 @@ NMEA0183::NMEA0183()
    response_table.Append( (RESPONSE *) &Ztg );
 */
    response_table.Append( (RESPONSE *) &Uw );
+   response_table.Append( (RESPONSE *) &Gw );
 
 
    sort_response_table();
@@ -227,7 +228,7 @@ bool NMEA0183::IsGood1( void ) const
    ** NMEA 0183 sentences begin with $ and and with CR LF
    */
 
-   if ( sentence.Sentence[ 0 ] != 'G' )
+   if ( sentence.Sentence[ 0 ] != 'G' && sentence.Sentence[ 0 ] != 'U' && sentence.Sentence[ 0 ] != 'T')
    {
       return( FALSE );
    }
@@ -296,12 +297,15 @@ bool NMEA0183::PreParse1( void )
       {
             wxString mnemonic = sentence.Field( 0 );
 
+            if ( mnemonic.Left( 1 ) == 't' )
+                  mnemonic = _T("otal:+ ");
+            else {
 
-            if ( mnemonic.Left( 1 ) == 'W' )
-                  mnemonic = _T("W");
-
-            else
-                  mnemonic = mnemonic.Right( 2 );
+                if ( mnemonic.Left( 1 ) == 'W' && mnemonic.Right( 0 ) == ' ')
+                      mnemonic = _T(".W. :+ ");
+                else
+                      mnemonic = mnemonic.Right( 6 );
+           }
 
 
             LastSentenceIDReceived = mnemonic;
@@ -344,30 +348,30 @@ bool NMEA0183::PreParse( void )
 
 bool NMEA0183::Parse1( void )
 {
-//   bool return_value = FALSE;
-   bool return_value = TRUE;
+   bool return_value = FALSE;
 
    if(PreParse1())
    {
 
       wxString mnemonic = sentence.Field( 0 );
 
+      LastSentenceIDReceived = mnemonic;
 
-      if ( mnemonic.Left( 1 ) == '.' )
+      if ( mnemonic.Right( 0 ) == ' ' )
       {
-          mnemonic = _T(".");
+          mnemonic = _T(".W. :+ ");
       }
       else
       {
 //         mnemonic = mnemonic.Right( 8 );
-         mnemonic = mnemonic.Left( 1 );
+         mnemonic = mnemonic.Left( 7 );
       }
 
 
       ErrorMessage = mnemonic;
       ErrorMessage += _T(" is an unknown type of sentence");
 
-      LastSentenceIDReceived = mnemonic;
+//      LastSentenceIDReceived = mnemonic;
 
       RESPONSE *response_p = (RESPONSE *) NULL;
 
@@ -388,20 +392,20 @@ bool NMEA0183::Parse1( void )
             {
                         response_p = (RESPONSE *) resp;
                         return_value = response_p->Parse( sentence );
-                        return_value = TRUE;
-//                        if ( return_value == TRUE )
-//                        {
-//                           ErrorMessage = _T("No Error");
-                           LastSentenceIDParsed = response_p->Mnemonic;
-//                           TalkerID = talker_id( sentence );
-//                           ExpandedTalkerID = expand_talker_id( TalkerID );
-//                        }
-//                        else
-//                        {
-//                           ErrorMessage = response_p->ErrorMessage;
-//                        }
 
-//                        break;
+                        if ( return_value == TRUE )
+                        {
+                           ErrorMessage = _T("No Error");
+                           LastSentenceIDParsed = response_p->Mnemonic;
+                           TalkerID = talker_id( sentence );
+                           ExpandedTalkerID = expand_talker_id( TalkerID );
+                        }
+                        else
+                        {
+                           ErrorMessage = response_p->ErrorMessage;
+                        }
+
+                        break;
             }
 
               node = node->GetNext();

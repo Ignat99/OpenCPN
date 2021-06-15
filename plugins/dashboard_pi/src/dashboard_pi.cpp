@@ -517,7 +517,22 @@ void dashboard_pi::SetSentence( wxString &sentence )
 
     if( m_NMEA0183.PreParse1() )
     {
-        if( m_NMEA0183.LastSentenceIDReceived == _T(".0"))
+        if( m_NMEA0183.LastSentenceIDReceived == _T(".W. :+ "))
+        {
+            if( m_NMEA0183.Parse1() )
+            {
+                double unit_weigh = 0.0;
+                if(m_NMEA0183.Gw.IsDataValid == NTrue)
+                {
+                    unit_weigh = m_NMEA0183.Gw.UnitWeighKg;
+                    bGoodData = true;
+                    SendSentenceToAllInstruments( OCPN_DBP_WEIGH, unit_weigh, m_NMEA0183.LastSentenceIDReceived );
+                }
+            }
+        }
+
+
+        if( m_NMEA0183.LastSentenceIDReceived == _T(".W. :+"))
         {
             if( m_NMEA0183.Parse1() )
             {
@@ -525,29 +540,11 @@ void dashboard_pi::SetSentence( wxString &sentence )
 //                if(m_NMEA0183.Uw.IsDataValid == NTrue)
 //                {
                     unit_weigh = m_NMEA0183.Uw.UnitWeighKg;
-                    bGoodData = true;
-//                    unit_weigh = 0.0;
-                    SendSentenceToAllInstruments( OCPN_DBP_WEIGH, unit_weigh, m_NMEA0183.LastSentenceIDReceived );
+                    SendSentenceToAllInstruments( OCPN_DBP_UNIT_WEIGH, unit_weigh, "kg/pcs" );
+//                  getUsrDistanceUnit_Plugin( g_iDashDepthUnit )
+//                    SendSentenceToAllInstruments( OCPN_DBP_TOTAL_QUANTITY, unit_weigh, "pcs" );
 //                }
             }
-        }
-
-
-        if( m_NMEA0183.LastSentenceIDReceived == _T("cs"))
-        {
-//            if( m_NMEA0183.Parse1() )
-//            {
-                double unit_weigh = 0.0;
-//                if(m_MyWeigh.Uw.IsDataValid == MTrue)
-//                {
-//                    unit_weigh = m_MyWeigh.Uw.UnitWeighKg;
-                    unit_weigh = 500.0;
-                    SendSentenceToAllInstruments( OCPN_DBP_UNIT_WEIGH, unit_weigh, "kg/pcs" );
-                    unit_weigh = 25.0;
-//                  getUsrDistanceUnit_Plugin( g_iDashDepthUnit )
-                    SendSentenceToAllInstruments( OCPN_DBP_TOTAL_QUANTITY, unit_weigh, "pcs" );
-//                }
-//            }
         }
 
     }
@@ -2163,16 +2160,16 @@ void DashboardWindow::SetInstrumentList( wxArrayInt list )
         switch( id ){
             case ID_DPB_I_TOTAL_QUANTITY:
                 instrument = new DashboardInstrument_Weight( this, wxID_ANY,
-                        getInstrumentCaption( id ), OCPN_DBP_TOTAL_QUANTITY, _T("%5.2f") );
+                        getInstrumentCaption( id ), OCPN_DBP_TOTAL_QUANTITY, _T("%5.5f") );
                 break;
             case ID_DPB_I_UNIT_WEIGHT:
                 instrument = new DashboardInstrument_Weight( this, wxID_ANY,
-                        getInstrumentCaption( id ), OCPN_DBP_UNIT_WEIGH, _T("%5.2f") );
+                        getInstrumentCaption( id ), OCPN_DBP_UNIT_WEIGH, _T("%5.5f") );
                 break;
 
             case ID_DPB_I_WEIGHT:
                 instrument = new DashboardInstrument_Weight( this, wxID_ANY,
-                        getInstrumentCaption( id ), OCPN_DBP_WEIGH, _T("%5.2f") );
+                        getInstrumentCaption( id ), OCPN_DBP_WEIGH, _T("%5.5f") );
                 break;
             case ID_DBP_I_POS:
                 instrument = new DashboardInstrument_Position( this, wxID_ANY,

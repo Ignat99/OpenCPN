@@ -31,7 +31,7 @@
 
 
 #include "nmea0183.h"
-#include "uw.hpp"
+#include "gw.hpp"
 
 /*
 ** Author: Ignat
@@ -41,27 +41,28 @@
 ** You can use it any way you like.
 */
 
-UW::UW()
+// Difference from UW is a miss space ' ' at the end;
+GW::GW()
 {
-   Mnemonic = _T(".W. :+");
+   Mnemonic = _T(".W. :+ ");
    Empty();
 }
 
-UW::~UW()
+GW::~GW()
 {
    Mnemonic.Empty();
    Empty();
 }
 
-void UW::Empty( void )
+void GW::Empty( void )
 {
    TotalMileage = 0.0;
    TripMileage  = 0.0;
    IsDataValid = NTrue;
-   UnitWeighKg = 50.0;
+   UnitWeighKg = 10.0;
    }
 
-bool UW::Parse( const SENTENCE& sentence )
+bool GW::Parse( const SENTENCE& sentence )
 {
    /*
    UW - Unit Waigh
@@ -97,7 +98,7 @@ bool UW::Parse( const SENTENCE& sentence )
    return( TRUE );
 }
 
-bool UW::Write( SENTENCE& sentence )
+bool GW::Write( SENTENCE& sentence )
 {
    /*
    ** Let the parent do its thing
@@ -118,7 +119,7 @@ bool UW::Write( SENTENCE& sentence )
 
 
 
-const UW& UW::operator = ( const UW& source )
+const GW& GW::operator = ( const GW& source )
 {
    TotalMileage = source.TotalMileage;
    TripMileage  = source.TripMileage;

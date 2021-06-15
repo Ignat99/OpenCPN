@@ -114,6 +114,7 @@
 #include "vlw.hpp"
 #include "xte.hpp"
 #include "uw.hpp"
+#include "gw.hpp"
 /*
 #include "ROT.hpp"
 #include "RPM.hpp"
@@ -251,6 +252,7 @@ class NMEA0183
 */
       ZDA Zda;
       UW Uw;
+      GW Gw;
 /*
       ZFO Zfo;
       ZTG Ztg;
