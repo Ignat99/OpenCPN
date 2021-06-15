@@ -195,7 +195,7 @@ const wxString& SENTENCE::Field( int desired_field_number ) const
 
    while( current_field_number < desired_field_number && index < string_length )
    {
-      if ( Sentence[ index ] == ' ' || Sentence[ index ] == ',' || Sentence[ index ] == '*' )
+      if ( Sentence[ index ] == ',' || Sentence[ index ] == '*' )
       {
          current_field_number++;
       }
@@ -209,7 +209,6 @@ const wxString& SENTENCE::Field( int desired_field_number ) const
    if ( current_field_number == desired_field_number )
    {
       while( index < string_length    &&
-             Sentence[ index ] != ' ' &&
              Sentence[ index ] != ',' &&
              Sentence[ index ] != '*' &&
              Sentence[ index ] != 0x00 )
@@ -241,11 +240,6 @@ int SENTENCE::GetNumberOfDataFields( void ) const
       }
 
       if ( Sentence[ index ] == ',' )
-      {
-         current_field_number++;
-      }
-
-      if ( Sentence[ index ] == ' ' )
       {
          current_field_number++;
       }

@@ -515,22 +515,22 @@ void dashboard_pi::SetSentence( wxString &sentence )
 
     bool bGoodData = false;
 
-//    if( m_NMEA0183.PreParse1() )
-//    {
-//        if( m_NMEA0183.LastSentenceIDReceived == _T("kg"))
-//        {
-//            if( m_NMEA0183.Parse1() )
-//            {
+    if( m_NMEA0183.PreParse1() )
+    {
+        if( m_NMEA0183.LastSentenceIDReceived == _T(".0"))
+        {
+            if( m_NMEA0183.Parse1() )
+            {
                 double unit_weigh = 0.0;
 //                if(m_NMEA0183.Uw.IsDataValid == NTrue)
 //                {
                     unit_weigh = m_NMEA0183.Uw.UnitWeighKg;
                     bGoodData = true;
 //                    unit_weigh = 0.0;
-                    SendSentenceToAllInstruments( OCPN_DBP_WEIGH, unit_weigh, "kg" );
+                    SendSentenceToAllInstruments( OCPN_DBP_WEIGH, unit_weigh, m_NMEA0183.LastSentenceIDReceived );
 //                }
-//            }
-//        }
+            }
+        }
 
 
         if( m_NMEA0183.LastSentenceIDReceived == _T("cs"))
@@ -550,7 +550,7 @@ void dashboard_pi::SetSentence( wxString &sentence )
 //            }
         }
 
-//    }
+    }
 
 //    if(bGoodData)
 //    {

@@ -236,18 +236,19 @@ bool NMEA0183::IsGood1( void ) const
    ** Next to last character must be a CR
    */
    /*  This seems too harsh for cross platform work
-    * 
-   if ( sentence.Sentence.Mid( sentence.Sentence.Len() - 2, 1 ) != wxString(_T("\r")) )
-   {
-      return( FALSE );
-   }
+    *
+    */
+
+//   if ( sentence.Sentence.Mid( sentence.Sentence.Len() - 2, 1 ) != wxString(_T("\r")) )
+//   {
+//      return( FALSE );
+//   }
 
    if ( sentence.Sentence.Right( 1 ) != _T("\n") )
    {
       return( FALSE );
    }
-   */
-   
+
    return( TRUE );
 }
 
@@ -358,8 +359,8 @@ bool NMEA0183::Parse1( void )
       }
       else
       {
-         mnemonic = mnemonic.Right( 8 );
-//         mnemonic = mnemonic.Left( 1 );
+//         mnemonic = mnemonic.Right( 8 );
+         mnemonic = mnemonic.Left( 1 );
       }
 
 
@@ -387,22 +388,21 @@ bool NMEA0183::Parse1( void )
             {
                         response_p = (RESPONSE *) resp;
                         return_value = response_p->Parse( sentence );
-
-
-                        if ( return_value == TRUE )
-                        {
-                           ErrorMessage = _T("No Error");
+                        return_value = TRUE;
+//                        if ( return_value == TRUE )
+//                        {
+//                           ErrorMessage = _T("No Error");
                            LastSentenceIDParsed = response_p->Mnemonic;
-                           TalkerID = talker_id( sentence );
-                           ExpandedTalkerID = expand_talker_id( TalkerID );
-                        }
-                        else
-                        {
-                           ErrorMessage = response_p->ErrorMessage;
-                        }
+//                           TalkerID = talker_id( sentence );
+//                           ExpandedTalkerID = expand_talker_id( TalkerID );
+//                        }
+//                        else
+//                        {
+//                           ErrorMessage = response_p->ErrorMessage;
+//                        }
 
-                        break;
-                   }
+//                        break;
+            }
 
               node = node->GetNext();
         }

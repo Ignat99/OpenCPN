@@ -43,7 +43,7 @@
 
 UW::UW()
 {
-   Mnemonic = _T("UW");
+   Mnemonic = _T(".");
    Empty();
 }
 
@@ -91,6 +91,7 @@ bool UW::Parse( const SENTENCE& sentence )
 
 //   TotalMileage = sentence.Double( 1 );
    UnitWeighKg = sentence.Double( 1 );
+//   UnitWeighKg = 20.0;
 //   TripMileage  = sentence.Double( 3 );
 
    return( TRUE );
