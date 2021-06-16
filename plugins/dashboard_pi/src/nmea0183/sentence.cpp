@@ -146,6 +146,16 @@ unsigned char SENTENCE::ComputeChecksum( void ) const
    return( checksum_value );
 }
 
+double SENTENCE::Double1( int field_number ) const
+{
+ //  ASSERT_VALID( this );
+    wxCharBuffer abuf = Field1( field_number).ToUTF8();
+    if( !abuf.data() )                            // badly formed sentence?
+        return (999.);
+ 
+    return( ::atof( abuf.data() ));
+}
+
 double SENTENCE::Double( int field_number ) const
 {
  //  ASSERT_VALID( this );
@@ -194,7 +204,7 @@ const wxString& SENTENCE::Field1( int desired_field_number ) const
 
    while( current_field_number < desired_field_number && index < string_length )
    {
-      if ( Sentence[ index ] == ',' || Sentence[ index ] == '*' )
+      if ( Sentence[ index ] == ' ' || Sentence[ index ] == ',' || Sentence[ index ] == '*' )
       {
          current_field_number++;
       }
@@ -208,6 +218,8 @@ const wxString& SENTENCE::Field1( int desired_field_number ) const
    if ( current_field_number == desired_field_number )
    {
       while( index < string_length    &&
+//             Sentence[ index ] != '+' &&
+             Sentence[ index ] != ' ' &&
              Sentence[ index ] != ',' &&
              Sentence[ index ] != '*' &&
              Sentence[ index ] != 0x00 )
@@ -282,7 +294,7 @@ int SENTENCE::GetNumberOfDataFields( void ) const
          return( (int) current_field_number );
       }
 
-      if ( Sentence[ index ] == ',' )
+      if ( Sentence[ index ] == ',')
       {
          current_field_number++;
       }

@@ -90,7 +90,7 @@ bool TOT::Parse( const SENTENCE& sentence )
 //   }
 
 //   TotalMileage = sentence.Double( 1 );
-   TotalUnit = sentence.Double( 1 );
+   TotalUnit = sentence.Double1( 1 );
 //   UnitWeighKg = 20.0;
 //   TripMileage  = sentence.Double( 3 );
 
