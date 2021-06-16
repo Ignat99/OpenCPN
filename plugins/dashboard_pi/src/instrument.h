@@ -147,6 +147,7 @@ public:
 
       wxSize GetSize( int orient, wxSize hint );
       void SetData(int st, double data, wxString unit);
+      void SetData(int st, int data, wxString unit);
 
 protected:
       wxString          m_data;

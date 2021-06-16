@@ -31,7 +31,7 @@
 
 
 #include "nmea0183.h"
-#include "uw.hpp"
+#include "tot.hpp"
 
 /*
 ** Author: Ignat
@@ -41,30 +41,30 @@
 ** You can use it any way you like.
 */
 
-UW::UW()
+TOT::TOT()
 {
-   Mnemonic = _T("U.W. :+");
+   Mnemonic = _T("Total:+");
    Empty();
 }
 
-UW::~UW()
+TOT::~TOT()
 {
    Mnemonic.Empty();
    Empty();
 }
 
-void UW::Empty( void )
+void TOT::Empty( void )
 {
    TotalMileage = 0.0;
    TripMileage  = 0.0;
    IsDataValid = NTrue;
-   UnitWeighKg = 50.0;
+   TotalUnit = 100.0;
    }
 
-bool UW::Parse( const SENTENCE& sentence )
+bool TOT::Parse( const SENTENCE& sentence )
 {
    /*
-   UW - Unit Waigh
+   TOT - Total quantity screen
 
         1   2 3   4 5
         |   | |   | |
@@ -90,14 +90,14 @@ bool UW::Parse( const SENTENCE& sentence )
 //   }
 
 //   TotalMileage = sentence.Double( 1 );
-   UnitWeighKg = sentence.Double( 1 );
+   TotalUnit = sentence.Double( 1 );
 //   UnitWeighKg = 20.0;
 //   TripMileage  = sentence.Double( 3 );
 
    return( TRUE );
 }
 
-bool UW::Write( SENTENCE& sentence )
+bool TOT::Write( SENTENCE& sentence )
 {
    /*
    ** Let the parent do its thing
@@ -109,7 +109,7 @@ bool UW::Write( SENTENCE& sentence )
    sentence += _T("N");
    sentence += TripMileage;
    sentence += _T("N");
-   sentence += UnitWeighKg;
+   sentence += TotalUnit;
    sentence += _T("N");
    sentence.Finish();
 
@@ -118,10 +118,10 @@ bool UW::Write( SENTENCE& sentence )
 
 
 
-const UW& UW::operator = ( const UW& source )
+const TOT& TOT::operator = ( const TOT& source )
 {
    TotalMileage = source.TotalMileage;
    TripMileage  = source.TripMileage;
-   UnitWeighKg  = source.UnitWeighKg;
+   TotalUnit  = source.TotalUnit;
       return( *this );
 }

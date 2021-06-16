@@ -139,6 +139,7 @@ NMEA0183::NMEA0183()
 */
    response_table.Append( (RESPONSE *) &Uw );
    response_table.Append( (RESPONSE *) &Gw );
+   response_table.Append( (RESPONSE *) &Tot );
 
 
    sort_response_table();
@@ -295,19 +296,19 @@ bool NMEA0183::PreParse1( void )
 
       if ( IsGood1() )
       {
-            wxString mnemonic = sentence.Field( 0 );
+            wxString mnemonic = sentence.Field1( 0 );
 
-            if ( mnemonic.Left( 1 ) == 't' )
-                  mnemonic = _T("otal:+ ");
+            if ( mnemonic.Left( 1 ) == 'T' )
+                  mnemonic = _T("Total:+");
             else {
 
-                if ( mnemonic.Left( 7 ) == ' ')
-                      mnemonic = _T(".W. :+ ");
+                if ( mnemonic.Left( 1 ) == 'G')
+                      mnemonic = _T("G.W. :+");
                 else {
-                    if  ( mnemonic.Left( 6 ) == '+')
-                          mnemonic = _T(".W. :+");
+                    if  ( mnemonic.Left( 1 ) == 'U')
+                          mnemonic = _T("U.W. :+");
                     else
-                      mnemonic = mnemonic.Right( 3 );
+                      mnemonic = mnemonic.Left( 7 );
                 }
            }
 
@@ -357,25 +358,21 @@ bool NMEA0183::Parse1( void )
    if(PreParse1())
    {
 
-      wxString mnemonic = sentence.Field( 0 );
+      wxString mnemonic = sentence.Field1( 0 );
 
       LastSentenceIDReceived = mnemonic;
 
-      if ( mnemonic.Left( 7 ) == ".W. :+ " )
-      {
-          mnemonic = _T(".W. :+ ");
-      }
+      if ( mnemonic.Left( 7 ) == "G.W. :+" )  mnemonic = _T("G.W. :+");
+      else if ( mnemonic.Left( 7 ) == "U.W. :+" ) mnemonic = _T("U.W. :+");
+      else if ( mnemonic.Left( 7 ) == "Total:+" ) mnemonic = _T("Total:+");
       else
-      {
-//         mnemonic = mnemonic.Right( 8 );
-         mnemonic = mnemonic.Left( 6 );
-      }
+         mnemonic = mnemonic.Left( 7 );
 
 
       ErrorMessage = mnemonic;
       ErrorMessage += _T(" is an unknown type of sentence");
 
-//      LastSentenceIDReceived = mnemonic;
+      LastSentenceIDReceived = mnemonic;
 
       RESPONSE *response_p = (RESPONSE *) NULL;
 

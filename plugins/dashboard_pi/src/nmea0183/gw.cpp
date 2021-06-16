@@ -41,10 +41,9 @@
 ** You can use it any way you like.
 */
 
-// Difference from UW is a miss space ' ' at the end;
 GW::GW()
 {
-   Mnemonic = _T(".W. :+ ");
+   Mnemonic = _T("G.W. :+");
    Empty();
 }
 

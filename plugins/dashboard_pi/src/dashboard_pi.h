@@ -157,6 +157,7 @@ private:
       bool LoadConfig(void);
       void ApplyConfig(void);
       void SendSentenceToAllInstruments(int st, double value, wxString unit);
+      void SendSentenceToAllInstrumentsInt(int st, int value, wxString unit);
       void SendSatInfoToAllInstruments(int cnt, int seq, SAT_INFO sats[4]);
       void SendUtcTimeToAllInstruments( wxDateTime value );
 

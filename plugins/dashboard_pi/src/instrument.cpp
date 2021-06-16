@@ -244,6 +244,7 @@ void DashboardInstrument_Single::Draw(wxGCDC* dc)
 
 }
 
+
 void DashboardInstrument_Single::SetData(int st, double data, wxString unit)
 {
       if (m_cap_flag & st){
@@ -276,6 +277,7 @@ void DashboardInstrument_Single::SetData(int st, double data, wxString unit)
                 m_data = _T("---");
       }
 }
+
 
 
 //----------------------------------------------------------------
@@ -335,6 +337,18 @@ void DashboardInstrument_Weight::Draw(wxGCDC* dc)
 #endif
 
 }
+
+void DashboardInstrument_Weight::SetData(int st, int data, wxString unit)
+{
+      if (m_cap_flag & st){
+            if(!wxIsNaN(data)){
+                  m_data = wxString::Format(m_format, data)+_T(" ")+unit;
+            }
+            else
+                m_data = _T("---");
+      }
+}
+
 
 void DashboardInstrument_Weight::SetData(int st, double data, wxString unit)
 {

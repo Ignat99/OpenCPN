@@ -135,7 +135,6 @@ unsigned char SENTENCE::ComputeChecksum( void ) const
    int index = 1; // Skip over the $ at the begining of the sentence
 
    while( index < string_length    &&
-       Sentence[ index ] != ' ' &&
        Sentence[ index ] != '*' &&
        Sentence[ index ] != CARRIAGE_RETURN &&
        Sentence[ index ] != LINE_FEED )
@@ -179,6 +178,50 @@ EASTWEST SENTENCE::EastOrWest( int field_number ) const
       return( EW_Unknown );
    }
 }
+
+const wxString& SENTENCE::Field1( int desired_field_number ) const
+{
+//   ASSERT_VALID( this );
+
+   static wxString return_string;
+   return_string.Empty();
+
+   int index                = 0; // Keep over the G/U at the begining of the sentence
+   int current_field_number = 0;
+   int string_length        = 0;
+
+   string_length = Sentence.Len();
+
+   while( current_field_number < desired_field_number && index < string_length )
+   {
+      if ( Sentence[ index ] == ',' || Sentence[ index ] == '*' )
+      {
+         current_field_number++;
+      }
+
+      if( Sentence[ index ] == '*')
+          return_string += Sentence[ index ];
+
+      index++;
+   }
+
+   if ( current_field_number == desired_field_number )
+   {
+      while( index < string_length    &&
+             Sentence[ index ] != ',' &&
+             Sentence[ index ] != '*' &&
+             Sentence[ index ] != 0x00 )
+      {
+         return_string += Sentence[ index ];
+         index++;
+      }
+   }
+
+
+
+   return( return_string );
+}
+
 
 const wxString& SENTENCE::Field( int desired_field_number ) const
 {

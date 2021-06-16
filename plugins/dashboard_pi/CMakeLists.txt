@@ -177,6 +177,8 @@ SET(SRC_NMEA0183
     src/nmea0183/uw.hpp
     src/nmea0183/gw.cpp
     src/nmea0183/gw.hpp
+    src/nmea0183/tot.cpp
+    src/nmea0183/tot.hpp
 )
 INCLUDE_DIRECTORIES(src/nmea0183)
 

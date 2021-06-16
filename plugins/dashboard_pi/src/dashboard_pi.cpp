@@ -517,8 +517,8 @@ void dashboard_pi::SetSentence( wxString &sentence )
 
     if( m_NMEA0183.PreParse1() )
     {
-//        if( m_NMEA0183.LastSentenceIDReceived == _T(".W. :+ "))
-//        {
+        if( m_NMEA0183.LastSentenceIDReceived == _T("G.W. :+"))
+        {
             if( m_NMEA0183.Parse1() )
             {
                 double unit_weigh = 0.0;
@@ -529,23 +529,37 @@ void dashboard_pi::SetSentence( wxString &sentence )
                     SendSentenceToAllInstruments( OCPN_DBP_WEIGH, unit_weigh, m_NMEA0183.LastSentenceIDReceived );
                 }
             }
-//        }
+        }
 
 
-        if( m_NMEA0183.LastSentenceIDReceived == _T(".W. :+"))
+        if( m_NMEA0183.LastSentenceIDReceived == _T("U.W. :+"))
         {
             if( m_NMEA0183.Parse1() )
             {
                 double unit_weigh = 0.0;
-//                if(m_NMEA0183.Uw.IsDataValid == NTrue)
-//                {
+                if(m_NMEA0183.Uw.IsDataValid == NTrue)
+                {
                     unit_weigh = m_NMEA0183.Uw.UnitWeighKg;
                     SendSentenceToAllInstruments( OCPN_DBP_UNIT_WEIGH, unit_weigh, "kg/pcs" );
-//                  getUsrDistanceUnit_Plugin( g_iDashDepthUnit )
-//                    SendSentenceToAllInstruments( OCPN_DBP_TOTAL_QUANTITY, unit_weigh, "pcs" );
-//                }
+                }
             }
         }
+
+        if( m_NMEA0183.LastSentenceIDReceived == _T("Total:+"))
+        {
+            if( m_NMEA0183.Parse1() )
+            {
+                double total_unit = 0;
+                if(m_NMEA0183.Tot.IsDataValid == NTrue)
+                {
+                    total_unit = m_NMEA0183.Tot.TotalUnit;
+//                  getUsrDistanceUnit_Plugin( g_iDashDepthUnit );
+                    SendSentenceToAllInstruments( OCPN_DBP_TOTAL_QUANTITY, total_unit, "pcs" );
+//                    SendSentenceToAllInstruments( OCPN_DBP_TOTAL_QUANTITY, total_unit, m_NMEA0183.LastSentenceIDReceived );
+                }
+            }
+        }
+
 
     }
 
@@ -2160,7 +2174,7 @@ void DashboardWindow::SetInstrumentList( wxArrayInt list )
         switch( id ){
             case ID_DPB_I_TOTAL_QUANTITY:
                 instrument = new DashboardInstrument_Weight( this, wxID_ANY,
-                        getInstrumentCaption( id ), OCPN_DBP_TOTAL_QUANTITY, _T("%5.5f") );
+                        getInstrumentCaption( id ), OCPN_DBP_TOTAL_QUANTITY, _T("%5.0f") );
                 break;
             case ID_DPB_I_UNIT_WEIGHT:
                 instrument = new DashboardInstrument_Weight( this, wxID_ANY,
