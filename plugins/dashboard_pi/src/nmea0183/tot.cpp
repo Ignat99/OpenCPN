@@ -43,7 +43,7 @@
 
 TOT::TOT()
 {
-   Mnemonic = _T("Total:+");
+   Mnemonic = _T("Tota");
    Empty();
 }
 

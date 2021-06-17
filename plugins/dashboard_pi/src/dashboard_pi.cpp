@@ -517,7 +517,7 @@ void dashboard_pi::SetSentence( wxString &sentence )
 
     if( m_NMEA0183.PreParse1() )
     {
-        if( m_NMEA0183.LastSentenceIDReceived == _T("G.W.X:+"))
+        if( m_NMEA0183.LastSentenceIDReceived == _T("G.W."))
         {
             if( m_NMEA0183.Parse1() )
             {
@@ -532,8 +532,8 @@ void dashboard_pi::SetSentence( wxString &sentence )
         }
 
 
-//        if( m_NMEA0183.LastSentenceIDReceived == _T("U.W."))
-//        {
+        if( m_NMEA0183.LastSentenceIDReceived == _T("U.W."))
+        {
             if( m_NMEA0183.Parse1() )
             {
                 double unit_weigh = 0.0;
@@ -543,9 +543,9 @@ void dashboard_pi::SetSentence( wxString &sentence )
                     SendSentenceToAllInstruments( OCPN_DBP_UNIT_WEIGH, unit_weigh, "kg/pcs" );
                 }
             }
-//        }
+        }
 
-        if( m_NMEA0183.LastSentenceIDReceived == _T("Total:+"))
+        if( m_NMEA0183.LastSentenceIDReceived == _T("Tota"))
         {
             if( m_NMEA0183.Parse1() )
             {
