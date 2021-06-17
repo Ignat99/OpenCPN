@@ -57,6 +57,8 @@ class UW : public RESPONSE
       double   UnitWeighKg;
       double   TotalMileage;
       double   TripMileage;
+
+      wxString Str1;
       
       /*
       ** Methods

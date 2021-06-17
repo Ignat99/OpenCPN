@@ -43,7 +43,7 @@
 
 GW::GW()
 {
-   Mnemonic = _T("G.W. :+");
+   Mnemonic = _T("G.W.X:+");
    Empty();
 }
 
@@ -90,7 +90,7 @@ bool GW::Parse( const SENTENCE& sentence )
 //   }
 
 //   TotalMileage = sentence.Double( 1 );
-   UnitWeighKg = sentence.Double( 1 );
+   UnitWeighKg = sentence.Double1( 1 );
 //   UnitWeighKg = 20.0;
 //   TripMileage  = sentence.Double( 3 );
 

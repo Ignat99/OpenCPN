@@ -303,12 +303,12 @@ bool NMEA0183::PreParse1( void )
             else {
 
                 if ( mnemonic.Left( 1 ) == 'G')
-                      mnemonic = _T("G.W. :+");
+                      mnemonic = _T("G.W.X:+");
                 else {
                     if  ( mnemonic.Left( 1 ) == 'U')
-                          mnemonic = _T("U.W. :+");
+                          mnemonic = _T("U.W.");
                     else
-                      mnemonic = mnemonic.Left( 7 );
+                      mnemonic = mnemonic.Left( 4 );
                 }
            }
 
@@ -360,13 +360,13 @@ bool NMEA0183::Parse1( void )
 
       wxString mnemonic = sentence.Field1( 0 );
 
-      LastSentenceIDReceived = mnemonic;
+//      LastSentenceIDReceived = mnemonic;
 
-      if ( mnemonic.Left( 7 ) == "G.W. :+" )  mnemonic = _T("G.W. :+");
-      else if ( mnemonic.Left( 7 ) == "U.W. :+" ) mnemonic = _T("U.W. :+");
-      else if ( mnemonic.Left( 7 ) == "Total:+" ) mnemonic = _T("Total:+");
+      if ( mnemonic.Left( 7 ) == "G.W.X:+" )  mnemonic = _T("G.W.X:+");
+      else if ( mnemonic.Left( 4 ) == "U.W." ) mnemonic = _T("U.W.");
+      else if ( mnemonic.Left( 4 ) == "Tota" ) mnemonic = _T("Total:+");
       else
-         mnemonic = mnemonic.Left( 7 );
+         mnemonic = mnemonic.Left( 4 );
 
 
       ErrorMessage = mnemonic;

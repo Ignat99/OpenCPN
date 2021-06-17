@@ -196,20 +196,21 @@ const wxString& SENTENCE::Field1( int desired_field_number ) const
    static wxString return_string;
    return_string.Empty();
 
-   int index                = 0; // Keep over the G/U at the begining of the sentence
+   int index = 0; // Keep over the G/U at the begining of the sentence
    int current_field_number = 0;
    int string_length        = 0;
+
 
    string_length = Sentence.Len();
 
    while( current_field_number < desired_field_number && index < string_length )
    {
-      if ( Sentence[ index ] == ' ' || Sentence[ index ] == ',' || Sentence[ index ] == '*' )
+      if ( Sentence[ index ] == ' ' )
       {
          current_field_number++;
       }
 
-      if( Sentence[ index ] == '*')
+      if( Sentence[ index ] == '+')
           return_string += Sentence[ index ];
 
       index++;
@@ -220,8 +221,8 @@ const wxString& SENTENCE::Field1( int desired_field_number ) const
       while( index < string_length    &&
 //             Sentence[ index ] != '+' &&
              Sentence[ index ] != ' ' &&
-             Sentence[ index ] != ',' &&
-             Sentence[ index ] != '*' &&
+//             Sentence[ index ] != ',' &&
+             Sentence[ index ] != '+' &&
              Sentence[ index ] != 0x00 )
       {
          return_string += Sentence[ index ];
