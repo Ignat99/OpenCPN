@@ -31,6 +31,11 @@
 #include <wx/wx.h>
 #endif
 
+#include <mysqlcppapi/mysqlcppapi.h>
+#include <iostream>
+#include <iomanip>
+
+
 #include <wx/progdlg.h>
 #include <wx/sound.h>
 #include <wx/radiobox.h>
@@ -1848,6 +1853,288 @@ void options::CreatePanel_Advanced( size_t parent, int border_size, int group_it
 }
 
 
+void options::GetProjects(wxArrayString *ps57CtlListBoxStrings) {
+  // You may need to specify some connection parameters using the
+  // Connection::set_*() members if the database is not on
+  // the local machine or your database username is not the same as your
+  // login name, etc..
+
+//  wxString ret[] = {};
+
+
+
+  try {
+    mysqlcppapi::Connection con;
+    con.set_Host("localhost");
+    con.set_User("root");
+    con.set_Password("Android123");
+    con.connect();
+    con.select_database("drf_android");
+    
+    mysqlcppapi::Query query = con.create_Query();
+    // This creates a query object that is bound to con.
+
+    query << "select name, date_creation, product, client_id, creator_id  from projects_project ORDER BY date_creation DESC LIMIT 10";
+    // You can write to the query object like you would any other ostrem
+
+    mysqlcppapi::Result_Store res = query.store();
+    // Query::store() executes the query and returns the results
+
+//        std::cout << "Query: " << query.preview() << std::endl;
+    // Query::preview() simply returns a string with the current query
+    // string in it.
+
+//        std::cout << "Records Found: " << res.size() << std::endl << std::endl;
+    
+//        std::cout.setf(std::ios::left);
+//        std::cout << std::setw(1) << "Name "
+//      << std::setw(2)  << "Date_creation " 
+//      << std::setw(3)  << "product "
+//      << std::setw(4)  << "client ID "
+//      << std::setw(5)  << "creator ID " 
+//      << "Code" << std::endl
+//      << std::endl;
+  
+    // The Result_Store class has a read-only Random Access Iterator
+    for (mysqlcppapi::Result_Store::iterator i = res.begin(); i != res.end(); i++)
+    {
+      mysqlcppapi::Row row = *i;
+      ps57CtlListBoxStrings->Add(row[0]);
+
+
+//            std::cout << std::setw(1) << row[0] << "  "
+//        << std::setw(2)  << row[1]  << "  "
+//        << std::setw(3)  << row["product"] << "  "
+        // you can use either the index number or column name when
+        // retrieving the colume data as demonstrated above.
+//        << std::setw(4)  << row[3] << "  "
+//        << std::setw(5)  << row[4] << "  " << std::endl;
+    }
+  }
+  catch(mysqlcppapi::ex_BadQuery& er)
+  {
+   // handle any connection or query errors that may come up
+      std::cerr << "Error: " << er.what() <<  std::endl;
+//    return ps57CtlListBoxStrings;
+  }
+  catch(mysqlcppapi::ex_BadConversion& er)
+  {
+    // we still need to catch bad conversions in case something goes 
+    // wrong when the data is converted into stock
+      std::cerr << "Error: Tried to convert \"" << er.get_Data() << "\" to a \""
+   << er.get_TypeName() << "\"." << std::endl;
+//    return ps57CtlListBoxStrings;
+  }
+//    return ps57CtlListBoxStrings;
+}
+
+
+void options::CreatePanel_VectorCharts1( size_t parent, int border_size, int group_item_spacing,
+        wxSize small_button_size )
+{
+    wxArrayString *ps57CtlListBoxStrings = new wxArrayString;
+    wxCArrayString helper(*ps57CtlListBoxStrings);
+//    wxString ps57CtlListBoxStrings[] = {wxT("Item1")};
+//    wxChoice ps57CtlListBoxStrings[] = {wxT("Item1")};
+
+
+    ps57Ctl = AddPage( parent, _("Project Display") );
+
+    vectorPanel = new wxBoxSizer( wxHORIZONTAL );
+    ps57Ctl->SetSizer( vectorPanel );
+
+
+
+    // 1st column, all options except Mariner's Standard
+    wxFlexGridSizer* optionsColumn = new wxFlexGridSizer(2);
+    optionsColumn->SetHGap(border_size);
+    optionsColumn->AddGrowableCol( 0, 2 );
+    optionsColumn->AddGrowableCol( 1, 3 );
+    vectorPanel->Add( optionsColumn, 3, wxALL | wxEXPAND, border_size );
+
+
+    // spacer
+    optionsColumn->Add( new wxStaticText(ps57Ctl, wxID_ANY, _T("")) );
+    optionsColumn->Add( new wxStaticText(ps57Ctl, wxID_ANY, _T("")) );
+
+
+    // dislay category
+    optionsColumn->Add( new wxStaticText(ps57Ctl, wxID_ANY, _("Data creation")), labelFlags );
+    wxString pDispCatStrings[] = { _("1 day"), _("2 day"), _("3 day"), _("Week") };
+    pDispCat = new wxChoice( ps57Ctl, ID_RADARDISTUNIT, wxDefaultPosition,
+                            wxDefaultSize, 4, pDispCatStrings );
+    optionsColumn->Add( pDispCat, 0, wxALL, 2 );
+
+
+    // spacer
+    optionsColumn->Add( new wxStaticText(ps57Ctl, wxID_ANY, _T("")) );
+    optionsColumn->Add( new wxStaticText(ps57Ctl, wxID_ANY, _T("")) );
+
+
+    // display options
+    //optionsColumn->Add( new wxStaticText(ps57Ctl, wxID_ANY, _("Display")), groupLabelFlags );
+
+    //wxBoxSizer* miscSizer = new wxBoxSizer( wxVERTICAL );
+    //optionsColumn->Add( miscSizer, groupInputFlags );
+
+    //pCheck_SOUNDG = new wxCheckBox( ps57Ctl, ID_SOUNDGCHECKBOX, _("Depth Soundings") );
+    //pCheck_SOUNDG->SetValue( FALSE );
+    //miscSizer->Add( pCheck_SOUNDG, inputFlags );
+
+    //pCheck_META = new wxCheckBox( ps57Ctl, ID_METACHECKBOX, _("Chart Information Objects") );
+    //pCheck_META->SetValue( FALSE );
+    //miscSizer->Add( pCheck_META, inputFlags );
+
+    //optionsColumn->Add( new wxStaticText(ps57Ctl, wxID_ANY, _("Buoys/Lights")), groupLabelFlags );
+
+    //wxBoxSizer* lightSizer = new wxBoxSizer( wxVERTICAL );
+    //optionsColumn->Add( lightSizer, groupInputFlags );
+    
+    //pCheck_ATONTEXT = new wxCheckBox( ps57Ctl, ID_ATONTEXTCHECKBOX, _("Buoy/Light Labels") );
+    //pCheck_ATONTEXT->SetValue( FALSE );
+    //lightSizer->Add( pCheck_ATONTEXT, inputFlags );
+
+    //pCheck_LDISTEXT = new wxCheckBox( ps57Ctl, ID_LDISTEXTCHECKBOX, _("Light Descriptions") );
+    //pCheck_LDISTEXT->SetValue( FALSE );
+    //lightSizer->Add( pCheck_LDISTEXT, inputFlags );
+
+    //pCheck_XLSECTTEXT = new wxCheckBox( ps57Ctl, ID_LDISTEXTCHECKBOX, _("Extended Light Sectors") );
+    //pCheck_XLSECTTEXT->SetValue( FALSE );
+    //lightSizer->Add( pCheck_XLSECTTEXT, inputFlags );
+
+    //optionsColumn->Add( new wxStaticText(ps57Ctl, wxID_ANY, _("Chart Texts")), groupLabelFlags );
+
+    //wxBoxSizer* textSizer = new wxBoxSizer( wxVERTICAL );
+    //optionsColumn->Add( textSizer, groupInputFlags );
+
+    //pCheck_NATIONALTEXT = new wxCheckBox( ps57Ctl, ID_NATIONALTEXTCHECKBOX, _("National text on chart") );
+    //pCheck_NATIONALTEXT->SetValue( FALSE );
+    //textSizer->Add( pCheck_NATIONALTEXT, inputFlags );
+
+    //pCheck_SHOWIMPTEXT = new wxCheckBox( ps57Ctl, ID_IMPTEXTCHECKBOX, _("Important Text Only") );
+    //pCheck_SHOWIMPTEXT->SetValue( FALSE );
+    //textSizer->Add( pCheck_SHOWIMPTEXT, inputFlags );
+
+    //pCheck_DECLTEXT = new wxCheckBox( ps57Ctl, ID_DECLTEXTCHECKBOX, _("De-Cluttered Text") );
+    //pCheck_DECLTEXT->SetValue( FALSE );
+    //textSizer->Add( pCheck_DECLTEXT, inputFlags );
+
+    //optionsColumn->Add( new wxStaticText(ps57Ctl, wxID_ANY, _("Chart Detail")), labelFlags );
+    //pCheck_SCAMIN = new wxCheckBox( ps57Ctl, ID_SCAMINCHECKBOX, _("Reduced Detail at Small Scale") );
+    //pCheck_SCAMIN->SetValue( FALSE );
+    //optionsColumn->Add( pCheck_SCAMIN, inputFlags );
+
+
+    // spacer
+    optionsColumn->Add( 0, border_size*4 );
+    optionsColumn->Add( 0, border_size*4 );
+
+
+    // graphics options
+    optionsColumn->Add( new wxStaticText(ps57Ctl, wxID_ANY, _("Graphics Style")), labelFlags );
+   wxString pPointStyleStrings[] = { _("Paper Chart"), _("Simplified"), };
+    pPointStyle = new wxChoice( ps57Ctl, ID_RADARDISTUNIT, wxDefaultPosition,
+            wxDefaultSize, 2, pPointStyleStrings );
+    optionsColumn->Add( pPointStyle, inputFlags );
+
+    optionsColumn->Add( new wxStaticText(ps57Ctl, wxID_ANY, _("Boundaries")), labelFlags );
+    wxString pBoundStyleStrings[] = { _("Plain"), _("Symbolized"), };
+    pBoundStyle = new wxChoice( ps57Ctl, ID_RADARDISTUNIT, wxDefaultPosition,
+            wxDefaultSize, 2, pBoundStyleStrings );
+    optionsColumn->Add( pBoundStyle, inputFlags );
+
+    optionsColumn->Add( new wxStaticText(ps57Ctl, wxID_ANY, _("Colors")), labelFlags );
+    wxString pColorNumStrings[] = { _("2 Color"), _("4 Color"), };
+    p24Color = new wxChoice( ps57Ctl, ID_RADARDISTUNIT, wxDefaultPosition,
+            wxDefaultSize, 2, pColorNumStrings );
+    optionsColumn->Add( p24Color, inputFlags );
+
+
+    // spacer
+    optionsColumn->Add( 0, border_size*4 );
+    optionsColumn->Add( 0, border_size*4 );
+
+
+    // depth options
+    optionsColumn->Add( new wxStaticText( ps57Ctl, wxID_ANY, _("Product") ), labelFlags );
+    wxBoxSizer* depShalRow = new wxBoxSizer( wxHORIZONTAL );
+    optionsColumn->Add( depShalRow );
+    m_ShallowCtl = new wxTextCtrl( ps57Ctl, ID_TEXTCTRL, _T(""), wxDefaultPosition, wxSize( 60, -1 ), wxTE_RIGHT );
+    depShalRow->Add( m_ShallowCtl, inputFlags );
+    //m_depthUnitsShal = new wxStaticText( ps57Ctl, wxID_ANY, _("metres") );
+    //depShalRow->Add( m_depthUnitsShal, inputFlags );
+
+    optionsColumn->Add( new wxStaticText( ps57Ctl, wxID_ANY, _("Client") ), labelFlags );
+    wxBoxSizer* depSafeRow = new wxBoxSizer( wxHORIZONTAL );
+    optionsColumn->Add( depSafeRow );
+    m_SafetyCtl = new wxTextCtrl( ps57Ctl, ID_TEXTCTRL, _T(""), wxDefaultPosition, wxSize( 60, -1 ), wxTE_RIGHT );
+    depSafeRow->Add( m_SafetyCtl, inputFlags );
+    //m_depthUnitsSafe = new wxStaticText( ps57Ctl, wxID_ANY, _("metres") );
+    //depSafeRow->Add( m_depthUnitsSafe, inputFlags );
+
+    optionsColumn->Add( new wxStaticText( ps57Ctl, wxID_ANY, _("Creator") ), labelFlags );
+    wxBoxSizer* depDeepRow = new wxBoxSizer( wxHORIZONTAL );
+    optionsColumn->Add( depDeepRow );
+    m_DeepCtl = new wxTextCtrl( ps57Ctl, ID_TEXTCTRL, _T(""), wxDefaultPosition, wxSize( 60, -1 ), wxTE_RIGHT );
+    depDeepRow->Add( m_DeepCtl, inputFlags );
+    //m_depthUnitsDeep = new wxStaticText( ps57Ctl, wxID_ANY, _("metres") );
+    //depDeepRow->Add( m_depthUnitsDeep, inputFlags );
+
+
+    // spacer
+    optionsColumn->Add( 0, border_size*4 );
+    optionsColumn->Add( 0, border_size*4 );
+
+
+//#ifdef USE_S57
+//    optionsColumn->Add( new wxStaticText(ps57Ctl, wxID_ANY, _("CM93 Detail Level")), labelFlags );
+//    m_pSlider_CM93_Zoom = new wxSlider( ps57Ctl, ID_CM93ZOOM, 0, -CM93_ZOOM_FACTOR_MAX_RANGE,
+//                                       CM93_ZOOM_FACTOR_MAX_RANGE, wxDefaultPosition, wxSize( 140, 50),
+//                                       wxSL_HORIZONTAL | wxSL_AUTOTICKS | wxSL_LABELS );
+//    optionsColumn->Add( m_pSlider_CM93_Zoom, 0, wxALL | wxEXPAND, border_size );
+////    cm93Sizer->SetSizeHints(cm93DetailBox);
+//#endif
+
+
+
+    // 2nd column, Display Category / Mariner's Standard options
+    wxBoxSizer* dispSizer = new wxBoxSizer( wxVERTICAL );
+    vectorPanel->Add( dispSizer, 2, wxALL | wxEXPAND, border_size );
+
+    wxStaticBox* marinersBox = new wxStaticBox( ps57Ctl, wxID_ANY, _("Projects") );
+    wxStaticBoxSizer* marinersSizer = new wxStaticBoxSizer( marinersBox, wxVERTICAL );
+    dispSizer->Add( marinersSizer, 1, wxALL | wxEXPAND, border_size );
+
+
+//    wxString *ps57CtlListBoxStrings = NULL;
+      ps57CtlListBoxStrings->Add( wxT("Item1"));
+      ps57CtlListBoxStrings->Add( wxT("Item2"));
+//      for (int ii=0; ii<num; ii++)
+//          strCheck[ii] = ps57CtlListBoxStrings[ii];
+
+    GetProjects(ps57CtlListBoxStrings);
+
+    int num = ps57CtlListBoxStrings->GetCount();
+    wxString* strCheck=helper.GetStrings();
+
+//    ps57CtlListBox = new wxChoice( ps57Ctl, ID_CHECKLISTBOX, wxDefaultPosition,
+    ps57CtlListBox = new wxCheckListBox( ps57Ctl, ID_CHECKLISTBOX, wxDefaultPosition,
+                                        wxSize( 250, 350 ), num, strCheck, wxLB_SINGLE | wxLB_HSCROLL | wxLB_SORT );
+//                                        wxSize( 250, 350 ), num, ps57CtlListBoxStrings, wxLB_SINGLE | wxLB_HSCROLL | wxLB_SORT );
+    marinersSizer->Add( ps57CtlListBox, 1, wxALL | wxEXPAND, group_item_spacing );
+
+    wxBoxSizer* btnRow = new wxBoxSizer( wxHORIZONTAL );
+    itemButtonSelectList = new wxButton( ps57Ctl, ID_SELECTLIST, _("Select All") );
+    btnRow->Add( itemButtonSelectList, 1, wxALL | wxEXPAND, group_item_spacing );
+    itemButtonClearList = new wxButton( ps57Ctl, ID_CLEARLIST, _("Clear All") );
+    btnRow->Add( itemButtonClearList, 1, wxALL | wxEXPAND, group_item_spacing );
+    marinersSizer->Add( btnRow );
+    
+
+//    m_choicePrecision->SetSelection( g_NMEAAPBPrecision );
+}
+
+
 void options::CreatePanel_VectorCharts( size_t parent, int border_size, int group_item_spacing,
         wxSize small_button_size )
 {
@@ -2033,6 +2320,8 @@ void options::CreatePanel_VectorCharts( size_t parent, int border_size, int grou
 
 //    m_choicePrecision->SetSelection( g_NMEAAPBPrecision );
 }
+
+
 
 void options::CreatePanel_TidesCurrents( size_t parent, int border_size, int group_item_spacing,
         wxSize small_button_size )
@@ -2778,6 +3067,7 @@ void options::CreateControls()
     buttons->Add( m_ApplyButton, 0, wxALIGN_CENTER_VERTICAL | wxALL, border_size );
 
     m_pageDisplay = CreatePanel( _("Display") );
+    CreatePanel_VectorCharts1( m_pageDisplay, border_size, group_item_spacing, m_small_button_size );
     CreatePanel_Display( m_pageDisplay, border_size, group_item_spacing, m_small_button_size );
     CreatePanel_Units( m_pageDisplay, border_size, group_item_spacing, m_small_button_size );
     CreatePanel_Advanced( m_pageDisplay, border_size, group_item_spacing, m_small_button_size );
@@ -2785,6 +3075,7 @@ void options::CreateControls()
     m_pageCharts = CreatePanel( _("Charts") );
     CreatePanel_ChartsLoad( m_pageCharts, border_size, group_item_spacing, m_small_button_size );
     CreatePanel_VectorCharts( m_pageCharts, border_size, group_item_spacing, m_small_button_size );
+
     // ChartGroups must be created after ChartsLoad and must be at least third
     CreatePanel_ChartGroups( m_pageCharts, border_size, group_item_spacing, m_small_button_size );
     CreatePanel_TidesCurrents( m_pageCharts, border_size, group_item_spacing, m_small_button_size );
@@ -5999,3 +6290,4 @@ wxString OpenGLOptionsDlg::TextureCacheSize()
 
     return wxString::Format(_T("%.1f MB"), total/1024.0/1024.0);
 }
+

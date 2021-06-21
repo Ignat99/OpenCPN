@@ -45,6 +45,7 @@
 // History of wind direction
 //************************************************************************************************************************
 
+
 DashboardInstrument_WindDirHistory::DashboardInstrument_WindDirHistory( wxWindow *parent, wxWindowID id, wxString title) :
       DashboardInstrument(parent, id, title, OCPN_DBP_STC_TWD | OCPN_DBP_STC_TWS)
 {     SetDrawSoloInPane(true);
@@ -166,6 +167,7 @@ void DashboardInstrument_WindDirHistory::Draw(wxGCDC* dc)
    DrawBackground(dc);
    DrawForeground(dc);
 }
+
 
 //*********************************************************************************
 // determine and set  min and max values for the direction

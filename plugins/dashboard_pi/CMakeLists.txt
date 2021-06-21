@@ -75,6 +75,11 @@ FIND_PACKAGE(Gettext REQUIRED)
 # For convenience we define the sources as a variable. You can add
 # header files and cpp/c files and CMake will sort them out
 
+#    src/wind_history.cpp
+#    src/wind_history.h
+#    src/baro_history.cpp
+#    src/baro_history.h
+
 
 SET(SRC_DASHBOARD
     src/dashboard_pi.h
@@ -99,10 +104,6 @@ SET(SRC_DASHBOARD
     src/clock.h
     src/icons.cpp
     src/icons.h
-    src/wind_history.cpp
-    src/wind_history.h
-    src/baro_history.cpp
-    src/baro_history.h
     src/from_ownship.cpp
     src/from_ownship.h
     src/wxJSON/jsonval.cpp

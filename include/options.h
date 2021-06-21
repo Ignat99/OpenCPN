@@ -584,6 +584,9 @@ private:
             wxSize small_button_size );
     void CreatePanel_VectorCharts( size_t parent, int border_size, int group_item_spacing,
             wxSize small_button_size );
+    void GetProjects(wxArrayString *ps57CtlListBoxStrings);
+    void CreatePanel_VectorCharts1( size_t parent, int border_size, int group_item_spacing,
+            wxSize small_button_size );
     void CreatePanel_TidesCurrents( size_t parent, int border_size, int group_item_spacing,
             wxSize small_button_size );
     void CreatePanel_ChartGroups( size_t parent, int border_size, int group_item_spacing,
