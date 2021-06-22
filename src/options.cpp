@@ -1854,6 +1854,48 @@ void options::CreatePanel_Advanced( size_t parent, int border_size, int group_it
 }
 
 
+void options::GetComponents(wxArrayString *ps57CtlListBoxStrings) {
+
+  try {
+    mysqlcppapi::Connection con;
+    con.set_Host("localhost");
+    con.set_User("root");
+    con.set_Password("Android123");
+    con.connect();
+    con.select_database("drf_android");
+    
+    mysqlcppapi::Query query = con.create_Query();
+    // This creates a query object that is bound to con.
+
+    query << "select name  from components_component ORDER BY id DESC LIMIT 10";
+    // You can write to the query object like you would any other ostrem
+
+    mysqlcppapi::Result_Store res = query.store();
+    // Query::store() executes the query and returns the results
+
+    // The Result_Store class has a read-only Random Access Iterator
+    for (mysqlcppapi::Result_Store::iterator i = res.begin(); i != res.end(); i++)
+    {
+      mysqlcppapi::Row row = *i;
+      ps57CtlListBoxStrings->Add(row[0]);
+
+    }
+  }
+  catch(mysqlcppapi::ex_BadQuery& er)
+  {
+   // handle any connection or query errors that may come up
+      std::cerr << "Error: " << er.what() <<  std::endl;
+  }
+  catch(mysqlcppapi::ex_BadConversion& er)
+  {
+    // we still need to catch bad conversions in case something goes 
+    // wrong when the data is converted into stock
+      std::cerr << "Error: Tried to convert \"" << er.get_Data() << "\" to a \""
+   << er.get_TypeName() << "\"." << std::endl;
+  }
+}
+
+
 void options::GetProjects(wxArrayString *ps57CtlListBoxStrings) {
   // You may need to specify some connection parameters using the
   // Connection::set_*() members if the database is not on
@@ -1935,6 +1977,9 @@ void options::CreatePanel_VectorCharts1( size_t parent, int border_size, int gro
 {
     wxArrayString *ps57CtlListBoxStrings = new wxArrayString;
     wxCArrayString helper(*ps57CtlListBoxStrings);
+
+    wxArrayString *ps57CtlListBoxStrings1 = new wxArrayString;
+    wxCArrayString helper1(*ps57CtlListBoxStrings1);
 //    wxString ps57CtlListBoxStrings[] = {wxT("Item1")};
 //    wxChoice ps57CtlListBoxStrings[] = {wxT("Item1")};
 
@@ -2047,7 +2092,7 @@ void options::CreatePanel_VectorCharts1( size_t parent, int border_size, int gro
     optionsColumn->Add( pBoundStyle, inputFlags );
 
     optionsColumn->Add( new wxStaticText(ps57Ctl, wxID_ANY, _("Remarks internal")), labelFlags );
-    wxString pColorNumStrings[] = { _("2 Color"), _("4 Color"), };
+    wxString pColorNumStrings[] = { _("2 Color loooong"), _("4 Color loooong"), };
     p24Color = new wxChoice( ps57Ctl, ID_RADARDISTUNIT, wxDefaultPosition,
             wxDefaultSize, 2, pColorNumStrings );
     optionsColumn->Add( p24Color, inputFlags );
@@ -2134,7 +2179,6 @@ void options::CreatePanel_VectorCharts1( size_t parent, int border_size, int gro
                                         wxSize( 250, 350 ), num, strCheck, wxLB_SINGLE | wxLB_HSCROLL | wxLB_SORT );
 //                                        wxSize( 250, 350 ), num, ps57CtlListBoxStrings, wxLB_SINGLE | wxLB_HSCROLL | wxLB_SORT );
     marinersSizer->Add( ps57CtlListBox, 1, wxALL | wxEXPAND, group_item_spacing );
-//    vectorPanel->Add( ps57CtlListBox, 1, wxALL | wxEXPAND, group_item_spacing );
 
     wxBoxSizer* btnRow = new wxBoxSizer( wxHORIZONTAL );
     itemButtonSelectList = new wxButton( ps57Ctl, ID_SELECTLIST, _("Select All") );
@@ -2142,13 +2186,15 @@ void options::CreatePanel_VectorCharts1( size_t parent, int border_size, int gro
     itemButtonClearList = new wxButton( ps57Ctl, ID_CLEARLIST, _("Clear All") );
     btnRow->Add( itemButtonClearList, 1, wxALL | wxEXPAND, group_item_spacing );
     marinersSizer->Add( btnRow );
-//    vectorPanel->Add( btnRow );
 
-    wxString *ps57CtlListBoxStrings1 = NULL;
+//    wxString *ps57CtlListBoxStrings1 = NULL;
+    GetComponents(ps57CtlListBoxStrings1);
+    int num1 = ps57CtlListBoxStrings1->GetCount();
+    wxString* strCheck1=helper1.GetStrings();
+
     ps57CtlListBox1 = new wxCheckListBox( ps57Ctl, ID_RADARDISTUNIT, wxDefaultPosition,
-                                        wxSize( 250, 550 ), 0, ps57CtlListBoxStrings1, wxLB_SINGLE | wxLB_HSCROLL | wxLB_SORT );
+                                        wxSize( 250, 550 ), num1, strCheck1, wxLB_SINGLE | wxLB_HSCROLL | wxLB_SORT );
     marinersSizer->Add( ps57CtlListBox1, 1, wxALL | wxEXPAND, group_item_spacing );
-//    vectorPanel->Add( ps57CtlListBox1, 1, wxALL | wxEXPAND, group_item_spacing );
 
 
 //    m_choicePrecision->SetSelection( g_NMEAAPBPrecision );
