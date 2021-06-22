@@ -431,10 +431,12 @@ public:
     wxBoxSizer              *vectorPanel;
     wxScrolledWindow        *ps57Ctl;
     wxCheckListBox          *ps57CtlListBox;
+    wxCheckListBox          *ps57CtlListBox1;
     wxChoice                *pDispCat;
     wxButton                *itemButtonClearList;
     wxButton                *itemButtonSelectList;
     wxChoice                *pPointStyle;
+    wxChoice                *pPointStyle1;
     wxChoice                *pBoundStyle;
     wxChoice                *p24Color;
     wxCheckBox              *pCheck_SOUNDG;

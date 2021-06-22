@@ -916,6 +916,7 @@ void options::Init()
     pSelCtl = NULL;
     pActiveChartsList = NULL;
     ps57CtlListBox = NULL;
+    ps57CtlListBox1 = NULL;
     pDispCat = NULL;
     m_pSerialArray = NULL;
     pUpdateCheckBox = NULL;
@@ -1946,11 +1947,13 @@ void options::CreatePanel_VectorCharts1( size_t parent, int border_size, int gro
 
 
     // 1st column, all options except Mariner's Standard
-    wxFlexGridSizer* optionsColumn = new wxFlexGridSizer(2);
+    wxFlexGridSizer* optionsColumn = new wxFlexGridSizer(1);
     optionsColumn->SetHGap(border_size);
-    optionsColumn->AddGrowableCol( 0, 2 );
-    optionsColumn->AddGrowableCol( 1, 3 );
-    vectorPanel->Add( optionsColumn, 3, wxALL | wxEXPAND, border_size );
+//    optionsColumn->AddGrowableCol( 0, 2 );
+//    optionsColumn->AddGrowableCol( 1, 3 );
+//    vectorPanel->Add( optionsColumn, 3, wxALL | wxEXPAND, border_size );
+    vectorPanel->Add( optionsColumn, 0, wxALL | wxEXPAND, border_size );
+
 
 
     // spacer
@@ -2031,19 +2034,19 @@ void options::CreatePanel_VectorCharts1( size_t parent, int border_size, int gro
 
 
     // graphics options
-    optionsColumn->Add( new wxStaticText(ps57Ctl, wxID_ANY, _("Graphics Style")), labelFlags );
+    optionsColumn->Add( new wxStaticText(ps57Ctl, wxID_ANY, _("Remarks")), labelFlags );
    wxString pPointStyleStrings[] = { _("Paper Chart"), _("Simplified"), };
     pPointStyle = new wxChoice( ps57Ctl, ID_RADARDISTUNIT, wxDefaultPosition,
             wxDefaultSize, 2, pPointStyleStrings );
     optionsColumn->Add( pPointStyle, inputFlags );
 
-    optionsColumn->Add( new wxStaticText(ps57Ctl, wxID_ANY, _("Boundaries")), labelFlags );
+    optionsColumn->Add( new wxStaticText(ps57Ctl, wxID_ANY, _("Remarks special")), labelFlags );
     wxString pBoundStyleStrings[] = { _("Plain"), _("Symbolized"), };
     pBoundStyle = new wxChoice( ps57Ctl, ID_RADARDISTUNIT, wxDefaultPosition,
             wxDefaultSize, 2, pBoundStyleStrings );
     optionsColumn->Add( pBoundStyle, inputFlags );
 
-    optionsColumn->Add( new wxStaticText(ps57Ctl, wxID_ANY, _("Colors")), labelFlags );
+    optionsColumn->Add( new wxStaticText(ps57Ctl, wxID_ANY, _("Remarks internal")), labelFlags );
     wxString pColorNumStrings[] = { _("2 Color"), _("4 Color"), };
     p24Color = new wxChoice( ps57Ctl, ID_RADARDISTUNIT, wxDefaultPosition,
             wxDefaultSize, 2, pColorNumStrings );
@@ -2057,17 +2060,24 @@ void options::CreatePanel_VectorCharts1( size_t parent, int border_size, int gro
 
     // depth options
     optionsColumn->Add( new wxStaticText( ps57Ctl, wxID_ANY, _("Product") ), labelFlags );
-    wxBoxSizer* depShalRow = new wxBoxSizer( wxHORIZONTAL );
-    optionsColumn->Add( depShalRow );
-    m_ShallowCtl = new wxTextCtrl( ps57Ctl, ID_TEXTCTRL, _T(""), wxDefaultPosition, wxSize( 60, -1 ), wxTE_RIGHT );
-    depShalRow->Add( m_ShallowCtl, inputFlags );
+//    wxBoxSizer* depShalRow = new wxBoxSizer( wxHORIZONTAL );
+//    optionsColumn->Add( depShalRow );
+  wxString pPointStyleStrings1[] = { _("Pivot"), _("Slide"), _("Double") };
+    pPointStyle1 = new wxChoice( ps57Ctl, ID_RADARDISTUNIT, wxDefaultPosition,
+            wxDefaultSize, 2, pPointStyleStrings1 );
+    optionsColumn->Add( pPointStyle1, inputFlags );
+
+
+
+//    m_ShallowCtl = new wxTextCtrl( ps57Ctl, ID_TEXTCTRL, _T(""), wxDefaultPosition, wxSize( 60, -1 ), wxTE_RIGHT );
+//    depShalRow->Add( m_ShallowCtl, inputFlags );
     //m_depthUnitsShal = new wxStaticText( ps57Ctl, wxID_ANY, _("metres") );
     //depShalRow->Add( m_depthUnitsShal, inputFlags );
 
     optionsColumn->Add( new wxStaticText( ps57Ctl, wxID_ANY, _("Client") ), labelFlags );
     wxBoxSizer* depSafeRow = new wxBoxSizer( wxHORIZONTAL );
     optionsColumn->Add( depSafeRow );
-    m_SafetyCtl = new wxTextCtrl( ps57Ctl, ID_TEXTCTRL, _T(""), wxDefaultPosition, wxSize( 60, -1 ), wxTE_RIGHT );
+    m_SafetyCtl = new wxTextCtrl( ps57Ctl, ID_TEXTCTRL, _T(""), wxDefaultPosition, wxSize( 80, -1 ), wxTE_RIGHT );
     depSafeRow->Add( m_SafetyCtl, inputFlags );
     //m_depthUnitsSafe = new wxStaticText( ps57Ctl, wxID_ANY, _("metres") );
     //depSafeRow->Add( m_depthUnitsSafe, inputFlags );
@@ -2075,7 +2085,7 @@ void options::CreatePanel_VectorCharts1( size_t parent, int border_size, int gro
     optionsColumn->Add( new wxStaticText( ps57Ctl, wxID_ANY, _("Creator") ), labelFlags );
     wxBoxSizer* depDeepRow = new wxBoxSizer( wxHORIZONTAL );
     optionsColumn->Add( depDeepRow );
-    m_DeepCtl = new wxTextCtrl( ps57Ctl, ID_TEXTCTRL, _T(""), wxDefaultPosition, wxSize( 60, -1 ), wxTE_RIGHT );
+    m_DeepCtl = new wxTextCtrl( ps57Ctl, ID_TEXTCTRL, _T(""), wxDefaultPosition, wxSize( 80, -1 ), wxTE_RIGHT );
     depDeepRow->Add( m_DeepCtl, inputFlags );
     //m_depthUnitsDeep = new wxStaticText( ps57Ctl, wxID_ANY, _("metres") );
     //depDeepRow->Add( m_depthUnitsDeep, inputFlags );
@@ -2100,10 +2110,12 @@ void options::CreatePanel_VectorCharts1( size_t parent, int border_size, int gro
     // 2nd column, Display Category / Mariner's Standard options
     wxBoxSizer* dispSizer = new wxBoxSizer( wxVERTICAL );
     vectorPanel->Add( dispSizer, 2, wxALL | wxEXPAND, border_size );
+//    vectorPanel->Add( depDeepRow, 0, wxALL | wxEXPAND, border_size );
 
     wxStaticBox* marinersBox = new wxStaticBox( ps57Ctl, wxID_ANY, _("Projects") );
     wxStaticBoxSizer* marinersSizer = new wxStaticBoxSizer( marinersBox, wxVERTICAL );
     dispSizer->Add( marinersSizer, 1, wxALL | wxEXPAND, border_size );
+//    vectorPanel->Add( marinersSizer, 0, wxALL | wxEXPAND, border_size );
 
 
 //    wxString *ps57CtlListBoxStrings = NULL;
@@ -2122,6 +2134,7 @@ void options::CreatePanel_VectorCharts1( size_t parent, int border_size, int gro
                                         wxSize( 250, 350 ), num, strCheck, wxLB_SINGLE | wxLB_HSCROLL | wxLB_SORT );
 //                                        wxSize( 250, 350 ), num, ps57CtlListBoxStrings, wxLB_SINGLE | wxLB_HSCROLL | wxLB_SORT );
     marinersSizer->Add( ps57CtlListBox, 1, wxALL | wxEXPAND, group_item_spacing );
+//    vectorPanel->Add( ps57CtlListBox, 1, wxALL | wxEXPAND, group_item_spacing );
 
     wxBoxSizer* btnRow = new wxBoxSizer( wxHORIZONTAL );
     itemButtonSelectList = new wxButton( ps57Ctl, ID_SELECTLIST, _("Select All") );
@@ -2129,7 +2142,14 @@ void options::CreatePanel_VectorCharts1( size_t parent, int border_size, int gro
     itemButtonClearList = new wxButton( ps57Ctl, ID_CLEARLIST, _("Clear All") );
     btnRow->Add( itemButtonClearList, 1, wxALL | wxEXPAND, group_item_spacing );
     marinersSizer->Add( btnRow );
-    
+//    vectorPanel->Add( btnRow );
+
+    wxString *ps57CtlListBoxStrings1 = NULL;
+    ps57CtlListBox1 = new wxCheckListBox( ps57Ctl, ID_RADARDISTUNIT, wxDefaultPosition,
+                                        wxSize( 250, 550 ), 0, ps57CtlListBoxStrings1, wxLB_SINGLE | wxLB_HSCROLL | wxLB_SORT );
+    marinersSizer->Add( ps57CtlListBox1, 1, wxALL | wxEXPAND, group_item_spacing );
+//    vectorPanel->Add( ps57CtlListBox1, 1, wxALL | wxEXPAND, group_item_spacing );
+
 
 //    m_choicePrecision->SetSelection( g_NMEAAPBPrecision );
 }
