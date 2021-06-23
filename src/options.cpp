@@ -1854,7 +1854,10 @@ void options::CreatePanel_Advanced( size_t parent, int border_size, int group_it
 }
 
 
-void options::GetComponents(wxArrayString *ps57CtlListBoxStrings) {
+void options::GetComponents(wxListCtrl *ps57CtlListCtrl1) {
+
+    long index=0;
+
 
   try {
     mysqlcppapi::Connection con;
@@ -1867,17 +1870,58 @@ void options::GetComponents(wxArrayString *ps57CtlListBoxStrings) {
     mysqlcppapi::Query query = con.create_Query();
     // This creates a query object that is bound to con.
 
-    query << "select name  from components_component ORDER BY id DESC LIMIT 10";
+    query << "select id, name, category, code, composition, description, image, measure_unit, position, price, price_insystem, product, weight, is_active, is_reportable, is_saleable  from components_component ORDER BY id DESC LIMIT 10";
     // You can write to the query object like you would any other ostrem
 
     mysqlcppapi::Result_Store res = query.store();
     // Query::store() executes the query and returns the results
 
+    ps57CtlListCtrl1->InsertColumn(0, _("ID"));
+    ps57CtlListCtrl1->InsertColumn(1, _("Name"));
+    ps57CtlListCtrl1->InsertColumn(2, _("Category"));
+    ps57CtlListCtrl1->InsertColumn(3, _("Code"));
+    ps57CtlListCtrl1->InsertColumn(4, _("Composition"));
+    ps57CtlListCtrl1->InsertColumn(5, _("Description"));
+    ps57CtlListCtrl1->InsertColumn(6, _("Image"));
+    ps57CtlListCtrl1->InsertColumn(7, _("Measure unit"));
+    ps57CtlListCtrl1->InsertColumn(8, _("Position"));
+    ps57CtlListCtrl1->InsertColumn(9, _("Price"));
+    ps57CtlListCtrl1->InsertColumn(10, _("Price insystem"));
+    ps57CtlListCtrl1->InsertColumn(11, _("Product"));
+    ps57CtlListCtrl1->InsertColumn(12, _("Weight"));
+    ps57CtlListCtrl1->InsertColumn(13, _("Is Active"));
+    ps57CtlListCtrl1->InsertColumn(14, _("Is Reportable"));
+    ps57CtlListCtrl1->InsertColumn(15, _("Is Saleable"));
+
+
+    wxListItem* item = new wxListItem();
+
     // The Result_Store class has a read-only Random Access Iterator
     for (mysqlcppapi::Result_Store::iterator i = res.begin(); i != res.end(); i++)
     {
       mysqlcppapi::Row row = *i;
-      ps57CtlListBoxStrings->Add(row[0]);
+
+      item->SetBackgroundColour(*wxRED);
+      item->SetText(wxT("Programmer"));
+      item->SetId(0);
+
+      index = ps57CtlListCtrl1->InsertItem(0, *item);
+      ps57CtlListCtrl1->SetItem(index, 0, _(row[0]), -1);
+      ps57CtlListCtrl1->SetItem(index, 1, _(row[1]), -1);
+      ps57CtlListCtrl1->SetItem(index, 2, _(row[2]), -1);
+      ps57CtlListCtrl1->SetItem(index, 3, _(row[3]), -1);
+      ps57CtlListCtrl1->SetItem(index, 4, _(row[4]), -1);
+      ps57CtlListCtrl1->SetItem(index, 5, _(row[5]), -1);
+      ps57CtlListCtrl1->SetItem(index, 6, _(row[6]), -1);
+      ps57CtlListCtrl1->SetItem(index, 7, _(row[7]), -1);
+      ps57CtlListCtrl1->SetItem(index, 8, _(row[8]), -1);
+      ps57CtlListCtrl1->SetItem(index, 9, _(row[9]), -1);
+      ps57CtlListCtrl1->SetItem(index, 10, _(row[10]), -1);
+      ps57CtlListCtrl1->SetItem(index, 11, _(row[11]), -1);
+      ps57CtlListCtrl1->SetItem(index, 12, _(row[12]), -1);
+      ps57CtlListCtrl1->SetItem(index, 13, _(row[13]), -1);
+      ps57CtlListCtrl1->SetItem(index, 14, _(row[14]), -1);
+      ps57CtlListCtrl1->SetItem(index, 15, _(row[15]), -1);
 
     }
   }
@@ -1896,15 +1940,9 @@ void options::GetComponents(wxArrayString *ps57CtlListBoxStrings) {
 }
 
 
-void options::GetProjects(wxArrayString *ps57CtlListBoxStrings) {
-  // You may need to specify some connection parameters using the
-  // Connection::set_*() members if the database is not on
-  // the local machine or your database username is not the same as your
-  // login name, etc..
+void options::GetProjects(wxListCtrl  *ps57CtlListCtrl) {
 
-//  wxString ret[] = {};
-
-
+  long index=0;
 
   try {
     mysqlcppapi::Connection con;
@@ -1913,52 +1951,49 @@ void options::GetProjects(wxArrayString *ps57CtlListBoxStrings) {
     con.set_Password("Android123");
     con.connect();
     con.select_database("drf_android");
-    
+
     mysqlcppapi::Query query = con.create_Query();
     // This creates a query object that is bound to con.
 
-    query << "select name, date_creation, product, client_id, creator_id  from projects_project ORDER BY date_creation DESC LIMIT 10";
+    query << "select id, name, date_creation, product, client_id, creator_id  from projects_project ORDER BY date_creation DESC LIMIT 10";
     // You can write to the query object like you would any other ostrem
 
     mysqlcppapi::Result_Store res = query.store();
     // Query::store() executes the query and returns the results
 
-//        std::cout << "Query: " << query.preview() << std::endl;
-    // Query::preview() simply returns a string with the current query
-    // string in it.
+    ps57CtlListCtrl->InsertColumn(0, _("ID"));
+    ps57CtlListCtrl->InsertColumn(1, _("Name"));
+    ps57CtlListCtrl->InsertColumn(2, _("Date creation"));
+    ps57CtlListCtrl->InsertColumn(3, _("Product"));
+    ps57CtlListCtrl->InsertColumn(4, _("Client ID"));
+    ps57CtlListCtrl->InsertColumn(5, _("Creator ID"));
 
-//        std::cout << "Records Found: " << res.size() << std::endl << std::endl;
-    
-//        std::cout.setf(std::ios::left);
-//        std::cout << std::setw(1) << "Name "
-//      << std::setw(2)  << "Date_creation " 
-//      << std::setw(3)  << "product "
-//      << std::setw(4)  << "client ID "
-//      << std::setw(5)  << "creator ID " 
-//      << "Code" << std::endl
-//      << std::endl;
-  
+    wxListItem* item = new wxListItem();
+
+
     // The Result_Store class has a read-only Random Access Iterator
     for (mysqlcppapi::Result_Store::iterator i = res.begin(); i != res.end(); i++)
     {
       mysqlcppapi::Row row = *i;
-      ps57CtlListBoxStrings->Add(row[0]);
 
+      item->SetBackgroundColour(*wxRED);
+      item->SetText(wxT("Programmer"));
+      item->SetId(0);
 
-//            std::cout << std::setw(1) << row[0] << "  "
-//        << std::setw(2)  << row[1]  << "  "
-//        << std::setw(3)  << row["product"] << "  "
-        // you can use either the index number or column name when
-        // retrieving the colume data as demonstrated above.
-//        << std::setw(4)  << row[3] << "  "
-//        << std::setw(5)  << row[4] << "  " << std::endl;
+      index = ps57CtlListCtrl->InsertItem(0, *item);
+      ps57CtlListCtrl->SetItem(index, 0, _(row[0]), -1);
+      ps57CtlListCtrl->SetItem(index, 1, _(row[1]), -1);
+      ps57CtlListCtrl->SetItem(index, 2, _(row[2]), -1);
+      ps57CtlListCtrl->SetItem(index, 3, _(row[3]), -1);
+      ps57CtlListCtrl->SetItem(index, 4, _(row[4]), -1);
+      ps57CtlListCtrl->SetItem(index, 5, _(row[5]), -1);
+
     }
   }
   catch(mysqlcppapi::ex_BadQuery& er)
   {
    // handle any connection or query errors that may come up
       std::cerr << "Error: " << er.what() <<  std::endl;
-//    return ps57CtlListBoxStrings;
   }
   catch(mysqlcppapi::ex_BadConversion& er)
   {
@@ -1966,24 +2001,13 @@ void options::GetProjects(wxArrayString *ps57CtlListBoxStrings) {
     // wrong when the data is converted into stock
       std::cerr << "Error: Tried to convert \"" << er.get_Data() << "\" to a \""
    << er.get_TypeName() << "\"." << std::endl;
-//    return ps57CtlListBoxStrings;
   }
-//    return ps57CtlListBoxStrings;
 }
 
 
 void options::CreatePanel_VectorCharts1( size_t parent, int border_size, int group_item_spacing,
         wxSize small_button_size )
 {
-    wxArrayString *ps57CtlListBoxStrings = new wxArrayString;
-    wxCArrayString helper(*ps57CtlListBoxStrings);
-
-    wxArrayString *ps57CtlListBoxStrings1 = new wxArrayString;
-    wxCArrayString helper1(*ps57CtlListBoxStrings1);
-//    wxString ps57CtlListBoxStrings[] = {wxT("Item1")};
-//    wxChoice ps57CtlListBoxStrings[] = {wxT("Item1")};
-
-
     ps57Ctl = AddPage( parent, _("Project Display") );
 
     vectorPanel = new wxBoxSizer( wxHORIZONTAL );
@@ -2017,60 +2041,6 @@ void options::CreatePanel_VectorCharts1( size_t parent, int border_size, int gro
     // spacer
     optionsColumn->Add( new wxStaticText(ps57Ctl, wxID_ANY, _T("")) );
     optionsColumn->Add( new wxStaticText(ps57Ctl, wxID_ANY, _T("")) );
-
-
-    // display options
-    //optionsColumn->Add( new wxStaticText(ps57Ctl, wxID_ANY, _("Display")), groupLabelFlags );
-
-    //wxBoxSizer* miscSizer = new wxBoxSizer( wxVERTICAL );
-    //optionsColumn->Add( miscSizer, groupInputFlags );
-
-    //pCheck_SOUNDG = new wxCheckBox( ps57Ctl, ID_SOUNDGCHECKBOX, _("Depth Soundings") );
-    //pCheck_SOUNDG->SetValue( FALSE );
-    //miscSizer->Add( pCheck_SOUNDG, inputFlags );
-
-    //pCheck_META = new wxCheckBox( ps57Ctl, ID_METACHECKBOX, _("Chart Information Objects") );
-    //pCheck_META->SetValue( FALSE );
-    //miscSizer->Add( pCheck_META, inputFlags );
-
-    //optionsColumn->Add( new wxStaticText(ps57Ctl, wxID_ANY, _("Buoys/Lights")), groupLabelFlags );
-
-    //wxBoxSizer* lightSizer = new wxBoxSizer( wxVERTICAL );
-    //optionsColumn->Add( lightSizer, groupInputFlags );
-    
-    //pCheck_ATONTEXT = new wxCheckBox( ps57Ctl, ID_ATONTEXTCHECKBOX, _("Buoy/Light Labels") );
-    //pCheck_ATONTEXT->SetValue( FALSE );
-    //lightSizer->Add( pCheck_ATONTEXT, inputFlags );
-
-    //pCheck_LDISTEXT = new wxCheckBox( ps57Ctl, ID_LDISTEXTCHECKBOX, _("Light Descriptions") );
-    //pCheck_LDISTEXT->SetValue( FALSE );
-    //lightSizer->Add( pCheck_LDISTEXT, inputFlags );
-
-    //pCheck_XLSECTTEXT = new wxCheckBox( ps57Ctl, ID_LDISTEXTCHECKBOX, _("Extended Light Sectors") );
-    //pCheck_XLSECTTEXT->SetValue( FALSE );
-    //lightSizer->Add( pCheck_XLSECTTEXT, inputFlags );
-
-    //optionsColumn->Add( new wxStaticText(ps57Ctl, wxID_ANY, _("Chart Texts")), groupLabelFlags );
-
-    //wxBoxSizer* textSizer = new wxBoxSizer( wxVERTICAL );
-    //optionsColumn->Add( textSizer, groupInputFlags );
-
-    //pCheck_NATIONALTEXT = new wxCheckBox( ps57Ctl, ID_NATIONALTEXTCHECKBOX, _("National text on chart") );
-    //pCheck_NATIONALTEXT->SetValue( FALSE );
-    //textSizer->Add( pCheck_NATIONALTEXT, inputFlags );
-
-    //pCheck_SHOWIMPTEXT = new wxCheckBox( ps57Ctl, ID_IMPTEXTCHECKBOX, _("Important Text Only") );
-    //pCheck_SHOWIMPTEXT->SetValue( FALSE );
-    //textSizer->Add( pCheck_SHOWIMPTEXT, inputFlags );
-
-    //pCheck_DECLTEXT = new wxCheckBox( ps57Ctl, ID_DECLTEXTCHECKBOX, _("De-Cluttered Text") );
-    //pCheck_DECLTEXT->SetValue( FALSE );
-    //textSizer->Add( pCheck_DECLTEXT, inputFlags );
-
-    //optionsColumn->Add( new wxStaticText(ps57Ctl, wxID_ANY, _("Chart Detail")), labelFlags );
-    //pCheck_SCAMIN = new wxCheckBox( ps57Ctl, ID_SCAMINCHECKBOX, _("Reduced Detail at Small Scale") );
-    //pCheck_SCAMIN->SetValue( FALSE );
-    //optionsColumn->Add( pCheck_SCAMIN, inputFlags );
 
 
     // spacer
@@ -2155,30 +2125,20 @@ void options::CreatePanel_VectorCharts1( size_t parent, int border_size, int gro
     // 2nd column, Display Category / Mariner's Standard options
     wxBoxSizer* dispSizer = new wxBoxSizer( wxVERTICAL );
     vectorPanel->Add( dispSizer, 2, wxALL | wxEXPAND, border_size );
-//    vectorPanel->Add( depDeepRow, 0, wxALL | wxEXPAND, border_size );
 
     wxStaticBox* marinersBox = new wxStaticBox( ps57Ctl, wxID_ANY, _("Projects") );
     wxStaticBoxSizer* marinersSizer = new wxStaticBoxSizer( marinersBox, wxVERTICAL );
     dispSizer->Add( marinersSizer, 1, wxALL | wxEXPAND, border_size );
-//    vectorPanel->Add( marinersSizer, 0, wxALL | wxEXPAND, border_size );
 
 
-//    wxString *ps57CtlListBoxStrings = NULL;
-      ps57CtlListBoxStrings->Add( wxT("Item1"));
-      ps57CtlListBoxStrings->Add( wxT("Item2"));
-//      for (int ii=0; ii<num; ii++)
-//          strCheck[ii] = ps57CtlListBoxStrings[ii];
+// Products
 
-    GetProjects(ps57CtlListBoxStrings);
 
-    int num = ps57CtlListBoxStrings->GetCount();
-    wxString* strCheck=helper.GetStrings();
+    ps57CtlListCtrl = new wxListCtrl( ps57Ctl, ID_CHECKLISTBOX, wxDefaultPosition,
+                                        wxSize( 250, 350 ), wxLC_REPORT );
+    GetProjects(ps57CtlListCtrl);
 
-//    ps57CtlListBox = new wxChoice( ps57Ctl, ID_CHECKLISTBOX, wxDefaultPosition,
-    ps57CtlListBox = new wxCheckListBox( ps57Ctl, ID_CHECKLISTBOX, wxDefaultPosition,
-                                        wxSize( 250, 350 ), num, strCheck, wxLB_SINGLE | wxLB_HSCROLL | wxLB_SORT );
-//                                        wxSize( 250, 350 ), num, ps57CtlListBoxStrings, wxLB_SINGLE | wxLB_HSCROLL | wxLB_SORT );
-    marinersSizer->Add( ps57CtlListBox, 1, wxALL | wxEXPAND, group_item_spacing );
+    marinersSizer->Add( ps57CtlListCtrl, 1, wxALL | wxEXPAND, group_item_spacing );
 
     wxBoxSizer* btnRow = new wxBoxSizer( wxHORIZONTAL );
     itemButtonSelectList = new wxButton( ps57Ctl, ID_SELECTLIST, _("Select All") );
@@ -2187,14 +2147,17 @@ void options::CreatePanel_VectorCharts1( size_t parent, int border_size, int gro
     btnRow->Add( itemButtonClearList, 1, wxALL | wxEXPAND, group_item_spacing );
     marinersSizer->Add( btnRow );
 
-//    wxString *ps57CtlListBoxStrings1 = NULL;
-    GetComponents(ps57CtlListBoxStrings1);
-    int num1 = ps57CtlListBoxStrings1->GetCount();
-    wxString* strCheck1=helper1.GetStrings();
 
-    ps57CtlListBox1 = new wxCheckListBox( ps57Ctl, ID_RADARDISTUNIT, wxDefaultPosition,
-                                        wxSize( 250, 550 ), num1, strCheck1, wxLB_SINGLE | wxLB_HSCROLL | wxLB_SORT );
-    marinersSizer->Add( ps57CtlListBox1, 1, wxALL | wxEXPAND, group_item_spacing );
+// Components
+
+
+    ps57ListCtrl1 = new wxListCtrl( ps57Ctl, ID_RADARDISTUNIT, wxDefaultPosition,
+                                        wxSize( 250, 350 ), wxLC_REPORT );
+
+    GetComponents(ps57ListCtrl1);
+
+
+    marinersSizer->Add( ps57ListCtrl1, 1, wxALL | wxEXPAND, group_item_spacing );
 
 
 //    m_choicePrecision->SetSelection( g_NMEAAPBPrecision );
