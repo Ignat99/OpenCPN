@@ -31,9 +31,9 @@
 #include <wx/wx.h>
 #endif
 
-#include <mysqlcppapi/mysqlcppapi.h>
-#include <iostream>
-#include <iomanip>
+//#include <mysqlcppapi/mysqlcppapi.h>
+//#include <iostream>
+//#include <iomanip>
 
 
 #include <wx/progdlg.h>
@@ -921,7 +921,7 @@ void options::Init()
     pSelCtl = NULL;
     pActiveChartsList = NULL;
     ps57CtlListBox = NULL;
-    ps57CtlListBox1 = NULL;
+//    ps57CtlListBox1 = NULL;
     pDispCat = NULL;
     m_pSerialArray = NULL;
     pUpdateCheckBox = NULL;
@@ -1858,7 +1858,7 @@ void options::CreatePanel_Advanced( size_t parent, int border_size, int group_it
 
 }
 
-
+/*
 void options::GetComponents(wxListCtrl *ps57CtlListCtrl1) {
 
     long index=0;
@@ -1943,8 +1943,8 @@ void options::GetComponents(wxListCtrl *ps57CtlListCtrl1) {
    << er.get_TypeName() << "\"." << std::endl;
   }
 }
-
-
+*/
+/*
 void options::GetProjects(wxListCtrl  *ps57CtlListCtrl) {
 
   long index=0;
@@ -2008,8 +2008,8 @@ void options::GetProjects(wxListCtrl  *ps57CtlListCtrl) {
    << er.get_TypeName() << "\"." << std::endl;
   }
 }
-
-
+*/
+/*
 void options::CreatePanel_VectorCharts1( size_t parent, int border_size, int group_item_spacing,
         wxSize small_button_size )
 {
@@ -2195,7 +2195,7 @@ void options::CreatePanel_VectorCharts1( size_t parent, int border_size, int gro
 //    msg.Printf( _("Distance from: %4.0f NMi  Chart: "), distance);
 //    pprog->Update(pprog_count, _T("0000/0000 \n") + msg, &skip );
 }
-
+*/
 
 void options::CreatePanel_VectorCharts( size_t parent, int border_size, int group_item_spacing,
         wxSize small_button_size )
@@ -3128,8 +3128,8 @@ void options::CreateControls()
     m_ApplyButton = new wxButton( itemDialog1, ID_APPLY, _("Apply") );
     buttons->Add( m_ApplyButton, 0, wxALIGN_CENTER_VERTICAL | wxALL, border_size );
 
-    m_pageDisplay = CreatePanel( _("Display") );
-    CreatePanel_VectorCharts1( m_pageDisplay, border_size, group_item_spacing, m_small_button_size );
+//    m_pageDisplay = CreatePanel( _("Display") );
+//    CreatePanel_VectorCharts1( m_pageDisplay, border_size, group_item_spacing, m_small_button_size );
     CreatePanel_Display( m_pageDisplay, border_size, group_item_spacing, m_small_button_size );
     CreatePanel_Units( m_pageDisplay, border_size, group_item_spacing, m_small_button_size );
     CreatePanel_Advanced( m_pageDisplay, border_size, group_item_spacing, m_small_button_size );

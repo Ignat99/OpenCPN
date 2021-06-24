@@ -31,6 +31,7 @@
 #include <wx/dynarray.h>
 #include <wx/dynlib.h>
 
+
 #ifdef ocpnUSE_GL
 #include <wx/glcanvas.h>
 #endif
@@ -48,6 +49,11 @@
 #include <wx/choice.h>
 #include <wx/tglbtn.h>
 #include <wx/bmpcbox.h>
+#include <wx/listctrl.h>
+#include <wx/dialog.h>
+#include <wx/collpane.h>
+#include <wx/listbook.h>
+#include <wx/dirctrl.h>
 
 //    Include wxJSON headers
 //    We undefine MIN/MAX so avoid warning of redefinition coming from
@@ -221,6 +227,12 @@ public:
       PlugInManager(MyFrame *parent);
       virtual ~PlugInManager();
 
+//      wxListCtrl    *ps57CtlListBox1;
+      wxListCtrl    *ps57CtlListCtrl;
+      wxListCtrl    *ps57ListCtrl1;
+      size_t        m_pageDisplay;
+      wxSize        m_small_button_size;
+
       bool LoadAllPlugIns(const wxString &plugin_dir, bool enabled_plugins, bool b_enable_blackdialog = true);
       bool UnLoadAllPlugIns();
       bool DeactivateAllPlugIns();
@@ -270,6 +282,10 @@ public:
       void SetColorSchemeForAllPlugIns(ColorScheme cs);
       void NotifyAuiPlugIns(void);
       bool CallLateInit(void);
+
+      void GetProjects(wxListCtrl *ps57CtlListBoxStrings);
+      void GetComponents(wxListCtrl *ps57CtlListBoxStrings);
+      void CreatePanel_VectorCharts1(size_t parent, int border_size, int group_item_spacing, wxSize small_button_size);
       
       void SendVectorChartObjectInfo(const wxString &chart, const wxString &feature, const wxString &objname, double &lat, double &lon, double &scale, int &nativescale);
 
