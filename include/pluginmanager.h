@@ -225,6 +225,7 @@ public:
       bool UnLoadAllPlugIns();
       bool DeactivateAllPlugIns();
       bool UpdatePlugIns();
+      bool BasculaProgress();
 
       bool UpdateConfig();
 

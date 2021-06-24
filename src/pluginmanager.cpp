@@ -92,6 +92,11 @@ extern ColorScheme      global_color_scheme;
 extern ChartCanvas     *cc1;
 extern wxArrayString    g_locale_catalog_array;
 
+extern wxProgressDialog *pprog;
+extern bool b_skipout;
+extern wxSize pprog_size;
+extern int pprog_count;
+
 unsigned int      gs_plib_flags;
 
 #include <wx/listimpl.cpp>
@@ -221,6 +226,7 @@ PlugInManager::PlugInManager(MyFrame *parent)
     {
         m_plugin_menu_item_id_next = pFrame->GetCanvasWindow()->GetNextContextMenuId();
         m_plugin_tool_id_next = pFrame->GetNextToolbarToolId();
+        BasculaProgress();
     }
 }
 
@@ -228,6 +234,38 @@ PlugInManager::~PlugInManager()
 {
 }
 
+bool PlugInManager::BasculaProgress(void)
+{
+        int count=0;
+        long style = wxPD_SMOOTH | wxPD_ELAPSED_TIME | wxPD_ESTIMATED_TIME | wxPD_REMAINING_TIME | wxPD_CAN_SKIP;
+//        style |= wxSTAY_ON_TOP;
+
+        pprog = new wxProgressDialog(_("OpenCPN bascula update"), _T("Progress"), count+1, GetOCPNCanvasWindow(), style);
+        pprog->Hide();
+        wxSize sz = pprog->GetSize();
+        wxSize csz = GetOCPNCanvasWindow()->GetClientSize();
+        sz.x = csz.x * 7 / 10;
+        sz.y += 20;
+        pprog->SetSize( sz );
+        pprog_size = sz;
+
+        pprog->Centre();
+        wxString msg0;
+        msg0 += _T("\n\n");
+        pprog->Update( 0, msg0 );
+        pprog->Show();
+        pprog->Raise();
+
+        b_skipout = false;
+        pprog_count = 0;
+        bool skip = false;
+        wxString msg;
+        double distance = 1.0;
+        msg.Printf(_("Weigh: %4.0f kg   :"), distance);
+        pprog->Update(pprog_count, _T("0000/0000 \n") + msg, &skip);
+
+        return true;
+}
 
 bool PlugInManager::LoadAllPlugIns(const wxString &plugin_dir, bool load_enabled, bool b_enable_blackdialog)
 {

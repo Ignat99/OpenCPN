@@ -86,6 +86,11 @@ extern MyFrame          *gFrame;
 extern ChartCanvas      *cc1;
 extern wxString         g_PrivateDataDir;
 
+extern wxProgressDialog *pprog;
+extern bool b_skipout;
+extern wxSize pprog_size;
+extern int pprog_count;
+
 extern bool             g_bShowFPS;
 
 extern bool             g_bShowOutlines;
@@ -2161,6 +2166,34 @@ void options::CreatePanel_VectorCharts1( size_t parent, int border_size, int gro
 
 
 //    m_choicePrecision->SetSelection( g_NMEAAPBPrecision );
+
+//    int count = 0;
+//    long style = wxPD_SMOOTH | wxPD_ELAPSED_TIME | wxPD_ESTIMATED_TIME | wxPD_REMAINING_TIME | wxPD_CAN_SKIP;
+//  style |= wxSTAY_ON_TOP;
+
+//    pprog = new wxProgressDialog(_("OpenCPN bascula Update"), _T("Progress"), count+1, GetOCPNCanvasWindow(), style);
+//    pprog->Hide();
+//    wxSize sz = pprog->GetSize();
+//    wxSize csz = GetOCPNCanvasWindow()->GetClientSize();
+//    sz.x = csz.x * 7 / 10;
+//    sz.y += 1 * 40;
+//    pprog->SetSize( sz );
+//    pprog_size = sz;
+
+//    pprog->Centre();
+//    wxString msg0;
+//    msg0 += _T("\n\n");
+//    pprog->Update( 0, msg0 );
+//    pprog->Show();
+//    pprog->Raise();
+
+//    b_skipout = false;
+//    pprog_count = 0;
+//    bool skip = false;
+//    wxString msg;
+//    double distance = 1.0;
+//    msg.Printf( _("Distance from: %4.0f NMi  Chart: "), distance);
+//    pprog->Update(pprog_count, _T("0000/0000 \n") + msg, &skip );
 }
 
 
