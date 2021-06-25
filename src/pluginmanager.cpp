@@ -269,29 +269,42 @@ PlugInManager::PlugInManager(MyFrame *parent)
         m_plugin_tool_id_next = pFrame->GetNextToolbarToolId();
         BasculaProgress();
     }
+        wxFrame* pWindow = new wxFrame(pParent, -1, "Form", wxPoint(100,100), wxSize(840, 640));
+        pWindow->Centre(wxBOTH);
+//        local staticText = wx.wxStaticText( panel, wx.wxID_ANY, name_string);
 
-        wxScrolledWindow* ps57Ctl1 = new wxScrolledWindow(pParent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHSCROLL | wxVSCROLL | wxTAB_TRAVERSAL);
+        pWindow->Show(true);
+
+
+        wxScrolledWindow* ps57Ctl1 = new wxScrolledWindow(pWindow, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHSCROLL | wxVSCROLL | wxTAB_TRAVERSAL);
 
         wxBoxSizer* topSizer = new wxBoxSizer(wxVERTICAL);
         ps57Ctl1->SetSizer(topSizer);
 
-
-        long style = wxPD_SMOOTH | wxPD_ELAPSED_TIME | wxPD_ESTIMATED_TIME | wxPD_REMAINING_TIME | wxPD_CAN_SKIP;
-//        style |= wxSTAY_ON_TOP;
-        wxDialog* pDialog = new wxDialog(ps57Ctl1, wxID_ANY, _("123"), wxDefaultPosition, wxDefaultSize, style);
-        topSizer->Add( pDialog, 0, wxEXPAND | wxALL, 0 );
-
-
         m_pNotebook = new wxNotebook (ps57Ctl1, wxID_ANY, wxDefaultPosition, wxSize(-1, -1), wxNB_TOP);
         topSizer->Add( m_pNotebook, 1, wxALIGN_CENTER_HORIZONTAL | wxALIGN_CENTER_VERTICAL | wxALL | wxEXPAND, 5 );
 
-        wxPanel *pPanel = new wxPanel( m_pNotebook, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxNO_BORDER | wxTAB_TRAVERSAL, _("Bascula") );
-        topSizer->Add( pPanel, 0, wxEXPAND | wxALL, 0 );
+        wxBoxSizer* vectorPanel = new wxBoxSizer(wxHORIZONTAL);
+        m_pNotebook->SetSizer(vectorPanel);
 
-
-        wxBoxSizer* pluRouters = new wxBoxSizer(wxHORIZONTAL);
-        pPanel->SetSizer(pluRouters);
+        wxPanel *pPanel = new wxPanel( ps57Ctl1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxNO_BORDER | wxTAB_TRAVERSAL, _("Bascula") );
         m_pNotebook->AddPage(pPanel, _("Display") );
+        vectorPanel->Add( pPanel, 0, wxEXPAND | wxALL, 0 );
+
+
+
+
+
+
+//        long style = wxPD_SMOOTH | wxPD_ELAPSED_TIME | wxPD_ESTIMATED_TIME | wxPD_REMAINING_TIME | wxPD_CAN_SKIP;
+////        style |= wxSTAY_ON_TOP;
+//        wxDialog* pDialog = new wxDialog(ps57Ctl1, wxID_ANY, _("123"), wxDefaultPosition, wxDefaultSize, style);
+//        pluRouters->Add( pDialog, 0, wxEXPAND | wxALL, 0 );
+
+
+//        m_depthUnitsSafe = new wxStaticText( pParent, wxID_ANY, _("metres") );
+//        depSafeRow->Add( m_depthUnitsSafe, inputFlags );
+
 
 //        m_pageDisplay = CreatePanel(_("Display"));
 //        CreatePanel_VectorCharts1(m_pageDisplay, border_size, group_item_spacing, m_small_button_size);
@@ -302,42 +315,42 @@ PlugInManager::PlugInManager(MyFrame *parent)
 //        pPanel->Raise();
 //        pPanel->Layout();
 
-/*
+
     wxFlexGridSizer* optionsColumn = new wxFlexGridSizer(1);
     optionsColumn->SetHGap(border_size);
-    topSizer->Add( optionsColumn, 0, wxALL | wxEXPAND, border_size );
+    vectorPanel->Add( optionsColumn, 0, wxALL | wxEXPAND, border_size );
 
     // spacer
-    optionsColumn->Add( new wxStaticText(ps57Ctl1, wxID_ANY, _T("")) );
-    optionsColumn->Add( new wxStaticText(ps57Ctl1, wxID_ANY, _T("")) );
+    optionsColumn->Add( new wxStaticText(ps57Ctl1, wxID_ANY, _T("A")) );
+    optionsColumn->Add( new wxStaticText(ps57Ctl1, wxID_ANY, _T("B")) );
 
 
     // dislay category
     optionsColumn->Add( new wxStaticText(ps57Ctl1, wxID_ANY, _("Data creation")), labelFlags );
     wxString pDispCatStrings[] = { _("1 day"), _("2 day"), _("3 day"), _("Week") };
-    pDispCat = new wxChoice( ps57Ctl1, ID_RADARDISTUNIT, wxDefaultPosition,
-                            wxDefaultSize, 4, pDispCatStrings );
+    pDispCat = new wxChoice( ps57Ctl1, ID_RADARDISTUNIT, wxDefaultPosition, wxDefaultSize, 4, pDispCatStrings );
     optionsColumn->Add( pDispCat, 0, wxALL, 2 );
-*/
 
-/*
+
+
     // spacer
-    optionsColumn->Add( new wxStaticText(ps57Ctl1, wxID_ANY, _T("")) );
-    optionsColumn->Add( new wxStaticText(ps57Ctl1, wxID_ANY, _T("")) );
+    optionsColumn->Add( new wxStaticText(ps57Ctl1, wxID_ANY, _T("C")) );
+    optionsColumn->Add( new wxStaticText(ps57Ctl1, wxID_ANY, _T("D")) );
 
 
     // spacer
     optionsColumn->Add( 0, border_size*4 );
     optionsColumn->Add( 0, border_size*4 );
-*/
 
-/*
+
+
     // graphics options
     optionsColumn->Add( new wxStaticText(ps57Ctl1, wxID_ANY, _("Remarks")), labelFlags );
     wxString pPointStyleStrings[] = { _("Paper Chart"), _("Simplified"), };
-    pPointStyle = new wxChoice( ps57Ctl1, ID_RADARDISTUNIT, wxDefaultPosition,
-            wxDefaultSize, 2, pPointStyleStrings );
+    pPointStyle = new wxChoice( ps57Ctl1, ID_RADARDISTUNIT, wxDefaultPosition, wxDefaultSize, 2, pPointStyleStrings );
     optionsColumn->Add( pPointStyle, inputFlags );
+
+
 
     optionsColumn->Add( new wxStaticText(ps57Ctl1, wxID_ANY, _("Remarks special")), labelFlags );
     wxString pBoundStyleStrings[] = { _("Plain"), _("Symbolized"), };
@@ -349,15 +362,15 @@ PlugInManager::PlugInManager(MyFrame *parent)
     wxString pColorNumStrings[] = { _("2 Color loooong"), _("4 Color loooong"), };
     p24Color = new wxChoice( ps57Ctl1, ID_RADARDISTUNIT, wxDefaultPosition,
             wxDefaultSize, 2, pColorNumStrings );
-    optionsColumn->Add( ps57Ctl1, inputFlags );
+    optionsColumn->Add( p24Color, inputFlags );
 
 
     // spacer
     optionsColumn->Add( 0, border_size*4 );
     optionsColumn->Add( 0, border_size*4 );
-*/
 
-/*
+
+
     // depth options
     optionsColumn->Add( new wxStaticText( ps57Ctl1, wxID_ANY, _("Product") ), labelFlags );
 //    wxBoxSizer* depShalRow = new wxBoxSizer( wxHORIZONTAL );
@@ -384,9 +397,9 @@ PlugInManager::PlugInManager(MyFrame *parent)
     //m_depthUnitsDeep = new wxStaticText( pParent, wxID_ANY, _("metres") );
     //depDeepRow->Add( m_depthUnitsDeep, inputFlags );
 
-*/
 
-/*
+
+
     // spacer
     optionsColumn->Add( 0, border_size*4 );
     optionsColumn->Add( 0, border_size*4 );
@@ -394,16 +407,16 @@ PlugInManager::PlugInManager(MyFrame *parent)
 
     // 2nd column, Display Category / Mariner's Standard options
     wxBoxSizer* dispSizer = new wxBoxSizer( wxVERTICAL );
-    topSizer->Add( dispSizer, 2, wxALL | wxEXPAND, border_size );
+    vectorPanel->Add( dispSizer, 2, wxALL | wxEXPAND, border_size );
 
     wxStaticBox* marinersBox = new wxStaticBox( ps57Ctl1, wxID_ANY, _("Projects") );
     wxStaticBoxSizer* marinersSizer = new wxStaticBoxSizer( marinersBox, wxVERTICAL );
     dispSizer->Add( marinersSizer, 1, wxALL | wxEXPAND, border_size );
-*/
+
 
 // Products
 
-/*
+
     ps57CtlListCtrl = new wxListCtrl( ps57Ctl1, ID_CHECKLISTBOX, wxDefaultPosition,
                                         wxSize( 250, 350 ), wxLC_REPORT );
     GetProjects(ps57CtlListCtrl);
@@ -423,7 +436,7 @@ PlugInManager::PlugInManager(MyFrame *parent)
                                         wxSize( 250, 350 ), wxLC_REPORT );
     GetComponents(ps57ListCtrl1);
     marinersSizer->Add( ps57ListCtrl1, 1, wxALL | wxEXPAND, group_item_spacing );
-*/
+
 
 //    panel->Show();
 //    panel->Raise();
