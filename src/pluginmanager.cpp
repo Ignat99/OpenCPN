@@ -97,11 +97,14 @@ extern ColorScheme      global_color_scheme;
 extern ChartCanvas     *cc1;
 extern wxArrayString    g_locale_catalog_array;
 
+/*
 extern wxProgressDialog *pprog;
 extern bool b_skipout;
 extern wxSize pprog_size;
 extern int pprog_count;
+*/
 
+/*
 //extern wxScrolledWindow *ps57Ctl;
 extern wxListCtrl *ps57ListCtrl1;
 extern wxListCtrl *ps57CtlListCtrl;
@@ -115,6 +118,10 @@ extern wxButton *itemButtonSelectList;
 extern wxTextCtrl *m_SafetyCtl;
 extern wxTextCtrl *m_DeepCtl;
 extern wxBoxSizer *vectorPanel;
+extern wxScrolledWindow *ps57Ctl;
+extern wxSizerFlags inputFlags;
+extern wxSizerFlags labelFlags;
+*/
 
 unsigned int      gs_plib_flags;
 
@@ -233,6 +240,10 @@ PlugInToolbarToolContainer::~PlugInToolbarToolContainer()
 //          The PlugIn Manager Implementation
 //
 //-----------------------------------------------------------------------------------------------------
+//IMPLEMENT_DYNAMIC_CLASS( PlugInManager, wxDialog )
+
+
+
 PlugInManager *s_ppim;
 
 PlugInManager::PlugInManager(MyFrame *parent)
@@ -242,7 +253,7 @@ PlugInManager::PlugInManager(MyFrame *parent)
     wxDC *dc = new wxScreenDC();
 
 //    ps57CtlListBox1 = NULL;
-    ps57ListCtrl1 = NULL;
+     ps57ListCtrl1 = NULL;
     m_pageDisplay = -1;
     int border_size = 4;
     int group_item_spacing = 2;
@@ -257,10 +268,169 @@ PlugInManager::PlugInManager(MyFrame *parent)
         m_plugin_menu_item_id_next = pFrame->GetCanvasWindow()->GetNextContextMenuId();
         m_plugin_tool_id_next = pFrame->GetNextToolbarToolId();
         BasculaProgress();
+    }
+
+        wxScrolledWindow* ps57Ctl1 = new wxScrolledWindow(pParent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHSCROLL | wxVSCROLL | wxTAB_TRAVERSAL);
+
+        wxBoxSizer* topSizer = new wxBoxSizer(wxVERTICAL);
+        ps57Ctl1->SetSizer(topSizer);
+
+
+        long style = wxPD_SMOOTH | wxPD_ELAPSED_TIME | wxPD_ESTIMATED_TIME | wxPD_REMAINING_TIME | wxPD_CAN_SKIP;
+//        style |= wxSTAY_ON_TOP;
+        wxDialog* pDialog = new wxDialog(ps57Ctl1, wxID_ANY, _("123"), wxDefaultPosition, wxDefaultSize, style);
+        topSizer->Add( pDialog, 0, wxEXPAND | wxALL, 0 );
+
+
+        m_pNotebook = new wxNotebook (ps57Ctl1, wxID_ANY, wxDefaultPosition, wxSize(-1, -1), wxNB_TOP);
+        topSizer->Add( m_pNotebook, 1, wxALIGN_CENTER_HORIZONTAL | wxALIGN_CENTER_VERTICAL | wxALL | wxEXPAND, 5 );
+
+        wxPanel *pPanel = new wxPanel( m_pNotebook, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxNO_BORDER | wxTAB_TRAVERSAL, _("Bascula") );
+        topSizer->Add( pPanel, 0, wxEXPAND | wxALL, 0 );
+
+
+        wxBoxSizer* pluRouters = new wxBoxSizer(wxHORIZONTAL);
+        pPanel->SetSizer(pluRouters);
+        m_pNotebook->AddPage(pPanel, _("Display") );
+
 //        m_pageDisplay = CreatePanel(_("Display"));
 //        CreatePanel_VectorCharts1(m_pageDisplay, border_size, group_item_spacing, m_small_button_size);
-        CreatePanel_VectorCharts1(GetOCPNCanvasWindow(), border_size, group_item_spacing, m_small_button_size);
-    }
+//        CreatePanel_VectorCharts1(topSizer, border_size, group_item_spacing, m_small_button_size);
+
+
+//        pPanel->Show();
+//        pPanel->Raise();
+//        pPanel->Layout();
+
+/*
+    wxFlexGridSizer* optionsColumn = new wxFlexGridSizer(1);
+    optionsColumn->SetHGap(border_size);
+    topSizer->Add( optionsColumn, 0, wxALL | wxEXPAND, border_size );
+
+    // spacer
+    optionsColumn->Add( new wxStaticText(ps57Ctl1, wxID_ANY, _T("")) );
+    optionsColumn->Add( new wxStaticText(ps57Ctl1, wxID_ANY, _T("")) );
+
+
+    // dislay category
+    optionsColumn->Add( new wxStaticText(ps57Ctl1, wxID_ANY, _("Data creation")), labelFlags );
+    wxString pDispCatStrings[] = { _("1 day"), _("2 day"), _("3 day"), _("Week") };
+    pDispCat = new wxChoice( ps57Ctl1, ID_RADARDISTUNIT, wxDefaultPosition,
+                            wxDefaultSize, 4, pDispCatStrings );
+    optionsColumn->Add( pDispCat, 0, wxALL, 2 );
+*/
+
+/*
+    // spacer
+    optionsColumn->Add( new wxStaticText(ps57Ctl1, wxID_ANY, _T("")) );
+    optionsColumn->Add( new wxStaticText(ps57Ctl1, wxID_ANY, _T("")) );
+
+
+    // spacer
+    optionsColumn->Add( 0, border_size*4 );
+    optionsColumn->Add( 0, border_size*4 );
+*/
+
+/*
+    // graphics options
+    optionsColumn->Add( new wxStaticText(ps57Ctl1, wxID_ANY, _("Remarks")), labelFlags );
+    wxString pPointStyleStrings[] = { _("Paper Chart"), _("Simplified"), };
+    pPointStyle = new wxChoice( ps57Ctl1, ID_RADARDISTUNIT, wxDefaultPosition,
+            wxDefaultSize, 2, pPointStyleStrings );
+    optionsColumn->Add( pPointStyle, inputFlags );
+
+    optionsColumn->Add( new wxStaticText(ps57Ctl1, wxID_ANY, _("Remarks special")), labelFlags );
+    wxString pBoundStyleStrings[] = { _("Plain"), _("Symbolized"), };
+    pBoundStyle = new wxChoice( ps57Ctl1, ID_RADARDISTUNIT, wxDefaultPosition,
+            wxDefaultSize, 2, pBoundStyleStrings );
+    optionsColumn->Add( pBoundStyle, inputFlags );
+
+    optionsColumn->Add( new wxStaticText(ps57Ctl1, wxID_ANY, _("Remarks internal")), labelFlags );
+    wxString pColorNumStrings[] = { _("2 Color loooong"), _("4 Color loooong"), };
+    p24Color = new wxChoice( ps57Ctl1, ID_RADARDISTUNIT, wxDefaultPosition,
+            wxDefaultSize, 2, pColorNumStrings );
+    optionsColumn->Add( ps57Ctl1, inputFlags );
+
+
+    // spacer
+    optionsColumn->Add( 0, border_size*4 );
+    optionsColumn->Add( 0, border_size*4 );
+*/
+
+/*
+    // depth options
+    optionsColumn->Add( new wxStaticText( ps57Ctl1, wxID_ANY, _("Product") ), labelFlags );
+//    wxBoxSizer* depShalRow = new wxBoxSizer( wxHORIZONTAL );
+//    optionsColumn->Add( depShalRow );
+  wxString pPointStyleStrings1[] = { _("Pivot"), _("Slide"), _("Double") };
+    pPointStyle1 = new wxChoice( ps57Ctl1, ID_RADARDISTUNIT, wxDefaultPosition,
+            wxDefaultSize, 3, pPointStyleStrings1 );
+    optionsColumn->Add( pPointStyle1, inputFlags );
+
+
+    optionsColumn->Add( new wxStaticText( ps57Ctl1, wxID_ANY, _("Client") ), labelFlags );
+    wxBoxSizer* depSafeRow = new wxBoxSizer( wxHORIZONTAL );
+    optionsColumn->Add( depSafeRow );
+    m_SafetyCtl = new wxTextCtrl( ps57Ctl1, ID_TEXTCTRL, _T(""), wxDefaultPosition, wxSize( 80, -1 ), wxTE_RIGHT );
+    depSafeRow->Add( m_SafetyCtl, inputFlags );
+    //m_depthUnitsSafe = new wxStaticText( pParent, wxID_ANY, _("metres") );
+    //depSafeRow->Add( m_depthUnitsSafe, inputFlags );
+
+    optionsColumn->Add( new wxStaticText( ps57Ctl1, wxID_ANY, _("Creator") ), labelFlags );
+    wxBoxSizer* depDeepRow = new wxBoxSizer( wxHORIZONTAL );
+    optionsColumn->Add( depDeepRow );
+    m_DeepCtl = new wxTextCtrl( ps57Ctl1, ID_TEXTCTRL, _T(""), wxDefaultPosition, wxSize( 80, -1 ), wxTE_RIGHT );
+    depDeepRow->Add( m_DeepCtl, inputFlags );
+    //m_depthUnitsDeep = new wxStaticText( pParent, wxID_ANY, _("metres") );
+    //depDeepRow->Add( m_depthUnitsDeep, inputFlags );
+
+*/
+
+/*
+    // spacer
+    optionsColumn->Add( 0, border_size*4 );
+    optionsColumn->Add( 0, border_size*4 );
+
+
+    // 2nd column, Display Category / Mariner's Standard options
+    wxBoxSizer* dispSizer = new wxBoxSizer( wxVERTICAL );
+    topSizer->Add( dispSizer, 2, wxALL | wxEXPAND, border_size );
+
+    wxStaticBox* marinersBox = new wxStaticBox( ps57Ctl1, wxID_ANY, _("Projects") );
+    wxStaticBoxSizer* marinersSizer = new wxStaticBoxSizer( marinersBox, wxVERTICAL );
+    dispSizer->Add( marinersSizer, 1, wxALL | wxEXPAND, border_size );
+*/
+
+// Products
+
+/*
+    ps57CtlListCtrl = new wxListCtrl( ps57Ctl1, ID_CHECKLISTBOX, wxDefaultPosition,
+                                        wxSize( 250, 350 ), wxLC_REPORT );
+    GetProjects(ps57CtlListCtrl);
+
+    marinersSizer->Add( ps57CtlListCtrl, 1, wxALL | wxEXPAND, group_item_spacing );
+
+    wxBoxSizer* btnRow = new wxBoxSizer( wxHORIZONTAL );
+    itemButtonSelectList = new wxButton( ps57Ctl1, ID_SELECTLIST, _("Select All") );
+    btnRow->Add( itemButtonSelectList, 1, wxALL | wxEXPAND, group_item_spacing );
+    itemButtonClearList = new wxButton( ps57Ctl1, ID_CLEARLIST, _("Clear All") );
+    btnRow->Add( itemButtonClearList, 1, wxALL | wxEXPAND, group_item_spacing );
+    marinersSizer->Add( btnRow );
+
+// Components
+
+    ps57ListCtrl1 = new wxListCtrl( ps57Ctl1, ID_RADARDISTUNIT, wxDefaultPosition,
+                                        wxSize( 250, 350 ), wxLC_REPORT );
+    GetComponents(ps57ListCtrl1);
+    marinersSizer->Add( ps57ListCtrl1, 1, wxALL | wxEXPAND, group_item_spacing );
+*/
+
+//    panel->Show();
+//    panel->Raise();
+//    panel->Layout();
+    m_pNotebook->Show();
+    m_pNotebook->Layout();
+
 }
 
 PlugInManager::~PlugInManager()
@@ -274,6 +444,195 @@ PlugInManager::~PlugInManager()
 //    m_pListbook->AddPage( panel, title, false, id);
 //    return id;
 //}
+
+void PlugInManager::CreatePanel_VectorCharts1( wxBoxSizer *vectorPanel, int border_size, int group_item_spacing,
+        wxSize small_button_size )
+{
+//    ps57Ctl = AddPage( parent, _("Project Display") );
+
+//    vectorPanel = new wxBoxSizer( wxHORIZONTAL );
+    ps57Ctl1->SetSizer( vectorPanel );
+
+
+
+    // 1st column, all options except Mariner's Standard
+    wxFlexGridSizer* optionsColumn = new wxFlexGridSizer(1);
+    optionsColumn->SetHGap(border_size);
+//    optionsColumn->AddGrowableCol( 0, 2 );
+//    optionsColumn->AddGrowableCol( 1, 3 );
+//    vectorPanel->Add( optionsColumn, 3, wxALL | wxEXPAND, border_size );
+    vectorPanel->Add( optionsColumn, 0, wxALL | wxEXPAND, border_size );
+
+
+
+    // spacer
+    optionsColumn->Add( new wxStaticText(ps57Ctl1, wxID_ANY, _T("")) );
+    optionsColumn->Add( new wxStaticText(ps57Ctl1, wxID_ANY, _T("")) );
+
+
+    // dislay category
+    optionsColumn->Add( new wxStaticText(ps57Ctl1, wxID_ANY, _("Data creation")), labelFlags );
+    wxString pDispCatStrings[] = { _("1 day"), _("2 day"), _("3 day"), _("Week") };
+    pDispCat = new wxChoice( ps57Ctl1, ID_RADARDISTUNIT, wxDefaultPosition,
+                            wxDefaultSize, 4, pDispCatStrings );
+    optionsColumn->Add( pDispCat, 0, wxALL, 2 );
+
+
+    // spacer
+    optionsColumn->Add( new wxStaticText(ps57Ctl1, wxID_ANY, _T("")) );
+    optionsColumn->Add( new wxStaticText(ps57Ctl1, wxID_ANY, _T("")) );
+
+
+    // spacer
+    optionsColumn->Add( 0, border_size*4 );
+    optionsColumn->Add( 0, border_size*4 );
+
+
+    // graphics options
+    optionsColumn->Add( new wxStaticText(ps57Ctl1, wxID_ANY, _("Remarks")), labelFlags );
+    wxString pPointStyleStrings[] = { _("Paper Chart"), _("Simplified"), };
+    pPointStyle = new wxChoice( ps57Ctl1, ID_RADARDISTUNIT, wxDefaultPosition,
+            wxDefaultSize, 2, pPointStyleStrings );
+    optionsColumn->Add( pPointStyle, inputFlags );
+
+    optionsColumn->Add( new wxStaticText(ps57Ctl1, wxID_ANY, _("Remarks special")), labelFlags );
+    wxString pBoundStyleStrings[] = { _("Plain"), _("Symbolized"), };
+    pBoundStyle = new wxChoice( ps57Ctl1, ID_RADARDISTUNIT, wxDefaultPosition,
+            wxDefaultSize, 2, pBoundStyleStrings );
+    optionsColumn->Add( pBoundStyle, inputFlags );
+
+    optionsColumn->Add( new wxStaticText(ps57Ctl1, wxID_ANY, _("Remarks internal")), labelFlags );
+    wxString pColorNumStrings[] = { _("2 Color loooong"), _("4 Color loooong"), };
+    p24Color = new wxChoice( ps57Ctl1, ID_RADARDISTUNIT, wxDefaultPosition,
+            wxDefaultSize, 2, pColorNumStrings );
+    optionsColumn->Add( p24Color, inputFlags );
+
+
+    // spacer
+    optionsColumn->Add( 0, border_size*4 );
+    optionsColumn->Add( 0, border_size*4 );
+
+
+    // depth options
+    optionsColumn->Add( new wxStaticText( ps57Ctl1, wxID_ANY, _("Product") ), labelFlags );
+//    wxBoxSizer* depShalRow = new wxBoxSizer( wxHORIZONTAL );
+//    optionsColumn->Add( depShalRow );
+  wxString pPointStyleStrings1[] = { _("Pivot"), _("Slide"), _("Double") };
+    pPointStyle1 = new wxChoice( ps57Ctl1, ID_RADARDISTUNIT, wxDefaultPosition,
+            wxDefaultSize, 2, pPointStyleStrings1 );
+    optionsColumn->Add( pPointStyle1, inputFlags );
+
+
+
+//    m_ShallowCtl = new wxTextCtrl( ps57Ctl, ID_TEXTCTRL, _T(""), wxDefaultPosition, wxSize( 60, -1 ), wxTE_RIGHT );
+//    depShalRow->Add( m_ShallowCtl, inputFlags );
+    //m_depthUnitsShal = new wxStaticText( ps57Ctl, wxID_ANY, _("metres") );
+    //depShalRow->Add( m_depthUnitsShal, inputFlags );
+
+    optionsColumn->Add( new wxStaticText( ps57Ctl1, wxID_ANY, _("Client") ), labelFlags );
+    wxBoxSizer* depSafeRow = new wxBoxSizer( wxHORIZONTAL );
+    optionsColumn->Add( depSafeRow );
+    m_SafetyCtl = new wxTextCtrl( ps57Ctl1, ID_TEXTCTRL, _T(""), wxDefaultPosition, wxSize( 80, -1 ), wxTE_RIGHT );
+    depSafeRow->Add( m_SafetyCtl, inputFlags );
+    //m_depthUnitsSafe = new wxStaticText( ps57Ctl, wxID_ANY, _("metres") );
+    //depSafeRow->Add( m_depthUnitsSafe, inputFlags );
+
+    optionsColumn->Add( new wxStaticText( ps57Ctl1, wxID_ANY, _("Creator") ), labelFlags );
+    wxBoxSizer* depDeepRow = new wxBoxSizer( wxHORIZONTAL );
+    optionsColumn->Add( depDeepRow );
+    m_DeepCtl = new wxTextCtrl( ps57Ctl1, ID_TEXTCTRL, _T(""), wxDefaultPosition, wxSize( 80, -1 ), wxTE_RIGHT );
+    depDeepRow->Add( m_DeepCtl, inputFlags );
+    //m_depthUnitsDeep = new wxStaticText( ps57Ctl, wxID_ANY, _("metres") );
+    //depDeepRow->Add( m_depthUnitsDeep, inputFlags );
+
+
+    // spacer
+    optionsColumn->Add( 0, border_size*4 );
+    optionsColumn->Add( 0, border_size*4 );
+
+
+//#ifdef USE_S57
+//    optionsColumn->Add( new wxStaticText(ps57Ctl, wxID_ANY, _("CM93 Detail Level")), labelFlags );
+//    m_pSlider_CM93_Zoom = new wxSlider( ps57Ctl, ID_CM93ZOOM, 0, -CM93_ZOOM_FACTOR_MAX_RANGE,
+//                                       CM93_ZOOM_FACTOR_MAX_RANGE, wxDefaultPosition, wxSize( 140, 50),
+//                                       wxSL_HORIZONTAL | wxSL_AUTOTICKS | wxSL_LABELS );
+//    optionsColumn->Add( m_pSlider_CM93_Zoom, 0, wxALL | wxEXPAND, border_size );
+////    cm93Sizer->SetSizeHints(cm93DetailBox);
+//#endif
+
+
+
+    // 2nd column, Display Category / Mariner's Standard options
+    wxBoxSizer* dispSizer = new wxBoxSizer( wxVERTICAL );
+    vectorPanel->Add( dispSizer, 2, wxALL | wxEXPAND, border_size );
+
+    wxStaticBox* marinersBox = new wxStaticBox( ps57Ctl1, wxID_ANY, _("Projects") );
+    wxStaticBoxSizer* marinersSizer = new wxStaticBoxSizer( marinersBox, wxVERTICAL );
+    dispSizer->Add( marinersSizer, 1, wxALL | wxEXPAND, border_size );
+
+
+// Products
+
+
+    ps57CtlListCtrl = new wxListCtrl( ps57Ctl1, ID_CHECKLISTBOX, wxDefaultPosition,
+                                        wxSize( 250, 350 ), wxLC_REPORT );
+    GetProjects(ps57CtlListCtrl);
+
+    marinersSizer->Add( ps57CtlListCtrl, 1, wxALL | wxEXPAND, group_item_spacing );
+
+    wxBoxSizer* btnRow = new wxBoxSizer( wxHORIZONTAL );
+    itemButtonSelectList = new wxButton( ps57Ctl1, ID_SELECTLIST, _("Select All") );
+    btnRow->Add( itemButtonSelectList, 1, wxALL | wxEXPAND, group_item_spacing );
+    itemButtonClearList = new wxButton( ps57Ctl1, ID_CLEARLIST, _("Clear All") );
+    btnRow->Add( itemButtonClearList, 1, wxALL | wxEXPAND, group_item_spacing );
+    marinersSizer->Add( btnRow );
+
+
+// Components
+
+
+    ps57ListCtrl1 = new wxListCtrl( ps57Ctl1, ID_RADARDISTUNIT, wxDefaultPosition,
+                                        wxSize( 250, 350 ), wxLC_REPORT );
+
+    GetComponents(ps57ListCtrl1);
+
+
+    marinersSizer->Add( ps57ListCtrl1, 1, wxALL | wxEXPAND, group_item_spacing );
+
+
+//    m_choicePrecision->SetSelection( g_NMEAAPBPrecision );
+
+//    int count = 0;
+//    long style = wxPD_SMOOTH | wxPD_ELAPSED_TIME | wxPD_ESTIMATED_TIME | wxPD_REMAINING_TIME | wxPD_CAN_SKIP;
+//  style |= wxSTAY_ON_TOP;
+
+//    pprog = new wxProgressDialog(_("OpenCPN bascula Update"), _T("Progress"), count+1, GetOCPNCanvasWindow(), style);
+//    pprog->Hide();
+//    wxSize sz = pprog->GetSize();
+//    wxSize csz = GetOCPNCanvasWindow()->GetClientSize();
+//    sz.x = csz.x * 7 / 10;
+//    sz.y += 1 * 40;
+//    pprog->SetSize( sz );
+//    pprog_size = sz;
+
+//    pprog->Centre();
+//    wxString msg0;
+//    msg0 += _T("\n\n");
+//    pprog->Update( 0, msg0 );
+//    pprog->Show();
+//    pprog->Raise();
+
+//    b_skipout = false;
+//    pprog_count = 0;
+//    bool skip = false;
+//    wxString msg;
+//    double distance = 1.0;
+//    msg.Printf( _("Distance from: %4.0f NMi  Chart: "), distance);
+//    pprog->Update(pprog_count, _T("0000/0000 \n") + msg, &skip );
+}
+
+
+
 
 bool PlugInManager::BasculaProgress(void)
 {
@@ -4443,7 +4802,7 @@ int PI_PLIBRenderObjectToGL( const wxGLContext &glcc, PI_S57Obj *pObj,
 }
 
 
-void GetComponents(wxListCtrl *ps57CtlListCtrl1) {
+void PlugInManager::GetComponents(wxListCtrl *ps57CtlListCtrl1) {
 
     long index=0;
 
@@ -4529,7 +4888,7 @@ void GetComponents(wxListCtrl *ps57CtlListCtrl1) {
 }
 
 
-void GetProjects(wxListCtrl  *ps57CtlListCtrl) {
+void PlugInManager::GetProjects(wxListCtrl  *ps57CtlListCtrl) {
 
   long index=0;
 
@@ -4593,192 +4952,6 @@ void GetProjects(wxListCtrl  *ps57CtlListCtrl) {
   }
 }
 
-
-void CreatePanel_VectorCharts1( size_t parent, int border_size, int group_item_spacing,
-        wxSize small_button_size )
-{
-    ps57Ctl = AddPage( parent, _("Project Display") );
-
-    vectorPanel = new wxBoxSizer( wxHORIZONTAL );
-    ps57Ctl->SetSizer( vectorPanel );
-
-
-
-    // 1st column, all options except Mariner's Standard
-    wxFlexGridSizer* optionsColumn = new wxFlexGridSizer(1);
-    optionsColumn->SetHGap(border_size);
-//    optionsColumn->AddGrowableCol( 0, 2 );
-//    optionsColumn->AddGrowableCol( 1, 3 );
-//    vectorPanel->Add( optionsColumn, 3, wxALL | wxEXPAND, border_size );
-    vectorPanel->Add( optionsColumn, 0, wxALL | wxEXPAND, border_size );
-
-
-
-    // spacer
-    optionsColumn->Add( new wxStaticText(ps57Ctl, wxID_ANY, _T("")) );
-    optionsColumn->Add( new wxStaticText(ps57Ctl, wxID_ANY, _T("")) );
-
-
-    // dislay category
-    optionsColumn->Add( new wxStaticText(ps57Ctl, wxID_ANY, _("Data creation")), labelFlags );
-    wxString pDispCatStrings[] = { _("1 day"), _("2 day"), _("3 day"), _("Week") };
-    pDispCat = new wxChoice( ps57Ctl, ID_RADARDISTUNIT, wxDefaultPosition,
-                            wxDefaultSize, 4, pDispCatStrings );
-    optionsColumn->Add( pDispCat, 0, wxALL, 2 );
-
-
-    // spacer
-    optionsColumn->Add( new wxStaticText(ps57Ctl, wxID_ANY, _T("")) );
-    optionsColumn->Add( new wxStaticText(ps57Ctl, wxID_ANY, _T("")) );
-
-
-    // spacer
-    optionsColumn->Add( 0, border_size*4 );
-    optionsColumn->Add( 0, border_size*4 );
-
-
-    // graphics options
-    optionsColumn->Add( new wxStaticText(ps57Ctl, wxID_ANY, _("Remarks")), labelFlags );
-   wxString pPointStyleStrings[] = { _("Paper Chart"), _("Simplified"), };
-    pPointStyle = new wxChoice( ps57Ctl, ID_RADARDISTUNIT, wxDefaultPosition,
-            wxDefaultSize, 2, pPointStyleStrings );
-    optionsColumn->Add( pPointStyle, inputFlags );
-
-    optionsColumn->Add( new wxStaticText(ps57Ctl, wxID_ANY, _("Remarks special")), labelFlags );
-    wxString pBoundStyleStrings[] = { _("Plain"), _("Symbolized"), };
-    pBoundStyle = new wxChoice( ps57Ctl, ID_RADARDISTUNIT, wxDefaultPosition,
-            wxDefaultSize, 2, pBoundStyleStrings );
-    optionsColumn->Add( pBoundStyle, inputFlags );
-
-    optionsColumn->Add( new wxStaticText(ps57Ctl, wxID_ANY, _("Remarks internal")), labelFlags );
-    wxString pColorNumStrings[] = { _("2 Color loooong"), _("4 Color loooong"), };
-    p24Color = new wxChoice( ps57Ctl, ID_RADARDISTUNIT, wxDefaultPosition,
-            wxDefaultSize, 2, pColorNumStrings );
-    optionsColumn->Add( p24Color, inputFlags );
-
-
-    // spacer
-    optionsColumn->Add( 0, border_size*4 );
-    optionsColumn->Add( 0, border_size*4 );
-
-
-    // depth options
-    optionsColumn->Add( new wxStaticText( ps57Ctl, wxID_ANY, _("Product") ), labelFlags );
-//    wxBoxSizer* depShalRow = new wxBoxSizer( wxHORIZONTAL );
-//    optionsColumn->Add( depShalRow );
-  wxString pPointStyleStrings1[] = { _("Pivot"), _("Slide"), _("Double") };
-    pPointStyle1 = new wxChoice( ps57Ctl, ID_RADARDISTUNIT, wxDefaultPosition,
-            wxDefaultSize, 2, pPointStyleStrings1 );
-    optionsColumn->Add( pPointStyle1, inputFlags );
-
-
-
-//    m_ShallowCtl = new wxTextCtrl( ps57Ctl, ID_TEXTCTRL, _T(""), wxDefaultPosition, wxSize( 60, -1 ), wxTE_RIGHT );
-//    depShalRow->Add( m_ShallowCtl, inputFlags );
-    //m_depthUnitsShal = new wxStaticText( ps57Ctl, wxID_ANY, _("metres") );
-    //depShalRow->Add( m_depthUnitsShal, inputFlags );
-
-    optionsColumn->Add( new wxStaticText( ps57Ctl, wxID_ANY, _("Client") ), labelFlags );
-    wxBoxSizer* depSafeRow = new wxBoxSizer( wxHORIZONTAL );
-    optionsColumn->Add( depSafeRow );
-    m_SafetyCtl = new wxTextCtrl( ps57Ctl, ID_TEXTCTRL, _T(""), wxDefaultPosition, wxSize( 80, -1 ), wxTE_RIGHT );
-    depSafeRow->Add( m_SafetyCtl, inputFlags );
-    //m_depthUnitsSafe = new wxStaticText( ps57Ctl, wxID_ANY, _("metres") );
-    //depSafeRow->Add( m_depthUnitsSafe, inputFlags );
-
-    optionsColumn->Add( new wxStaticText( ps57Ctl, wxID_ANY, _("Creator") ), labelFlags );
-    wxBoxSizer* depDeepRow = new wxBoxSizer( wxHORIZONTAL );
-    optionsColumn->Add( depDeepRow );
-    m_DeepCtl = new wxTextCtrl( ps57Ctl, ID_TEXTCTRL, _T(""), wxDefaultPosition, wxSize( 80, -1 ), wxTE_RIGHT );
-    depDeepRow->Add( m_DeepCtl, inputFlags );
-    //m_depthUnitsDeep = new wxStaticText( ps57Ctl, wxID_ANY, _("metres") );
-    //depDeepRow->Add( m_depthUnitsDeep, inputFlags );
-
-
-    // spacer
-    optionsColumn->Add( 0, border_size*4 );
-    optionsColumn->Add( 0, border_size*4 );
-
-
-//#ifdef USE_S57
-//    optionsColumn->Add( new wxStaticText(ps57Ctl, wxID_ANY, _("CM93 Detail Level")), labelFlags );
-//    m_pSlider_CM93_Zoom = new wxSlider( ps57Ctl, ID_CM93ZOOM, 0, -CM93_ZOOM_FACTOR_MAX_RANGE,
-//                                       CM93_ZOOM_FACTOR_MAX_RANGE, wxDefaultPosition, wxSize( 140, 50),
-//                                       wxSL_HORIZONTAL | wxSL_AUTOTICKS | wxSL_LABELS );
-//    optionsColumn->Add( m_pSlider_CM93_Zoom, 0, wxALL | wxEXPAND, border_size );
-////    cm93Sizer->SetSizeHints(cm93DetailBox);
-//#endif
-
-
-
-    // 2nd column, Display Category / Mariner's Standard options
-    wxBoxSizer* dispSizer = new wxBoxSizer( wxVERTICAL );
-    vectorPanel->Add( dispSizer, 2, wxALL | wxEXPAND, border_size );
-
-    wxStaticBox* marinersBox = new wxStaticBox( ps57Ctl, wxID_ANY, _("Projects") );
-    wxStaticBoxSizer* marinersSizer = new wxStaticBoxSizer( marinersBox, wxVERTICAL );
-    dispSizer->Add( marinersSizer, 1, wxALL | wxEXPAND, border_size );
-
-
-// Products
-
-
-    ps57CtlListCtrl = new wxListCtrl( ps57Ctl, ID_CHECKLISTBOX, wxDefaultPosition,
-                                        wxSize( 250, 350 ), wxLC_REPORT );
-    GetProjects(ps57CtlListCtrl);
-
-    marinersSizer->Add( ps57CtlListCtrl, 1, wxALL | wxEXPAND, group_item_spacing );
-
-    wxBoxSizer* btnRow = new wxBoxSizer( wxHORIZONTAL );
-    itemButtonSelectList = new wxButton( ps57Ctl, ID_SELECTLIST, _("Select All") );
-    btnRow->Add( itemButtonSelectList, 1, wxALL | wxEXPAND, group_item_spacing );
-    itemButtonClearList = new wxButton( ps57Ctl, ID_CLEARLIST, _("Clear All") );
-    btnRow->Add( itemButtonClearList, 1, wxALL | wxEXPAND, group_item_spacing );
-    marinersSizer->Add( btnRow );
-
-
-// Components
-
-
-    ps57ListCtrl1 = new wxListCtrl( ps57Ctl, ID_RADARDISTUNIT, wxDefaultPosition,
-                                        wxSize( 250, 350 ), wxLC_REPORT );
-
-    GetComponents(ps57ListCtrl1);
-
-
-    marinersSizer->Add( ps57ListCtrl1, 1, wxALL | wxEXPAND, group_item_spacing );
-
-
-//    m_choicePrecision->SetSelection( g_NMEAAPBPrecision );
-
-//    int count = 0;
-//    long style = wxPD_SMOOTH | wxPD_ELAPSED_TIME | wxPD_ESTIMATED_TIME | wxPD_REMAINING_TIME | wxPD_CAN_SKIP;
-//  style |= wxSTAY_ON_TOP;
-
-//    pprog = new wxProgressDialog(_("OpenCPN bascula Update"), _T("Progress"), count+1, GetOCPNCanvasWindow(), style);
-//    pprog->Hide();
-//    wxSize sz = pprog->GetSize();
-//    wxSize csz = GetOCPNCanvasWindow()->GetClientSize();
-//    sz.x = csz.x * 7 / 10;
-//    sz.y += 1 * 40;
-//    pprog->SetSize( sz );
-//    pprog_size = sz;
-
-//    pprog->Centre();
-//    wxString msg0;
-//    msg0 += _T("\n\n");
-//    pprog->Update( 0, msg0 );
-//    pprog->Show();
-//    pprog->Raise();
-
-//    b_skipout = false;
-//    pprog_count = 0;
-//    bool skip = false;
-//    wxString msg;
-//    double distance = 1.0;
-//    msg.Printf( _("Distance from: %4.0f NMi  Chart: "), distance);
-//    pprog->Update(pprog_count, _T("0000/0000 \n") + msg, &skip );
-}
 
 
 

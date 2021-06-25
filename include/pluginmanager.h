@@ -232,6 +232,24 @@ public:
       wxListCtrl    *ps57ListCtrl1;
       size_t        m_pageDisplay;
       wxSize        m_small_button_size;
+      wxNotebook    *m_pNotebook;
+      wxBoxSizer    *vectorPanel;
+      wxScrolledWindow    *ps57Ctl1;
+      wxSizerFlags inputFlags;
+      wxSizerFlags labelFlags;
+      wxChoice    *pDispCat;
+      wxChoice    *pPointStyle;
+      wxChoice    *pPointStyle1;
+      wxChoice    *pBoundStyle;
+      wxChoice    *p24Color;
+      wxTextCtrl    *m_SafetyCtl;
+      wxTextCtrl    *m_DeepCtl;
+      wxButton      *itemButtonSelectList;
+      wxButton      *itemButtonClearList;
+      wxProgressDialog *pprog;
+      bool b_skipout;
+      wxSize pprog_size;
+      int pprog_count;
 
       bool LoadAllPlugIns(const wxString &plugin_dir, bool enabled_plugins, bool b_enable_blackdialog = true);
       bool UnLoadAllPlugIns();
@@ -285,7 +303,7 @@ public:
 
       void GetProjects(wxListCtrl *ps57CtlListBoxStrings);
       void GetComponents(wxListCtrl *ps57CtlListBoxStrings);
-      void CreatePanel_VectorCharts1(size_t parent, int border_size, int group_item_spacing, wxSize small_button_size);
+      void CreatePanel_VectorCharts1(wxBoxSizer *vectorPanel, int border_size, int group_item_spacing, wxSize small_button_size);
       
       void SendVectorChartObjectInfo(const wxString &chart, const wxString &feature, const wxString &objname, double &lat, double &lon, double &scale, int &nativescale);
 

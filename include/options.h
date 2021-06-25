@@ -438,7 +438,7 @@ public:
     wxButton                *itemButtonClearList;
     wxButton                *itemButtonSelectList;
     wxChoice                *pPointStyle;
-    wxChoice                *pPointStyle1;
+//    wxChoice                *pPointStyle1;
     wxChoice                *pBoundStyle;
     wxChoice                *p24Color;
     wxCheckBox              *pCheck_SOUNDG;

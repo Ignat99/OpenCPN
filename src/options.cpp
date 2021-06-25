@@ -86,10 +86,10 @@ extern MyFrame          *gFrame;
 extern ChartCanvas      *cc1;
 extern wxString         g_PrivateDataDir;
 
-extern wxProgressDialog *pprog;
-extern bool b_skipout;
-extern wxSize pprog_size;
-extern int pprog_count;
+//extern wxProgressDialog *pprog;
+//extern bool b_skipout;
+//extern wxSize pprog_size;
+//extern int pprog_count;
 
 extern bool             g_bShowFPS;
 
@@ -3128,7 +3128,7 @@ void options::CreateControls()
     m_ApplyButton = new wxButton( itemDialog1, ID_APPLY, _("Apply") );
     buttons->Add( m_ApplyButton, 0, wxALIGN_CENTER_VERTICAL | wxALL, border_size );
 
-//    m_pageDisplay = CreatePanel( _("Display") );
+    m_pageDisplay = CreatePanel( _("Display") );
 //    CreatePanel_VectorCharts1( m_pageDisplay, border_size, group_item_spacing, m_small_button_size );
     CreatePanel_Display( m_pageDisplay, border_size, group_item_spacing, m_small_button_size );
     CreatePanel_Units( m_pageDisplay, border_size, group_item_spacing, m_small_button_size );
