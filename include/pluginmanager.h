@@ -213,6 +213,24 @@ class PlugInToolbarToolContainer
 WX_DEFINE_ARRAY_PTR(PlugInToolbarToolContainer *, ArrayOfPlugInToolbarTools);
 
 
+class OCPN_CompressProgressEvent1: public wxEvent
+{
+public:
+    OCPN_CompressProgressEvent1( wxEventType commandType = wxEVT_NULL, int id = 0 );
+    ~OCPN_CompressProgressEvent1( );
+    
+    // accessors
+    void SetString(std::string string) { m_string = string; }
+    std::string GetString() { return m_string; }
+    
+    // required for sending with wxPostEvent()
+    wxEvent *Clone() const;
+    int count;
+    int thread;
+    
+    std::string m_string;
+};
+
 
 //-----------------------------------------------------------------------------------------------------
 //
@@ -228,6 +246,7 @@ public:
       virtual ~PlugInManager();
 
 //      wxListCtrl    *ps57CtlListBox1;
+/*
       wxListCtrl    *ps57CtlListCtrl;
       wxListCtrl    *ps57ListCtrl1;
       size_t        m_pageDisplay;
@@ -246,10 +265,15 @@ public:
       wxTextCtrl    *m_DeepCtl;
       wxButton      *itemButtonSelectList;
       wxButton      *itemButtonClearList;
+
+*/
+
       wxProgressDialog *pprog;
       bool b_skipout;
       wxSize pprog_size;
       int pprog_count;
+
+//      void OnEvtCompressProgress1( OCPN_CompressProgressEvent1 & event );
 
       bool LoadAllPlugIns(const wxString &plugin_dir, bool enabled_plugins, bool b_enable_blackdialog = true);
       bool UnLoadAllPlugIns();
@@ -261,6 +285,7 @@ public:
 
       PlugInContainer *LoadPlugIn(wxString plugin_file);
       ArrayOfPlugIns *GetPlugInArray(){ return &plugin_array; }
+
 
       bool RenderAllCanvasOverlayPlugIns( ocpnDC &dc, const ViewPort &vp);
       bool RenderAllGLCanvasOverlayPlugIns( wxGLContext *pcontext, const ViewPort &vp);
@@ -322,6 +347,8 @@ public:
       OCPN_Sound        m_plugin_sound;
       
 private:
+//      void OnPrSelected(wxListEvent &event);
+
       bool CheckBlacklistedPlugin(opencpn_plugin* plugin);
       bool DeactivatePlugIn(PlugInContainer *pic);
       wxBitmap *BuildDimmedToolBitmap(wxBitmap *pbmp_normal, unsigned char dim_ratio);
@@ -344,6 +371,7 @@ private:
 
       bool              m_benable_blackdialog;
       wxArrayString     m_deferred_blacklist_messages;
+
 
 };
 

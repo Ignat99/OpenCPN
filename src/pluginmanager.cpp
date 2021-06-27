@@ -250,16 +250,16 @@ PlugInManager::PlugInManager(MyFrame *parent)
 {
     pParent = parent;
     s_ppim = this;
-    wxDC *dc = new wxScreenDC();
+//    wxDC *dc = new wxScreenDC();
 
 //    ps57CtlListBox1 = NULL;
-     ps57ListCtrl1 = NULL;
-    m_pageDisplay = -1;
-    int border_size = 4;
-    int group_item_spacing = 2;
-    int font_size_y, font_descent, font_lead;
-    dc->GetTextExtent( _T("0"), NULL, &font_size_y, &font_descent, &font_lead );
-    m_small_button_size = wxSize( -1, (int) ( 1.4 * (font_size_y + font_descent + font_lead) ) );
+//     ps57ListCtrl1 = NULL;
+//    m_pageDisplay = -1;
+//    int border_size = 4;
+//    int group_item_spacing = 2;
+//    int font_size_y, font_descent, font_lead;
+//    dc->GetTextExtent( _T("0"), NULL, &font_size_y, &font_descent, &font_lead );
+//    m_small_button_size = wxSize( -1, (int) ( 1.4 * (font_size_y + font_descent + font_lead) ) );
 
 
     MyFrame *pFrame = GetParentFrame();
@@ -269,6 +269,9 @@ PlugInManager::PlugInManager(MyFrame *parent)
         m_plugin_tool_id_next = pFrame->GetNextToolbarToolId();
         BasculaProgress();
     }
+
+/*
+
         wxFrame* pWindow = new wxFrame(pParent, -1, "Form", wxPoint(100,100), wxSize(840, 640));
         pWindow->Centre(wxBOTH);
 //        local staticText = wx.wxStaticText( panel, wx.wxID_ANY, name_string);
@@ -279,7 +282,7 @@ PlugInManager::PlugInManager(MyFrame *parent)
         wxScrolledWindow* ps57Ctl1 = new wxScrolledWindow(pWindow, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHSCROLL | wxVSCROLL | wxTAB_TRAVERSAL);
 
         wxBoxSizer* topSizer = new wxBoxSizer(wxVERTICAL);
-        ps57Ctl1->SetSizer(topSizer);
+        ps57Ctl1->SetSizer(topSizer);	
 
         m_pNotebook = new wxNotebook (ps57Ctl1, wxID_ANY, wxDefaultPosition, wxSize(-1, -1), wxNB_TOP);
         topSizer->Add( m_pNotebook, 1, wxALIGN_CENTER_HORIZONTAL | wxALIGN_CENTER_VERTICAL | wxALL | wxEXPAND, 5 );
@@ -292,7 +295,7 @@ PlugInManager::PlugInManager(MyFrame *parent)
         vectorPanel->Add( pPanel, 0, wxEXPAND | wxALL, 0 );
 
 
-
+*/
 
 
 
@@ -315,7 +318,7 @@ PlugInManager::PlugInManager(MyFrame *parent)
 //        pPanel->Raise();
 //        pPanel->Layout();
 
-
+/*
     wxFlexGridSizer* optionsColumn = new wxFlexGridSizer(1);
     optionsColumn->SetHGap(border_size);
     vectorPanel->Add( optionsColumn, 0, wxALL | wxEXPAND, border_size );
@@ -417,8 +420,22 @@ PlugInManager::PlugInManager(MyFrame *parent)
 // Products
 
 
-    ps57CtlListCtrl = new wxListCtrl( ps57Ctl1, ID_CHECKLISTBOX, wxDefaultPosition,
-                                        wxSize( 250, 350 ), wxLC_REPORT );
+    ps57CtlListCtrl = new wxListCtrl( ps57Ctl1, ID_CHECKLISTBOX, wxDefaultPosition, wxSize( 250, 350 ),
+           wxLC_REPORT | wxLC_SORT_ASCENDING | wxLC_HRULES
+                   | wxBORDER_SUNKEN | wxLC_VRULES );
+*/
+//    ps57CtlListCtrl->Connect( wxEVT_COMMAND_LIST_ITEM_SELECTED,  wxListEventHandler(PlugInManager::OnPrSelected), NULL, this );
+/*
+    ps57CtlListCtrl->Connect(wxEVT_COMMAND_LIST_ITEM_DESELECTED,
+           wxListEventHandler(PlugInManager::OnPrSelected), NULL, this );
+    ps57CtlListCtrl->Connect(wxEVT_COMMAND_LIST_ITEM_ACTIVATED,
+           wxListEventHandler(PlugInManager::OnPrDefaultAction), NULL, this );
+    ps57CtlListCtrl->Connect(wxEVT_LEFT_DOWN,
+           wxMouseEventHandler(PlugInManager::OnPrToggleVisibility), NULL, this );
+    ps57CtlListCtrl->Connect(wxEVT_COMMAND_LIST_COL_CLICK,
+           wxListEventHandler(PlugInManager::OnPrColumnClicked), NULL, this );
+*/
+/*
     GetProjects(ps57CtlListCtrl);
 
     marinersSizer->Add( ps57CtlListCtrl, 1, wxALL | wxEXPAND, group_item_spacing );
@@ -443,8 +460,28 @@ PlugInManager::PlugInManager(MyFrame *parent)
 //    panel->Layout();
     m_pNotebook->Show();
     m_pNotebook->Layout();
-
+*/
 }
+
+/*
+void PlugInManager::OnEvtCompressProgress1( OCPN_CompressProgressEvent1 & event )
+{
+    wxString msg(event.m_string.c_str(), wxConvUTF8);
+}
+
+
+void PlugInManager::OnPrSelected( wxListEvent &event )
+{
+    long clicked_index = event.m_itemIndex;
+//    Route  =  Item( ps57CtlListCtrl->GetItemData( clicked_index ) )->GetData();
+     unsigned int item = ps57CtlListCtrl->GetItemData( clicked_index );
+
+//    if( cc1 )
+//        cc1->Refresh();
+
+//    UpdatePrButtons();
+}
+*/
 
 PlugInManager::~PlugInManager()
 {
@@ -457,6 +494,8 @@ PlugInManager::~PlugInManager()
 //    m_pListbook->AddPage( panel, title, false, id);
 //    return id;
 //}
+
+/*
 
 void PlugInManager::CreatePanel_VectorCharts1( wxBoxSizer *vectorPanel, int border_size, int group_item_spacing,
         wxSize small_button_size )
@@ -644,7 +683,7 @@ void PlugInManager::CreatePanel_VectorCharts1( wxBoxSizer *vectorPanel, int bord
 //    pprog->Update(pprog_count, _T("0000/0000 \n") + msg, &skip );
 }
 
-
+*/
 
 
 bool PlugInManager::BasculaProgress(void)

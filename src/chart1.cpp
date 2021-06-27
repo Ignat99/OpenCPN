@@ -105,6 +105,7 @@
 #include "routemanagerdialog.h"
 #include "pluginmanager.h"
 #include "AIS_Target_Data.h"
+#include "myframe1.h"
 
 #ifdef ocpnUSE_GL
 #include "glChartCanvas.h"
@@ -166,6 +167,7 @@ bool                      g_start_fullscreen;
 bool                      g_rebuild_gl_cache;
 
 MyFrame                   *gFrame;
+MyFrame1                  *gFrame1;
 
 ChartCanvas               *cc1;
 ConsoleCanvas             *console;
@@ -767,6 +769,7 @@ catch_signals(int signo)
         case SIGTERM:
         LogMessageOnce(_T("Sigterm received"));
         gFrame->Close();
+        gFrame1->Close();
         break;
 
         default:
@@ -1009,11 +1012,12 @@ void MyApp::OnActivateApp( wxActivateEvent& event )
             }
         }
 #endif
-        if( pOptions )
+        if( pOptions ) {
             pOptions->Raise();
-        else
+        }  else {
             gFrame->Raise();
-
+            gFrame1->Raise();
+       }
     }
 #endif
 
@@ -2043,12 +2047,15 @@ bool MyApp::OnInit()
 
     gFrame = new MyFrame( NULL, myframe_window_title, position, new_frame_size, app_style ); //Gunther
 
+    gFrame1 = new MyFrame1( NULL, myframe_window_title, position, new_frame_size, app_style ); //Gunther
+
     g_pauimgr = new wxAuiManager;
 //        g_pauidockart= new wxAuiDefaultDockArt;
 //        g_pauimgr->SetArtProvider(g_pauidockart);
 
 // tell wxAuiManager to manage the frame
     g_pauimgr->SetManagedWindow( gFrame );
+//    g_pauimgr->SetManagedWindow( gFrame1 );
 
 //      Create Children of Frame
 //              n.b.  if only one child exists, wxWindows expands the child
@@ -2065,6 +2072,7 @@ bool MyApp::OnInit()
     cc1->SetViewPoint( vLat, vLon, initial_scale_ppm, 0., 0. );
 
     gFrame->Enable();
+    gFrame1->Enable();
 
     cc1->SetFocus();
 
@@ -2102,7 +2110,9 @@ bool MyApp::OnInit()
 // Show the frame
 
     gFrame->ClearBackground();
+//    gFrame1->ClearBackground();
     gFrame->Show( TRUE );
+    gFrame1->Show( TRUE );
 
     gFrame->SetAndApplyColorScheme( global_color_scheme );
 
@@ -2437,6 +2447,10 @@ extern ocpnGLOptions g_GLOptions;
     gFrame->Refresh( false );
     gFrame->Raise();
 
+    gFrame1->Refresh( false );
+    gFrame1->Raise();
+
+
     cc1->Enable();
     cc1->SetFocus();
 
@@ -2465,6 +2479,7 @@ extern ocpnGLOptions g_GLOptions;
     stats->Show( g_bShowChartBar );
 
     gFrame->Raise();
+    gFrame1->Raise();
     cc1->Enable();
     cc1->SetFocus();
     
