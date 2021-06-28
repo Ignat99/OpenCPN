@@ -90,6 +90,9 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
     pDispCat = new wxChoice( pPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, 4, pDispCatStrings );
     optionsColumn->Add( pDispCat, 0, wxALL, 2 );
 
+    pDispCat->Connect( wxEVT_COMMAND_CHOICE_SELECTED,  wxCommandEventHandler(MyFrame1::OnPrChoice), NULL, this );
+
+
     // spacer
     optionsColumn->Add( new wxStaticText(pPanel, wxID_ANY, _T("C")) );
     optionsColumn->Add( new wxStaticText(pPanel, wxID_ANY, _T("D")) );
@@ -107,6 +110,7 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
     pPointStyle = new wxChoice( pPanel, ID_1RADARDISTUNIT, wxDefaultPosition, wxDefaultSize, 2, pPointStyleStrings );
     optionsColumn->Add( pPointStyle, inputFlags );
 
+    pPointStyle->Connect( wxEVT_COMMAND_CHOICE_SELECTED,  wxCommandEventHandler(MyFrame1::OnPrChoicePointStyle), NULL, this );
 
 
     optionsColumn->Add( new wxStaticText(pPanel, wxID_ANY, _("Remarks special")), labelFlags );
@@ -115,11 +119,16 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
             wxDefaultSize, 2, pBoundStyleStrings );
     optionsColumn->Add( pBoundStyle, inputFlags );
 
+    pBoundStyle->Connect( wxEVT_COMMAND_CHOICE_SELECTED,  wxCommandEventHandler(MyFrame1::OnBoundStyle), NULL, this );
+
+
     optionsColumn->Add( new wxStaticText(pPanel, wxID_ANY, _("Remarks internal")), labelFlags );
     wxString pColorNumStrings[] = { _("2 Color loooong"), _("4 Color loooong"), };
     p24Color = new wxChoice( pPanel, ID_1RADARDISTUNIT, wxDefaultPosition,
             wxDefaultSize, 2, pColorNumStrings );
     optionsColumn->Add( p24Color, inputFlags );
+
+    p24Color->Connect( wxEVT_COMMAND_CHOICE_SELECTED,  wxCommandEventHandler(MyFrame1::On24Color), NULL, this );
 
 
     // spacer
@@ -137,6 +146,8 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
             wxDefaultSize, 3, pPointStyleStrings1 );
     optionsColumn->Add( pPointStyle1, inputFlags );
 
+    pPointStyle1->Connect( wxEVT_COMMAND_CHOICE_SELECTED,  wxCommandEventHandler(MyFrame1::OnPointStyle1), NULL, this );
+
 
     optionsColumn->Add( new wxStaticText( pPanel, wxID_ANY, _("Client") ), labelFlags );
     wxBoxSizer* depSafeRow = new wxBoxSizer( wxHORIZONTAL );
@@ -146,6 +157,9 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
     //m_depthUnitsSafe = new wxStaticText( pParent, wxID_ANY, _("metres") );
     //depSafeRow->Add( m_depthUnitsSafe, inputFlags );
 
+    m_SafetyCtl->Connect( wxEVT_COMMAND_TEXT_UPDATED,  wxCommandEventHandler(MyFrame1::OnSafetyCtl), NULL, this );
+
+
     optionsColumn->Add( new wxStaticText( pPanel, wxID_ANY, _("Creator") ), labelFlags );
     wxBoxSizer* depDeepRow = new wxBoxSizer( wxHORIZONTAL );
     optionsColumn->Add( depDeepRow );
@@ -153,6 +167,8 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
     depDeepRow->Add( m_DeepCtl, inputFlags );
     //m_depthUnitsDeep = new wxStaticText( pParent, wxID_ANY, _("metres") );
     //depDeepRow->Add( m_depthUnitsDeep, inputFlags );
+
+    m_DeepCtl->Connect( wxEVT_COMMAND_TEXT_UPDATED,  wxCommandEventHandler(MyFrame1::OnDeepCtl), NULL, this );
 
 
 
@@ -242,6 +258,84 @@ void MyFrame1::OnPrSelected( wxListEvent &event )
 //    UpdatePrButtons();
 }
 
+void MyFrame1::OnPrChoice( wxCommandEvent& event )
+{
+    wxString myStr;
+    myStr = wxEmptyString;
+    int idChoice = pDispCat->GetSelection();
+
+    printf("On Choice days Selected index %d ", idChoice);
+    printf(wxString::Format("%s \n", event.GetString()));
+
+}
+
+void MyFrame1::OnPrChoicePointStyle( wxCommandEvent& event )
+{
+    wxString myStr;
+    myStr = wxEmptyString;
+    int idChoice = pPointStyle->GetSelection();
+
+    printf("On Choice Points Selected index %d ", idChoice);
+    printf(wxString::Format("%s \n", event.GetString()));
+
+}
+
+void MyFrame1::OnBoundStyle( wxCommandEvent& event )
+{
+    wxString myStr;
+    myStr = wxEmptyString;
+    int idChoice = pBoundStyle->GetSelection();
+
+    printf("On Choice Bounds Selected index %d ", idChoice);
+    printf(wxString::Format("%s \n", event.GetString()));
+
+}
+
+void MyFrame1::On24Color( wxCommandEvent& event )
+{
+    wxString myStr;
+    myStr = wxEmptyString;
+    int idChoice = p24Color->GetSelection();
+
+    printf("On Choice Colors Selected index %d ", idChoice);
+    printf(wxString::Format("%s \n", event.GetString()));
+
+}
+
+void MyFrame1::OnPointStyle1( wxCommandEvent& event )
+{
+    wxString myStr;
+    myStr = wxEmptyString;
+    int idChoice = pPointStyle1->GetSelection();
+
+    printf("On Choice PointStyle Selected index %d ", idChoice);
+    printf(wxString::Format("%s \n", event.GetString()));
+
+}
+
+void MyFrame1::OnSafetyCtl( wxCommandEvent& event )
+{
+//    wxString myStr;
+//    myStr = wxEmptyString;
+    wxString  m_textCtrlInfo = m_SafetyCtl->GetValue();
+
+    printf("On ID user Selected %d, ", event.GetId());
+    printf(wxString::Format("* %s, ", event.GetString()));
+    printf(wxString::Format("* %s \n", m_textCtrlInfo));
+
+}
+
+void MyFrame1::OnDeepCtl( wxCommandEvent& event )
+{
+//    wxString myStr;
+//    myStr = wxEmptyString;
+    wxString  m_textCtrlInfo = m_DeepCtl->GetValue();
+
+    printf("On ID user Selected %d, ", event.GetId());
+    printf(wxString::Format("* %s, ", event.GetString()));
+    printf(wxString::Format("* %s \n", m_textCtrlInfo));
+
+}
 
 void MyFrame1::GetComponents(wxListCtrl *ps57CtlListCtrl1) {
 

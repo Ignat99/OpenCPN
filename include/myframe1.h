@@ -53,6 +53,13 @@ private:
     void OnMaximize(wxMaximizeEvent& event);
     void OnEraseBackgroun(wxEraseEvent& event);
     void OnPrSelected( wxListEvent &event );
+    void OnPrChoice( wxCommandEvent &event );
+    void OnPrChoicePointStyle( wxCommandEvent &event );
+    void OnBoundStyle( wxCommandEvent &event );
+    void On24Color( wxCommandEvent &event );
+    void OnPointStyle1( wxCommandEvent &event );
+    void OnSafetyCtl( wxCommandEvent &event );
+    void OnDeepCtl( wxCommandEvent &event );
 
 
     DECLARE_EVENT_TABLE()
