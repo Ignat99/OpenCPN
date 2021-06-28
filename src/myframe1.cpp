@@ -34,9 +34,9 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
     dc->GetTextExtent( _T("0"), NULL, &font_size_y, &font_descent, &font_lead );
     m_small_button_size = wxSize( -1, (int) ( 1.4 * (font_size_y + font_descent + font_lead) ) );
 
-//        wxScrolledWindow* ps57Ctl1 = new wxScrolledWindow(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHSCROLL | wxVSCROLL | wxTAB_TRAVERSAL);
+        wxScrolledWindow* ps57Ctl1 = new wxScrolledWindow(this, wxID_ANY, wxDefaultPosition, wxSize(1000, 600), wxHSCROLL | wxVSCROLL | wxTAB_TRAVERSAL);
 
-        wxWindow* ps57Ctl1 = this;
+//        wxWindow* ps57Ctl = this;
 
 
 
@@ -48,15 +48,15 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
 
 //        ps57Ctl1->SetSizer(vectorPanel);
 
-        m_pNotebook = new wxNotebook (ps57Ctl1, wxID_ANY, wxDefaultPosition, wxSize(-1, -1), wxNB_TOP);
+        m_pNotebook = new wxNotebook (ps57Ctl1, wxID_ANY, wxDefaultPosition, wxSize(880, 580), wxNB_TOP);
 
-        wxPanel *pPanel = new wxPanel( ps57Ctl1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxNO_BORDER | wxTAB_TRAVERSAL, _("Bascula") );
+        wxPanel *pPanel = new wxPanel( m_pNotebook, wxID_ANY, wxDefaultPosition, wxSize(850, 550), wxNO_BORDER | wxTAB_TRAVERSAL, _("Bascula") );
 
 //        wxScrolledWindow* ps57Ctl1 = 
-//        m_pNotebook->AddPage(pPanel, _("Display") );
+        m_pNotebook->AddPage(pPanel, _("Display") );
 
 
-        vectorPanel->Add( m_pNotebook, 1, wxALIGN_CENTER_HORIZONTAL | wxALIGN_CENTER_VERTICAL | wxALL | wxEXPAND, 5 );
+//        vectorPanel->Add( m_pNotebook, 1, wxALIGN_CENTER_HORIZONTAL | wxALIGN_CENTER_VERTICAL | wxALL | wxEXPAND, 5 );
 //        vectorPanel->Add( pPanel, 0, wxEXPAND | wxALL, 0 );
 
 
@@ -80,19 +80,19 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
 //    topSizer->Add( optionsColumn, 3, wxALL | wxEXPAND, border_size );
 
     // spacer
-    optionsColumn->Add( new wxStaticText(ps57Ctl1, wxID_ANY, _T("A")) );
-    optionsColumn->Add( new wxStaticText(ps57Ctl1, wxID_ANY, _T("B")) );
+    optionsColumn->Add( new wxStaticText(pPanel, wxID_ANY, _T("A")) );
+    optionsColumn->Add( new wxStaticText(pPanel, wxID_ANY, _T("B")) );
 
 
     // dislay category
-    optionsColumn->Add( new wxStaticText(ps57Ctl1, wxID_ANY, _("Data creation")), labelFlags );
+    optionsColumn->Add( new wxStaticText(pPanel, wxID_ANY, _("Data creation")), labelFlags );
     wxString pDispCatStrings[] = { _("1 day"), _("2 day"), _("3 day"), _("Week") };
-    pDispCat = new wxChoice( ps57Ctl1, wxID_ANY, wxDefaultPosition, wxDefaultSize, 4, pDispCatStrings );
+    pDispCat = new wxChoice( pPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, 4, pDispCatStrings );
     optionsColumn->Add( pDispCat, 0, wxALL, 2 );
 
     // spacer
-    optionsColumn->Add( new wxStaticText(ps57Ctl1, wxID_ANY, _T("C")) );
-    optionsColumn->Add( new wxStaticText(ps57Ctl1, wxID_ANY, _T("D")) );
+    optionsColumn->Add( new wxStaticText(pPanel, wxID_ANY, _T("C")) );
+    optionsColumn->Add( new wxStaticText(pPanel, wxID_ANY, _T("D")) );
 
 
     // spacer
@@ -102,22 +102,22 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
 
 
     // graphics options
-    optionsColumn->Add( new wxStaticText(ps57Ctl1, wxID_ANY, _("Remarks")), labelFlags );
+    optionsColumn->Add( new wxStaticText(pPanel, wxID_ANY, _("Remarks")), labelFlags );
     wxString pPointStyleStrings[] = { _("Paper Chart"), _("Simplified"), };
-    pPointStyle = new wxChoice( ps57Ctl1, ID_1RADARDISTUNIT, wxDefaultPosition, wxDefaultSize, 2, pPointStyleStrings );
+    pPointStyle = new wxChoice( pPanel, ID_1RADARDISTUNIT, wxDefaultPosition, wxDefaultSize, 2, pPointStyleStrings );
     optionsColumn->Add( pPointStyle, inputFlags );
 
 
 
-    optionsColumn->Add( new wxStaticText(ps57Ctl1, wxID_ANY, _("Remarks special")), labelFlags );
+    optionsColumn->Add( new wxStaticText(pPanel, wxID_ANY, _("Remarks special")), labelFlags );
     wxString pBoundStyleStrings[] = { _("Plain"), _("Symbolized"), };
-    pBoundStyle = new wxChoice( ps57Ctl1, ID_1RADARDISTUNIT, wxDefaultPosition,
+    pBoundStyle = new wxChoice( pPanel, ID_1RADARDISTUNIT, wxDefaultPosition,
             wxDefaultSize, 2, pBoundStyleStrings );
     optionsColumn->Add( pBoundStyle, inputFlags );
 
-    optionsColumn->Add( new wxStaticText(ps57Ctl1, wxID_ANY, _("Remarks internal")), labelFlags );
+    optionsColumn->Add( new wxStaticText(pPanel, wxID_ANY, _("Remarks internal")), labelFlags );
     wxString pColorNumStrings[] = { _("2 Color loooong"), _("4 Color loooong"), };
-    p24Color = new wxChoice( ps57Ctl1, ID_1RADARDISTUNIT, wxDefaultPosition,
+    p24Color = new wxChoice( pPanel, ID_1RADARDISTUNIT, wxDefaultPosition,
             wxDefaultSize, 2, pColorNumStrings );
     optionsColumn->Add( p24Color, inputFlags );
 
@@ -129,27 +129,27 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
 
 
     // depth options
-    optionsColumn->Add( new wxStaticText( ps57Ctl1, ID_1RADARDISTUNIT, _("Product") ), labelFlags );
+    optionsColumn->Add( new wxStaticText( pPanel, ID_1RADARDISTUNIT, _("Product") ), labelFlags );
 //    wxBoxSizer* depShalRow = new wxBoxSizer( wxHORIZONTAL );
 //    optionsColumn->Add( depShalRow );
   wxString pPointStyleStrings1[] = { _("Pivot"), _("Slide"), _("Double") };
-    pPointStyle1 = new wxChoice( ps57Ctl1, ID_1RADARDISTUNIT, wxDefaultPosition,
+    pPointStyle1 = new wxChoice( pPanel, ID_1RADARDISTUNIT, wxDefaultPosition,
             wxDefaultSize, 3, pPointStyleStrings1 );
     optionsColumn->Add( pPointStyle1, inputFlags );
 
 
-    optionsColumn->Add( new wxStaticText( ps57Ctl1, wxID_ANY, _("Client") ), labelFlags );
+    optionsColumn->Add( new wxStaticText( pPanel, wxID_ANY, _("Client") ), labelFlags );
     wxBoxSizer* depSafeRow = new wxBoxSizer( wxHORIZONTAL );
     optionsColumn->Add( depSafeRow );
-    m_SafetyCtl = new wxTextCtrl( ps57Ctl1, ID_1TEXTCTRL, _T("1"), wxDefaultPosition, wxSize( 80, -1 ), wxTE_RIGHT );
+    m_SafetyCtl = new wxTextCtrl( pPanel, ID_1TEXTCTRL, _T("1"), wxDefaultPosition, wxSize( 80, -1 ), wxTE_RIGHT );
     depSafeRow->Add( m_SafetyCtl, inputFlags );
     //m_depthUnitsSafe = new wxStaticText( pParent, wxID_ANY, _("metres") );
     //depSafeRow->Add( m_depthUnitsSafe, inputFlags );
 
-    optionsColumn->Add( new wxStaticText( ps57Ctl1, wxID_ANY, _("Creator") ), labelFlags );
+    optionsColumn->Add( new wxStaticText( pPanel, wxID_ANY, _("Creator") ), labelFlags );
     wxBoxSizer* depDeepRow = new wxBoxSizer( wxHORIZONTAL );
     optionsColumn->Add( depDeepRow );
-    m_DeepCtl = new wxTextCtrl( ps57Ctl1, ID_1TEXTCTRL, _T("1"), wxDefaultPosition, wxSize( 80, -1 ), wxTE_RIGHT );
+    m_DeepCtl = new wxTextCtrl( pPanel, ID_1TEXTCTRL, _T("1"), wxDefaultPosition, wxSize( 80, -1 ), wxTE_RIGHT );
     depDeepRow->Add( m_DeepCtl, inputFlags );
     //m_depthUnitsDeep = new wxStaticText( pParent, wxID_ANY, _("metres") );
     //depDeepRow->Add( m_depthUnitsDeep, inputFlags );
@@ -165,18 +165,18 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
 
 
     // 2nd column, Display Category / Mariner's Standard options
-//    wxBoxSizer* dispSizer = new wxBoxSizer( wxVERTICAL );
-//    optionsColumn->Add( dispSizer, 0, wxALL | wxEXPAND, border_size );
+    wxBoxSizer* dispSizer = new wxBoxSizer( wxVERTICAL );
+    vectorPanel->Add( dispSizer, 2, wxALL | wxEXPAND, border_size );
 
-//    wxStaticBox* marinersBox = new wxStaticBox( ps57Ctl1, wxID_ANY, _("Projects") );
-//    wxStaticBoxSizer* marinersSizer = new wxStaticBoxSizer( marinersBox, wxVERTICAL );
-//    dispSizer->Add( marinersSizer, 1, wxALL | wxEXPAND, border_size );
+    wxStaticBox* marinersBox = new wxStaticBox( pPanel, wxID_ANY, _("Projects") );
+    wxStaticBoxSizer* marinersSizer = new wxStaticBoxSizer( marinersBox, wxVERTICAL );
+    dispSizer->Add( marinersSizer, 1, wxALL | wxEXPAND, border_size );
 
 
 // Products
 
-//    ps57CtlListCtrl = new wxListCtrl( ps57Ctl1, ID_1CHECKLISTBOX, wxDefaultPosition, wxSize( 250, 350 ),
-//           wxLC_REPORT | wxLC_SORT_ASCENDING | wxLC_HRULES | wxBORDER_SUNKEN  | wxLC_VRULES );
+    ps57CtlListCtrl = new wxListCtrl( pPanel, ID_1CHECKLISTBOX, wxDefaultPosition, wxSize( 350, 250 ),
+           wxLC_REPORT | wxLC_SORT_ASCENDING | wxLC_HRULES | wxBORDER_SUNKEN  | wxLC_VRULES );
 /*
 //    ps57CtlListCtrl->Connect( wxEVT_COMMAND_LIST_ITEM_SELECTED,  wxListEventHandler(PlugInManager::OnPrSelected), NULL, this );
 
@@ -190,35 +190,36 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
            wxListEventHandler(PlugInManager::OnPrColumnClicked), NULL, this );
 */
 
-//    GetProjects(ps57CtlListCtrl);
-//    marinersSizer->Add( ps57CtlListCtrl, 1, wxALL | wxEXPAND, group_item_spacing );
+    GetProjects(ps57CtlListCtrl);
+    marinersSizer->Add( ps57CtlListCtrl, 1, wxALL | wxEXPAND, group_item_spacing );
 
-/*
+
     wxBoxSizer* btnRow = new wxBoxSizer( wxHORIZONTAL );
-    itemButtonSelectList = new wxButton( ps57Ctl1, ID_1SELECTLIST, _("Select All") );
+    itemButtonSelectList = new wxButton( pPanel, ID_1SELECTLIST, _("Select All") );
     btnRow->Add( itemButtonSelectList, 1, wxALL | wxEXPAND, group_item_spacing );
-    itemButtonClearList = new wxButton( ps57Ctl1, ID_1CLEARLIST, _("Clear All") );
+    itemButtonClearList = new wxButton( pPanel, ID_1CLEARLIST, _("Clear All") );
     btnRow->Add( itemButtonClearList, 1, wxALL | wxEXPAND, group_item_spacing );
     marinersSizer->Add( btnRow );
-*/
+//    vectorPanel->Add( btnRow );
+
 
 // Components
 
-//    ps57ListCtrl1 = new wxListCtrl( ps57Ctl1, ID_1RADARDISTUNIT, wxDefaultPosition,
-//                                        wxSize( 250, 350 ), wxLC_REPORT );
-//    GetComponents(ps57ListCtrl1);
-//    marinersSizer->Add( ps57ListCtrl1, 1, wxALL | wxEXPAND, group_item_spacing );
+    ps57ListCtrl1 = new wxListCtrl( pPanel, ID_1RADARDISTUNIT, wxDefaultPosition,
+                                        wxSize( 350, 150 ), wxLC_REPORT );
+    GetComponents(ps57ListCtrl1);
+    marinersSizer->Add( ps57ListCtrl1, 1, wxALL | wxEXPAND, group_item_spacing );
+//    vectorPanel->Add( ps57ListCtrl1, 1, wxALL | wxEXPAND, group_item_spacing );
 
 
         pPanel->SetSizer(vectorPanel);
+//        m_pNotebook->SetSizer(vectorPanel);
 //        pPanel->SetSizer(topSizer);
 //        pPanel->SetSizer(marinersSizer);
 
 
-//        m_pNotebook->Show();
-//        m_pNotebook->Layout();
-
-
+        m_pNotebook->Show();
+        m_pNotebook->Layout();
 
 }
 
