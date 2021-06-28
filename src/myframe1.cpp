@@ -224,6 +224,10 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
 
     ps57ListCtrl1 = new wxListCtrl( pPanel, ID_1RADARDISTUNIT, wxDefaultPosition,
                                         wxSize( 350, 150 ), wxLC_REPORT );
+
+    ps57ListCtrl1->Connect( wxEVT_COMMAND_LIST_ITEM_SELECTED,  wxListEventHandler(MyFrame1::OnCoSelected), NULL, this );
+
+
     GetComponents(ps57ListCtrl1);
     marinersSizer->Add( ps57ListCtrl1, 1, wxALL | wxEXPAND, group_item_spacing );
 //    vectorPanel->Add( ps57ListCtrl1, 1, wxALL | wxEXPAND, group_item_spacing );
@@ -243,6 +247,24 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
 MyFrame1::~MyFrame1()
 {
 }
+
+
+
+void MyFrame1::OnCoSelected( wxListEvent &event )
+{
+    long clicked_index = event.m_itemIndex;
+
+//    Route  =  Item( ps57CtlListCtrl->GetItemData( clicked_index ) )->GetData();
+     unsigned int item = ps57ListCtrl1->GetItemData( clicked_index );
+    printf("On Project Selected %d\n", item);
+
+//    if( cc1 )
+//        cc1->Refresh();
+
+//    UpdatePrButtons();
+}
+
+
 
 void MyFrame1::OnPrSelected( wxListEvent &event )
 {

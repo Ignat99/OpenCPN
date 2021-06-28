@@ -52,6 +52,7 @@ private:
     void OnActivateApp( wxActivateEvent& event );
     void OnMaximize(wxMaximizeEvent& event);
     void OnEraseBackgroun(wxEraseEvent& event);
+    void OnCoSelected( wxListEvent &event );
     void OnPrSelected( wxListEvent &event );
     void OnPrChoice( wxCommandEvent &event );
     void OnPrChoicePointStyle( wxCommandEvent &event );
