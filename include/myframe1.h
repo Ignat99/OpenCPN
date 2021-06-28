@@ -52,6 +52,7 @@ private:
     void OnActivateApp( wxActivateEvent& event );
     void OnMaximize(wxMaximizeEvent& event);
     void OnEraseBackgroun(wxEraseEvent& event);
+    void OnPrSelected( wxListEvent &event );
 
 
     DECLARE_EVENT_TABLE()

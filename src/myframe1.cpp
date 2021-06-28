@@ -141,7 +141,7 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
     optionsColumn->Add( new wxStaticText( pPanel, wxID_ANY, _("Client") ), labelFlags );
     wxBoxSizer* depSafeRow = new wxBoxSizer( wxHORIZONTAL );
     optionsColumn->Add( depSafeRow );
-    m_SafetyCtl = new wxTextCtrl( pPanel, ID_1TEXTCTRL, _T("1"), wxDefaultPosition, wxSize( 80, -1 ), wxTE_RIGHT );
+    m_SafetyCtl = new wxTextCtrl( pPanel, ID_1TEXTCTRL, _T("596"), wxDefaultPosition, wxSize( 80, -1 ), wxTE_RIGHT );
     depSafeRow->Add( m_SafetyCtl, inputFlags );
     //m_depthUnitsSafe = new wxStaticText( pParent, wxID_ANY, _("metres") );
     //depSafeRow->Add( m_depthUnitsSafe, inputFlags );
@@ -149,7 +149,7 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
     optionsColumn->Add( new wxStaticText( pPanel, wxID_ANY, _("Creator") ), labelFlags );
     wxBoxSizer* depDeepRow = new wxBoxSizer( wxHORIZONTAL );
     optionsColumn->Add( depDeepRow );
-    m_DeepCtl = new wxTextCtrl( pPanel, ID_1TEXTCTRL, _T("1"), wxDefaultPosition, wxSize( 80, -1 ), wxTE_RIGHT );
+    m_DeepCtl = new wxTextCtrl( pPanel, ID_1TEXTCTRL, _T("596"), wxDefaultPosition, wxSize( 80, -1 ), wxTE_RIGHT );
     depDeepRow->Add( m_DeepCtl, inputFlags );
     //m_depthUnitsDeep = new wxStaticText( pParent, wxID_ANY, _("metres") );
     //depDeepRow->Add( m_depthUnitsDeep, inputFlags );
@@ -177,9 +177,10 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
 
     ps57CtlListCtrl = new wxListCtrl( pPanel, ID_1CHECKLISTBOX, wxDefaultPosition, wxSize( 350, 250 ),
            wxLC_REPORT | wxLC_SORT_ASCENDING | wxLC_HRULES | wxBORDER_SUNKEN  | wxLC_VRULES );
-/*
-//    ps57CtlListCtrl->Connect( wxEVT_COMMAND_LIST_ITEM_SELECTED,  wxListEventHandler(PlugInManager::OnPrSelected), NULL, this );
 
+    ps57CtlListCtrl->Connect( wxEVT_COMMAND_LIST_ITEM_SELECTED,  wxListEventHandler(MyFrame1::OnPrSelected), NULL, this );
+
+/*
     ps57CtlListCtrl->Connect(wxEVT_COMMAND_LIST_ITEM_DESELECTED,
            wxListEventHandler(PlugInManager::OnPrSelected), NULL, this );
     ps57CtlListCtrl->Connect(wxEVT_COMMAND_LIST_ITEM_ACTIVATED,
@@ -218,14 +219,29 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
 //        pPanel->SetSizer(marinersSizer);
 
 
-        m_pNotebook->Show();
-        m_pNotebook->Layout();
+//        m_pNotebook->Show();
+//        m_pNotebook->Layout();
 
 }
 
 MyFrame1::~MyFrame1()
 {
 }
+
+void MyFrame1::OnPrSelected( wxListEvent &event )
+{
+    long clicked_index = event.m_itemIndex;
+
+    printf("On Project Selected\n");
+//    Route  =  Item( ps57CtlListCtrl->GetItemData( clicked_index ) )->GetData();
+     unsigned int item = ps57CtlListCtrl->GetItemData( clicked_index );
+
+//    if( cc1 )
+//        cc1->Refresh();
+
+//    UpdatePrButtons();
+}
+
 
 void MyFrame1::GetComponents(wxListCtrl *ps57CtlListCtrl1) {
 
