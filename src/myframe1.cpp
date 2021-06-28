@@ -42,7 +42,7 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
 
 
 
-        wxBoxSizer* topSizer = new wxBoxSizer(wxVERTICAL);
+//        wxBoxSizer* topSizer = new wxBoxSizer(wxVERTICAL);
         vectorPanel = new wxBoxSizer(wxHORIZONTAL);
 //        vectorPanel = new wxBoxSizer(wxVERTICAL);
 
@@ -53,10 +53,10 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
         wxPanel *pPanel = new wxPanel( ps57Ctl1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxNO_BORDER | wxTAB_TRAVERSAL, _("Bascula") );
 
 //        wxScrolledWindow* ps57Ctl1 = 
-        m_pNotebook->AddPage(pPanel, _("Display") );
+//        m_pNotebook->AddPage(pPanel, _("Display") );
 
 
-//        vectorPanel->Add( m_pNotebook, 1, wxALIGN_CENTER_HORIZONTAL | wxALIGN_CENTER_VERTICAL | wxALL | wxEXPAND, 5 );
+        vectorPanel->Add( m_pNotebook, 1, wxALIGN_CENTER_HORIZONTAL | wxALIGN_CENTER_VERTICAL | wxALL | wxEXPAND, 5 );
 //        vectorPanel->Add( pPanel, 0, wxEXPAND | wxALL, 0 );
 
 
@@ -64,21 +64,20 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
 
 
 
-        topSizer->Add( m_pNotebook, 1, wxALIGN_CENTER_HORIZONTAL | wxALIGN_CENTER_VERTICAL | wxALL | wxEXPAND, 5 );
+//        topSizer->Add( m_pNotebook, 1, wxALIGN_CENTER_HORIZONTAL | wxALIGN_CENTER_VERTICAL | wxALL | wxEXPAND, 5 );
 
 //        m_pNotebook->SetSizer(vectorPanel);
 
 //        Centre();
 
-        pPanel->SetSizer(vectorPanel);
 
 
     wxFlexGridSizer* optionsColumn = new wxFlexGridSizer(2);
-//    wxBoxSizer* optionsColumn = new wxBoxSizer(wxHORIZONTAL);
     optionsColumn->SetHGap(border_size);
     optionsColumn->AddGrowableCol( 0, 2 );
     optionsColumn->AddGrowableCol( 1, 3 );
     vectorPanel->Add( optionsColumn, 3, wxALL | wxEXPAND, border_size );
+//    topSizer->Add( optionsColumn, 3, wxALL | wxEXPAND, border_size );
 
     // spacer
     optionsColumn->Add( new wxStaticText(ps57Ctl1, wxID_ANY, _T("A")) );
@@ -142,7 +141,7 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
     optionsColumn->Add( new wxStaticText( ps57Ctl1, wxID_ANY, _("Client") ), labelFlags );
     wxBoxSizer* depSafeRow = new wxBoxSizer( wxHORIZONTAL );
     optionsColumn->Add( depSafeRow );
-    m_SafetyCtl = new wxTextCtrl( ps57Ctl1, ID_1TEXTCTRL, _T(""), wxDefaultPosition, wxSize( 80, -1 ), wxTE_RIGHT );
+    m_SafetyCtl = new wxTextCtrl( ps57Ctl1, ID_1TEXTCTRL, _T("1"), wxDefaultPosition, wxSize( 80, -1 ), wxTE_RIGHT );
     depSafeRow->Add( m_SafetyCtl, inputFlags );
     //m_depthUnitsSafe = new wxStaticText( pParent, wxID_ANY, _("metres") );
     //depSafeRow->Add( m_depthUnitsSafe, inputFlags );
@@ -150,7 +149,7 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
     optionsColumn->Add( new wxStaticText( ps57Ctl1, wxID_ANY, _("Creator") ), labelFlags );
     wxBoxSizer* depDeepRow = new wxBoxSizer( wxHORIZONTAL );
     optionsColumn->Add( depDeepRow );
-    m_DeepCtl = new wxTextCtrl( ps57Ctl1, ID_1TEXTCTRL, _T(""), wxDefaultPosition, wxSize( 80, -1 ), wxTE_RIGHT );
+    m_DeepCtl = new wxTextCtrl( ps57Ctl1, ID_1TEXTCTRL, _T("1"), wxDefaultPosition, wxSize( 80, -1 ), wxTE_RIGHT );
     depDeepRow->Add( m_DeepCtl, inputFlags );
     //m_depthUnitsDeep = new wxStaticText( pParent, wxID_ANY, _("metres") );
     //depDeepRow->Add( m_depthUnitsDeep, inputFlags );
@@ -167,7 +166,7 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
 
     // 2nd column, Display Category / Mariner's Standard options
 //    wxBoxSizer* dispSizer = new wxBoxSizer( wxVERTICAL );
-//    vectorPanel->Add( dispSizer, 2, wxALL | wxEXPAND, border_size );
+//    optionsColumn->Add( dispSizer, 0, wxALL | wxEXPAND, border_size );
 
 //    wxStaticBox* marinersBox = new wxStaticBox( ps57Ctl1, wxID_ANY, _("Projects") );
 //    wxStaticBoxSizer* marinersSizer = new wxStaticBoxSizer( marinersBox, wxVERTICAL );
@@ -175,7 +174,6 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
 
 
 // Products
-
 
 //    ps57CtlListCtrl = new wxListCtrl( ps57Ctl1, ID_1CHECKLISTBOX, wxDefaultPosition, wxSize( 250, 350 ),
 //           wxLC_REPORT | wxLC_SORT_ASCENDING | wxLC_HRULES | wxBORDER_SUNKEN  | wxLC_VRULES );
@@ -193,15 +191,16 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
 */
 
 //    GetProjects(ps57CtlListCtrl);
-
 //    marinersSizer->Add( ps57CtlListCtrl, 1, wxALL | wxEXPAND, group_item_spacing );
 
-//    wxBoxSizer* btnRow = new wxBoxSizer( wxHORIZONTAL );
-//    itemButtonSelectList = new wxButton( ps57Ctl1, ID_1SELECTLIST, _("Select All") );
-//    btnRow->Add( itemButtonSelectList, 1, wxALL | wxEXPAND, group_item_spacing );
-//    itemButtonClearList = new wxButton( ps57Ctl1, ID_1CLEARLIST, _("Clear All") );
-//    btnRow->Add( itemButtonClearList, 1, wxALL | wxEXPAND, group_item_spacing );
-//    marinersSizer->Add( btnRow );
+/*
+    wxBoxSizer* btnRow = new wxBoxSizer( wxHORIZONTAL );
+    itemButtonSelectList = new wxButton( ps57Ctl1, ID_1SELECTLIST, _("Select All") );
+    btnRow->Add( itemButtonSelectList, 1, wxALL | wxEXPAND, group_item_spacing );
+    itemButtonClearList = new wxButton( ps57Ctl1, ID_1CLEARLIST, _("Clear All") );
+    btnRow->Add( itemButtonClearList, 1, wxALL | wxEXPAND, group_item_spacing );
+    marinersSizer->Add( btnRow );
+*/
 
 // Components
 
@@ -210,6 +209,10 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
 //    GetComponents(ps57ListCtrl1);
 //    marinersSizer->Add( ps57ListCtrl1, 1, wxALL | wxEXPAND, group_item_spacing );
 
+
+        pPanel->SetSizer(vectorPanel);
+//        pPanel->SetSizer(topSizer);
+//        pPanel->SetSizer(marinersSizer);
 
 
 //        m_pNotebook->Show();
