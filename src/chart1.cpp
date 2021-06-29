@@ -2047,7 +2047,7 @@ bool MyApp::OnInit()
 
     gFrame = new MyFrame( NULL, myframe_window_title, position, new_frame_size, app_style ); //Gunther
 
-    gFrame1 = new MyFrame1( NULL, myframe_window_title, position, new_frame_size, app_style ); //Gunther
+    gFrame1 = new MyFrame1( NULL, myframe_window_title, position, wxSize(910,610), app_style ); //Gunther
 
     g_pauimgr = new wxAuiManager;
 //        g_pauidockart= new wxAuiDefaultDockArt;

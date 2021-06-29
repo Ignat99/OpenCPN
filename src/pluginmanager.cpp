@@ -696,8 +696,10 @@ bool PlugInManager::BasculaProgress(void)
         pprog->Hide();
         wxSize sz = pprog->GetSize();
         wxSize csz = GetOCPNCanvasWindow()->GetClientSize();
-        sz.x = csz.x * 7 / 10;
-        sz.y += 20;
+//        sz.x = csz.x * 7 / 10;
+//        sz.y += 20;
+        sz.x = 200;
+        sz.y = 100;
         pprog->SetSize( sz );
         pprog_size = sz;
 

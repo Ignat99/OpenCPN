@@ -34,39 +34,17 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
     dc->GetTextExtent( _T("0"), NULL, &font_size_y, &font_descent, &font_lead );
     m_small_button_size = wxSize( -1, (int) ( 1.4 * (font_size_y + font_descent + font_lead) ) );
 
-        wxScrolledWindow* ps57Ctl1 = new wxScrolledWindow(this, wxID_ANY, wxDefaultPosition, wxSize(1000, 600), wxHSCROLL | wxVSCROLL | wxTAB_TRAVERSAL);
+        wxScrolledWindow* ps57Ctl1 = new wxScrolledWindow(this, wxID_ANY, wxDefaultPosition, wxSize(900, 600), wxHSCROLL | wxVSCROLL | wxTAB_TRAVERSAL);
 
-//        wxWindow* ps57Ctl = this;
-
-
-
-
-
-//        wxBoxSizer* topSizer = new wxBoxSizer(wxVERTICAL);
         vectorPanel = new wxBoxSizer(wxHORIZONTAL);
-//        vectorPanel = new wxBoxSizer(wxVERTICAL);
 
-//        ps57Ctl1->SetSizer(vectorPanel);
 
-        m_pNotebook = new wxNotebook (ps57Ctl1, wxID_ANY, wxDefaultPosition, wxSize(880, 580), wxNB_TOP);
+        m_pNotebook = new wxNotebook (ps57Ctl1, wxID_ANY, wxDefaultPosition, wxSize(895, 580), wxNB_TOP);
 
-        wxPanel *pPanel = new wxPanel( m_pNotebook, wxID_ANY, wxDefaultPosition, wxSize(850, 550), wxNO_BORDER | wxTAB_TRAVERSAL, _("Bascula") );
+        wxPanel *pPanel = new wxPanel( m_pNotebook, wxID_ANY, wxDefaultPosition, wxSize(890, 550), wxNO_BORDER | wxTAB_TRAVERSAL, _("Bascula") );
 
-//        wxScrolledWindow* ps57Ctl1 = 
         m_pNotebook->AddPage(pPanel, _("Display") );
 
-
-//        vectorPanel->Add( m_pNotebook, 1, wxALIGN_CENTER_HORIZONTAL | wxALIGN_CENTER_VERTICAL | wxALL | wxEXPAND, 5 );
-//        vectorPanel->Add( pPanel, 0, wxEXPAND | wxALL, 0 );
-
-
-//        topSizer->Add(vectorPanel , 1, wxALIGN_CENTER_HORIZONTAL | wxALIGN_CENTER_VERTICAL | wxALL | wxEXPAND, 5 );
-
-
-
-//        topSizer->Add( m_pNotebook, 1, wxALIGN_CENTER_HORIZONTAL | wxALIGN_CENTER_VERTICAL | wxALL | wxEXPAND, 5 );
-
-//        m_pNotebook->SetSizer(vectorPanel);
 
 //        Centre();
 
@@ -77,11 +55,10 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
     optionsColumn->AddGrowableCol( 0, 2 );
     optionsColumn->AddGrowableCol( 1, 3 );
     vectorPanel->Add( optionsColumn, 3, wxALL | wxEXPAND, border_size );
-//    topSizer->Add( optionsColumn, 3, wxALL | wxEXPAND, border_size );
 
     // spacer
-    optionsColumn->Add( new wxStaticText(pPanel, wxID_ANY, _T("A")) );
-    optionsColumn->Add( new wxStaticText(pPanel, wxID_ANY, _T("B")) );
+    optionsColumn->Add( new wxStaticText(pPanel, wxID_ANY, _T("")) );
+    optionsColumn->Add( new wxStaticText(pPanel, wxID_ANY, _T("")) );
 
 
     // dislay category
@@ -94,8 +71,8 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
 
 
     // spacer
-    optionsColumn->Add( new wxStaticText(pPanel, wxID_ANY, _T("C")) );
-    optionsColumn->Add( new wxStaticText(pPanel, wxID_ANY, _T("D")) );
+    optionsColumn->Add( new wxStaticText(pPanel, wxID_ANY, _T("")) );
+    optionsColumn->Add( new wxStaticText(pPanel, wxID_ANY, _T("")) );
 
 
     // spacer
@@ -191,7 +168,7 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
 
 // Products
 
-    ps57CtlListCtrl = new wxListCtrl( pPanel, ID_1CHECKLISTBOX, wxDefaultPosition, wxSize( 350, 250 ),
+    ps57CtlListCtrl = new wxListCtrl( pPanel, ID_1CHECKLISTBOX, wxDefaultPosition, wxSize( 600, 250 ),
            wxLC_REPORT | wxLC_SORT_ASCENDING | wxLC_HRULES | wxBORDER_SUNKEN  | wxLC_VRULES );
 
     ps57CtlListCtrl->Connect( wxEVT_COMMAND_LIST_ITEM_SELECTED,  wxListEventHandler(MyFrame1::OnPrSelected), NULL, this );
@@ -210,27 +187,25 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
     GetProjects(ps57CtlListCtrl);
     marinersSizer->Add( ps57CtlListCtrl, 1, wxALL | wxEXPAND, group_item_spacing );
 
-
+/*
     wxBoxSizer* btnRow = new wxBoxSizer( wxHORIZONTAL );
     itemButtonSelectList = new wxButton( pPanel, ID_1SELECTLIST, _("Select All") );
     btnRow->Add( itemButtonSelectList, 1, wxALL | wxEXPAND, group_item_spacing );
     itemButtonClearList = new wxButton( pPanel, ID_1CLEARLIST, _("Clear All") );
     btnRow->Add( itemButtonClearList, 1, wxALL | wxEXPAND, group_item_spacing );
     marinersSizer->Add( btnRow );
-//    vectorPanel->Add( btnRow );
-
+*/
 
 // Components
 
     ps57ListCtrl1 = new wxListCtrl( pPanel, ID_1RADARDISTUNIT, wxDefaultPosition,
-                                        wxSize( 350, 150 ), wxLC_REPORT );
+                                        wxSize( 600, 150 ), wxLC_REPORT );
 
     ps57ListCtrl1->Connect( wxEVT_COMMAND_LIST_ITEM_SELECTED,  wxListEventHandler(MyFrame1::OnCoSelected), NULL, this );
 
 
     GetComponents(ps57ListCtrl1);
     marinersSizer->Add( ps57ListCtrl1, 1, wxALL | wxEXPAND, group_item_spacing );
-//    vectorPanel->Add( ps57ListCtrl1, 1, wxALL | wxEXPAND, group_item_spacing );
 
 
         pPanel->SetSizer(vectorPanel);
@@ -254,7 +229,7 @@ void MyFrame1::OnCoSelected( wxListEvent &event )
 {
     long clicked_index = event.m_itemIndex;
 
-//    Route  =  Item( ps57CtlListCtrl->GetItemData( clicked_index ) )->GetData();
+  //    Route  =  Item( ps57CtlListCtrl->GetItemData( clicked_index ) )->GetData();
      unsigned int item = ps57ListCtrl1->GetItemData( clicked_index );
     printf("On Project Selected %d\n", item);
 
