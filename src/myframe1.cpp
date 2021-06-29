@@ -3,7 +3,7 @@
 #include <mysqlcppapi/mysqlcppapi.h>
 #include <iostream>
 #include <iomanip>
-
+#include <string>
 
 #define BUTTON1 11000
 
@@ -25,6 +25,7 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
 
     wxDC *dc = new wxScreenDC();
 
+    idClient = " WHERE id = 596";
 
     m_whatever = 1;
     m_pageDisplay = -1;
@@ -315,8 +316,17 @@ void MyFrame1::OnSafetyCtl( wxCommandEvent& event )
 //    wxString myStr;
 //    myStr = wxEmptyString;
     wxString  m_textCtrlInfo = m_SafetyCtl->GetValue();
+    std::string st1(" WHERE client_id = ");
+    st1 += m_textCtrlInfo.c_str();
+    idClient = st1;
+    ps57CtlListCtrl->Hide();
+    ps57CtlListCtrl->ClearAll();
+    GetProjects(ps57CtlListCtrl);
+    ps57CtlListCtrl->Update();
+    ps57CtlListCtrl->Show();
+    ps57CtlListCtrl->Raise();
 
-    printf("On ID user Selected %d, ", event.GetId());
+    printf("On ID Client Selected %d, ", event.GetId());
     printf(wxString::Format("* %s, ", event.GetString()));
     printf(wxString::Format("* %s \n", m_textCtrlInfo));
 
@@ -328,7 +338,7 @@ void MyFrame1::OnDeepCtl( wxCommandEvent& event )
 //    myStr = wxEmptyString;
     wxString  m_textCtrlInfo = m_DeepCtl->GetValue();
 
-    printf("On ID user Selected %d, ", event.GetId());
+    printf("On ID Creator Selected %d, ", event.GetId());
     printf(wxString::Format("* %s, ", event.GetString()));
     printf(wxString::Format("* %s \n", m_textCtrlInfo));
 
@@ -352,6 +362,8 @@ void MyFrame1::GetComponents(wxListCtrl *ps57CtlListCtrl1) {
 
     query << "select id, name, category, code, composition, description, image, measure_unit, position, price, price_insystem, product, weight, is_active, is_reportable, is_saleable  from components_component ORDER BY id DESC LIMIT 10";
     // You can write to the query object like you would any other ostrem
+
+    std::cout << "Query: " << query.preview() << std::endl;
 
     mysqlcppapi::Result_Store res = query.store();
     // Query::store() executes the query and returns the results
@@ -431,11 +443,26 @@ void MyFrame1::GetProjects(wxListCtrl  *ps57CtlListCtrl) {
     con.connect();
     con.select_database("drf_android");
 
+
     mysqlcppapi::Query query = con.create_Query();
     // This creates a query object that is bound to con.
 
-    query << "select id, name, date_creation, product, client_id, creator_id  from projects_project ORDER BY date_creation DESC LIMIT 10";
+    std::string curSql("select id, name, date_creation, product, client_id, creator_id  from projects_project ");
+
+//    if (idClient.length() == 0 ) 
+//    {
+        curSql += idClient;
+//    } else {
+
+//    query << sprintf("select id, name, date_creation, product, client_id, creator_id  from projects_project %s", idClient);
+//        curSql += idClient;
+//    }
+
+    query <<  curSql;
     // You can write to the query object like you would any other ostrem
+
+    std::cout << "Query: " << query.preview() << std::endl;
+
 
     mysqlcppapi::Result_Store res = query.store();
     // Query::store() executes the query and returns the results

@@ -1,6 +1,9 @@
 #include <wx/wx.h>
 #include <wx/listbook.h>
 #include <wx/listctrl.h>
+#include <iostream>
+#include <iomanip>
+#include <string>
 
 
 enum {
@@ -41,6 +44,8 @@ public:
       wxTextCtrl    *m_DeepCtl;
       wxButton      *itemButtonSelectList;
       wxButton      *itemButtonClearList;
+      std::string        idClient;
+      std::string      idCreator;
 
       void GetProjects(wxListCtrl *ps57CtlListBoxStrings);
       void GetComponents(wxListCtrl *ps57CtlListBoxStrings);
