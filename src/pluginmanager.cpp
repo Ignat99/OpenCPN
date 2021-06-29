@@ -702,8 +702,9 @@ bool PlugInManager::BasculaProgress(void)
         sz.y = 100;
         pprog->SetSize( sz );
         pprog_size = sz;
+        pprog->Center();
 
-        pprog->Centre();
+        pprog->Move(wxPoint(-30, 370));
         wxString msg0;
         msg0 += _T("\n\n");
         pprog->Update( 0, msg0 );
