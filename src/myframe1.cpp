@@ -66,7 +66,7 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
 
     // dislay category
     optionsColumn->Add( new wxStaticText(pPanel, wxID_ANY, _("Data creation")), labelFlags );
-    wxString pDispCatStrings[] = { _("1 day"), _("2 day"), _("3 day"), _("Week") };
+    wxString pDispCatStrings[] = { _("1"), _("2"), _("3"), _("7") };
     pDispCat = new wxChoice( pPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, 4, pDispCatStrings );
     optionsColumn->Add( pDispCat, 0, wxALL, 2 );
 
@@ -313,6 +313,19 @@ void MyFrame1::OnPrChoice( wxCommandEvent& event )
 
     printf("On Choice days Selected index %d ", idChoice);
     printf(wxString::Format("%s \n", event.GetString()));
+//select id, name from projects_project where  unix_timestamp(date_creation) > UNIX_TIMESTAMP(DATE_ADD(CURDATE(),INTERVAL -40 DAY));
+
+    std::string st3(" where  unix_timestamp(date_creation) > UNIX_TIMESTAMP(DATE_ADD(CURDATE(),INTERVAL -");
+    st3 += event.GetString();
+    st3 += " DAY))";
+    idClient = st3;
+    ps57CtlListCtrl->Hide();
+    ps57CtlListCtrl->ClearAll();
+    GetProjects(ps57CtlListCtrl);
+    ps57CtlListCtrl->Update();
+    ps57CtlListCtrl->Show();
+    ps57CtlListCtrl->Raise();
+
 
 }
 
