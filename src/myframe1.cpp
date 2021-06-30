@@ -261,8 +261,15 @@ void MyFrame1::OnPrSelected( wxListEvent &event )
         wxFAIL_MSG("On Project Selected ListCtr GetItem() failed\n");
     }
 //    Route  =  Item( ps57CtlListCtrl->GetItemData( clicked_index ) )->GetData();
-    cur_item = ps57CtlListCtrl->GetItemData( clicked_index );
-    cur_item = ps57CtlListCtrl->GetNextItem(cur_item, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+//    cur_item = ps57CtlListCtrl->GetItemData( clicked_index );
+//    cur_item = ps57CtlListCtrl->GetNextItem(cur_item, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+
+
+    std::string st2(" WHERE id IN (SELECT component_id FROM projects_projectcomponent WHERE project_id = ");
+    st2 += info.m_text.c_str();
+    st2 += ")";
+// We are put different condition (creator_id) to the same variable idClient
+    idCreator = st2;
 
 
     ps57ListCtrl1->Hide();
@@ -393,12 +400,13 @@ void MyFrame1::GetComponents(wxListCtrl *ps57CtlListCtrl1) {
     mysqlcppapi::Query query = con.create_Query();
     // This creates a query object that is bound to con.
 
-    query << "select id, name, category, code, composition, description, image, measure_unit, position, price, price_insystem, product, weight, is_active, is_reportable, is_saleable  from components_component ORDER BY id DESC LIMIT 10";
+//    query << "select id, name, category, code, composition, description, image, measure_unit, position, price, price_insystem, product, weight, is_active, is_reportable, is_saleable  from components_component ORDER BY id DESC LIMIT 10";
     // You can write to the query object like you would any other ostrem
 
+    std::string curSql2("select id, name, category, code, composition, description, image, measure_unit, position, price, price_insystem, product, weight, is_active, is_reportable, is_saleable  from components_component ");
 //    std::string curSql("select id, name, date_creation, product, client_id, creator_id  from projects_project ");
-//    curSql += idClient;
-//    query <<  curSql;
+    curSql2 += idCreator;
+    query <<  curSql2;
 
 
 
