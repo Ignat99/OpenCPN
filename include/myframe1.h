@@ -46,6 +46,7 @@ public:
       wxButton      *itemButtonClearList;
       std::string        idClient;
       std::string      idCreator;
+      std::string      idProgress;
 
       void GetProjects(wxListCtrl *ps57CtlListBoxStrings);
       void GetComponents(wxListCtrl *ps57CtlListBoxStrings);

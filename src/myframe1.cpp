@@ -26,6 +26,8 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
     wxDC *dc = new wxScreenDC();
 
     idClient = " WHERE id = 596";
+    idCreator = " WHERE id = 1";
+    idProgress = " Progress 1%";
 
     m_whatever = 1;
     m_pageDisplay = -1;
@@ -230,14 +232,31 @@ void MyFrame1::OnCoSelected( wxListEvent &event )
 {
     long clicked_index = event.m_itemIndex;
 
-  //    Route  =  Item( ps57CtlListCtrl->GetItemData( clicked_index ) )->GetData();
-     unsigned int item = ps57ListCtrl1->GetItemData( clicked_index );
-    printf("On Project Selected %d\n", item);
+  //    Route  =  Item( ps57ListCtrl1->GetItemData( clicked_index ) )->GetData();
+//     unsigned int item = ps57ListCtrl1->GetItemData( clicked_index );
 
-//    if( cc1 )
-//        cc1->Refresh();
+    wxListItem info2;
 
-//    UpdatePrButtons();
+    info2.m_itemId = clicked_index;
+    info2.m_col = 12;
+    info2.m_mask = wxLIST_MASK_TEXT;
+
+    if (ps57ListCtrl1->GetItem(info2))
+    {
+        printf(wxString::Format("On Components Selected ListCtr data from ID col:  %s\n", info2.m_text));
+        wxLogMessage("On Components Selected ListCtr Weight:  %s\n", info2.m_text);
+    } else {
+        printf("On Components Selected ListCtr GetItem() failed\n");
+        wxFAIL_MSG("On Components Selected ListCtr GetItem() failed\n");
+    }
+
+
+    std::string st3(" Progress Bar Dialog");
+    st3 += info2.m_text.c_str();
+    st3 += "End";
+// We are put different condition (creator_id) to the same variable idClient
+    idProgress = st3;
+
 }
 
 
@@ -254,10 +273,10 @@ void MyFrame1::OnPrSelected( wxListEvent &event )
 
     if (ps57CtlListCtrl->GetItem(info))
     {
-        printf(wxString::Format("On Project Selected ListCtr data from ID col:  %s\n", info.m_text));
+//        printf(wxString::Format("On Project Selected ListCtr data from ID col:  %s\n", info.m_text));
         wxLogMessage("On Project Selected ListCtr %s\n", info.m_text);
     } else {
-        printf("On Project Selected ListCtr GetItem() failed\n");
+//        printf("On Project Selected ListCtr GetItem() failed\n");
         wxFAIL_MSG("On Project Selected ListCtr GetItem() failed\n");
     }
 //    Route  =  Item( ps57CtlListCtrl->GetItemData( clicked_index ) )->GetData();
@@ -499,7 +518,7 @@ void MyFrame1::GetProjects(wxListCtrl  *ps57CtlListCtrl) {
     query <<  curSql;
     // You can write to the query object like you would any other ostrem
 
-    std::cout << "Query: " << query.preview() << std::endl;
+//    std::cout << "Query: " << query.preview() << std::endl;
 
 
     mysqlcppapi::Result_Store res = query.store();
