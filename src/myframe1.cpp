@@ -250,6 +250,14 @@ void MyFrame1::OnPrSelected( wxListEvent &event )
 //    Route  =  Item( ps57CtlListCtrl->GetItemData( clicked_index ) )->GetData();
      unsigned int item = ps57CtlListCtrl->GetItemData( clicked_index );
 
+    ps57ListCtrl1->Hide();
+    ps57ListCtrl1->ClearAll();
+    GetComponents(ps57ListCtrl1);
+    ps57ListCtrl1->Update();
+    ps57ListCtrl1->Show();
+    ps57ListCtrl1->Raise();
+
+
 //    if( cc1 )
 //        cc1->Refresh();
 
@@ -337,6 +345,16 @@ void MyFrame1::OnDeepCtl( wxCommandEvent& event )
 //    wxString myStr;
 //    myStr = wxEmptyString;
     wxString  m_textCtrlInfo = m_DeepCtl->GetValue();
+    std::string st1(" WHERE creator_id = ");
+    st1 += m_textCtrlInfo.c_str();
+// We are put different condition (creator_id) to the same variable idClient
+    idClient = st1;
+    ps57CtlListCtrl->Hide();
+    ps57CtlListCtrl->ClearAll();
+    GetProjects(ps57CtlListCtrl);
+    ps57CtlListCtrl->Update();
+    ps57CtlListCtrl->Show();
+    ps57CtlListCtrl->Raise();
 
     printf("On ID Creator Selected %d, ", event.GetId());
     printf(wxString::Format("* %s, ", event.GetString()));
@@ -362,6 +380,12 @@ void MyFrame1::GetComponents(wxListCtrl *ps57CtlListCtrl1) {
 
     query << "select id, name, category, code, composition, description, image, measure_unit, position, price, price_insystem, product, weight, is_active, is_reportable, is_saleable  from components_component ORDER BY id DESC LIMIT 10";
     // You can write to the query object like you would any other ostrem
+
+//    std::string curSql("select id, name, date_creation, product, client_id, creator_id  from projects_project ");
+//    curSql += idClient;
+//    query <<  curSql;
+
+
 
     std::cout << "Query: " << query.preview() << std::endl;
 
@@ -448,16 +472,7 @@ void MyFrame1::GetProjects(wxListCtrl  *ps57CtlListCtrl) {
     // This creates a query object that is bound to con.
 
     std::string curSql("select id, name, date_creation, product, client_id, creator_id  from projects_project ");
-
-//    if (idClient.length() == 0 ) 
-//    {
-        curSql += idClient;
-//    } else {
-
-//    query << sprintf("select id, name, date_creation, product, client_id, creator_id  from projects_project %s", idClient);
-//        curSql += idClient;
-//    }
-
+    curSql += idClient;
     query <<  curSql;
     // You can write to the query object like you would any other ostrem
 
