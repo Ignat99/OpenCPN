@@ -245,10 +245,25 @@ void MyFrame1::OnCoSelected( wxListEvent &event )
 void MyFrame1::OnPrSelected( wxListEvent &event )
 {
     long clicked_index = event.m_itemIndex;
+    long cur_item = -1;
+    wxListItem info;
 
-    printf("On Project Selected\n");
+    info.m_itemId = clicked_index;
+    info.m_col = 0;
+    info.m_mask = wxLIST_MASK_TEXT;
+
+    if (ps57CtlListCtrl->GetItem(info))
+    {
+        printf(wxString::Format("On Project Selected ListCtr data from ID col:  %s\n", info.m_text));
+        wxLogMessage("On Project Selected ListCtr %s\n", info.m_text);
+    } else {
+        printf("On Project Selected ListCtr GetItem() failed\n");
+        wxFAIL_MSG("On Project Selected ListCtr GetItem() failed\n");
+    }
 //    Route  =  Item( ps57CtlListCtrl->GetItemData( clicked_index ) )->GetData();
-     unsigned int item = ps57CtlListCtrl->GetItemData( clicked_index );
+    cur_item = ps57CtlListCtrl->GetItemData( clicked_index );
+    cur_item = ps57CtlListCtrl->GetNextItem(cur_item, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+
 
     ps57ListCtrl1->Hide();
     ps57ListCtrl1->ClearAll();
