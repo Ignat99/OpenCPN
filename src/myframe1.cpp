@@ -4,6 +4,9 @@
 #include <iostream>
 #include <iomanip>
 #include <string>
+#include "pluginmanager.h"
+
+extern PlugInManager    *g_pi_manager;
 
 #define BUTTON1 11000
 
@@ -244,7 +247,7 @@ void MyFrame1::OnCoSelected( wxListEvent &event )
     if (ps57ListCtrl1->GetItem(info2))
     {
         printf(wxString::Format("On Components Selected ListCtr data from ID col:  %s\n", info2.m_text));
-        wxLogMessage("On Components Selected ListCtr Weight:  %s\n", info2.m_text);
+        wxLogMessage("On Components Selected ListCtr Weigh:  %s\n", info2.m_text);
     } else {
         printf("On Components Selected ListCtr GetItem() failed\n");
         wxFAIL_MSG("On Components Selected ListCtr GetItem() failed\n");
@@ -256,6 +259,11 @@ void MyFrame1::OnCoSelected( wxListEvent &event )
     st3 += "End";
 // We are put different condition (creator_id) to the same variable idClient
     idProgress = st3;
+
+    wxJSONValue v;
+    v[_T("Decl")] = info2.m_text;
+    wxString msg_id(_T("OCPN_DBP_DB_WEIGH"));
+    g_pi_manager->SendJSONMessageToAllPlugins(msg_id, v);
 
 }
 

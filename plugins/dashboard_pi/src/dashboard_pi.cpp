@@ -1149,13 +1149,24 @@ void dashboard_pi::SetCursorLatLon( double lat, double lon )
 
 void dashboard_pi::SetPluginMessage(wxString &message_id, wxString &message_body)
 {
-    if(message_id == _T("WMM_VARIATION_BOAT"))
-    {
-
         // construct the JSON root object
         wxJSONValue  root;
         // construct a JSON parser
         wxJSONReader reader;
+        int numErrors = reader.Parse( message_body, &root );
+        // get the DECL value from the JSON message
+        wxString decl = root[_T("Decl")].AsString();
+        double decl_val;
+        decl.ToDouble(&decl_val);
+
+
+        SendSentenceToAllInstruments( OCPN_DBP_DB_WEIGH, decl_val, _T("kg") );
+
+
+
+    if(message_id == _T("WMM_VARIATION_BOAT"))
+    {
+
 
         // now read the JSON text and store it in the 'root' structure
         // check for errors before retreiving values...
