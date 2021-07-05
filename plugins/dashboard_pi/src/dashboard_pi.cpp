@@ -95,9 +95,9 @@ wxString getInstrumentCaption( unsigned int id )
 {
     switch( id ){
         case ID_DPB_I_DB_QUANTITY:
-            return _("Datebase quantity");
+            return _("Database quantity");
         case ID_DPB_I_DB_WEIGHT:
-            return _("DateBase weight");
+            return _("DataBase weight");
         case ID_DPB_I_QR:
             return _("QR code");
         case ID_DPB_I_COMPONENT:

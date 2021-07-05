@@ -33,7 +33,7 @@
 #include <cxxabi.h>
 #endif // __WXMSW__
 #include "dychart.h"
-
+//#include <thread>
 
 #include <mysqlcppapi/mysqlcppapi.h>
 #include <iostream>
@@ -688,9 +688,10 @@ void PlugInManager::CreatePanel_VectorCharts1( wxBoxSizer *vectorPanel, int bord
 
 bool PlugInManager::BasculaProgress(void)
 {
-        int count=0;
-        long style = wxPD_SMOOTH | wxPD_ELAPSED_TIME | wxPD_ESTIMATED_TIME | wxPD_REMAINING_TIME | wxPD_CAN_SKIP;
-//        style |= wxSTAY_ON_TOP;
+        int count=100;
+//        long style = wxPD_SMOOTH | wxPD_ELAPSED_TIME | wxPD_ESTIMATED_TIME | wxPD_REMAINING_TIME | wxPD_CAN_SKIP;
+        long style = wxPD_APP_MODAL | wxPD_SMOOTH | wxPD_ELAPSED_TIME | wxPD_ESTIMATED_TIME | wxPD_REMAINING_TIME | wxPD_CAN_SKIP;
+        style |= wxSTAY_ON_TOP;
 
         pprog = new wxProgressDialog(_("OpenCPN bascula update"), _T("Progress"), count+1, GetOCPNCanvasWindow(), style);
         pprog->Hide();
@@ -715,9 +716,15 @@ bool PlugInManager::BasculaProgress(void)
         pprog_count = 0;
         bool skip = false;
         wxString msg;
-        double distance = 1.0;
-        msg.Printf(_("Weigh: %4.0f kg   :"), distance);
-        pprog->Update(pprog_count, _T("0000/0000 \n") + msg, &skip);
+        double distance = 2.0;
+
+       for (int step =1; step <= pprog->GetRange()-5; ++step) {
+//        int step = 1;
+        msg.Printf(_("Weigh: %4.0f kg , Range: %d "), distance, pprog->GetRange());
+        pprog->Update(step, wxString::Format("Step %d/%d ==> %s", step, pprog->GetRange(), pprog->WasSkipped() ? "skipped" : "done") + msg, &skip);
+//        pprog->Update(pprog_count, wxString::Format("Step %d/%d ==> %s", pprog_count, pprog->GetRange(), pprog->WasSkipped() ? "skipped" : "done") + msg, &skip);
+//        this_thread::sleep_for(100);
+       }
 
         return true;
 }
