@@ -1159,9 +1159,13 @@ void dashboard_pi::SetPluginMessage(wxString &message_id, wxString &message_body
         double decl_val;
         decl.ToDouble(&decl_val);
 
+    if(message_id == _T("OCPN_DBP_DB_WEIGH"))
+    {
 
         SendSentenceToAllInstruments( OCPN_DBP_DB_WEIGH, decl_val, _T("kg") );
-
+    } else {
+        SendSentenceToAllInstruments( OCPN_DBP_DB_QUANTITY, decl_val, _T("pcs") );
+    }
 
 
     if(message_id == _T("WMM_VARIATION_BOAT"))

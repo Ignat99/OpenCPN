@@ -29,7 +29,8 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
     wxDC *dc = new wxScreenDC();
 
     idClient = " WHERE id = 596";
-    idCreator = " WHERE id = 1";
+//    idCreator = " AND a.id = 1";
+    idCreator = " WHERE a.id = 1";
     idProgress = " Progress 1%";
 
     m_whatever = 1;
@@ -239,6 +240,8 @@ void MyFrame1::OnCoSelected( wxListEvent &event )
 //     unsigned int item = ps57ListCtrl1->GetItemData( clicked_index );
 
     wxListItem info2;
+    wxListItem info4;
+    wxJSONValue v;
 
     info2.m_itemId = clicked_index;
     info2.m_col = 12;
@@ -253,14 +256,71 @@ void MyFrame1::OnCoSelected( wxListEvent &event )
         wxFAIL_MSG("On Components Selected ListCtr GetItem() failed\n");
     }
 
+    info4.m_itemId = clicked_index;
+    info4.m_col = 0;
+    info4.m_mask = wxLIST_MASK_TEXT;
 
-    std::string st3(" Progress Bar Dialog");
-    st3 += info2.m_text.c_str();
-    st3 += "End";
+    if (ps57ListCtrl1->GetItem(info4))
+    {
+        printf(wxString::Format("On Components Selected ListCtr ID :  %s\n", info4.m_text));
+        wxLogMessage("On Components Selected ListCtr ID:  %s\n", info4.m_text);
+    } else {
+        printf("On Components Selected ListCtr GetItem() failed\n");
+        wxFAIL_MSG("On Components Selected ListCtr GetItem() failed\n");
+    }
+
+
+    std::string st3(" SELECT quantity FROM projects_projectcomponent WHERE component_id = ");
+    st3 += info4.m_text.c_str();
+    st3 += "";
 // We are put different condition (creator_id) to the same variable idClient
+
     idProgress = st3;
 
-    wxJSONValue v;
+  try {
+    mysqlcppapi::Connection con;
+    con.set_Host("localhost");
+    con.set_User("root");
+    con.set_Password("Android123");
+    con.connect();
+    con.select_database("drf_android");
+    
+    mysqlcppapi::Query query = con.create_Query();
+
+//    std::string curSql2("select a.id, a.name, a.category, a.code, a.composition, a.description, a.image, a.measure_unit, a.position, a.price, a.price_insystem, a.product, a.weight, a.is_active, a.is_reportable, a.is_saleable  from components_component a ");
+    std::string curSql2("");
+    curSql2 += idProgress;
+    query <<  curSql2;
+
+
+
+    std::cout << "Query: " << query.preview() << std::endl;
+
+    mysqlcppapi::Result_Store res = query.store();
+
+    mysqlcppapi::Result_Store::iterator i = res.begin();
+    mysqlcppapi::Row row = *i;
+//      printf("On Components Selected Quantity :  %s\n", row[0]);
+    printf(wxString::Format("On Components Selected Quantity :  %s\n", _(row[0])));
+      v[_T("Decl")] = _(row[0]);
+      wxString msg_id(_T("OCPN_DBP_DB_QUANTITY"));
+      g_pi_manager->SendJSONMessageToAllPlugins(msg_id, v);
+
+  }
+  catch(mysqlcppapi::ex_BadQuery& er)
+  {
+   // handle any connection or query errors that may come up
+      std::cerr << "Error: " << er.what() <<  std::endl;
+  }
+  catch(mysqlcppapi::ex_BadConversion& er)
+  {
+    // we still need to catch bad conversions in case something goes 
+    // wrong when the data is converted into stock
+      std::cerr << "Error: Tried to convert \"" << er.get_Data() << "\" to a \""
+   << er.get_TypeName() << "\"." << std::endl;
+  }
+
+
     v[_T("Decl")] = info2.m_text;
     wxString msg_id(_T("OCPN_DBP_DB_WEIGH"));
     g_pi_manager->SendJSONMessageToAllPlugins(msg_id, v);
@@ -292,7 +352,8 @@ void MyFrame1::OnPrSelected( wxListEvent &event )
 //    cur_item = ps57CtlListCtrl->GetNextItem(cur_item, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
 
 
-    std::string st2(" WHERE id IN (SELECT component_id FROM projects_projectcomponent WHERE project_id = ");
+//    std::string st2(" AND a.id IN (SELECT component_id FROM projects_projectcomponent WHERE project_id = ");
+    std::string st2(" WHERE a.id IN (SELECT component_id FROM projects_projectcomponent WHERE project_id = ");
     st2 += info.m_text.c_str();
     st2 += ")";
 // We are put different condition (creator_id) to the same variable idClient
@@ -443,8 +504,10 @@ void MyFrame1::GetComponents(wxListCtrl *ps57CtlListCtrl1) {
 //    query << "select id, name, category, code, composition, description, image, measure_unit, position, price, price_insystem, product, weight, is_active, is_reportable, is_saleable  from components_component ORDER BY id DESC LIMIT 10";
     // You can write to the query object like you would any other ostrem
 
-    std::string curSql2("select id, name, category, code, composition, description, image, measure_unit, position, price, price_insystem, product, weight, is_active, is_reportable, is_saleable  from components_component ");
 //    std::string curSql("select id, name, date_creation, product, client_id, creator_id  from projects_project ");
+//    std::string curSql2("select a.id, a.name, a.category, a.code, a.composition, a.description, a.image, a.measure_unit, a.position, a.price, a.price_insystem, a.product, a.weight, a.is_active, a.is_reportable, a.is_saleable, b.quantity  from components_component a, projects_projectcomponent b WHERE a.id = b.component_id ");
+//    std::string curSql2("select a.id, a.name, a.category, a.code, a.composition, a.description, a.image, a.measure_unit, a.position, a.price, a.price_insystem, a.product, a.weight, a.is_active, a.is_reportable, a.is_saleable, b.quantity  from components_component a LEFT OUTER JOIN projects_projectcomponent b ON a.id = b.component_id ");
+    std::string curSql2("select a.id, a.name, a.category, a.code, a.composition, a.description, a.image, a.measure_unit, a.position, a.price, a.price_insystem, a.product, a.weight, a.is_active, a.is_reportable, a.is_saleable  from components_component a ");
     curSql2 += idCreator;
     query <<  curSql2;
 
