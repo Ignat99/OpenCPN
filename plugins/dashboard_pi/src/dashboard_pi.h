@@ -186,6 +186,8 @@ private:
       int                  mHDT_Watchdog;
       int                  mGPS_Watchdog;
       int                  mVar_Watchdog;
+      DashboardInstrument  *instrument_progress_dialog;
+      wxProgressDialog     *progress_dialog;
 
 //protected:
 //      DECLARE_EVENT_TABLE();

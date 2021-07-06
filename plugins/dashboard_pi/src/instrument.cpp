@@ -296,6 +296,7 @@ DashboardInstrument_ProgressDialog::DashboardInstrument_ProgressDialog(wxWindow 
         style |= wxSTAY_ON_TOP;
 
         pprog = new wxProgressDialog(_("OpenCPN bascula update"), _T("Progress"), count+1, pparent, style);
+        ppprog = pprog;
         pprog->Hide();
         wxSize sz = pprog->GetSize();
         wxSize csz = pparent->GetClientSize();
@@ -331,6 +332,11 @@ DashboardInstrument_ProgressDialog::DashboardInstrument_ProgressDialog(wxWindow 
 //        return true;
 
 
+}
+
+wxProgressDialog* DashboardInstrument_ProgressDialog::GetPprog()
+{
+    return ppprog;
 }
 
 wxSize DashboardInstrument_ProgressDialog::GetSize( int orient, wxSize hint )

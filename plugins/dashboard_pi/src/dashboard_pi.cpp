@@ -340,6 +340,8 @@ dashboard_pi::~dashboard_pi( void )
 
 int dashboard_pi::Init( void )
 {
+    instrument_progress_dialog = NULL;
+
     AddLocaleCatalog( _T("opencpn-dashboard_pi") );
 
     mVar = NAN;
@@ -383,6 +385,11 @@ int dashboard_pi::Init( void )
     if(m_config_version == 1) {
         SaveConfig();
     }
+
+    instrument_progress_dialog = new DashboardInstrument_ProgressDialog( GetOCPNCanvasWindow(), wxID_ANY,
+            getInstrumentCaption( ID_DPB_I_PROGRESS_DIALOG ), OCPN_DBP_PROGRESS_DIALOG, _T("%5.5f") );
+
+    progress_dialog = instrument_progress_dialog->ppprog;
 
     Start( 1000, wxTIMER_CONTINUOUS );
 
@@ -537,7 +544,6 @@ void dashboard_pi::SetSentence( wxString &sentence )
 //    mnemonic = mnemonic+2;
 
     bool bGoodData = false;
-    DashboardInstrument *instrument = NULL;
 
     if( m_NMEA0183.PreParse1() )
     {
@@ -551,9 +557,13 @@ void dashboard_pi::SetSentence( wxString &sentence )
                     bascula_weigh = m_NMEA0183.Gw.UnitWeighKg;
                     bGoodData = true;
                     SendSentenceToAllInstruments( OCPN_DBP_WEIGH, bascula_weigh, "kg" );
-                    instrument = new DashboardInstrument_ProgressDialog( GetOCPNCanvasWindow(), wxID_ANY,
-                        getInstrumentCaption( ID_DPB_I_PROGRESS_DIALOG ), OCPN_DBP_PROGRESS_DIALOG, _T("%5.5f") );
-
+//                    wxString msg1;
+//                    msg1 += _T("\n\n");
+                    progress_dialog = instrument_progress_dialog->GetPprog();
+//                    instrument_progress_dialog->ppprog->Hide();
+//                    instrument_progress_dialog->ppprog->Update(20);
+//                    instrument_progress_dialog->ppprog->Show();
+//                    instrument_progress_dialog->ppprog->Raise();
                 }
             }
         }

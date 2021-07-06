@@ -117,6 +117,12 @@ public:
       virtual void SetData(int st, double data, wxString unit) = 0;
       void SetDrawSoloInPane(bool value);
       void MouseEvent( wxMouseEvent &event );
+      wxProgressDialog* GetPprog()
+      {
+          ppprog->Update(20);
+          return ppprog;
+      }
+      wxProgressDialog  *ppprog;
       
       int               instrumentTypeId;
 
@@ -156,6 +162,7 @@ public:
       wxSize GetSize( int orient, wxSize hint );
       void SetData(int st, double data, wxString unit){}
       void SetData(int st, int data, wxString unit){}
+      wxProgressDialog* GetPprog();
 
 protected:
       wxString          m_data;
