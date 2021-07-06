@@ -68,6 +68,16 @@ DashboardInstrument::DashboardInstrument(wxWindow *pparent, wxWindowID id, wxStr
 #endif      
 }
 
+wxProgressDialog* DashboardInstrument::GetPprog( double bascula_weigh, double db_weigh, double db_quantity )
+{
+    int cur_count;
+    cur_count = wxRound( pd_count * bascula_weigh / (db_weigh * db_quantity) );
+    wxString msg5;
+    msg5.Printf(_T("%d * %d / ( %d * %d )"), pd_count, wxRound(bascula_weigh), wxRound(db_weigh), wxRound(db_quantity));
+    ppprog->Update(cur_count, msg5);
+    return ppprog;
+}
+
 void DashboardInstrument::MouseEvent( wxMouseEvent &event )
 {
     if ( event.GetEventType() == wxEVT_RIGHT_DOWN )
@@ -287,7 +297,7 @@ void DashboardInstrument_Single::SetData(int st, double data, wxString unit)
 DashboardInstrument_ProgressDialog::DashboardInstrument_ProgressDialog(wxWindow *pparent, wxWindowID id, wxString title, int cap_flag, wxString format)
       :DashboardInstrument(pparent, id, title, cap_flag)
 {
-      int count=100;
+      pd_count=100;
       m_format = format;
       m_data = _T("---");
 
@@ -295,7 +305,7 @@ DashboardInstrument_ProgressDialog::DashboardInstrument_ProgressDialog(wxWindow 
         long style = wxPD_APP_MODAL | wxPD_SMOOTH | wxPD_ELAPSED_TIME | wxPD_ESTIMATED_TIME | wxPD_REMAINING_TIME | wxPD_CAN_SKIP;
         style |= wxSTAY_ON_TOP;
 
-        pprog = new wxProgressDialog(_("OpenCPN bascula update"), _T("Progress"), count+1, pparent, style);
+        pprog = new wxProgressDialog(_("OpenCPN bascula update"), _T("Progress"), pd_count+1, pparent, style);
         ppprog = pprog;
         pprog->Hide();
         wxSize sz = pprog->GetSize();

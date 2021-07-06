@@ -386,6 +386,9 @@ int dashboard_pi::Init( void )
         SaveConfig();
     }
 
+//    db_quantity = 100.0;
+//    db_weigh = 10.0;
+
     instrument_progress_dialog = new DashboardInstrument_ProgressDialog( GetOCPNCanvasWindow(), wxID_ANY,
             getInstrumentCaption( ID_DPB_I_PROGRESS_DIALOG ), OCPN_DBP_PROGRESS_DIALOG, _T("%5.5f") );
 
@@ -559,7 +562,7 @@ void dashboard_pi::SetSentence( wxString &sentence )
                     SendSentenceToAllInstruments( OCPN_DBP_WEIGH, bascula_weigh, "kg" );
 //                    wxString msg1;
 //                    msg1 += _T("\n\n");
-                    progress_dialog = instrument_progress_dialog->GetPprog();
+                    progress_dialog = instrument_progress_dialog->GetPprog(bascula_weigh, db_weigh, db_quantity);
 //                    instrument_progress_dialog->ppprog->Hide();
 //                    instrument_progress_dialog->ppprog->Update(20);
 //                    instrument_progress_dialog->ppprog->Show();

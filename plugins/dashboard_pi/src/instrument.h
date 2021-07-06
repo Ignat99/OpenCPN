@@ -117,12 +117,10 @@ public:
       virtual void SetData(int st, double data, wxString unit) = 0;
       void SetDrawSoloInPane(bool value);
       void MouseEvent( wxMouseEvent &event );
-      wxProgressDialog* GetPprog()
-      {
-          ppprog->Update(20);
-          return ppprog;
-      }
+      wxProgressDialog* GetPprog(double bascula_weigh, double db_weigh, double db_quantity);
+
       wxProgressDialog  *ppprog;
+      int pd_count;
       
       int               instrumentTypeId;
 
