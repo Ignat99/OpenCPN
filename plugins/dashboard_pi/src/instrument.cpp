@@ -278,6 +278,74 @@ void DashboardInstrument_Single::SetData(int st, double data, wxString unit)
       }
 }
 
+//----------------------------------------------------------------
+//
+//    DashboardInstrument_BasculaProgress Implementation
+//
+//----------------------------------------------------------------
+
+DashboardInstrument_ProgressDialog::DashboardInstrument_ProgressDialog(wxWindow *pparent, wxWindowID id, wxString title, int cap_flag, wxString format)
+      :DashboardInstrument(pparent, id, title, cap_flag)
+{
+      int count=100;
+      m_format = format;
+      m_data = _T("---");
+
+//        long style = wxPD_SMOOTH | wxPD_ELAPSED_TIME | wxPD_ESTIMATED_TIME | wxPD_REMAINING_TIME | wxPD_CAN_SKIP;
+        long style = wxPD_APP_MODAL | wxPD_SMOOTH | wxPD_ELAPSED_TIME | wxPD_ESTIMATED_TIME | wxPD_REMAINING_TIME | wxPD_CAN_SKIP;
+        style |= wxSTAY_ON_TOP;
+
+        pprog = new wxProgressDialog(_("OpenCPN bascula update"), _T("Progress"), count+1, pparent, style);
+        pprog->Hide();
+        wxSize sz = pprog->GetSize();
+        wxSize csz = pparent->GetClientSize();
+//        sz.x = csz.x * 7 / 10;
+//        sz.y += 20;
+        sz.x = 200;
+        sz.y = 100;
+        pprog->SetSize( sz );
+        pprog_size = sz;
+        pprog->Center();
+
+        pprog->Move(wxPoint(-30, 370));
+        wxString msg0;
+        msg0 += _T("\n\n");
+        pprog->Update( 0, msg0 );
+        pprog->Show();
+        pprog->Raise();
+
+        b_skipout = false;
+        pprog_count = 0;
+        bool skip = false;
+        wxString msg;
+        double distance = 2.0;
+
+       for (int step =1; step <= pprog->GetRange()-5; ++step) {
+//        int step = 1;
+        msg.Printf(_("Weigh: %4.0f kg , Range: %d "), distance, pprog->GetRange());
+        pprog->Update(step, wxString::Format("Step %d/%d ==> %s", step, pprog->GetRange(), pprog->WasSkipped() ? "skipped" : "done") + msg, &skip);
+//        pprog->Update(pprog_count, wxString::Format("Step %d/%d ==> %s", pprog_count, pprog->GetRange(), pprog->WasSkipped() ? "skipped" : "done") + m$
+//        this_thread::sleep_for(100);
+       }
+
+//        return true;
+
+
+}
+
+wxSize DashboardInstrument_ProgressDialog::GetSize( int orient, wxSize hint )
+{
+      wxClientDC dc(this);
+      int w;
+      dc.GetTextExtent(m_title, &w, &m_TitleHeight, 0, 0, g_pFontTitle);
+      dc.GetTextExtent(_T("000"), &w, &m_DataHeight, 0, 0, g_pFontData);
+
+      if( orient == wxHORIZONTAL ) {
+          return wxSize( DefaultWidth+100, wxMax(hint.y, m_TitleHeight+m_DataHeight) );
+      } else {
+          return wxSize( wxMax(hint.x, DefaultWidth)+100, m_TitleHeight+m_DataHeight );
+      }
+}
 
 
 //----------------------------------------------------------------

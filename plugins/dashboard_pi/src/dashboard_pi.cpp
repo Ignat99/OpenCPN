@@ -81,6 +81,7 @@ enum {
     ID_DBP_D_TWD, ID_DBP_I_HDM, ID_DBP_D_HDT, ID_DBP_D_WDH, ID_DBP_I_VLW1, ID_DBP_I_VLW2, ID_DBP_D_MDA, ID_DBP_I_MDA,ID_DBP_D_BPH, ID_DBP_I_FOS,
     ID_DBP_M_COG, ID_DPB_I_WEIGHT, ID_DPB_I_TOTAL_QUANTITY, ID_DPB_I_QUANTITY, ID_DPB_I_UNIT_WEIGHT,
     ID_DPB_I_PROJECT, ID_DPB_I_COMPONENT, ID_DPB_I_DB_CODE, ID_DPB_I_QR, ID_DPB_I_DB_WEIGHT, ID_DPB_I_DB_QUANTITY,
+    ID_DPB_I_PROGRESS_DIALOG,
     ID_DBP_LAST_ENTRY //this has a reference in one of the routines; defining a "LAST_ENTRY" and setting the reference to it, is one codeline less to change (and find) when adding new instruments :-)
 };
 
@@ -94,6 +95,8 @@ bool IsObsolete( int id ) {
 wxString getInstrumentCaption( unsigned int id )
 {
     switch( id ){
+        case ID_DPB_I_PROGRESS_DIALOG:
+            return _("Progress Dialog");
         case ID_DPB_I_DB_QUANTITY:
             return _("Database quantity");
         case ID_DPB_I_DB_WEIGHT:
@@ -205,6 +208,7 @@ void getListItemForInstrument( wxListItem &item, unsigned int id )
     item.SetText( getInstrumentCaption( id ) );
     switch( id ){
         case ID_DPB_I_PROJECT:
+        case ID_DPB_I_PROGRESS_DIALOG:
         case ID_DPB_I_COMPONENT:
         case ID_DPB_I_DB_CODE:
         case ID_DPB_I_QR:
@@ -533,6 +537,7 @@ void dashboard_pi::SetSentence( wxString &sentence )
 //    mnemonic = mnemonic+2;
 
     bool bGoodData = false;
+    DashboardInstrument *instrument = NULL;
 
     if( m_NMEA0183.PreParse1() )
     {
@@ -540,12 +545,15 @@ void dashboard_pi::SetSentence( wxString &sentence )
         {
             if( m_NMEA0183.Parse1() )
             {
-                double unit_weigh = 0.0;
+                bascula_weigh = 0.0;
                 if(m_NMEA0183.Gw.IsDataValid == NTrue)
                 {
-                    unit_weigh = m_NMEA0183.Gw.UnitWeighKg;
+                    bascula_weigh = m_NMEA0183.Gw.UnitWeighKg;
                     bGoodData = true;
-                    SendSentenceToAllInstruments( OCPN_DBP_WEIGH, unit_weigh, "kg" );
+                    SendSentenceToAllInstruments( OCPN_DBP_WEIGH, bascula_weigh, "kg" );
+                    instrument = new DashboardInstrument_ProgressDialog( GetOCPNCanvasWindow(), wxID_ANY,
+                        getInstrumentCaption( ID_DPB_I_PROGRESS_DIALOG ), OCPN_DBP_PROGRESS_DIALOG, _T("%5.5f") );
+
                 }
             }
         }
@@ -1161,9 +1169,10 @@ void dashboard_pi::SetPluginMessage(wxString &message_id, wxString &message_body
 
     if(message_id == _T("OCPN_DBP_DB_WEIGH"))
     {
-
+        db_weigh = decl_val;
         SendSentenceToAllInstruments( OCPN_DBP_DB_WEIGH, decl_val, _T("kg") );
     } else {
+        db_quantity = decl_val;
         SendSentenceToAllInstruments( OCPN_DBP_DB_QUANTITY, decl_val, _T("pcs") );
     }
 

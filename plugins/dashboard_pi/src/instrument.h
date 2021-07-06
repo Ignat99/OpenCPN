@@ -42,6 +42,7 @@
 #include "../../../include/ocpn_plugin.h"
 #include <wx/dcbuffer.h>
 #include <wx/dcgraph.h>         // supplemental, for Mac
+#include <wx/progdlg.h>
 
 const wxString DEGREE_SIGN = wxString::Format(_T("%c"), 0x00B0); // This is the degree sign in UTF8. It should be correctly handled on both Win & Unix
 #define DefaultWidth 150
@@ -83,7 +84,7 @@ enum
     OCPN_DBP_STC_PLA = 1 << 19, // Cursor latitude
     OCPN_DBP_STC_PLO = 1 << 20, // Cursor longitude
     OCPN_DBP_STC_CLK = 1 << 21,
-    OCPN_DBP_STC_MON = 1 << 22,
+//    OCPN_DBP_STC_MON = 1 << 22,
 //    OCPN_DBP_STC_ATMP = 1 << 23, //AirTemp
 //    OCPN_DBP_STC_TWD = 1 << 24,
 //    OCPN_DBP_STC_TWS2 = 1 << 25,
@@ -99,8 +100,8 @@ enum
     OCPN_DBP_QR = 1 << 26, // QR screen
     OCPN_DBP_DB_WEIGH = 1 << 25, // Data Base weigh screen
     OCPN_DBP_DB_QUANTITY = 1 << 24, // Data Base weigh screen
-    OCPN_DBP_DB_CODE = 1 << 23 // Data Base code screen
-
+    OCPN_DBP_DB_CODE = 1 << 23, // Data Base code screen
+    OCPN_DBP_PROGRESS_DIALOG = 1 << 22
 };
 
 class DashboardInstrument : public wxControl
@@ -145,6 +146,30 @@ protected:
 
       void Draw(wxGCDC* dc);
 };
+
+class DashboardInstrument_ProgressDialog : public DashboardInstrument
+{
+public:
+      DashboardInstrument_ProgressDialog(wxWindow *pparent, wxWindowID id, wxString title, int cap, wxString format);
+      ~DashboardInstrument_ProgressDialog(){}
+
+      wxSize GetSize( int orient, wxSize hint );
+      void SetData(int st, double data, wxString unit){}
+      void SetData(int st, int data, wxString unit){}
+
+protected:
+      wxString          m_data;
+      wxString          m_format;
+      int               m_DataHeight;
+      wxProgressDialog  *pprog;
+      bool              b_skipout;
+      wxSize            pprog_size;
+      int               pprog_count;
+
+      void Draw(wxGCDC* dc){}
+};
+
+
 
 class DashboardInstrument_Weight : public DashboardInstrument
 {

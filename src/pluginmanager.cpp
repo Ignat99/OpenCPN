@@ -267,7 +267,7 @@ PlugInManager::PlugInManager(MyFrame *parent)
     {
         m_plugin_menu_item_id_next = pFrame->GetCanvasWindow()->GetNextContextMenuId();
         m_plugin_tool_id_next = pFrame->GetNextToolbarToolId();
-        BasculaProgress();
+//        BasculaProgress();
     }
 
 /*
@@ -685,7 +685,7 @@ void PlugInManager::CreatePanel_VectorCharts1( wxBoxSizer *vectorPanel, int bord
 
 */
 
-
+/*
 bool PlugInManager::BasculaProgress(void)
 {
         int count=100;
@@ -728,6 +728,7 @@ bool PlugInManager::BasculaProgress(void)
 
         return true;
 }
+*/
 
 bool PlugInManager::LoadAllPlugIns(const wxString &plugin_dir, bool load_enabled, bool b_enable_blackdialog)
 {
@@ -1662,10 +1663,10 @@ void PlugInManager::SetCanvasContextMenuItemGrey(int item, bool grey)
 
 void PlugInManager::SendNMEASentenceToAllPlugIns(const wxString &sentence)
 {
-//    wxString sentence1 = "G.W. :+ 0.1155kg\n";
+    wxString sentence1 = "G.W. :+ 0.1155kg\n";
 //    wxString sentence1 = "U.W. :+ 0.08155 g/pcs\n";
 //    wxString sentence1 =   "Total:+ 144 pcs\n";
-    wxString decouple_sentence(sentence); // decouples 'const wxString &' and 'wxString &' to keep bin compat for plugins
+    wxString decouple_sentence(sentence1); // decouples 'const wxString &' and 'wxString &' to keep bin compat for plugins
     for(unsigned int i = 0 ; i < plugin_array.GetCount() ; i++)
     {
         PlugInContainer *pic = plugin_array.Item(i);

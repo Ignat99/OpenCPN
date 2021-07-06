@@ -176,6 +176,9 @@ private:
       // FFU
       double               mSatsInView;
       double               mHdm;
+      double               bascula_weigh;
+      double               db_weigh;
+      double               db_quantity;
       wxDateTime           mUTCDateTime;
       int                  m_config_version;
       wxString             m_VDO_accumulator;
