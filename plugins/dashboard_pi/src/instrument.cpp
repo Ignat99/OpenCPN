@@ -73,7 +73,8 @@ wxProgressDialog* DashboardInstrument::GetPprog( double bascula_weigh, double db
     int cur_count;
     cur_count = wxRound( pd_count * bascula_weigh / (db_weigh * db_quantity) );
     wxString msg5;
-    msg5.Printf(_T("%d * %d / ( %d * %d )"), pd_count, wxRound(bascula_weigh), wxRound(db_weigh), wxRound(db_quantity));
+    msg5.Printf(_T("%d * %d / ( db_weigh * db_quantity ) = %d "),
+        pd_count, wxRound(bascula_weigh), wxRound(db_weigh * db_quantity));
     ppprog->Update(cur_count, msg5);
     return ppprog;
 }

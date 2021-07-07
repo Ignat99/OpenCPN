@@ -70,7 +70,7 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
 
     // dislay category
     optionsColumn->Add( new wxStaticText(pPanel, wxID_ANY, _("Data creation")), labelFlags );
-    wxString pDispCatStrings[] = { _("1"), _("2"), _("3"), _("7") };
+    wxString pDispCatStrings[] = { _("1"), _("2"), _("3"), _("12") };
     pDispCat = new wxChoice( pPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, 4, pDispCatStrings );
     optionsColumn->Add( pDispCat, 0, wxALL, 2 );
 
