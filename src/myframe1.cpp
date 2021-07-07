@@ -162,6 +162,14 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
     optionsColumn->Add( 0, border_size*4 );
 
 
+    wxBoxSizer* btnRow = new wxBoxSizer( wxHORIZONTAL );
+    itemButtonSelectList = new wxButton( pPanel, ID_1SELECTLIST, _("Print label") );
+    btnRow->Add( itemButtonSelectList, 1, wxALL | wxEXPAND, group_item_spacing );
+    itemButtonClearList = new wxButton( pPanel, ID_1CLEARLIST, _("Run Progress") );
+    btnRow->Add( itemButtonClearList, 1, wxALL | wxEXPAND, group_item_spacing );
+    optionsColumn->Add( btnRow );
+
+
 
 
     // 2nd column, Display Category / Mariner's Standard options
@@ -194,14 +202,6 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
     GetProjects(ps57CtlListCtrl);
     marinersSizer->Add( ps57CtlListCtrl, 1, wxALL | wxEXPAND, group_item_spacing );
 
-/*
-    wxBoxSizer* btnRow = new wxBoxSizer( wxHORIZONTAL );
-    itemButtonSelectList = new wxButton( pPanel, ID_1SELECTLIST, _("Select All") );
-    btnRow->Add( itemButtonSelectList, 1, wxALL | wxEXPAND, group_item_spacing );
-    itemButtonClearList = new wxButton( pPanel, ID_1CLEARLIST, _("Clear All") );
-    btnRow->Add( itemButtonClearList, 1, wxALL | wxEXPAND, group_item_spacing );
-    marinersSizer->Add( btnRow );
-*/
 
 // Components
 
