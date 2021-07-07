@@ -245,41 +245,16 @@ public:
       PlugInManager(MyFrame *parent);
       virtual ~PlugInManager();
 
-//      wxListCtrl    *ps57CtlListBox1;
-/*
-      wxListCtrl    *ps57CtlListCtrl;
-      wxListCtrl    *ps57ListCtrl1;
-      size_t        m_pageDisplay;
-      wxSize        m_small_button_size;
-      wxNotebook    *m_pNotebook;
-      wxBoxSizer    *vectorPanel;
-      wxScrolledWindow    *ps57Ctl1;
-      wxSizerFlags inputFlags;
-      wxSizerFlags labelFlags;
-      wxChoice    *pDispCat;
-      wxChoice    *pPointStyle;
-      wxChoice    *pPointStyle1;
-      wxChoice    *pBoundStyle;
-      wxChoice    *p24Color;
-      wxTextCtrl    *m_SafetyCtl;
-      wxTextCtrl    *m_DeepCtl;
-      wxButton      *itemButtonSelectList;
-      wxButton      *itemButtonClearList;
-
-*/
-
       wxProgressDialog *pprog;
       bool b_skipout;
       wxSize pprog_size;
       int pprog_count;
 
-//      void OnEvtCompressProgress1( OCPN_CompressProgressEvent1 & event );
 
       bool LoadAllPlugIns(const wxString &plugin_dir, bool enabled_plugins, bool b_enable_blackdialog = true);
       bool UnLoadAllPlugIns();
       bool DeactivateAllPlugIns();
       bool UpdatePlugIns();
-      bool BasculaProgress();
 
       bool UpdateConfig();
 
