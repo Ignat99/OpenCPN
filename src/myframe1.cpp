@@ -244,7 +244,7 @@ void MyFrame1::OnCoSelected( wxListEvent &event )
     wxJSONValue v;
 
     info2.m_itemId = clicked_index;
-    info2.m_col = 12;
+    info2.m_col = 6;
     info2.m_mask = wxLIST_MASK_TEXT;
 
     if (ps57ListCtrl1->GetItem(info2))
@@ -522,18 +522,18 @@ void MyFrame1::GetComponents(wxListCtrl *ps57CtlListCtrl1) {
     ps57CtlListCtrl1->InsertColumn(1, _("Name"));
     ps57CtlListCtrl1->InsertColumn(2, _("Category"));
     ps57CtlListCtrl1->InsertColumn(3, _("Code"));
-    ps57CtlListCtrl1->InsertColumn(4, _("Composition"));
-    ps57CtlListCtrl1->InsertColumn(5, _("Description"));
-    ps57CtlListCtrl1->InsertColumn(6, _("Image"));
-    ps57CtlListCtrl1->InsertColumn(7, _("Measure unit"));
-    ps57CtlListCtrl1->InsertColumn(8, _("Position"));
-    ps57CtlListCtrl1->InsertColumn(9, _("Price"));
-    ps57CtlListCtrl1->InsertColumn(10, _("Price insystem"));
-    ps57CtlListCtrl1->InsertColumn(11, _("Product"));
-    ps57CtlListCtrl1->InsertColumn(12, _("Weight"));
-    ps57CtlListCtrl1->InsertColumn(13, _("Is Active"));
-    ps57CtlListCtrl1->InsertColumn(14, _("Is Reportable"));
-    ps57CtlListCtrl1->InsertColumn(15, _("Is Saleable"));
+//    ps57CtlListCtrl1->InsertColumn(4, _("Composition"));
+//    ps57CtlListCtrl1->InsertColumn(5, _("Description"));
+//    ps57CtlListCtrl1->InsertColumn(6, _("Image"));
+    ps57CtlListCtrl1->InsertColumn(4, _("Measure unit"));
+    ps57CtlListCtrl1->InsertColumn(5, _("Position"));
+//    ps57CtlListCtrl1->InsertColumn(9, _("Price"));
+//    ps57CtlListCtrl1->InsertColumn(10, _("Price insystem"));
+//    ps57CtlListCtrl1->InsertColumn(11, _("Product"));
+    ps57CtlListCtrl1->InsertColumn(6, _("Weight"));
+//    ps57CtlListCtrl1->InsertColumn(13, _("Is Active"));
+//    ps57CtlListCtrl1->InsertColumn(14, _("Is Reportable"));
+//    ps57CtlListCtrl1->InsertColumn(15, _("Is Saleable"));
 
 
     wxListItem* item = new wxListItem();
@@ -552,18 +552,18 @@ void MyFrame1::GetComponents(wxListCtrl *ps57CtlListCtrl1) {
       ps57CtlListCtrl1->SetItem(index, 1, _(row[1]), -1);
       ps57CtlListCtrl1->SetItem(index, 2, _(row[2]), -1);
       ps57CtlListCtrl1->SetItem(index, 3, _(row[3]), -1);
-      ps57CtlListCtrl1->SetItem(index, 4, _(row[4]), -1);
-      ps57CtlListCtrl1->SetItem(index, 5, _(row[5]), -1);
-      ps57CtlListCtrl1->SetItem(index, 6, _(row[6]), -1);
-      ps57CtlListCtrl1->SetItem(index, 7, _(row[7]), -1);
-      ps57CtlListCtrl1->SetItem(index, 8, _(row[8]), -1);
-      ps57CtlListCtrl1->SetItem(index, 9, _(row[9]), -1);
-      ps57CtlListCtrl1->SetItem(index, 10, _(row[10]), -1);
-      ps57CtlListCtrl1->SetItem(index, 11, _(row[11]), -1);
-      ps57CtlListCtrl1->SetItem(index, 12, _(row[12]), -1);
-      ps57CtlListCtrl1->SetItem(index, 13, _(row[13]), -1);
-      ps57CtlListCtrl1->SetItem(index, 14, _(row[14]), -1);
-      ps57CtlListCtrl1->SetItem(index, 15, _(row[15]), -1);
+//      ps57CtlListCtrl1->SetItem(index, 4, _(row[4]), -1);
+//      ps57CtlListCtrl1->SetItem(index, 5, _(row[5]), -1);
+//      ps57CtlListCtrl1->SetItem(index, 6, _(row[6]), -1);
+      ps57CtlListCtrl1->SetItem(index, 4, _(row[7]), -1);
+      ps57CtlListCtrl1->SetItem(index, 5, _(row[8]), -1);
+//      ps57CtlListCtrl1->SetItem(index, 9, _(row[9]), -1);
+//      ps57CtlListCtrl1->SetItem(index, 10, _(row[10]), -1);
+//      ps57CtlListCtrl1->SetItem(index, 11, _(row[11]), -1);
+      ps57CtlListCtrl1->SetItem(index, 6, _(row[12]), -1);
+//      ps57CtlListCtrl1->SetItem(index, 13, _(row[13]), -1);
+//      ps57CtlListCtrl1->SetItem(index, 14, _(row[14]), -1);
+//      ps57CtlListCtrl1->SetItem(index, 15, _(row[15]), -1);
 
     }
   }
