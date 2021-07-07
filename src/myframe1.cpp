@@ -170,6 +170,8 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
     optionsColumn->Add( btnRow );
 
 
+    itemButtonSelectList->Connect( wxEVT_COMMAND_BUTTON_CLICKED,  wxCommandEventHandler(MyFrame1::OnBtnSelectClick), NULL, this );
+    itemButtonClearList->Connect( wxEVT_COMMAND_BUTTON_CLICKED,  wxCommandEventHandler(MyFrame1::OnBtnClearClick), NULL, this );
 
 
     // 2nd column, Display Category / Mariner's Standard options
@@ -656,6 +658,19 @@ void MyFrame1::OnButton1(wxCommandEvent& event)
 
    event.Skip();
 
+}
+
+void MyFrame1::OnBtnSelectClick(wxCommandEvent& event)
+{
+   event.Skip();
+// RoutePrintSelection *pTrackPrintSelection = new RoutePrintSelection( this, m_pRoute );
+// pTrackPrintSelection->ShowModal();
+// delete pTrackPrintSelection;
+}
+
+void MyFrame1::OnBtnClearClick(wxCommandEvent& event)
+{
+   event.Skip();
 }
 
 void MyFrame1::OnSize(wxSizeEvent& event)
