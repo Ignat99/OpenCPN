@@ -53,6 +53,8 @@ public:
 
 private:
     void OnButton1(wxCommandEvent& event);
+    void OnBtnSelectClick(wxCommandEvent& event);
+    void OnBtnClearClick(wxCommandEvent& event);
     void OnSize(wxSizeEvent& event);
     void OnMove(wxMoveEvent& event);
     void OnActivateApp( wxActivateEvent& event );

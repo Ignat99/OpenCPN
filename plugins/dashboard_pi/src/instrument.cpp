@@ -72,6 +72,7 @@ wxProgressDialog* DashboardInstrument::GetPprog( double bascula_weigh, double db
 {
     int cur_count;
     cur_count = wxRound( pd_count * bascula_weigh / (db_weigh * db_quantity) );
+    if (cur_count >  90) { cur_count = 95; }
     wxString msg5;
     msg5.Printf(_T("%d * %d / ( db_weigh * db_quantity ) = %d "),
         pd_count, wxRound(bascula_weigh), wxRound(db_weigh * db_quantity));
@@ -302,11 +303,11 @@ DashboardInstrument_ProgressDialog::DashboardInstrument_ProgressDialog(wxWindow 
       m_format = format;
       m_data = _T("---");
 
-//        long style = wxPD_SMOOTH | wxPD_ELAPSED_TIME | wxPD_ESTIMATED_TIME | wxPD_REMAINING_TIME | wxPD_CAN_SKIP;
-        long style = wxPD_APP_MODAL | wxPD_SMOOTH | wxPD_ELAPSED_TIME | wxPD_ESTIMATED_TIME | wxPD_REMAINING_TIME | wxPD_CAN_SKIP;
+        long style = wxPD_ELAPSED_TIME | wxPD_ESTIMATED_TIME | wxPD_REMAINING_TIME;
+//        long style = wxPD_APP_MODAL | wxPD_SMOOTH | wxPD_ELAPSED_TIME | wxPD_ESTIMATED_TIME | wxPD_REMAINING_TIME | wxPD_CAN_SKIP;
         style |= wxSTAY_ON_TOP;
 
-        pprog = new wxProgressDialog(_("OpenCPN bascula update"), _T("Progress"), pd_count+1, pparent, style);
+        pprog = new wxProgressDialog(_("Bascula Claroflex"), _T("Progress Dialog"), pd_count+1, pparent, style);
         ppprog = pprog;
         pprog->Hide();
         wxSize sz = pprog->GetSize();
@@ -319,19 +320,20 @@ DashboardInstrument_ProgressDialog::DashboardInstrument_ProgressDialog(wxWindow 
         pprog_size = sz;
         pprog->Center();
 
-        pprog->Move(wxPoint(-30, 370));
+        pprog->Move(wxPoint(-17, 445));
         wxString msg0;
         msg0 += _T("\n\n");
         pprog->Update( 0, msg0 );
         pprog->Show();
         pprog->Raise();
 
-        b_skipout = false;
-        pprog_count = 0;
-        bool skip = false;
-        wxString msg;
-        double distance = 2.0;
+//        b_skipout = false;
+//        pprog_count = 0;
+//        bool skip = false;
+//        wxString msg;
+//        double distance = 2.0;
 
+/*
        for (int step =1; step <= pprog->GetRange()-5; ++step) {
 //        int step = 1;
         msg.Printf(_("Weigh: %4.0f kg , Range: %d "), distance, pprog->GetRange());
@@ -339,7 +341,7 @@ DashboardInstrument_ProgressDialog::DashboardInstrument_ProgressDialog(wxWindow 
 //        pprog->Update(pprog_count, wxString::Format("Step %d/%d ==> %s", pprog_count, pprog->GetRange(), pprog->WasSkipped() ? "skipped" : "done") + m$
 //        this_thread::sleep_for(100);
        }
-
+*/
 //        return true;
 
 

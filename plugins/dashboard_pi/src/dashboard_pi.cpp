@@ -563,7 +563,7 @@ void dashboard_pi::SetSentence( wxString &sentence )
 //                    wxString msg1;
 //                    msg1 += _T("\n\n");
                     progress_dialog = instrument_progress_dialog->GetPprog(bascula_weigh, db_weigh, db_quantity);
-//                    instrument_progress_dialog->ppprog->Hide();
+//                    progress_dialog->Hide();
 //                    instrument_progress_dialog->ppprog->Update(20);
 //                    instrument_progress_dialog->ppprog->Show();
 //                    instrument_progress_dialog->ppprog->Raise();
