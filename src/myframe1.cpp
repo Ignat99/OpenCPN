@@ -165,13 +165,13 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
     wxBoxSizer* btnRow = new wxBoxSizer( wxHORIZONTAL );
     itemButtonSelectList = new wxButton( pPanel, ID_1SELECTLIST, _("Print label") );
     btnRow->Add( itemButtonSelectList, 1, wxALL | wxEXPAND, group_item_spacing );
-    itemButtonClearList = new wxButton( pPanel, ID_1CLEARLIST, _("Run Progress") );
-    btnRow->Add( itemButtonClearList, 1, wxALL | wxEXPAND, group_item_spacing );
+//    itemButtonClearList = new wxButton( pPanel, ID_1CLEARLIST, _("Run Progress") );
+//    btnRow->Add( itemButtonClearList, 1, wxALL | wxEXPAND, group_item_spacing );
     optionsColumn->Add( btnRow );
 
 
     itemButtonSelectList->Connect( wxEVT_COMMAND_BUTTON_CLICKED,  wxCommandEventHandler(MyFrame1::OnBtnSelectClick), NULL, this );
-    itemButtonClearList->Connect( wxEVT_COMMAND_BUTTON_CLICKED,  wxCommandEventHandler(MyFrame1::OnBtnClearClick), NULL, this );
+//    itemButtonClearList->Connect( wxEVT_COMMAND_BUTTON_CLICKED,  wxCommandEventHandler(MyFrame1::OnBtnClearClick), NULL, this );
 
 
     // 2nd column, Display Category / Mariner's Standard options
