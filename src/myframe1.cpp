@@ -235,9 +235,9 @@ MyFrame1::~MyFrame1()
 }
 
 
-void MyFrame1::doBasicDemo()
+void MyFrame1::doBasicDemo(const wxString &wx_text)
 {
-	const char *text = "Hello, world!";
+	const char *text = wx_text.c_str();
 	enum qrcodegen_Ecc errCorLvl = qrcodegen_Ecc_LOW;
 
 	uint8_t qrcode[qrcodegen_BUFFER_LEN_MAX];
@@ -299,7 +299,17 @@ void MyFrame1::OnCoSelected( wxListEvent &event )
     }
 
 
-    doBasicDemo();
+    info4.m_itemId = clicked_index;
+    info4.m_col = 3;
+    info4.m_mask = wxLIST_MASK_TEXT;
+
+    if (ps57ListCtrl1->GetItem(info4))
+    {
+        doBasicDemo(info4.m_text);
+    } else {
+        printf("On Components Selected ListCtr GetItem() failed\n");
+        wxFAIL_MSG("On Components Selected ListCtr GetItem() failed\n");
+    }
 
     std::string st3(" SELECT quantity FROM projects_projectcomponent WHERE component_id = ");
     st3 += info4.m_text.c_str();
