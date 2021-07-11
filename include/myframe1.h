@@ -4,6 +4,7 @@
 #include <iostream>
 #include <iomanip>
 #include <string>
+#include <stdint.h>
 
 
 enum {
@@ -69,7 +70,8 @@ private:
     void OnPointStyle1( wxCommandEvent &event );
     void OnSafetyCtl( wxCommandEvent &event );
     void OnDeepCtl( wxCommandEvent &event );
-
+    void doBasicDemo(void);
+    void printQr(const uint8_t qrcode[]);
 
     DECLARE_EVENT_TABLE()
 };

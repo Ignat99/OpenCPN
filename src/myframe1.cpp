@@ -5,6 +5,8 @@
 #include <iomanip>
 #include <string>
 #include "pluginmanager.h"
+#include <stdint.h>
+#include "qrcodegen.h"
 
 extern PlugInManager    *g_pi_manager;
 
@@ -233,6 +235,31 @@ MyFrame1::~MyFrame1()
 }
 
 
+void MyFrame1::doBasicDemo()
+{
+	const char *text = "Hello, world!";
+	enum qrcodegen_Ecc errCorLvl = qrcodegen_Ecc_LOW;
+
+	uint8_t qrcode[qrcodegen_BUFFER_LEN_MAX];
+	uint8_t tempBuffer[qrcodegen_BUFFER_LEN_MAX];
+	bool ok = qrcodegen_encodeText(text, tempBuffer, qrcode, errCorLvl,
+		qrcodegen_VERSION_MIN, qrcodegen_VERSION_MAX, qrcodegen_Mask_AUTO, true);
+	if (ok)
+		printQr(qrcode);
+}
+
+void MyFrame1::printQr(const uint8_t qrcode[]) {
+	int x, y;
+	int size = qrcodegen_getSize(qrcode);
+	int border = 4;
+	for (y = -border; y < size + border; y++) {
+		for (x = -border; x < size + border; x++) {
+			fputs((qrcodegen_getModule(qrcode, x, y) ? "##" : "  "), stdout);
+		}
+		fputs("\n", stdout);
+	}
+	fputs("\n", stdout);
+}
 
 void MyFrame1::OnCoSelected( wxListEvent &event )
 {
@@ -271,6 +298,8 @@ void MyFrame1::OnCoSelected( wxListEvent &event )
         wxFAIL_MSG("On Components Selected ListCtr GetItem() failed\n");
     }
 
+
+    doBasicDemo();
 
     std::string st3(" SELECT quantity FROM projects_projectcomponent WHERE component_id = ");
     st3 += info4.m_text.c_str();

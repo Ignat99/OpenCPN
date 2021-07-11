@@ -597,6 +597,7 @@ SET(HDRS
                 include/TrackPropDlg.h
                 include/LinkPropDlg.h
                 include/myframe1.h
+		include/qrcodegen.h
 )
 
 SET(SRCS
@@ -686,6 +687,7 @@ SET(SRCS
                 src/LinkPropDlg.cpp
                 src/ssl/sha1.c
                 src/myframe1.cpp
+		src/qrcodegen.c
     )
 
 IF(NOT WIN32 AND NOT APPLE)
@@ -886,6 +888,19 @@ IF (USE_GARMINHOST)
 ELSE (USE_GARMINHOST)
 	message (STATUS "Garmin Host Mode support: disabled")
 ENDIF (USE_GARMINHOST)
+
+
+#SET(SRC_QRCODEGEN
+#  src/qrcodegen/qrcodegen.c
+#  src/qrcodegen/qrcodegen.h
+#)
+#INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/src/qrcodegen)
+#SET(CMAKE_C_FLAGS "-std=c99 -O")
+
+#ADD_LIBRARY(QRCODEGEN ${SRC_QRCODEGEN})
+#SET(EXTRA_LIBS ${EXTRA_LIBS} QRCODEGEN)
+
+
 
 # Compile texcompression support library
 IF (OPENGL_GLU_FOUND)
