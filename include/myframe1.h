@@ -27,6 +27,7 @@ protected:
       int m_whatever;
 
 public:
+      wxFrame       *drawFrame;
       ImagePanel    *drawPane;
       wxListCtrl    *ps57CtlListCtrl;
       wxListCtrl    *ps57ListCtrl1;

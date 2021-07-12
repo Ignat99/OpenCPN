@@ -9,6 +9,10 @@ ImagePanel::ImagePanel(wxWindow *parent, wxString path, wxBitmapType format) : w
   width = img.GetWidth();
   height = img.GetHeight();
 
+  width = 200;
+  height = 200;
+
+
   // set the size of the panel accordingly
   SetSize(width, height);
 
