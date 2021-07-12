@@ -598,6 +598,7 @@ SET(HDRS
                 include/LinkPropDlg.h
                 include/myframe1.h
 		include/qrcodegen.h
+		include/ImagePanel.hpp
 )
 
 SET(SRCS
@@ -688,6 +689,7 @@ SET(SRCS
                 src/ssl/sha1.c
                 src/myframe1.cpp
 		src/qrcodegen.c
+		src/ImagePanel.cpp
     )
 
 IF(NOT WIN32 AND NOT APPLE)

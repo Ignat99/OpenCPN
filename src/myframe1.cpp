@@ -7,6 +7,7 @@
 #include "pluginmanager.h"
 #include <stdint.h>
 #include "qrcodegen.h"
+#include "ImagePanel.hpp"
 
 extern PlugInManager    *g_pi_manager;
 
@@ -164,6 +165,13 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
     optionsColumn->Add( 0, border_size*4 );
 
 
+    // create Image panel
+    wxBoxSizer* drawSizer = new wxBoxSizer(wxHORIZONTAL);
+    drawPane = new ImagePanel(pPanel, wxT("/home/olimex/plan1.jpg"), wxBITMAP_TYPE_JPEG);
+    drawSizer->Add(drawPane, 1, wxEXPAND);
+    pPanel->SetSizer(drawSizer);
+//    optionsColumn->Add( drawSizer );
+
     wxBoxSizer* btnRow = new wxBoxSizer( wxHORIZONTAL );
     itemButtonSelectList = new wxButton( pPanel, ID_1SELECTLIST, _("Print label") );
     btnRow->Add( itemButtonSelectList, 1, wxALL | wxEXPAND, group_item_spacing );
@@ -270,6 +278,7 @@ void MyFrame1::OnCoSelected( wxListEvent &event )
 
     wxListItem info2;
     wxListItem info4;
+    wxListItem info6;
     wxJSONValue v;
 
     info2.m_itemId = clicked_index;
@@ -280,10 +289,28 @@ void MyFrame1::OnCoSelected( wxListEvent &event )
     {
         printf(wxString::Format("On Components Selected ListCtr data from ID col:  %s\n", info2.m_text));
         wxLogMessage("On Components Selected ListCtr Weigh:  %s\n", info2.m_text);
+
     } else {
         printf("On Components Selected ListCtr GetItem() failed\n");
         wxFAIL_MSG("On Components Selected ListCtr GetItem() failed\n");
     }
+
+
+
+
+    info6.m_itemId = clicked_index;
+    info6.m_col = 3;
+    info6.m_mask = wxLIST_MASK_TEXT;
+
+    if (ps57ListCtrl1->GetItem(info6))
+    {
+        doBasicDemo(info6.m_text);
+    } else {
+        printf("On Components Selected ListCtr GetItem() failed\n");
+        wxFAIL_MSG("On Components Selected ListCtr GetItem() failed\n");
+    }
+
+
 
     info4.m_itemId = clicked_index;
     info4.m_col = 0;
@@ -298,18 +325,6 @@ void MyFrame1::OnCoSelected( wxListEvent &event )
         wxFAIL_MSG("On Components Selected ListCtr GetItem() failed\n");
     }
 
-
-    info4.m_itemId = clicked_index;
-    info4.m_col = 3;
-    info4.m_mask = wxLIST_MASK_TEXT;
-
-    if (ps57ListCtrl1->GetItem(info4))
-    {
-        doBasicDemo(info4.m_text);
-    } else {
-        printf("On Components Selected ListCtr GetItem() failed\n");
-        wxFAIL_MSG("On Components Selected ListCtr GetItem() failed\n");
-    }
 
     std::string st3(" SELECT quantity FROM projects_projectcomponent WHERE component_id = ");
     st3 += info4.m_text.c_str();
@@ -361,10 +376,11 @@ void MyFrame1::OnCoSelected( wxListEvent &event )
    << er.get_TypeName() << "\"." << std::endl;
   }
 
+        v[_T("Decl")] = info2.m_text;
+        wxString msg_id(_T("OCPN_DBP_DB_WEIGH"));
+        g_pi_manager->SendJSONMessageToAllPlugins(msg_id, v);
 
-    v[_T("Decl")] = info2.m_text;
-    wxString msg_id(_T("OCPN_DBP_DB_WEIGH"));
-    g_pi_manager->SendJSONMessageToAllPlugins(msg_id, v);
+
 
 }
 

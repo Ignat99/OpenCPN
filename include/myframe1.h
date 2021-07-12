@@ -5,6 +5,7 @@
 #include <iomanip>
 #include <string>
 #include <stdint.h>
+#include "ImagePanel.hpp"
 
 
 enum {
@@ -26,6 +27,7 @@ protected:
       int m_whatever;
 
 public:
+      ImagePanel    *drawPane;
       wxListCtrl    *ps57CtlListCtrl;
       wxListCtrl    *ps57ListCtrl1;
       size_t        m_pageDisplay;
@@ -53,6 +55,10 @@ public:
       void GetComponents(wxListCtrl *ps57CtlListBoxStrings);
 
 private:
+//    wxImage img;
+//    wxBitmap bitmap;
+//    int width;
+//    int height;
     void OnButton1(wxCommandEvent& event);
     void OnBtnSelectClick(wxCommandEvent& event);
     void OnBtnClearClick(wxCommandEvent& event);
