@@ -167,12 +167,15 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
 
     // create Image panel
     wxBoxSizer* drawSizer = new wxBoxSizer(wxHORIZONTAL);
-    drawFrame = new wxFrame(pPanel, wxID_ANY, wxT("Hello wxDC"), wxPoint(0,0), wxSize(100,100));
-    drawPane = new ImagePanel(pPanel, wxT("/home/olimex/plan1.jpg"), wxBITMAP_TYPE_JPEG);
+    drawFrame = new wxFrame(this, wxID_ANY, wxT("Hello wxDC"), wxPoint(500,500), wxSize(100,100));
+    drawPane = new ImagePanel(drawFrame, wxT("/home/olimex/plan1.jpg"), wxBITMAP_TYPE_JPEG);
     drawSizer->Add(drawPane, 1, wxEXPAND);
     drawFrame->SetSizer(drawSizer);
     drawFrame->Show();
-    optionsColumn->Add( drawSizer );
+    this->SetSizer(drawSizer);
+    this->Show();
+    optionsColumn->Add( drawPane );
+//    vectorPanel->Add( drawSizer, 2, wxALL | wxEXPAND, border_size );
 
     wxBoxSizer* btnRow = new wxBoxSizer( wxHORIZONTAL );
     itemButtonSelectList = new wxButton( pPanel, ID_1SELECTLIST, _("Print label") );
