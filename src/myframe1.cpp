@@ -181,19 +181,15 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
 //    dispSizer->Add( marinersSizer, 1, wxALL | wxEXPAND, border_size );
 //    vectorPanel->Add( drawStaticSizer, 1, wxALL | wxEXPAND, border_size );
 //    optionsColumn->Add( drawStaticSizer, 0, wxALL | wxEXPAND, 2  );
-    picturePanel->Add( drawStaticSizer, 0, wxALL | wxEXPAND, 2  );
+    picturePanel->Add( drawStaticSizer, 1, wxALL | wxEXPAND, 2  );
 
-    // spacer
-//    optionsColumn->Add( 0, border_size*4 );
-    optionsColumn->Add( 0, border_size*4 );
-    optionsColumn->Add( 0, border_size*4 );
 
     wxBoxSizer* btnRow = new wxBoxSizer( wxHORIZONTAL );
     itemButtonSelectList = new wxButton( pPanel, ID_1SELECTLIST, _("Print label") );
     btnRow->Add( itemButtonSelectList, 1, wxALL | wxEXPAND, group_item_spacing );
 //    itemButtonClearList = new wxButton( pPanel, ID_1CLEARLIST, _("Run Progress") );
 //    btnRow->Add( itemButtonClearList, 1, wxALL | wxEXPAND, group_item_spacing );
-    optionsColumn->Add( btnRow );
+    picturePanel->Add( btnRow );
 
 
 

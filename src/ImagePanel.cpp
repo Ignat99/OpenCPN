@@ -14,7 +14,7 @@ ImagePanel::ImagePanel(wxWindow *parent, wxString path, wxBitmapType format) : w
 
 
   // set the size of the panel accordingly
-  SetSize(width, height);
+//  SetSize(width, height);
 
   Connect(wxEVT_PAINT, wxPaintEventHandler(ImagePanel::OnPaint));
   Connect(wxEVT_SIZE, wxSizeEventHandler(ImagePanel::OnSize));
@@ -35,9 +35,9 @@ void ImagePanel::paintNow()
 void ImagePanel::render(wxDC& dc)
 {
   int neww, newh;
-//  dc.GetSize( &neww, &newh );
-  neww = 100;
-  newh = 100;
+  dc.GetSize( &neww, &newh );
+//  neww = 100;
+//  newh = 100;
 
   if( neww != width || newh != height )
   {
