@@ -58,13 +58,16 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
 
 //        Centre();
 
+    picturePanel = new wxBoxSizer(wxVERTICAL);
 
 
     wxFlexGridSizer* optionsColumn = new wxFlexGridSizer(2);
     optionsColumn->SetHGap(border_size);
     optionsColumn->AddGrowableCol( 0, 2 );
     optionsColumn->AddGrowableCol( 1, 3 );
-    vectorPanel->Add( optionsColumn, 3, wxALL | wxEXPAND, border_size );
+    vectorPanel->Add( picturePanel);
+//    vectorPanel->Add( optionsColumn, 3, wxALL | wxEXPAND, border_size );
+    picturePanel->Add( optionsColumn, 3, wxALL | wxEXPAND, border_size );
 
     // spacer
     optionsColumn->Add( new wxStaticText(pPanel, wxID_ANY, _T("")) );
@@ -167,15 +170,23 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
 
     // create Image panel
     wxBoxSizer* drawSizer = new wxBoxSizer(wxHORIZONTAL);
-    drawFrame = new wxFrame(this, wxID_ANY, wxT("Hello wxDC"), wxPoint(500,500), wxSize(100,100));
-    drawPane = new ImagePanel(drawFrame, wxT("/home/olimex/plan1.jpg"), wxBITMAP_TYPE_JPEG);
+    drawPane = new ImagePanel(pPanel, wxT("/home/olimex/plan1.jpg"), wxBITMAP_TYPE_JPEG);
     drawSizer->Add(drawPane, 1, wxEXPAND);
-    drawFrame->SetSizer(drawSizer);
-    drawFrame->Show();
-    this->SetSizer(drawSizer);
-    this->Show();
-    optionsColumn->Add( drawPane );
-//    vectorPanel->Add( drawSizer, 2, wxALL | wxEXPAND, border_size );
+
+    wxStaticBox* drawStaticBox = new wxStaticBox( pPanel, wxID_ANY, _("Component") );
+    wxStaticBoxSizer* drawStaticSizer = new wxStaticBoxSizer( drawStaticBox, wxVERTICAL );
+
+    drawStaticSizer->Add( drawPane, 1, wxALL | wxEXPAND, group_item_spacing );
+
+//    dispSizer->Add( marinersSizer, 1, wxALL | wxEXPAND, border_size );
+//    vectorPanel->Add( drawStaticSizer, 1, wxALL | wxEXPAND, border_size );
+//    optionsColumn->Add( drawStaticSizer, 0, wxALL | wxEXPAND, 2  );
+    picturePanel->Add( drawStaticSizer, 0, wxALL | wxEXPAND, 2  );
+
+    // spacer
+//    optionsColumn->Add( 0, border_size*4 );
+    optionsColumn->Add( 0, border_size*4 );
+    optionsColumn->Add( 0, border_size*4 );
 
     wxBoxSizer* btnRow = new wxBoxSizer( wxHORIZONTAL );
     itemButtonSelectList = new wxButton( pPanel, ID_1SELECTLIST, _("Print label") );
@@ -183,6 +194,9 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
 //    itemButtonClearList = new wxButton( pPanel, ID_1CLEARLIST, _("Run Progress") );
 //    btnRow->Add( itemButtonClearList, 1, wxALL | wxEXPAND, group_item_spacing );
     optionsColumn->Add( btnRow );
+
+
+
 
 
     itemButtonSelectList->Connect( wxEVT_COMMAND_BUTTON_CLICKED,  wxCommandEventHandler(MyFrame1::OnBtnSelectClick), NULL, this );

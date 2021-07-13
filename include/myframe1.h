@@ -35,6 +35,7 @@ public:
       wxSize        m_small_button_size;
       wxNotebook    *m_pNotebook;
       wxBoxSizer    *vectorPanel;
+      wxBoxSizer    *picturePanel;
       wxScrolledWindow    *ps57Ctl1;
 //      wxWindow    *ps57Ctl1;
       wxSizerFlags inputFlags;

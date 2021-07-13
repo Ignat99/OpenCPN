@@ -6,8 +6,8 @@ ImagePanel::ImagePanel(wxWindow *parent, wxString path, wxBitmapType format) : w
   img.LoadFile(path, format);
 
   // get the image size
-  width = img.GetWidth();
-  height = img.GetHeight();
+//  width = img.GetWidth();
+//  height = img.GetHeight();
 
   width = 100;
   height = 100;
@@ -35,16 +35,18 @@ void ImagePanel::paintNow()
 void ImagePanel::render(wxDC& dc)
 {
   int neww, newh;
-  dc.GetSize( &neww, &newh );
+//  dc.GetSize( &neww, &newh );
+  neww = 100;
+  newh = 100;
 
   if( neww != width || newh != height )
   {
     bitmap = wxBitmap( img.Scale( neww, newh) );
     width = neww;
     height = newh;
-    dc.DrawBitmap(bitmap, 0, 0, false);
+    dc.DrawBitmap(bitmap, 0, 0, true);
   } else {
-    dc.DrawBitmap(bitmap, 0, 0, false);
+    dc.DrawBitmap(bitmap, 0, 0, true);
   }
 }
 
