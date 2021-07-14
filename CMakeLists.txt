@@ -599,7 +599,6 @@ SET(HDRS
                 include/myframe1.h
 		include/qrcodegen.h
 		include/ImagePanel.hpp
-		include/bmp_output.hpp
 )
 
 SET(SRCS

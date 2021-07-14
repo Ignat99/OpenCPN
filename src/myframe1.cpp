@@ -341,39 +341,22 @@ void MyFrame1::saveBitmap(const char *name, const uint8_t qrcode[])
         uint8_t bufferBmp[] = {'B', 'M'};
 // Planes 1, BitsPerPixel 24 -> 24 << 16 + 1 = 1572865
 //        uint16_t bufferPlanes[] = {1, 24};
+
+// bfSize = sizeof(BITMAPFILEHEADER) + sizeof(BITMAPINFOHEADER) + size
+// Two reserved variables, set to 0
+// bfOffBits = sizeof(BITMAPFILEHEADER) + sizeof(BITMAPINFOHEADER)
+// Message header size
+// Image high
+// Image width
+// Target device level, must be 1 - Planes, BitPerPixels
+// The amount of compression
+// Image data size
+// biXPelsPerMeter = 1
+// biYPelsPerMeter = 1
+// ColorsUsed
+// ColorsImportant
         uint32_t bufferFileHeader[] = {19254, 0, 54, 40, 80, 80, 1572865, 0, 19200, 1, 1, 0, 0};
 //        uint32_t bufferBitmapHeader[] = {0, 19200, 0, 1, 1, 0, 0};
-
-//        BITMAPFILEHEADER fileHeader;  // Create a bmp data
-//
-//        fileHeader.bfType = 0x4D42; // bmp file logo
-//        fileHeader.bfReserved1 = 0;  //Two reserved variables, set to 0
-//        fileHeader.bfReserved2 = 0;  //
-//  // Image size: file header + information header + palette (not used here) + image data
-////        fileHeader.bfSize = sizeof(BITMAPFILEHEADER) + sizeof(BITMAPINFOHEADER) + size;
-////        fileHeader.bfSize = 14 + 40 + size;
-//        fileHeader.bfSize = (uint32_t) 19254;
-//  // The size of the interval from the beginning of the file to the storage location
-//  // of the image data: file header + information header + palette (not used here)
-////        fileHeader.bfOffBits = sizeof(BITMAPFILEHEADER) + sizeof(BITMAPINFOHEADER);
-////        fileHeader.bfOffBits = 14 + 40;
-//        fileHeader.bfOffBits = (uint32_t) 54;
-
-//        // Initialize data, set to 0.
-//        BITMAPINFOHEADER bitmapHeader = { 0 };
-//
-////        bitmapHeader.biSize = sizeof(BITMAPINFOHEADER); // Message header size
-//        bitmapHeader.biSize = (uint32_t) 40; // Message header size
-////        bitmapHeader.biHeight = height;  // Image high
-//        bitmapHeader.biHeight = (uint32_t) 80;  // Image high
-////        bitmapHeader.biWidth = width;  // Image width
-//        bitmapHeader.biWidth = (uint32_t) 80;  // Image width
-//        bitmapHeader.biPlanes = 1;  // Target device level, must be 1
-//        bitmapHeader.biBitCount = 24; //
-//        bitmapHeader.biSizeImage = (uint32_t) 19200;// Image data size
-//        bitmapHeader.biCompression = 0; // The amount of compression
-//        bitmapHeader.biXPelsPerMeter = 1;
-//        bitmapHeader.biYPelsPerMeter = 1;
 
         uint8_t *bits = (uint8_t *)malloc(size);  // Open up memory to store image data
 
