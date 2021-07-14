@@ -56,6 +56,8 @@ public:
       void GetProjects(wxListCtrl *ps57CtlListBoxStrings);
       void GetComponents(wxListCtrl *ps57CtlListBoxStrings);
       std::string toSvgString(const uint8_t qrcode[], int border) const;
+      void saveBitmap(const char *name, const uint8_t qrcode[]);
+
 private:
 //    wxImage img;
 //    wxBitmap bitmap;

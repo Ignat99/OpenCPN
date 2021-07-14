@@ -9,7 +9,7 @@
 #include <stdint.h>
 #include "qrcodegen.h"
 #include "ImagePanel.hpp"
-
+#include "bmp_output.hpp"
 
 
 extern PlugInManager    *g_pi_manager;
@@ -173,7 +173,7 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
 
     // create Image panel
     wxBoxSizer* drawSizer = new wxBoxSizer(wxHORIZONTAL);
-    drawPane = new ImagePanel(pPanel, wxT("/home/olimex/plan1.jpg"), wxBITMAP_TYPE_JPEG);
+    drawPane = new ImagePanel(pPanel, wxT("/home/olimex/plan1.bmp"), wxBITMAP_TYPE_BMP);
     drawSizer->Add(drawPane, 1, wxEXPAND);
 
     wxStaticBox* drawStaticBox = new wxStaticBox( pPanel, wxID_ANY, _("Component") );
@@ -264,7 +264,8 @@ MyFrame1::~MyFrame1()
 void MyFrame1::doBasicDemo(const wxString &wx_text)
 {
 	const char *text = wx_text.c_str();
-	enum qrcodegen_Ecc errCorLvl = qrcodegen_Ecc_LOW;
+//	enum qrcodegen_Ecc errCorLvl = qrcodegen_Ecc_LOW;
+	enum qrcodegen_Ecc errCorLvl = qrcodegen_Ecc_MEDIUM;
 
 	uint8_t qrcode[qrcodegen_BUFFER_LEN_MAX];
 	uint8_t tempBuffer[qrcodegen_BUFFER_LEN_MAX];
@@ -272,6 +273,7 @@ void MyFrame1::doBasicDemo(const wxString &wx_text)
 		qrcodegen_VERSION_MIN, qrcodegen_VERSION_MAX, qrcodegen_Mask_AUTO, true);
 	if (ok)
 		printQr(qrcode);
+		saveBitmap("/home/olimex/plan1.bmp", qrcode);
 }
 
 void MyFrame1::printQr(const uint8_t qrcode[]) {
@@ -317,6 +319,108 @@ std::string MyFrame1::toSvgString(const uint8_t qrcode[], int border) const {
         sb << "</svg>\n";
         return sb.str();
 }
+
+/*Used to write QR code data into BMP image and generate BMP format picture*/
+void MyFrame1::saveBitmap(const char *name, const uint8_t qrcode[])
+{
+	int x, y;
+	uint8_t qr_size = qrcodegen_getSize(qrcode);
+	int border = 4;
+        printf("QR size %d\n", qr_size);
+        const uint8_t w = 80; //Picture side length
+        const uint32_t height = w;  // Image high
+        const uint32_t width = w;  // width
+        const int rowSize = wxRound( (width * 3 + 3) / 4 * 4);
+        const int size = height * width * 3; // Total size of image data
+//        double x = 0, y = 0, x1 = 0, y1 = 0;  // Pixel coordinates, the image is scanned from left
+  // to right, from top to bottom, mathematical two-bit coordinate system
+        int index = 0;  // Pixel position
+//        const double side = w / 4;
+        const double side = 20.0;
+        char cur_c;
+        uint8_t bufferBmp[] = {'B', 'M'};
+// Planes 1, BitsPerPixel 24 -> 24 << 16 + 1 = 1572865
+//        uint16_t bufferPlanes[] = {1, 24};
+        uint32_t bufferFileHeader[] = {19254, 0, 54, 40, 80, 80, 1572865, 0, 19200, 1, 1, 0, 0};
+//        uint32_t bufferBitmapHeader[] = {0, 19200, 0, 1, 1, 0, 0};
+
+//        BITMAPFILEHEADER fileHeader;  // Create a bmp data
+//
+//        fileHeader.bfType = 0x4D42; // bmp file logo
+//        fileHeader.bfReserved1 = 0;  //Two reserved variables, set to 0
+//        fileHeader.bfReserved2 = 0;  //
+//  // Image size: file header + information header + palette (not used here) + image data
+////        fileHeader.bfSize = sizeof(BITMAPFILEHEADER) + sizeof(BITMAPINFOHEADER) + size;
+////        fileHeader.bfSize = 14 + 40 + size;
+//        fileHeader.bfSize = (uint32_t) 19254;
+//  // The size of the interval from the beginning of the file to the storage location
+//  // of the image data: file header + information header + palette (not used here)
+////        fileHeader.bfOffBits = sizeof(BITMAPFILEHEADER) + sizeof(BITMAPINFOHEADER);
+////        fileHeader.bfOffBits = 14 + 40;
+//        fileHeader.bfOffBits = (uint32_t) 54;
+
+//        // Initialize data, set to 0.
+//        BITMAPINFOHEADER bitmapHeader = { 0 };
+//
+////        bitmapHeader.biSize = sizeof(BITMAPINFOHEADER); // Message header size
+//        bitmapHeader.biSize = (uint32_t) 40; // Message header size
+////        bitmapHeader.biHeight = height;  // Image high
+//        bitmapHeader.biHeight = (uint32_t) 80;  // Image high
+////        bitmapHeader.biWidth = width;  // Image width
+//        bitmapHeader.biWidth = (uint32_t) 80;  // Image width
+//        bitmapHeader.biPlanes = 1;  // Target device level, must be 1
+//        bitmapHeader.biBitCount = 24; //
+//        bitmapHeader.biSizeImage = (uint32_t) 19200;// Image data size
+//        bitmapHeader.biCompression = 0; // The amount of compression
+//        bitmapHeader.biXPelsPerMeter = 1;
+//        bitmapHeader.biYPelsPerMeter = 1;
+
+        uint8_t *bits = (uint8_t *)malloc(size);  // Open up memory to store image data
+
+        memset(bits, 0xFF, size);  // Change the data in size bytes after the bits pointer to  0xFF
+  // That is, the image data is initialized to white
+        for (x = 0; x <= qr_size; x = x + 1)
+//	for (y = -border; y < qr_size + border; y++)
+        {
+                for (y = 0; y <= qr_size; y += 1)
+//		for (x = -border; x < qr_size + border; x++)
+                {
+
+                        index = (uint8_t)((y + side) * w * 3 + (x + side) * 3);
+                        if (qrcodegen_getModule(qrcode, x, y))
+                        {
+                                bits[index + 0] = 1;
+                                bits[index + 1] = 1;
+                                bits[index + 2] = 1;
+                        }
+                }
+        }
+
+  // Open the file for reading and writing, create it if you don't have it
+        FILE *output = fopen(name, "wb");
+        if (output == NULL)
+        {
+                printf("Cannot open file!\n");
+        }
+        else
+        {
+//                fwrite(&fileHeader, sizeof(BITMAPFILEHEADER), 1, output); // Write file header
+//		cur_c = 'B';
+//                fputc(cur_c, output);
+//		cur_c = 'M';
+//                fputc(cur_c, output);
+                fwrite(bufferBmp, sizeof(uint8_t), sizeof(bufferBmp), output);
+                fwrite(bufferFileHeader, sizeof(uint32_t), sizeof(bufferFileHeader), output);
+//                fwrite(bufferPlanes, sizeof(uint16_t), sizeof(bufferPlanes), output);
+//                fwrite(bufferBitmapHeader, sizeof(uint32_t), sizeof(bufferBitmapHeader), output);
+
+//                fwrite(&bitmapHeader, sizeof(BITMAPINFOHEADER), 1, output);// Write bitmap header
+                fwrite(bits, size, 1, output);// Write image data
+                fclose(output); // Close file
+                printf("%s - QR code generated\n",name);
+        }
+}
+
 
 
 void MyFrame1::OnCoSelected( wxListEvent &event )
