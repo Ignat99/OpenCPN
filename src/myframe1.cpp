@@ -332,11 +332,11 @@ void MyFrame1::saveBitmap(const char *name, const uint8_t qrcode[])
         const int height = w;  // Image high
         const int width = w;  // width
 //        const int rowSize = wxRound( (width * 3 + 3) / 4 * 4);
-//        add come bytes for size by 4 bytes block
+//        add extra bytes for size by 4 bytes block
         const int side = (int) (width % 4);
         printf("Side extra %d\n", side);
-//        const int image_size = height * width * 3 + height * side;
-        const int image_size = height * width * 3;
+        const int image_size = height * width * 3 + height * side;
+//        const int image_size = height * width * 3;
         const int size = 54 + image_size; // Total size of image data
         printf("Picture size %d, Image size %d\n", size, image_size);
         int index = 0;  // Pixel position
@@ -357,29 +357,20 @@ void MyFrame1::saveBitmap(const char *name, const uint8_t qrcode[])
 // biYPelsPerMeter = 3780
 // ColorsUsed - size of color table if BitPerPixels > 16 (In our case BpP=24 and ColUsed = 0)
 // ColorsImportant = 0
-//        uint32_t bufferFileHeader[] = {19254, 0, 54, 40, 80, 80, 1572865, 0, 19200, 1, 1, 0, 0};
-//        uint32_t bufferFileHeader[] = {1510, 0, 54, 40, 21, 21, 1572865, 0, 1428, 3780, 3780, 0, 0};
-        uint32_t bufferFileHeader[] = { (uint32_t) size, 0, 54, 40, (uint32_t) w, (uint32_t) w, 1572865, 0, 0, 3780, 3780, 0, 0};
-//        uint32_t bufferBitmapHeader[] = {40, 80, 80, 1572865, 0, 19200, 0, 1, 1, 0, 0};
+        uint32_t bufferFileHeader[] = { (uint32_t) size, 0, 54, 40, (uint32_t) w, (uint32_t) w,
+             1572865, 0, 0, 3780, 3780, 0, 0};
 
         uint8_t *bits = (uint8_t *)malloc(image_size);  // Open up memory to store image data
-        printf("Size  bits image %d\n", sizeof(&bits));
-
         memset(bits, 0xFF, image_size);  // Change the data in size bytes after the bits pointer to  0xFF
   // That is, the image data is initialized to white
-//        for (x = 0; x <= qr_size; x = x + 1)
         for (x = 0; x < height; x++ )
-//	for (y = -border; y < qr_size + border; y++)
         {
-//                for (y = 0; y <= qr_size; y += 1)
                 for (y = 0; y < width; y++)
-//		for (x = -border; x < qr_size + border; x++)
                 {
 
-//                        index = (uint8_t)((y + side) * w * 3 + (x + side) * 3);
 //                        index = (int)((y + side) * w * 3 + (x + side) * 3);
 //                        index = (int)((y + 1) * w * 3 + (x + 1) * 3);
-                        index = (int) (y * w * 3 + x * 3);
+                        index = (int) (image_size - y * w * 3 - (height - x) * 3);
                         if (qrcodegen_getModule(qrcode, x, y))
                         {
                                 bits[index + 0] = (uint8_t) 1;
