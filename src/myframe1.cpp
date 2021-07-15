@@ -325,18 +325,21 @@ void MyFrame1::saveBitmap(const char *name, const uint8_t qrcode[])
 	int x, y;
 //        double x = 0, y = 0, x1 = 0, y1 = 0;  // Pixel coordinates, the image is scanned from left
 //        to right, from top to bottom, mathematical two-bit coordinate system
-	uint8_t qr_size = qrcodegen_getSize(qrcode);
+	int qr_size = qrcodegen_getSize(qrcode); //Picture side length
 //	int border = 4;
         printf("QR size %d\n", qr_size);
-        const int w = 20; //Picture side length
+        const int w = qr_size-1;
         const int height = w;  // Image high
         const int width = w;  // width
 //        const int rowSize = wxRound( (width * 3 + 3) / 4 * 4);
-//        const int size = height * width * 3; // Total size of image data
-        const int size = 1200 + 100; // Total size of image data
+//        add come bytes for size by 4 bytes block
+        const int side = (int) (width % 4);
+        printf("Side extra %d\n", side);
+//        const int image_size = height * width * 3 + height * side;
+        const int image_size = height * width * 3;
+        const int size = 54 + image_size; // Total size of image data
+        printf("Picture size %d, Image size %d\n", size, image_size);
         int index = 0;  // Pixel position
-        const double side = w % 4;
-        printf("Side extra %lf\n", side);
         char cur_c;
         uint8_t bufferBmp[] = {'B', 'M'};
 
@@ -356,12 +359,13 @@ void MyFrame1::saveBitmap(const char *name, const uint8_t qrcode[])
 // ColorsImportant = 0
 //        uint32_t bufferFileHeader[] = {19254, 0, 54, 40, 80, 80, 1572865, 0, 19200, 1, 1, 0, 0};
 //        uint32_t bufferFileHeader[] = {1510, 0, 54, 40, 21, 21, 1572865, 0, 1428, 3780, 3780, 0, 0};
-        uint32_t bufferFileHeader[] = {1510, 0, 54, 40, 20, 20, 1572865, 0, 0, 3780, 3780, 0, 0};
+        uint32_t bufferFileHeader[] = { (uint32_t) size, 0, 54, 40, (uint32_t) w, (uint32_t) w, 1572865, 0, 0, 3780, 3780, 0, 0};
 //        uint32_t bufferBitmapHeader[] = {40, 80, 80, 1572865, 0, 19200, 0, 1, 1, 0, 0};
 
-        uint8_t *bits = (uint8_t *)malloc(size);  // Open up memory to store image data
+        uint8_t *bits = (uint8_t *)malloc(image_size);  // Open up memory to store image data
+        printf("Size  bits image %d\n", sizeof(&bits));
 
-        memset(bits, 0xFF, size);  // Change the data in size bytes after the bits pointer to  0xFF
+        memset(bits, 0xFF, image_size);  // Change the data in size bytes after the bits pointer to  0xFF
   // That is, the image data is initialized to white
 //        for (x = 0; x <= qr_size; x = x + 1)
         for (x = 0; x < height; x++ )
@@ -373,8 +377,9 @@ void MyFrame1::saveBitmap(const char *name, const uint8_t qrcode[])
                 {
 
 //                        index = (uint8_t)((y + side) * w * 3 + (x + side) * 3);
-                        index = ((y + side) * w * 3 + (x + side) * 3);
-//                        index = int(y * w * 3 + x * 3);
+//                        index = (int)((y + side) * w * 3 + (x + side) * 3);
+//                        index = (int)((y + 1) * w * 3 + (x + 1) * 3);
+                        index = (int) (y * w * 3 + x * 3);
                         if (qrcodegen_getModule(qrcode, x, y))
                         {
                                 bits[index + 0] = (uint8_t) 1;
@@ -393,9 +398,11 @@ void MyFrame1::saveBitmap(const char *name, const uint8_t qrcode[])
         else
         {
                 fwrite(bufferBmp, sizeof(uint8_t), sizeof(bufferBmp), output);
+        printf("Size bufferFileHeader  %d\n", sizeof(bufferFileHeader));
                 fwrite(bufferFileHeader, sizeof(uint32_t), sizeof(bufferFileHeader), output);
 //                fwrite(bufferBitmapHeader, sizeof(uint32_t), sizeof(bufferBitmapHeader), output);
-                fwrite(bits, size, 1, output);// Write image data
+//                fwrite(bits, sizeof(uint8_t), sizeof(bits), output);// Write image data
+                fwrite(bits, image_size, 1, output);// Write image data
                 fclose(output); // Close file
                 printf("%s - QR code generated\n",name);
         }
