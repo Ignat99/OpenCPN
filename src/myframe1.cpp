@@ -398,10 +398,8 @@ void MyFrame1::saveBitmap(const char *name, const uint8_t qrcode[])
         else
         {
                 fwrite(bufferBmp, sizeof(uint8_t), sizeof(bufferBmp), output);
-        printf("Size bufferFileHeader  %d\n", sizeof(bufferFileHeader));
-                fwrite(bufferFileHeader, sizeof(uint32_t), sizeof(bufferFileHeader), output);
-//                fwrite(bufferBitmapHeader, sizeof(uint32_t), sizeof(bufferBitmapHeader), output);
-//                fwrite(bits, sizeof(uint8_t), sizeof(bits), output);// Write image data
+//      13 elements in buffer
+                fwrite(bufferFileHeader, sizeof(uint32_t), 13, output);
                 fwrite(bits, image_size, 1, output);// Write image data
                 fclose(output); // Close file
                 printf("%s - QR code generated\n",name);
