@@ -181,10 +181,9 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
 
     drawStaticSizer->Add( drawPane, 1, wxALL | wxEXPAND, group_item_spacing );
 
-//    dispSizer->Add( marinersSizer, 1, wxALL | wxEXPAND, border_size );
-//    vectorPanel->Add( drawStaticSizer, 1, wxALL | wxEXPAND, border_size );
-//    optionsColumn->Add( drawStaticSizer, 0, wxALL | wxEXPAND, 2  );
-    picturePanel->Add( drawStaticSizer, 1, wxALL | wxEXPAND, 2  );
+//    picturePanel->Add( drawStaticSizer, 1, wxALL | wxEXPAND, 2  ); 
+//    Cube picture of QR code
+    picturePanel->Add( drawStaticSizer, 1, wxALL, 2  );
 
 
     wxBoxSizer* btnRow = new wxBoxSizer( wxHORIZONTAL );
@@ -329,14 +328,15 @@ void MyFrame1::saveBitmap(const char *name, const uint8_t qrcode[])
 	uint8_t qr_size = qrcodegen_getSize(qrcode);
 //	int border = 4;
         printf("QR size %d\n", qr_size);
-        const uint8_t w = 21; //Picture side length
-        const uint32_t height = w;  // Image high
-        const uint32_t width = w;  // width
+        const int w = 20; //Picture side length
+        const int height = w;  // Image high
+        const int width = w;  // width
 //        const int rowSize = wxRound( (width * 3 + 3) / 4 * 4);
 //        const int size = height * width * 3; // Total size of image data
-        const int size = 1323 + 105; // Total size of image data
+        const int size = 1200 + 100; // Total size of image data
         int index = 0;  // Pixel position
         const double side = w % 4;
+        printf("Side extra %lf\n", side);
         char cur_c;
         uint8_t bufferBmp[] = {'B', 'M'};
 
@@ -349,23 +349,26 @@ void MyFrame1::saveBitmap(const char *name, const uint8_t qrcode[])
 // Target device level, must be 1 - Planes 1, BitPerPixels 24 : 24 << 16 + 1 = 1572865
 //        uint16_t bufferPlanes[] = {1, 24};
 // The amount of compression
-// Image data size
-// biXPelsPerMeter = 1
-// biYPelsPerMeter = 1
-// ColorsUsed
-// ColorsImportant
+// Image data size if it not compressed must be 0
+// biXPelsPerMeter = 3780
+// biYPelsPerMeter = 3780
+// ColorsUsed - size of color table if BitPerPixels > 16 (In our case BpP=24 and ColUsed = 0)
+// ColorsImportant = 0
 //        uint32_t bufferFileHeader[] = {19254, 0, 54, 40, 80, 80, 1572865, 0, 19200, 1, 1, 0, 0};
-        uint32_t bufferFileHeader[] = {1510, 0, 54, 40, 21, 21, 1572865, 0, 1428, 1, 1, 0, 0};
+//        uint32_t bufferFileHeader[] = {1510, 0, 54, 40, 21, 21, 1572865, 0, 1428, 3780, 3780, 0, 0};
+        uint32_t bufferFileHeader[] = {1510, 0, 54, 40, 20, 20, 1572865, 0, 0, 3780, 3780, 0, 0};
 //        uint32_t bufferBitmapHeader[] = {40, 80, 80, 1572865, 0, 19200, 0, 1, 1, 0, 0};
 
         uint8_t *bits = (uint8_t *)malloc(size);  // Open up memory to store image data
 
         memset(bits, 0xFF, size);  // Change the data in size bytes after the bits pointer to  0xFF
   // That is, the image data is initialized to white
-        for (x = 0; x <= qr_size; x = x + 1)
+//        for (x = 0; x <= qr_size; x = x + 1)
+        for (x = 0; x < height; x++ )
 //	for (y = -border; y < qr_size + border; y++)
         {
-                for (y = 0; y <= qr_size; y += 1)
+//                for (y = 0; y <= qr_size; y += 1)
+                for (y = 0; y < width; y++)
 //		for (x = -border; x < qr_size + border; x++)
                 {
 
@@ -374,9 +377,9 @@ void MyFrame1::saveBitmap(const char *name, const uint8_t qrcode[])
 //                        index = int(y * w * 3 + x * 3);
                         if (qrcodegen_getModule(qrcode, x, y))
                         {
-                                bits[index + 0] = 1;
-                                bits[index + 1] = 1;
-                                bits[index + 2] = 1;
+                                bits[index + 0] = (uint8_t) 1;
+                                bits[index + 1] = (uint8_t) 1;
+                                bits[index + 2] = (uint8_t) 1;
                         }
                 }
         }
