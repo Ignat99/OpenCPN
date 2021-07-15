@@ -3,6 +3,8 @@
 
 ImagePanel::ImagePanel(wxWindow *parent, wxString path, wxBitmapType format) : wxPanel(parent), img(path), bitmap(img)
 {
+  cur_path = path;
+  cur_format = format;
   img.LoadFile(path, format);
 
   // get the image size
@@ -46,6 +48,8 @@ void ImagePanel::render(wxDC& dc)
     height = newh;
     dc.DrawBitmap(bitmap, 0, 0, true);
   } else {
+    img.LoadFile(cur_path, cur_format);
+    bitmap = wxBitmap( img.Scale( neww, newh) );
     dc.DrawBitmap(bitmap, 0, 0, true);
   }
 }

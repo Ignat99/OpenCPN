@@ -323,23 +323,18 @@ std::string MyFrame1::toSvgString(const uint8_t qrcode[], int border) const {
 void MyFrame1::saveBitmap(const char *name, const uint8_t qrcode[])
 {
 	int x, y;
-//        double x = 0, y = 0, x1 = 0, y1 = 0;  // Pixel coordinates, the image is scanned from left
-//        to right, from top to bottom, mathematical two-bit coordinate system
 	int qr_size = qrcodegen_getSize(qrcode); //Picture side length
+//        add extra bytes for size by 4 bytes block
         const int side = (int) (qr_size % 4);
-        printf("Side extra %d\n", side);
 	int const top_border = 0; // Must be divide by 4 without remainder
 	int const border = (4 - side);
-        printf("QR size %d\n", qr_size);
         const int w = qr_size + border;
         const int height = w + top_border;  // Image high
         const int width = w + top_border;  // width
-//        add extra bytes for size by 4 bytes block
         const int image_size = height * width * 3;
 //        look to bfOffBits
-//        const int image_size = height * width * 3 + (height + width + top_border) * top_border; 
+//        const int image_size = height * width * 3 + (height + width + top_border) * top_border;
         const int size = 54 + image_size; // Total size of image data
-        printf("Picture size %d, Image size %d\n", size, image_size);
         int index = 0;  // Pixel position
         char cur_c;
         uint8_t bufferBmp[] = {'B', 'M'};
@@ -368,7 +363,6 @@ void MyFrame1::saveBitmap(const char *name, const uint8_t qrcode[])
         {
                 for (y = 0; y < width; y++)
                 {
-
 //                        index = (int)((y + side) * w * 3 + (x + side) * 3);
                         index = (int) (image_size - y * (width) * 3 - (height - x) * 3);
                         if (qrcodegen_getModule(qrcode, x, y))
@@ -388,12 +382,12 @@ void MyFrame1::saveBitmap(const char *name, const uint8_t qrcode[])
         }
         else
         {
+//      Write two letters BM
                 fwrite(bufferBmp, sizeof(uint8_t), sizeof(bufferBmp), output);
 //      13 elements in buffer
                 fwrite(bufferFileHeader, sizeof(uint32_t), 13, output);
                 fwrite(bits, image_size, 1, output);// Write image data
                 fclose(output); // Close file
-                printf("%s - QR code generated\n",name);
         }
 }
 
@@ -511,6 +505,7 @@ void MyFrame1::OnCoSelected( wxListEvent &event )
         g_pi_manager->SendJSONMessageToAllPlugins(msg_id, v);
 
 
+  drawPane->paintNow();
 
 }
 

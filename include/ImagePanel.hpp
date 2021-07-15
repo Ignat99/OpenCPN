@@ -16,6 +16,8 @@ class ImagePanel : public wxPanel
   private:
     wxImage img;
     wxBitmap bitmap;
+    wxBitmapType cur_format;
+    wxString cur_path;
     int width;
     int height;
 
