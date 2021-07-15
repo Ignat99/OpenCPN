@@ -328,15 +328,15 @@ void MyFrame1::saveBitmap(const char *name, const uint8_t qrcode[])
 	int qr_size = qrcodegen_getSize(qrcode); //Picture side length
 //	int border = 4;
         printf("QR size %d\n", qr_size);
-        const int w = qr_size-1;
+        const int w = qr_size+3;
         const int height = w;  // Image high
         const int width = w;  // width
 //        const int rowSize = wxRound( (width * 3 + 3) / 4 * 4);
 //        add extra bytes for size by 4 bytes block
         const int side = (int) (width % 4);
         printf("Side extra %d\n", side);
-        const int image_size = height * width * 3 + height * side;
-//        const int image_size = height * width * 3;
+//        const int image_size = height * width * 3 + height * (4 - side);
+        const int image_size = height * width * 3;
         const int size = 54 + image_size; // Total size of image data
         printf("Picture size %d, Image size %d\n", size, image_size);
         int index = 0;  // Pixel position
@@ -370,6 +370,7 @@ void MyFrame1::saveBitmap(const char *name, const uint8_t qrcode[])
 
 //                        index = (int)((y + side) * w * 3 + (x + side) * 3);
 //                        index = (int)((y + 1) * w * 3 + (x + 1) * 3);
+//                        index = (int) (image_size - (y+3) * w * 3 - (height - x - 4 + 1) * 3);
                         index = (int) (image_size - y * w * 3 - (height - x) * 3);
                         if (qrcodegen_getModule(qrcode, x, y))
                         {
