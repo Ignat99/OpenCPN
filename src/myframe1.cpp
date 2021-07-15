@@ -326,17 +326,18 @@ void MyFrame1::saveBitmap(const char *name, const uint8_t qrcode[])
 //        double x = 0, y = 0, x1 = 0, y1 = 0;  // Pixel coordinates, the image is scanned from left
 //        to right, from top to bottom, mathematical two-bit coordinate system
 	int qr_size = qrcodegen_getSize(qrcode); //Picture side length
-//	int border = 4;
-        printf("QR size %d\n", qr_size);
-        const int w = qr_size+3;
-        const int height = w;  // Image high
-        const int width = w;  // width
-//        const int rowSize = wxRound( (width * 3 + 3) / 4 * 4);
-//        add extra bytes for size by 4 bytes block
-        const int side = (int) (width % 4);
+        const int side = (int) (qr_size % 4);
         printf("Side extra %d\n", side);
-//        const int image_size = height * width * 3 + height * (4 - side);
+	int const top_border = 0; // Must be divide by 4 without remainder
+	int const border = (4 - side);
+        printf("QR size %d\n", qr_size);
+        const int w = qr_size + border;
+        const int height = w + top_border;  // Image high
+        const int width = w + top_border;  // width
+//        add extra bytes for size by 4 bytes block
         const int image_size = height * width * 3;
+//        look to bfOffBits
+//        const int image_size = height * width * 3 + (height + width + top_border) * top_border; 
         const int size = 54 + image_size; // Total size of image data
         printf("Picture size %d, Image size %d\n", size, image_size);
         int index = 0;  // Pixel position
@@ -345,7 +346,7 @@ void MyFrame1::saveBitmap(const char *name, const uint8_t qrcode[])
 
 // bfSize = sizeof(BITMAPFILEHEADER) + sizeof(BITMAPINFOHEADER) + size
 // Two reserved variables, set to 0
-// bfOffBits = sizeof(BITMAPFILEHEADER) + sizeof(BITMAPINFOHEADER)
+// bfOffBits = sizeof(BITMAPFILEHEADER) + sizeof(BITMAPINFOHEADER) = 14 + 40 = 54
 // Message header size
 // Image high
 // Image width
@@ -369,9 +370,7 @@ void MyFrame1::saveBitmap(const char *name, const uint8_t qrcode[])
                 {
 
 //                        index = (int)((y + side) * w * 3 + (x + side) * 3);
-//                        index = (int)((y + 1) * w * 3 + (x + 1) * 3);
-//                        index = (int) (image_size - (y+3) * w * 3 - (height - x - 4 + 1) * 3);
-                        index = (int) (image_size - y * w * 3 - (height - x) * 3);
+                        index = (int) (image_size - y * (width) * 3 - (height - x) * 3);
                         if (qrcodegen_getModule(qrcode, x, y))
                         {
                                 bits[index + 0] = (uint8_t) 1;
