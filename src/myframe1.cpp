@@ -324,23 +324,21 @@ std::string MyFrame1::toSvgString(const uint8_t qrcode[], int border) const {
 void MyFrame1::saveBitmap(const char *name, const uint8_t qrcode[])
 {
 	int x, y;
+//        double x = 0, y = 0, x1 = 0, y1 = 0;  // Pixel coordinates, the image is scanned from left
+//        to right, from top to bottom, mathematical two-bit coordinate system
 	uint8_t qr_size = qrcodegen_getSize(qrcode);
-	int border = 4;
+//	int border = 4;
         printf("QR size %d\n", qr_size);
-        const uint8_t w = 80; //Picture side length
+        const uint8_t w = 21; //Picture side length
         const uint32_t height = w;  // Image high
         const uint32_t width = w;  // width
-        const int rowSize = wxRound( (width * 3 + 3) / 4 * 4);
-        const int size = height * width * 3; // Total size of image data
-//        double x = 0, y = 0, x1 = 0, y1 = 0;  // Pixel coordinates, the image is scanned from left
-  // to right, from top to bottom, mathematical two-bit coordinate system
+//        const int rowSize = wxRound( (width * 3 + 3) / 4 * 4);
+//        const int size = height * width * 3; // Total size of image data
+        const int size = 1323 + 105; // Total size of image data
         int index = 0;  // Pixel position
-//        const double side = w / 4;
-        const double side = 20.0;
+        const double side = w % 4;
         char cur_c;
         uint8_t bufferBmp[] = {'B', 'M'};
-// Planes 1, BitsPerPixel 24 -> 24 << 16 + 1 = 1572865
-//        uint16_t bufferPlanes[] = {1, 24};
 
 // bfSize = sizeof(BITMAPFILEHEADER) + sizeof(BITMAPINFOHEADER) + size
 // Two reserved variables, set to 0
@@ -348,15 +346,17 @@ void MyFrame1::saveBitmap(const char *name, const uint8_t qrcode[])
 // Message header size
 // Image high
 // Image width
-// Target device level, must be 1 - Planes, BitPerPixels
+// Target device level, must be 1 - Planes 1, BitPerPixels 24 : 24 << 16 + 1 = 1572865
+//        uint16_t bufferPlanes[] = {1, 24};
 // The amount of compression
 // Image data size
 // biXPelsPerMeter = 1
 // biYPelsPerMeter = 1
 // ColorsUsed
 // ColorsImportant
-        uint32_t bufferFileHeader[] = {19254, 0, 54, 40, 80, 80, 1572865, 0, 19200, 1, 1, 0, 0};
-//        uint32_t bufferBitmapHeader[] = {0, 19200, 0, 1, 1, 0, 0};
+//        uint32_t bufferFileHeader[] = {19254, 0, 54, 40, 80, 80, 1572865, 0, 19200, 1, 1, 0, 0};
+        uint32_t bufferFileHeader[] = {1510, 0, 54, 40, 21, 21, 1572865, 0, 1428, 1, 1, 0, 0};
+//        uint32_t bufferBitmapHeader[] = {40, 80, 80, 1572865, 0, 19200, 0, 1, 1, 0, 0};
 
         uint8_t *bits = (uint8_t *)malloc(size);  // Open up memory to store image data
 
@@ -369,7 +369,9 @@ void MyFrame1::saveBitmap(const char *name, const uint8_t qrcode[])
 //		for (x = -border; x < qr_size + border; x++)
                 {
 
-                        index = (uint8_t)((y + side) * w * 3 + (x + side) * 3);
+//                        index = (uint8_t)((y + side) * w * 3 + (x + side) * 3);
+                        index = ((y + side) * w * 3 + (x + side) * 3);
+//                        index = int(y * w * 3 + x * 3);
                         if (qrcodegen_getModule(qrcode, x, y))
                         {
                                 bits[index + 0] = 1;
@@ -379,7 +381,7 @@ void MyFrame1::saveBitmap(const char *name, const uint8_t qrcode[])
                 }
         }
 
-  // Open the file for reading and writing, create it if you don't have it
+   // Open the file for reading and writing, create it if you don't have it
         FILE *output = fopen(name, "wb");
         if (output == NULL)
         {
@@ -387,17 +389,9 @@ void MyFrame1::saveBitmap(const char *name, const uint8_t qrcode[])
         }
         else
         {
-//                fwrite(&fileHeader, sizeof(BITMAPFILEHEADER), 1, output); // Write file header
-//		cur_c = 'B';
-//                fputc(cur_c, output);
-//		cur_c = 'M';
-//                fputc(cur_c, output);
                 fwrite(bufferBmp, sizeof(uint8_t), sizeof(bufferBmp), output);
                 fwrite(bufferFileHeader, sizeof(uint32_t), sizeof(bufferFileHeader), output);
-//                fwrite(bufferPlanes, sizeof(uint16_t), sizeof(bufferPlanes), output);
 //                fwrite(bufferBitmapHeader, sizeof(uint32_t), sizeof(bufferBitmapHeader), output);
-
-//                fwrite(&bitmapHeader, sizeof(BITMAPINFOHEADER), 1, output);// Write bitmap header
                 fwrite(bits, size, 1, output);// Write image data
                 fclose(output); // Close file
                 printf("%s - QR code generated\n",name);
