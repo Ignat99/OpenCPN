@@ -45,16 +45,17 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
     int group_item_spacing = 2;
     int font_size_y, font_descent, font_lead;
     dc->GetTextExtent( _T("0"), NULL, &font_size_y, &font_descent, &font_lead );
-    m_small_button_size = wxSize( -1, (int) ( 1.4 * (font_size_y + font_descent + font_lead) ) );
+//    m_small_button_size = wxSize( -1, (int) ( 1.4 * (font_size_y + font_descent + font_lead) ) );
+    m_small_button_size = wxSize( -1, (int) ( 4.0 * (font_size_y + font_descent + font_lead) ) );
 
-        wxScrolledWindow* ps57Ctl1 = new wxScrolledWindow(this, wxID_ANY, wxDefaultPosition, wxSize(900, 600), wxHSCROLL | wxVSCROLL | wxTAB_TRAVERSAL);
+        wxScrolledWindow* ps57Ctl1 = new wxScrolledWindow(this, wxID_ANY, wxDefaultPosition, wxSize(1495, 990), wxHSCROLL | wxVSCROLL | wxTAB_TRAVERSAL);
 
         vectorPanel = new wxBoxSizer(wxHORIZONTAL);
 
 
-        m_pNotebook = new wxNotebook (ps57Ctl1, wxID_ANY, wxDefaultPosition, wxSize(895, 580), wxNB_TOP);
+        m_pNotebook = new wxNotebook (ps57Ctl1, wxID_ANY, wxDefaultPosition, wxSize(1490, 980), wxNB_TOP);
 
-        wxPanel *pPanel = new wxPanel( m_pNotebook, wxID_ANY, wxDefaultPosition, wxSize(890, 550), wxNO_BORDER | wxTAB_TRAVERSAL, _("Bascula") );
+        wxPanel *pPanel = new wxPanel( m_pNotebook, wxID_ANY, wxDefaultPosition, wxSize(1480, 950), wxNO_BORDER | wxTAB_TRAVERSAL, _("Bascula") );
 
         m_pNotebook->AddPage(pPanel, _("Display") );
 
@@ -80,7 +81,9 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
     // dislay category
     optionsColumn->Add( new wxStaticText(pPanel, wxID_ANY, _("Data creation")), labelFlags );
     wxString pDispCatStrings[] = { _("1"), _("2"), _("3"), _("4"), _("5"), _("6"), _("7"), _("10"), _("12"), _("14"), _("21"), _("31"), _("62") };
-    pDispCat = new wxChoice( pPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, 13, pDispCatStrings );
+//    pDispCat = new wxChoice( pPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, 13, pDispCatStrings );
+    pDispCat = new wxChoice( pPanel, wxID_ANY, wxDefaultPosition, wxSize(120, 60), 13, pDispCatStrings );
+    pDispCat->SetSelection(0);
     optionsColumn->Add( pDispCat, 0, wxALL, 2 );
 
     pDispCat->Connect( wxEVT_COMMAND_CHOICE_SELECTED,  wxCommandEventHandler(MyFrame1::OnPrChoice), NULL, this );
@@ -212,7 +215,7 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
 
 // Products
 
-    ps57CtlListCtrl = new wxListCtrl( pPanel, ID_1CHECKLISTBOX, wxDefaultPosition, wxSize( 600, 250 ),
+    ps57CtlListCtrl = new wxListCtrl( pPanel, ID_1CHECKLISTBOX, wxDefaultPosition, wxSize( 1000, 250 ),
            wxLC_REPORT | wxLC_SORT_ASCENDING | wxLC_HRULES | wxBORDER_SUNKEN  | wxLC_VRULES );
 
     ps57CtlListCtrl->Connect( wxEVT_COMMAND_LIST_ITEM_SELECTED,  wxListEventHandler(MyFrame1::OnPrSelected), NULL, this );
@@ -235,7 +238,7 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
 // Components
 
     ps57ListCtrl1 = new wxListCtrl( pPanel, ID_1RADARDISTUNIT, wxDefaultPosition,
-                                        wxSize( 600, 150 ), wxLC_REPORT );
+                                        wxSize( 1000, 300 ), wxLC_REPORT );
 
     ps57ListCtrl1->Connect( wxEVT_COMMAND_LIST_ITEM_SELECTED,  wxListEventHandler(MyFrame1::OnCoSelected), NULL, this );
 
@@ -459,11 +462,11 @@ void MyFrame1::OnCoSelected( wxListEvent &event )
 
   try {
     mysqlcppapi::Connection con;
-    con.set_Host("localhost");
-    con.set_User("root");
-    con.set_Password("Android123");
+    con.set_Host("192.168.1.3");
+    con.set_User("djan_claroflex");
+    con.set_Password("7njc4m4mYwmPI4LG");
     con.connect();
-    con.select_database("drf_android");
+    con.select_database("claroflex_v0.2");
     
     mysqlcppapi::Query query = con.create_Query();
 
@@ -674,11 +677,17 @@ void MyFrame1::GetComponents(wxListCtrl *ps57CtlListCtrl1) {
 
   try {
     mysqlcppapi::Connection con;
-    con.set_Host("localhost");
-    con.set_User("root");
-    con.set_Password("Android123");
+//    con.set_Host("localhost");
+//    con.set_User("root");
+//    con.set_Password("Android123");
+//    con.connect();
+//    con.select_database("drf_android");
+    con.set_Host("192.168.1.3");
+    con.set_User("djan_claroflex");
+    con.set_Password("7njc4m4mYwmPI4LG");
     con.connect();
-    con.select_database("drf_android");
+    con.select_database("claroflex_v0.2");
+
     
     mysqlcppapi::Query query = con.create_Query();
     // This creates a query object that is bound to con.
@@ -701,13 +710,13 @@ void MyFrame1::GetComponents(wxListCtrl *ps57CtlListCtrl1) {
     // Query::store() executes the query and returns the results
 
     ps57CtlListCtrl1->InsertColumn(0, _("ID"));
-    ps57CtlListCtrl1->InsertColumn(1, _("Name"));
-    ps57CtlListCtrl1->InsertColumn(2, _("Category"));
+    ps57CtlListCtrl1->InsertColumn(1, _("Name"), wxLIST_FORMAT_LEFT, 250);
+    ps57CtlListCtrl1->InsertColumn(2, _("Category"), wxLIST_FORMAT_LEFT, 100);
     ps57CtlListCtrl1->InsertColumn(3, _("Code"));
 //    ps57CtlListCtrl1->InsertColumn(4, _("Composition"));
 //    ps57CtlListCtrl1->InsertColumn(5, _("Description"));
 //    ps57CtlListCtrl1->InsertColumn(6, _("Image"));
-    ps57CtlListCtrl1->InsertColumn(4, _("Measure unit"));
+    ps57CtlListCtrl1->InsertColumn(4, _("Measure unit"), wxLIST_FORMAT_LEFT, 150);
     ps57CtlListCtrl1->InsertColumn(5, _("Position"));
 //    ps57CtlListCtrl1->InsertColumn(9, _("Price"));
 //    ps57CtlListCtrl1->InsertColumn(10, _("Price insystem"));
@@ -769,11 +778,17 @@ void MyFrame1::GetProjects(wxListCtrl  *ps57CtlListCtrl) {
 
   try {
     mysqlcppapi::Connection con;
-    con.set_Host("localhost");
-    con.set_User("root");
-    con.set_Password("Android123");
+//    con.set_Host("localhost");
+//    con.set_User("root");
+//    con.set_Password("Android123");
+//    con.connect();
+//    con.select_database("drf_android");
+
+    con.set_Host("192.168.1.3");
+    con.set_User("djan_claroflex");
+    con.set_Password("7njc4m4mYwmPI4LG");
     con.connect();
-    con.select_database("drf_android");
+    con.select_database("claroflex_v0.2");
 
 
     mysqlcppapi::Query query = con.create_Query();
@@ -791,8 +806,8 @@ void MyFrame1::GetProjects(wxListCtrl  *ps57CtlListCtrl) {
     // Query::store() executes the query and returns the results
 
     ps57CtlListCtrl->InsertColumn(0, _("ID"));
-    ps57CtlListCtrl->InsertColumn(1, _("Name"));
-    ps57CtlListCtrl->InsertColumn(2, _("Date creation"));
+    ps57CtlListCtrl->InsertColumn(1, _("Name"), wxLIST_FORMAT_LEFT, 250);
+    ps57CtlListCtrl->InsertColumn(2, _("Date creation"), wxLIST_FORMAT_LEFT, 150);
     ps57CtlListCtrl->InsertColumn(3, _("Product"));
     ps57CtlListCtrl->InsertColumn(4, _("Client ID"));
     ps57CtlListCtrl->InsertColumn(5, _("Creator ID"));
