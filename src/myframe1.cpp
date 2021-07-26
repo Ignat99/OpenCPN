@@ -26,6 +26,10 @@ wxEND_EVENT_TABLE()
 //    EVT_MAXIMIZE(MyFrame1::OnMaximize)
 //    EVT_ERASE_BACKGROUND(MyFrame1::OnEraseBackground)
 
+// Global print data, to remember settings during the session
+extern wxPrintData*    g_printData;
+// Global page setup data
+extern wxPageSetupData*    g_pageSetupData;
 
 MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
      const wxSize& size, long style ) :
@@ -200,7 +204,7 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
 
 
 
-    itemButtonSelectList->Connect( wxEVT_COMMAND_BUTTON_CLICKED,  wxCommandEventHandler(MyFrame1::OnBtnSelectClick), NULL, this );
+    itemButtonSelectList->Connect( wxEVT_COMMAND_BUTTON_CLICKED,  wxCommandEventHandler(MyFrame1::DoLabel), NULL, this );
 //    itemButtonClearList->Connect( wxEVT_COMMAND_BUTTON_CLICKED,  wxCommandEventHandler(MyFrame1::OnBtnClearClick), NULL, this );
 
 
@@ -262,6 +266,27 @@ MyFrame1::~MyFrame1()
 {
 }
 
+void MyFrame1::DoLabel( wxCommandEvent& event )
+{
+    event.Skip();
+    if( NULL == g_printData ) {
+        g_printData = new wxPrintData;
+        g_printData->SetOrientation( wxLANDSCAPE );
+        g_pageSetupData = new wxPageSetupDialogData;
+    }
+
+    wxPrintDialogData printDialogData( *g_printData );
+    printDialogData.EnablePageNumbers( false );
+
+    wxPrinter printer( &printDialogData );
+
+    MyPrintout printout( _("Label Print") );
+
+    if( !printer.Print( this, &printout, true ) ) {
+    } else {
+        ( *g_printData ) = printer.GetPrintDialogData().GetPrintData();
+    }
+}
 
 void MyFrame1::doBasicDemo(const wxString &wx_text)
 {
@@ -855,6 +880,7 @@ void MyFrame1::OnButton1(wxCommandEvent& event)
 
 }
 
+/*
 void MyFrame1::OnBtnSelectClick(wxCommandEvent& event)
 {
    event.Skip();
@@ -862,6 +888,7 @@ void MyFrame1::OnBtnSelectClick(wxCommandEvent& event)
 // pTrackPrintSelection->ShowModal();
 // delete pTrackPrintSelection;
 }
+*/
 
 void MyFrame1::OnBtnClearClick(wxCommandEvent& event)
 {

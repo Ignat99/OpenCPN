@@ -64,7 +64,7 @@ private:
 //    int width;
 //    int height;
     void OnButton1(wxCommandEvent& event);
-    void OnBtnSelectClick(wxCommandEvent& event);
+//    void OnBtnSelectClick(wxCommandEvent& event);
     void OnBtnClearClick(wxCommandEvent& event);
     void OnSize(wxSizeEvent& event);
     void OnMove(wxMoveEvent& event);
@@ -82,6 +82,7 @@ private:
     void OnDeepCtl( wxCommandEvent &event );
     void doBasicDemo(const wxString &wx_text);
     void printQr(const uint8_t qrcode[]);
+    void DoLabel( wxCommandEvent &event );
 
     DECLARE_EVENT_TABLE()
 };
