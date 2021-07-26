@@ -43,6 +43,16 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
     idCreator = " WHERE a.id = 1";
     idProgress = " Progress 1%";
 
+//    dbHost = "192.168.1.3";
+//    dbUser = "djan_claroflex";
+//    dbPassword = "7njc4m4mYwmPI4LG";
+//    dbName = "claroflex_v0.2";
+
+    dbHost = "localhost";
+    dbUser = "root";
+    dbPassword = "Android123";
+    dbName = "drf_android";
+
     m_whatever = 1;
     m_pageDisplay = -1;
     int border_size = 4;
@@ -490,12 +500,13 @@ void MyFrame1::OnCoSelected( wxListEvent &event )
 
   try {
     mysqlcppapi::Connection con;
-    con.set_Host("192.168.1.3");
-    con.set_User("djan_claroflex");
-    con.set_Password("7njc4m4mYwmPI4LG");
+
+    con.set_Host(dbHost);
+    con.set_User(dbUser);
+    con.set_Password(dbPassword);
     con.connect();
-    con.select_database("claroflex_v0.2");
-    
+    con.select_database(dbName);
+
     mysqlcppapi::Query query = con.create_Query();
 
 //    std::string curSql2("select a.id, a.name, a.category, a.code, a.composition, a.description, a.image, a.measure_unit, a.position, a.price, a.price_insystem, a.product, a.weight, a.is_active, a.is_reportable, a.is_saleable  from components_component a ");
@@ -705,16 +716,13 @@ void MyFrame1::GetComponents(wxListCtrl *ps57CtlListCtrl1) {
 
   try {
     mysqlcppapi::Connection con;
-//    con.set_Host("localhost");
-//    con.set_User("root");
-//    con.set_Password("Android123");
-//    con.connect();
-//    con.select_database("drf_android");
-    con.set_Host("192.168.1.3");
-    con.set_User("djan_claroflex");
-    con.set_Password("7njc4m4mYwmPI4LG");
+
+    con.set_Host(dbHost);
+    con.set_User(dbUser);
+    con.set_Password(dbPassword);
     con.connect();
-    con.select_database("claroflex_v0.2");
+    con.select_database(dbName);
+
 
     
     mysqlcppapi::Query query = con.create_Query();
@@ -806,18 +814,12 @@ void MyFrame1::GetProjects(wxListCtrl  *ps57CtlListCtrl) {
 
   try {
     mysqlcppapi::Connection con;
-//    con.set_Host("localhost");
-//    con.set_User("root");
-//    con.set_Password("Android123");
-//    con.connect();
-//    con.select_database("drf_android");
 
-    con.set_Host("192.168.1.3");
-    con.set_User("djan_claroflex");
-    con.set_Password("7njc4m4mYwmPI4LG");
+    con.set_Host(dbHost);
+    con.set_User(dbUser);
+    con.set_Password(dbPassword);
     con.connect();
-    con.select_database("claroflex_v0.2");
-
+    con.select_database(dbName);
 
     mysqlcppapi::Query query = con.create_Query();
     // This creates a query object that is bound to con.

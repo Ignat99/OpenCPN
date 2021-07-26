@@ -52,6 +52,10 @@ public:
       std::string        idClient;
       std::string      idCreator;
       std::string      idProgress;
+      std::string      dbName;
+      std::string      dbPassword;
+      std::string      dbUser;
+      std::string      dbHost;
 
       void GetProjects(wxListCtrl *ps57CtlListBoxStrings);
       void GetComponents(wxListCtrl *ps57CtlListBoxStrings);
