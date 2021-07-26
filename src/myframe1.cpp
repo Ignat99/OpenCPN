@@ -283,6 +283,9 @@ void MyFrame1::DoLabel( wxCommandEvent& event )
     MyPrintout printout( _("Label Print") );
 
     if( !printer.Print( this, &printout, true ) ) {
+        if( wxPrinter::GetLastError() == wxPRINTER_ERROR ) OCPNMessageBox(NULL,
+            _("There was a problem printing. \nPerhaps your current printer is not set correctly?"),
+            _T("OpenCPN"), wxOK );
     } else {
         ( *g_printData ) = printer.GetPrintDialogData().GetPrintData();
     }
