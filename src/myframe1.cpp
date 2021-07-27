@@ -278,7 +278,6 @@ MyFrame1::~MyFrame1()
 
 void MyFrame1::DoLabel( wxCommandEvent& event )
 {
-    event.Skip();
     if( NULL == g_printData ) {
         g_printData = new wxPrintData;
         g_printData->SetOrientation( wxLANDSCAPE );
@@ -299,6 +298,10 @@ void MyFrame1::DoLabel( wxCommandEvent& event )
     } else {
         ( *g_printData ) = printer.GetPrintDialogData().GetPrintData();
     }
+
+    Hide();
+    event.Skip();
+
 }
 
 void MyFrame1::doBasicDemo(const wxString &wx_text)

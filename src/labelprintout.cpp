@@ -1,7 +1,7 @@
-/***************************************************************************
+/*************************************************************************
  *
  * Project:  OpenCPN
- * Purpose:  OpenCPN Route printout
+ * Purpose:  OpenCPN Label printout
  * Author:   Pavel Saviankou
  *
  ***************************************************************************
@@ -83,7 +83,7 @@ extern wxPrintData*     g_printData;
 extern wxPageSetupData* g_pageSetupData;
 
 MyLabelPrintout::MyLabelPrintout( std::vector<bool> _toPrintOut,
-                                  Route*            label,
+                                  Label*            label,
                                   const wxChar*     title
                                   ) : MyPrintout( title ),
                                       myLabel( label ),
@@ -136,26 +136,30 @@ MyLabelPrintout::MyLabelPrintout( std::vector<bool> _toPrintOut,
     table.StartFillData();
 
     for ( int n = 1; n <= myLabel->GetnPoints(); n++ ) {
-        RoutePoint* point = myLabel->GetPoint( n );
+        LabelPoint* point = myLabel->GetPoint( n );
 
         if ( toPrintOut[ PRINT_WP_NAME ] ) {
             string cell( point->GetName().mb_str() );
             table << cell;
         }
         if ( toPrintOut[ PRINT_WP_POSITION ] ) {
-            wxString point_position = toSDMM( 1, point->m_lat, point->m_bIsInTrack ) + _T( "\n" ) + toSDMM( 2, point->m_lon, point->m_bIsInTrack );
+//            wxString point_position = toSDMM( 1, point->m_lat, point->m_bIsInTrack ) + _T( "\n" ) + toSDMM( 2, point->m_lon, point->m_bIsInTrack );
+            wxString point_position;
+            point_position.Printf( _T("Claroflex"), _T( "\n" ), _T("==============================") );
             string   cell( point_position.mb_str() );
             table << cell;
         }
         if ( toPrintOut[ PRINT_WP_COURSE ] ) {
             wxString point_course;
-            point_course.Printf( _T( "%03.0f Deg" ), point->GetCourse() );
+//            point_course.Printf( _T( "%03.0f Deg" ), point->GetCourse() );
+            point_course.Printf( _T("REFERENCIA"), _T( "%03.0f Deg" ) );
             string   cell( point_course.mb_str() );
             table << cell;
         }
         if ( toPrintOut[ PRINT_WP_DISTANCE ] ) {
             wxString point_distance;
-            point_distance.Printf( _T( "%6.2f" + getUsrDistanceUnit() ), toUsrDistance( point->GetDistance() ) );
+//            point_distance.Printf( _T( "%6.2f" + getUsrDistanceUnit() ), toUsrDistance( point->GetDistance() ) );
+            point_distance.Printf( _T("COMPONENTE"), _T( "%6.2f" + getUsrDistanceUnit() ) );
             string   cell( point_distance.mb_str() );
             table << cell;
         }
@@ -181,8 +185,8 @@ void MyLabelPrintout::OnPreparePrinting()
 {
     pageToPrint = 1;
     wxDC*  dc = GetDC();
-    wxFont routePrintFont( 10, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL );
-    dc->SetFont( routePrintFont );
+    wxFont labelPrintFont( 10, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL );
+    dc->SetFont( labelPrintFont );
 
     // Get the size of the DC in pixels
     int w, h;
@@ -230,8 +234,8 @@ void MyLabelPrintout::DrawPage( wxDC* dc )
 {
 
 
-    wxFont routePrintFont_bold( 10, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD );
-    dc->SetFont( routePrintFont_bold );
+    wxFont labelPrintFont_bold( 10, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD );
+    dc->SetFont( labelPrintFont_bold );
     wxBrush brush( wxColour(255,255,255),  wxTRANSPARENT );
     dc->SetBrush( brush );
 
@@ -273,15 +277,15 @@ void MyLabelPrintout::DrawPage( wxDC* dc )
 }
 
 
-// ---------- RoutePrintSelection dialof implementation
+// ---------- LabelPrintSelection dialof implementation
 
 /*!
- * RoutePrintSelection type definition
+ * LabelPrintSelection type definition
  */
 
 IMPLEMENT_DYNAMIC_CLASS( LabelPrintSelection, wxDialog )
 /*!
- * RouteProp event table definition
+ * LabelProp event table definition
  */
 
 BEGIN_EVENT_TABLE( LabelPrintSelection, wxDialog )
@@ -290,7 +294,7 @@ EVT_BUTTON( ID_LABELPRINT_SELECTION_OK, LabelPrintSelection::OnLabelpropOkClick 
 END_EVENT_TABLE()
 
 /*!
- * RouteProp constructors
+ * LabelProp constructors
  */
 
 LabelPrintSelection::LabelPrintSelection()
@@ -299,7 +303,7 @@ LabelPrintSelection::LabelPrintSelection()
 
 
 LabelPrintSelection::LabelPrintSelection( wxWindow*       parent,
-                                          Route*          _label,
+                                          Label*          _label,
                                           wxWindowID      id,
                                           const wxString& caption,
                                           const wxPoint&  pos,
@@ -333,7 +337,7 @@ bool LabelPrintSelection::Create( wxWindow* parent, wxWindowID id, const wxStrin
     style |= wxSTAY_ON_TOP;
 #endif
 
-    wxDialog::Create( parent, id, _("Print Route Selection"), pos, size, style );
+    wxDialog::Create( parent, id, _("Print Label Selection"), pos, size, style );
 
     CreateControls();
 

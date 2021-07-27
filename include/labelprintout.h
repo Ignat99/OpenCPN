@@ -45,7 +45,7 @@ using namespace std; // FIXME: 'using namespace' must not be used in header file
 class MyLabelPrintout : public MyPrintout {
 public:
     MyLabelPrintout( std::vector<bool> _toPrintOut,
-                     Route*            label,
+                     Label*            label,
                      const wxChar*     title = _T( "My Label printout" ) );
     virtual
     bool
@@ -73,7 +73,7 @@ public:
 protected:
     wxDC*             myDC;
     PrintTable        table;
-    Route*            myLabel;
+    Label*            myLabel;
     std::vector<bool> toPrintOut; // list of fields of bool, if certain element should be print out.
     static const int  pN = 5;     // number of fields sofar
     int               pageToPrint;
@@ -85,11 +85,11 @@ protected:
 };
 
 
-// route elements selection dialog
+// label elements selection dialog
 ///@begin control identifiers
 #define ID_LABELPRINTSELECTION 9000
 #define SYMBOL_LABELPRINT_SELECTION_STYLE wxCAPTION | wxRESIZE_BORDER | wxSYSTEM_MENU | wxCLOSE_BOX
-#define SYMBOL_LABELPRINT_SELECTION_TITLE _( "Print Route Selection" )
+#define SYMBOL_LABELPRINT_SELECTION_TITLE _( "Print Label Selection" )
 #define SYMBOL_LABELPRINT_SELECTION_IDNAME ID_LABELPRINTSELECTION
 #define SYMBOL_LABELPRINT_SELECTION_SIZE wxSize( 750, 300 )
 #define SYMBOL_LABELPRINT_SELECTION_POSITION wxDefaultPosition
@@ -106,7 +106,7 @@ public:
     // Constructors
     LabelPrintSelection();
     LabelPrintSelection( wxWindow*       parent,
-                         Route*          label,
+                         Label*          label,
                          wxWindowID      id = SYMBOL_LABELPRINT_SELECTION_IDNAME,
                          const wxString& caption = SYMBOL_LABELPRINT_SELECTION_TITLE,
                          const wxPoint&  pos = SYMBOL_LABELPRINT_SELECTION_POSITION,
@@ -151,7 +151,7 @@ public:
     wxCheckBox* m_checkBoxWPDistanceToNext;
     wxCheckBox* m_checkBoxWPDescription;
 
-    Route*      label;
+    Label*      label;
 };
 
 #endif

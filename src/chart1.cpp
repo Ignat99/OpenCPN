@@ -196,6 +196,7 @@ Select                    *pSelectTC;
 Select                    *pSelectAIS;
 
 Routeman                  *g_pRouteMan;
+Routeman                  *g_pLabelMan;  //ignat 27.07.2021
 WayPointman               *pWayPointMan;
 MarkInfoImpl              *pMarkPropDialog;
 RouteProp                 *pRoutePropDialog;

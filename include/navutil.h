@@ -46,8 +46,10 @@
 #include "tinyxml.h"
 #include "chartdbs.h"
 #include "RoutePoint.h"
+#include "LabelPoint.h"
 #include "vector2D.h"
 #include "Route.h"
+#include "Label.h"
 #include "SelectItem.h"
 
 enum
