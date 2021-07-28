@@ -10,9 +10,11 @@
 #include "qrcodegen.h"
 #include "ImagePanel.hpp"
 #include "bmp_output.hpp"
+#include "labelprintout.h"
 
 
 extern PlugInManager    *g_pi_manager;
+extern LabelPrintSelection    *pLabelPrintSelection;
 
 #define BUTTON1 11000
 
@@ -214,7 +216,9 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
 
 
 
-    itemButtonSelectList->Connect( wxEVT_COMMAND_BUTTON_CLICKED,  wxCommandEventHandler(MyFrame1::DoLabel), NULL, this );
+//    itemButtonSelectList->Connect( wxEVT_COMMAND_BUTTON_CLICKED,  wxCommandEventHandler(MyFrame1::DoLabel), NULL, this );
+//    itemButtonSelectList->Connect( wxEVT_COMMAND_BUTTON_CLICKED,  wxCommandEventHandler(MyFrame1::OnLabelpropOkClick), NULL, this );
+    itemButtonSelectList->Connect( wxEVT_COMMAND_BUTTON_CLICKED,  wxCommandEventHandler(MyFrame1::OnBtnPrintClick), NULL, this );
 //    itemButtonClearList->Connect( wxEVT_COMMAND_BUTTON_CLICKED,  wxCommandEventHandler(MyFrame1::OnBtnClearClick), NULL, this );
 
 
@@ -888,15 +892,23 @@ void MyFrame1::OnButton1(wxCommandEvent& event)
 
 }
 
-/*
-void MyFrame1::OnBtnSelectClick(wxCommandEvent& event)
+
+void MyFrame1::OnBtnPrintClick(wxCommandEvent& event)
 {
-   event.Skip();
-// RoutePrintSelection *pTrackPrintSelection = new RoutePrintSelection( this, m_pRoute );
-// pTrackPrintSelection->ShowModal();
-// delete pTrackPrintSelection;
+    if (pLabelPrintSelection == NULL)
+        pLabelPrintSelection = new LabelPrintSelection( this, m_pLabel );
+
+//    if( !pLabelPrintSelection->IsShown() ) pLabelPrintSelection->ShowModal();
+//    if( !pLabelPrintSelection->IsShown() ) 
+    pLabelPrintSelection->Show();
+//        delete pLabelPrintSelection;
+
+//    pLabelPrintSelection = NULL;
+
+//    Hide();
+    event.Skip();
 }
-*/
+
 
 void MyFrame1::OnBtnClearClick(wxCommandEvent& event)
 {

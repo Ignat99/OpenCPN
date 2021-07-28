@@ -90,6 +90,7 @@
 #include "OCPN_DataStreamEvent.h"
 #include "multiplexer.h"
 #include "routeprintout.h"
+#include "labelprintout.h"
 #include "Select.h"
 #include "FontMgr.h"
 #include "NMEALogWindow.h"
@@ -621,6 +622,7 @@ wxAuiDefaultDockArt       *g_pauidockart;
 bool                      g_blocale_changed;
 
 RoutePrintSelection       *pRoutePrintSelection;
+LabelPrintSelection       *pLabelPrintSelection;
 
 wxMenu                    *g_FloatingToolbarConfigMenu;
 wxString                  g_toolbarConfig = _T("XXXXXXXXXXXXXXXXXXXXXXXXXXXXX");

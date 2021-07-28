@@ -135,11 +135,14 @@ MyLabelPrintout::MyLabelPrintout( std::vector<bool> _toPrintOut,
 
     table.StartFillData();
 
-    for ( int n = 1; n <= myLabel->GetnPoints(); n++ ) {
-        LabelPoint* point = myLabel->GetPoint( n );
+//    for ( int n = 1; n <= myLabel->GetnPoints(); n++ ) {
+//        LabelPoint* point = myLabel->GetPoint( n );
 
         if ( toPrintOut[ PRINT_WP_NAME ] ) {
-            string cell( point->GetName().mb_str() );
+            wxString point_name;
+            point_name.Printf( _T("COMPONENTE"), _T( "CASQUILLO GUIA SUPERIOR" ) );
+//            string cell( point->GetName().mb_str() );
+            string   cell( point_name.mb_str() );
             table << cell;
         }
         if ( toPrintOut[ PRINT_WP_POSITION ] ) {
@@ -164,11 +167,14 @@ MyLabelPrintout::MyLabelPrintout( std::vector<bool> _toPrintOut,
             table << cell;
         }
         if ( toPrintOut[ PRINT_WP_DESCRIPTION ] ) {
-            string cell( point->GetDescription().mb_str() );
+            wxString point_description;
+            point_description.Printf( _T("PESO"), _T( "gr" ) );
+//            string cell( point->GetDescription().mb_str() );
+            string   cell( point_description.mb_str() );
             table << cell;
         }
         table << "\n";
-    }
+//    }
 }
 
 
@@ -466,6 +472,7 @@ void LabelPrintSelection::OnLabelpropOkClick( wxCommandEvent& event )
     printDialogData.EnablePageNumbers( true );
 
     wxPrinter printer( &printDialogData );
+
     if ( !printer.Print( this, mylabelprintout1, true ) ) {
         if ( wxPrinter::GetLastError() == wxPRINTER_ERROR ) {
             OCPNMessageBox(
@@ -475,6 +482,6 @@ void LabelPrintSelection::OnLabelpropOkClick( wxCommandEvent& event )
         }
     }
 
-    Hide();
+//    Hide();
     event.Skip();
 }

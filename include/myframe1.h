@@ -17,6 +17,11 @@ ID_1CLEARLIST = 50004,
 xID_1OK = 50003
 };
 
+class wxListCtrl;
+class Label;
+class LabelPoint;
+class HyperlinkList;
+
 class MyFrame1 : public wxFrame
 {
 public:
@@ -56,6 +61,7 @@ public:
       std::string      dbPassword;
       std::string      dbUser;
       std::string      dbHost;
+      Label    *m_pLabel;
 
       void GetProjects(wxListCtrl *ps57CtlListBoxStrings);
       void GetComponents(wxListCtrl *ps57CtlListBoxStrings);
@@ -68,7 +74,7 @@ private:
 //    int width;
 //    int height;
     void OnButton1(wxCommandEvent& event);
-//    void OnBtnSelectClick(wxCommandEvent& event);
+    void OnBtnPrintClick(wxCommandEvent& event);
     void OnBtnClearClick(wxCommandEvent& event);
     void OnSize(wxSizeEvent& event);
     void OnMove(wxMoveEvent& event);
