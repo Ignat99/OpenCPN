@@ -26,6 +26,7 @@
 
 #include "SelectItem.h"
 #include "Route.h"
+#include "Label.h"
 
 #define SELTYPE_UNKNOWN              0x0001
 #define SELTYPE_ROUTEPOINT           0x0002
@@ -46,6 +47,7 @@ public:
     void SetSelectPixelRadius(int radius){ pixelRadius = radius; }
 
     bool AddSelectableRoutePoint( float slat, float slon, RoutePoint *pRoutePointAdd );
+    bool AddSelectableLabelPoint( LabelPoint *pLabelPointAdd );
     bool AddSelectableRouteSegment( float slat1, float slon1, float slat2, float slon2,
             RoutePoint *pRoutePointAdd1, RoutePoint *pRoutePointAdd2, Route *pRoute );
 

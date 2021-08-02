@@ -37,7 +37,7 @@ class wxDC;
 class LabelPoint
 {
 public:
-      LabelPoint(const wxString& icon_ident, const wxString& name, const wxString &pGUID = GPX_EMPTY_STRING, bool bAddToList = true);
+      LabelPoint(const wxString& icon_ident, const wxString& name, const wxString& code, const wxString &pGUID = GPX_EMPTY_STRING, bool bAddToList = true);
       LabelPoint( LabelPoint* orig );
       LabelPoint();
       ~LabelPoint(void);
@@ -58,6 +58,7 @@ public:
       void SetListed(bool viz = true){ m_bIsListed = viz; }
       void SetNameShown(bool viz = true) { m_bShowName = viz; }
       wxString GetName(void){ return m_MarkName; }
+      wxString GetCode(void){ return m_MarkCode; }
       wxString GetDescription(void) { return m_MarkDescription; }
       
       wxString GetIconName(void){ return m_IconName; }
@@ -71,8 +72,11 @@ public:
       void SetManagerListNode(void* node) { m_ManagerNode = node; }
       
       void SetName(const wxString & name);
+      void SetCode(const wxString & code);
       void CalculateNameExtents(void);
+      void CalculateCodeExtents(void);
 
+      bool             m_bPtIsSelected;
 
       bool              m_bIsVisible;           // true if should be drawn, false if invisible
       bool              m_bIsListed;
@@ -84,6 +88,7 @@ public:
       wxColour          m_FontColor;
 
       wxSize            m_NameExtents;
+      wxSize            m_CodeExtents;
 
       bool              m_bDynamicName;
       bool              m_bShowName;
@@ -113,6 +118,7 @@ public:
       
 private:
       wxString          m_MarkName;
+      wxString          m_MarkCode;
       wxDateTime        m_CreateTimeX;
       wxBitmap          *m_pbmIcon;
       wxString          m_IconName;

@@ -70,6 +70,26 @@ bool Select::AddSelectableRoutePoint( float slat, float slon, RoutePoint *pRoute
     return true;
 }
 
+bool Select::AddSelectableLabelPoint( LabelPoint *pLabelPointAdd )
+{
+    SelectItem *pSelItem = new SelectItem;
+    pSelItem->m_seltype = SELTYPE_ROUTEPOINT;
+    pSelItem->m_bIsSelected = false;
+    pSelItem->m_pData1 = pLabelPointAdd;
+
+    wxSelectableItemListNode *node;
+    
+    if( pLabelPointAdd->m_bIsInLayer )
+        node = pSelectList->Append( pSelItem );
+    else
+        node = pSelectList->Insert( pSelItem );
+
+    pLabelPointAdd->SetSelectNode(node);
+    
+    return true;
+}
+
+
 bool Select::AddSelectableRouteSegment( float slat1, float slon1, float slat2, float slon2,
         RoutePoint *pRoutePointAdd1, RoutePoint *pRoutePointAdd2, Route *pRoute )
 {

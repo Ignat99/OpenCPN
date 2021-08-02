@@ -36,6 +36,7 @@ public:
       ImagePanel    *drawPane;
       wxListCtrl    *ps57CtlListCtrl;
       wxListCtrl    *ps57ListCtrl1;
+      wxListCtrl    *m_lpList;
       size_t        m_pageDisplay;
       wxSize        m_small_button_size;
       wxNotebook    *m_pNotebook;
@@ -62,11 +63,13 @@ public:
       std::string      dbUser;
       std::string      dbHost;
       Label    *m_pLabel;
+      int    m_nSelected;
 
       void GetProjects(wxListCtrl *ps57CtlListBoxStrings);
       void GetComponents(wxListCtrl *ps57CtlListBoxStrings);
       std::string toSvgString(const uint8_t qrcode[], int border) const;
       void saveBitmap(const char *name, const uint8_t qrcode[]);
+      void InitializeList(wxListCtrl *ps57CtlListBoxStrings);
 
 private:
 //    wxImage img;
@@ -93,6 +96,7 @@ private:
     void doBasicDemo(const wxString &wx_text);
     void printQr(const uint8_t qrcode[]);
     void DoLabel( wxCommandEvent &event );
+    void OnLabelListClick( wxListEvent &event );
 
     DECLARE_EVENT_TABLE()
 };

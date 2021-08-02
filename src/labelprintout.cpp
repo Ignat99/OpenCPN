@@ -71,11 +71,13 @@ using namespace std;
 #include "labelprintout.h"
 #include "printtable.h"
 
-#define PRINT_WP_NAME 0
-#define PRINT_WP_POSITION 1
-#define PRINT_WP_COURSE 2
-#define PRINT_WP_DISTANCE 3
-#define PRINT_WP_DESCRIPTION 4
+#define PRINT_WP_LOGO 0
+#define PRINT_WP_REFERENCIA 1
+#define PRINT_WP_COMPONENTE 2
+#define PRINT_WP_IMAGEN 3
+#define PRINT_WP_CODIGOQR 4
+#define PRINT_WP_PESO 5
+#define PRINT_WP_STOCK 6
 
 // Global print data, to remember settings during the session
 extern wxPrintData*     g_printData;
@@ -99,82 +101,84 @@ MyLabelPrintout::MyLabelPrintout( std::vector<bool> _toPrintOut,
 
     table.StartFillHeader();
     // setup widths for columns
-    if ( toPrintOut[ PRINT_WP_NAME ] ) {
-        table << (const char *)wxString(_("Name")).mb_str();
+    if ( toPrintOut[ PRINT_WP_LOGO ] ) {
+        table << (const char *)wxString(_("Claroflex")).mb_str();
     }
-    if ( toPrintOut[ PRINT_WP_POSITION ] ) {
-        table << (const char *)wxString(_("Position")).mb_str();
+    if ( toPrintOut[ PRINT_WP_REFERENCIA ] ) {
+        table << (const char *)wxString(_("REFERENCIA")).mb_str();
     }
-    if ( toPrintOut[ PRINT_WP_COURSE ] ) {
-        table << (const char *)wxString(_("Course")).mb_str();
+    if ( toPrintOut[ PRINT_WP_COMPONENTE ] ) {
+        table << (const char *)wxString(_("COMPONENTE")).mb_str();
     }
-    if ( toPrintOut[ PRINT_WP_DISTANCE ] ) {
-        table << (const char *)wxString(_("Distance")).mb_str();
+    if ( toPrintOut[ PRINT_WP_IMAGEN ] ) {
+        table << (const char *)wxString(_("IMAGEN")).mb_str();
     }
-    if ( toPrintOut[ PRINT_WP_DESCRIPTION ] ) {
-        table << (const char *)wxString(_("Description")).mb_str();
+    if ( toPrintOut[ PRINT_WP_CODIGOQR ] ) {
+        table << (const char *)wxString(_("CODIGO QR")).mb_str();
     }
 
     table.StartFillWidths();
     // setup widths for columns
-    if ( toPrintOut[ PRINT_WP_NAME ] ) {
-        table << 23;
+    if ( toPrintOut[ PRINT_WP_LOGO ] ) {
+        table << 20;
     }
-    if ( toPrintOut[ PRINT_WP_POSITION ] ) {
+    if ( toPrintOut[ PRINT_WP_REFERENCIA ] ) {
+        table << 20;
+    }
+    if ( toPrintOut[ PRINT_WP_COMPONENTE ] ) {
         table << 40;
     }
-    if ( toPrintOut[ PRINT_WP_COURSE ] ) {
-        table << 30;
-    }
-    if ( toPrintOut[ PRINT_WP_DISTANCE ] ) {
+    if ( toPrintOut[ PRINT_WP_IMAGEN ] ) {
         table << 38;
     }
-    if ( toPrintOut[ PRINT_WP_DESCRIPTION ] ) {
+    if ( toPrintOut[ PRINT_WP_CODIGOQR ] ) {
         table << 100;
     }
 
     table.StartFillData();
 
-//    for ( int n = 1; n <= myLabel->GetnPoints(); n++ ) {
-//        LabelPoint* point = myLabel->GetPoint( n );
+    for ( int n = 1; n <= myLabel->GetnPoints(); n++ ) {
+        LabelPoint* point = myLabel->GetPoint( n );
 
-        if ( toPrintOut[ PRINT_WP_NAME ] ) {
-            wxString point_name;
-            point_name.Printf( _T("COMPONENTE"), _T( "CASQUILLO GUIA SUPERIOR" ) );
-//            string cell( point->GetName().mb_str() );
-            string   cell( point_name.mb_str() );
+        if ( toPrintOut[ PRINT_WP_LOGO ] ) {
+//            wxString point_name;
+//            point_name.Printf( _T("==========") );
+            string cell( point->GetName().mb_str() );
+//            string   cell( point_name.mb_str() );
             table << cell;
         }
-        if ( toPrintOut[ PRINT_WP_POSITION ] ) {
+        if ( toPrintOut[ PRINT_WP_REFERENCIA ] ) {
 //            wxString point_position = toSDMM( 1, point->m_lat, point->m_bIsInTrack ) + _T( "\n" ) + toSDMM( 2, point->m_lon, point->m_bIsInTrack );
-            wxString point_position;
-            point_position.Printf( _T("Claroflex"), _T( "\n" ), _T("==============================") );
-            string   cell( point_position.mb_str() );
+//            wxString point_position;
+//            point_position.Printf( _T( "CAS002" ) );
+//            string   cell( point_position.mb_str() );
+            string cell( point->GetCode().mb_str() );
             table << cell;
         }
-        if ( toPrintOut[ PRINT_WP_COURSE ] ) {
-            wxString point_course;
+        if ( toPrintOut[ PRINT_WP_COMPONENTE ] ) {
+//            wxString point_course;
 //            point_course.Printf( _T( "%03.0f Deg" ), point->GetCourse() );
-            point_course.Printf( _T("REFERENCIA"), _T( "%03.0f Deg" ) );
-            string   cell( point_course.mb_str() );
+//            point_course.Printf( _T( "CASQUILLO GUIA SUPERIOR" ) );
+            string cell( point->GetName().mb_str() );
+//            string   cell( point_course.mb_str() );
             table << cell;
         }
-        if ( toPrintOut[ PRINT_WP_DISTANCE ] ) {
+        if ( toPrintOut[ PRINT_WP_IMAGEN ] ) {
             wxString point_distance;
 //            point_distance.Printf( _T( "%6.2f" + getUsrDistanceUnit() ), toUsrDistance( point->GetDistance() ) );
-            point_distance.Printf( _T("COMPONENTE"), _T( "%6.2f" + getUsrDistanceUnit() ) );
+            point_distance.Printf( _T( "%6.2f" + getUsrDistanceUnit() ) );
             string   cell( point_distance.mb_str() );
             table << cell;
         }
-        if ( toPrintOut[ PRINT_WP_DESCRIPTION ] ) {
+        if ( toPrintOut[ PRINT_WP_CODIGOQR ] ) {
             wxString point_description;
-            point_description.Printf( _T("PESO"), _T( "gr" ) );
+            point_description.Printf( _T( "gr" ) );
 //            string cell( point->GetDescription().mb_str() );
             string   cell( point_description.mb_str() );
             table << cell;
         }
         table << "\n";
-//    }
+    }
 }
 
 
@@ -368,40 +372,40 @@ void LabelPrintSelection::CreateControls()
     wxFlexGridSizer* fgSizer2;
     fgSizer2 = new wxFlexGridSizer( 5, 2, 0, 0 );
 
-    m_checkBoxWPName = new wxCheckBox( itemDialog1, wxID_ANY, _( "Name" ),
+    m_checkBoxWPName = new wxCheckBox( itemDialog1, wxID_ANY, _( "Logo" ),
                                        wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT );
     m_checkBoxWPName->SetValue( true );
     fgSizer2->Add( m_checkBoxWPName, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxStaticText* label1 = new  wxStaticText( itemDialog1, wxID_ANY, _( "Show Waypoint name." ), wxDefaultPosition, wxDefaultSize );
+    wxStaticText* label1 = new  wxStaticText( itemDialog1, wxID_ANY, _( "Show Claroflex logo." ), wxDefaultPosition, wxDefaultSize );
     fgSizer2->Add( label1, 1, wxALL | wxALIGN_CENTER_VERTICAL, 5 );
 
-    m_checkBoxWPPosition = new wxCheckBox( itemDialog1, wxID_ANY, _( "Position" ),
+    m_checkBoxWPPosition = new wxCheckBox( itemDialog1, wxID_ANY, _( "Referencia" ),
                                            wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT );
     m_checkBoxWPPosition->SetValue( true );
     fgSizer2->Add( m_checkBoxWPPosition, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5 );
-    wxStaticText* label2 = new  wxStaticText( itemDialog1, wxID_ANY, _( "Show Waypoint position." ), wxDefaultPosition, wxDefaultSize );
+    wxStaticText* label2 = new  wxStaticText( itemDialog1, wxID_ANY, _( "Show Referencia." ), wxDefaultPosition, wxDefaultSize );
     fgSizer2->Add( label2, 1, wxALL | wxALIGN_CENTER_VERTICAL, 5 );
 
-    m_checkBoxWPCourse = new wxCheckBox( itemDialog1, wxID_ANY, _( "Course" ),
+    m_checkBoxWPCourse = new wxCheckBox( itemDialog1, wxID_ANY, _( "Componente" ),
                                          wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT );
     m_checkBoxWPCourse->SetValue( true );
     fgSizer2->Add( m_checkBoxWPCourse, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5 );
-    wxStaticText* label3 = new  wxStaticText( itemDialog1, wxID_ANY, _( "Show course from each Waypoint to the next one. " ), wxDefaultPosition, wxDefaultSize );
+    wxStaticText* label3 = new  wxStaticText( itemDialog1, wxID_ANY, _( "Show Componente. " ), wxDefaultPosition, wxDefaultSize );
     fgSizer2->Add( label3, 1, wxALL | wxALIGN_CENTER_VERTICAL, 5 );
 
-    m_checkBoxWPDistanceToNext = new wxCheckBox( itemDialog1, wxID_ANY, _( "Distance" ),
+    m_checkBoxWPDistanceToNext = new wxCheckBox( itemDialog1, wxID_ANY, _( "Imagen" ),
                                                  wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT );
     m_checkBoxWPDistanceToNext->SetValue( true );
     fgSizer2->Add( m_checkBoxWPDistanceToNext, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5 );
-    wxStaticText* label4 = new  wxStaticText( itemDialog1, wxID_ANY, _( "Show Distance from each Waypoint to the next one." ), wxDefaultPosition, wxDefaultSize );
+    wxStaticText* label4 = new  wxStaticText( itemDialog1, wxID_ANY, _( "Show Imagen componente." ), wxDefaultPosition, wxDefaultSize );
     fgSizer2->Add( label4, 1, wxALL | wxALIGN_CENTER_VERTICAL, 5 );
 
-    m_checkBoxWPDescription = new wxCheckBox( itemDialog1, wxID_ANY, _( "Description" ),
+    m_checkBoxWPDescription = new wxCheckBox( itemDialog1, wxID_ANY, _( "Codigo QR" ),
                                               wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT );
     m_checkBoxWPDescription->SetValue( true );
     fgSizer2->Add( m_checkBoxWPDescription, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5 );
-    wxStaticText* label5 = new  wxStaticText( itemDialog1, wxID_ANY, _( "Show Waypoint description." ), wxDefaultPosition, wxDefaultSize );
+    wxStaticText* label5 = new  wxStaticText( itemDialog1, wxID_ANY, _( "Show codigo QR." ), wxDefaultPosition, wxDefaultSize );
     fgSizer2->Add( label5, 1, wxALL | wxALIGN_CENTER_VERTICAL, 5 );
 
     itemBoxSizer1->Add( fgSizer2, 5, wxEXPAND, 5 );
@@ -463,13 +467,23 @@ void LabelPrintSelection::OnLabelpropOkClick( wxCommandEvent& event )
     if ( NULL == g_printData ) {
         g_printData = new wxPrintData;
         g_printData->SetOrientation( wxLANDSCAPE );
-        g_pageSetupData = new wxPageSetupDialogData;
+        g_printData->SetPaperId( wxPAPER_A6);
+        g_pageSetupData = new wxPageSetupDialogData(*g_printData);
+
+//        wxPageSetupDialog dialog( NULL, g_pageSetupData );
+//        dialog.ShowModal();
     }
+
+//    g_printData->SetPaperId( wxPAPER_A6);
+//    g_pageSetupData = new wxPageSetupDialogData(*g_printData);
+
+
 
     MyLabelPrintout*  mylabelprintout1 = new MyLabelPrintout( toPrintOut, label,  _( "Label Print" ) );
 
     wxPrintDialogData printDialogData( *g_printData );
     printDialogData.EnablePageNumbers( true );
+    printDialogData.EnableSelection( true );
 
     wxPrinter printer( &printDialogData );
 
@@ -480,6 +494,8 @@ void LabelPrintSelection::OnLabelpropOkClick( wxCommandEvent& event )
                 _( "There was a problem printing.\nPerhaps your current printer is not set correctly?" ),
                 _T( "OpenCPN" ), wxOK );
         }
+    } else {
+        ( *g_printData ) = printer.GetPrintDialogData().GetPrintData();
     }
 
 //    Hide();

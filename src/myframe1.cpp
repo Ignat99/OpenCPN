@@ -11,10 +11,13 @@
 #include "ImagePanel.hpp"
 #include "bmp_output.hpp"
 #include "labelprintout.h"
-
+#include "Select.h"
 
 extern PlugInManager    *g_pi_manager;
 extern LabelPrintSelection    *pLabelPrintSelection;
+extern wxString    g_default_wp_icon;
+extern LabelList *pLabelList;
+extern Select *pSelect;
 
 #define BUTTON1 11000
 
@@ -261,6 +264,12 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
     ps57ListCtrl1->Connect( wxEVT_COMMAND_LIST_ITEM_SELECTED,  wxListEventHandler(MyFrame1::OnCoSelected), NULL, this );
 
 
+// Make memory list of selected component
+    m_pLabel = new Label();
+    pLabelList->Append( m_pLabel );
+    InitializeList(ps57ListCtrl1);
+
+
     GetComponents(ps57ListCtrl1);
     marinersSizer->Add( ps57ListCtrl1, 1, wxALL | wxEXPAND, group_item_spacing );
 
@@ -273,6 +282,7 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
 
 //        m_pNotebook->Show();
 //        m_pNotebook->Layout();
+
 
 }
 
@@ -453,6 +463,8 @@ void MyFrame1::OnCoSelected( wxListEvent &event )
     wxListItem info6;
     wxJSONValue v;
 
+    OnLabelListClick(event);
+
     info2.m_itemId = clicked_index;
     info2.m_col = 6;
     info2.m_mask = wxLIST_MASK_TEXT;
@@ -553,6 +565,7 @@ void MyFrame1::OnCoSelected( wxListEvent &event )
         wxString msg_id(_T("OCPN_DBP_DB_WEIGH"));
         g_pi_manager->SendJSONMessageToAllPlugins(msg_id, v);
 
+  
 
   drawPane->paintNow();
 
@@ -719,6 +732,7 @@ void MyFrame1::OnDeepCtl( wxCommandEvent& event )
 void MyFrame1::GetComponents(wxListCtrl *ps57CtlListCtrl1) {
 
     long index=0;
+    long item1 = -1;
 
 
   try {
@@ -781,6 +795,7 @@ void MyFrame1::GetComponents(wxListCtrl *ps57CtlListCtrl1) {
       item->SetText(wxT("Programmer"));
       item->SetId(0);
 
+
       index = ps57CtlListCtrl1->InsertItem(0, *item);
       ps57CtlListCtrl1->SetItem(index, 0, _(row[0]), -1);
       ps57CtlListCtrl1->SetItem(index, 1, _(row[1]), -1);
@@ -799,6 +814,27 @@ void MyFrame1::GetComponents(wxListCtrl *ps57CtlListCtrl1) {
 //      ps57CtlListCtrl1->SetItem(index, 14, _(row[14]), -1);
 //      ps57CtlListCtrl1->SetItem(index, 15, _(row[15]), -1);
 
+
+      LabelPoint *pLP_src = new LabelPoint( g_default_wp_icon, _(row[1]), _(row[3]), GPX_EMPTY_STRING );
+      pSelect->AddSelectableLabelPoint( pLP_src );
+      m_pLabel->AddPoint(pLP_src);
+
+//      item1 = ps57CtlListCtrl1->GetNextItem(item1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+//      if( item1 != -1 ) {
+////          LabelPoint *lp = m_pLabel->pLabelPointList->Item(ps57CtlListCtrl1->GetItemData(index))->GetData();
+//          LabelPoint *lp = (LabelPoint *) ps57CtlListCtrl1->GetItemData(item1);
+//          if ( !lp ) {
+//              std::cerr << "Error : index of LabelPoint" <<  std::endl;
+//          } else {
+//             pSelect->AddSelectableLabelPoint( lp );
+
+////      Label *temp_label = new Label();
+//  //    pLabelList->Append( temp_label );
+////      temp_label->AddPoint( pLP_src );
+////      temp_label->AddPoint( lp );
+//             m_pLabel->AddPoint( lp );
+//          }
+//      }
     }
   }
   catch(mysqlcppapi::ex_BadQuery& er)
@@ -948,4 +984,48 @@ void MyFrame1::OnMaximize(wxMaximizeEvent& event)
 void MyFrame1::OnEraseBackgroun(wxEraseEvent& event)
 {
    event.Skip();
+}
+
+void MyFrame1::OnLabelListClick( wxListEvent& event )
+{
+    long itemno = 0;
+    m_nSelected = 0;
+    int selected_no;
+    const wxListItem &i = event.GetItem();
+    i.GetText().ToLong( &itemno );
+    selected_no = itemno;
+
+    m_pLabel->ClearHighlights();
+    wxLabelPointListNode *node = m_pLabel->pLabelPointList->GetFirst();
+    while( node && itemno-- ) {
+        node = node->GetNext();
+    }
+    if ( node ) {
+        LabelPoint *plp = node->GetData();
+        if ( plp ) {
+            plp->m_bPtIsSelected = true;
+
+            if( !( m_pLabel->m_bIsInLayer ) && !( m_pLabel->m_bRtIsActive ) ) {
+                m_nSelected = selected_no + 1;
+            }
+        }
+    }
+}
+
+void MyFrame1::InitializeList(wxListCtrl *ps57CtlListCtrl1)
+{
+    if( NULL == m_pLabel ) return;
+
+    if( !m_pLabel->m_bIsTrack ) {
+        wxLabelPointListNode *pnode = m_pLabel->pLabelPointList->GetFirst();
+        int in = 0;
+        while( pnode ) {
+            ps57CtlListCtrl1->InsertItem( in, _T(""), 0 );
+            ps57CtlListCtrl1->SetItemPtrData( in, (wxUIntPtr)pnode->GetData() );
+            in++;
+
+            pnode = pnode->GetNext();
+        }
+    }
+
 }

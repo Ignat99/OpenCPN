@@ -186,7 +186,9 @@ int                       g_restore_stackindex;
 int                       g_restore_dbindex;
 double                    g_ChartNotRenderScaleFactor;
 
+
 RouteList                 *pRouteList;
+LabelList                 *pLabelList;
 LayerList                 *pLayerList;
 bool                      g_bIsNewLayer;
 int                       g_LayerIdx;

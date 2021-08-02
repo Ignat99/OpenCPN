@@ -65,6 +65,7 @@
 #include "multiplexer.h"
 #include "ais.h"
 #include "Route.h"
+#include "Label.h"
 #include "Select.h"
 #include "FontMgr.h"
 #include "OCPN_Sound.h"
@@ -91,6 +92,7 @@ extern double           g_ChartNotRenderScaleFactor;
 extern int              g_restore_stackindex;
 extern int              g_restore_dbindex;
 extern RouteList        *pRouteList;
+extern LabelList        *pLabelList;
 extern LayerList        *pLayerList;
 extern int              g_LayerIdx;
 extern Select           *pSelect;
@@ -1965,6 +1967,10 @@ int MyConfig::LoadMyConfig( int iteration )
     //    Layers
     if( 0 == iteration )
         pLayerList = new LayerList;
+
+    //  Labels
+    if( 0 == iteration )
+        pLabelList = new LabelList;
 
     //  Routes
     if( 0 == iteration )

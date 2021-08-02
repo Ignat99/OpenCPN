@@ -110,7 +110,7 @@ LabelPoint::LabelPoint( LabelPoint* orig )
     m_ManagerNode = NULL;
 }
 
-LabelPoint::LabelPoint( const wxString& icon_ident, const wxString& name,
+LabelPoint::LabelPoint( const wxString& icon_ident, const wxString& name, const wxString& code,
         const wxString &pGUID, bool bAddToList )
 {
 
@@ -141,6 +141,7 @@ LabelPoint::LabelPoint( const wxString& icon_ident, const wxString& name,
     ReLoadIcon();
 
     SetName( name );
+    SetCode( code );
 
     //  Possibly add the waypoint to the global list maintained by the waypoint manager
 
@@ -174,6 +175,12 @@ void LabelPoint::SetName(const wxString & name)
     CalculateNameExtents();
 }
 
+void LabelPoint::SetCode(const wxString & code)
+{
+    m_MarkCode = code;
+    CalculateCodeExtents();
+}
+
 void LabelPoint::CalculateNameExtents( void )
 {
     if( m_pMarkFont ) {
@@ -183,6 +190,18 @@ void LabelPoint::CalculateNameExtents( void )
         m_NameExtents = dc.GetTextExtent( m_MarkName );
     } else
         m_NameExtents = wxSize( 0, 0 );
+
+}
+
+void LabelPoint::CalculateCodeExtents( void )
+{
+    if( m_pMarkFont ) {
+        wxScreenDC dc;
+
+        dc.SetFont( *m_pMarkFont );
+        m_CodeExtents = dc.GetTextExtent( m_MarkCode );
+    } else
+        m_CodeExtents = wxSize( 0, 0 );
 
 }
 
