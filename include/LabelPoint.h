@@ -37,7 +37,7 @@ class wxDC;
 class LabelPoint
 {
 public:
-      LabelPoint(const wxString& icon_ident, const wxString& name, const wxString& code, const wxString &pGUID = GPX_EMPTY_STRING, bool bAddToList = true);
+      LabelPoint(const wxString& icon_ident, const wxString& name, const wxString& code, const wxString& image, const wxString &pGUID = GPX_EMPTY_STRING, bool bAddToList = true);
       LabelPoint( LabelPoint* orig );
       LabelPoint();
       ~LabelPoint(void);
@@ -59,6 +59,7 @@ public:
       void SetNameShown(bool viz = true) { m_bShowName = viz; }
       wxString GetName(void){ return m_MarkName; }
       wxString GetCode(void){ return m_MarkCode; }
+      wxString GetImage(void){ return m_MarkImage; }
       wxString GetDescription(void) { return m_MarkDescription; }
       
       wxString GetIconName(void){ return m_IconName; }
@@ -73,8 +74,10 @@ public:
       
       void SetName(const wxString & name);
       void SetCode(const wxString & code);
+      void SetImage(const wxString & image);
       void CalculateNameExtents(void);
       void CalculateCodeExtents(void);
+      void CalculateImageExtents(void);
 
       bool             m_bPtIsSelected;
 
@@ -89,6 +92,7 @@ public:
 
       wxSize            m_NameExtents;
       wxSize            m_CodeExtents;
+      wxSize            m_ImageExtents;
 
       bool              m_bDynamicName;
       bool              m_bShowName;
@@ -119,6 +123,7 @@ public:
 private:
       wxString          m_MarkName;
       wxString          m_MarkCode;
+      wxString          m_MarkImage;
       wxDateTime        m_CreateTimeX;
       wxBitmap          *m_pbmIcon;
       wxString          m_IconName;

@@ -92,13 +92,21 @@ MyLabelPrintout::MyLabelPrintout( std::vector<bool> _toPrintOut,
                                       toPrintOut( _toPrintOut )
 {
     // Let's have at least some device units margin
-    marginX = 5;
+//    marginX = 5;
+//    marginY = 5;
+
+
+    marginX = 20;
     marginY = 5;
 
     // Offset text from the edge of the cell (Needed on Linux)
     textOffsetX = 5;
     textOffsetY = 8;
 
+//    textOffsetX = 50;
+//    textOffsetY = 80;
+
+/*
     table.StartFillHeader();
     // setup widths for columns
     if ( toPrintOut[ PRINT_WP_LOGO ] ) {
@@ -116,26 +124,27 @@ MyLabelPrintout::MyLabelPrintout( std::vector<bool> _toPrintOut,
     if ( toPrintOut[ PRINT_WP_CODIGOQR ] ) {
         table << (const char *)wxString(_("CODIGO QR")).mb_str();
     }
-
+*/
     table.StartFillWidths();
     // setup widths for columns
     if ( toPrintOut[ PRINT_WP_LOGO ] ) {
-        table << 20;
+        table << 500;
     }
     if ( toPrintOut[ PRINT_WP_REFERENCIA ] ) {
-        table << 20;
+        table << 500;
     }
     if ( toPrintOut[ PRINT_WP_COMPONENTE ] ) {
-        table << 40;
+        table << 500;
     }
     if ( toPrintOut[ PRINT_WP_IMAGEN ] ) {
-        table << 38;
+        table << 500;
     }
     if ( toPrintOut[ PRINT_WP_CODIGOQR ] ) {
-        table << 100;
-    }
+        table << 500;
+    } 
 
     table.StartFillData();
+
 
     for ( int n = 1; n <= myLabel->GetnPoints(); n++ ) {
         LabelPoint* point = myLabel->GetPoint( n );
@@ -143,8 +152,8 @@ MyLabelPrintout::MyLabelPrintout( std::vector<bool> _toPrintOut,
         if ( toPrintOut[ PRINT_WP_LOGO ] ) {
 //            wxString point_name;
 //            point_name.Printf( _T("==========") );
-            string cell( point->GetName().mb_str() );
 //            string   cell( point_name.mb_str() );
+            string cell( point->GetCode().mb_str() );
             table << cell;
         }
         if ( toPrintOut[ PRINT_WP_REFERENCIA ] ) {
@@ -153,29 +162,30 @@ MyLabelPrintout::MyLabelPrintout( std::vector<bool> _toPrintOut,
 //            point_position.Printf( _T( "CAS002" ) );
 //            string   cell( point_position.mb_str() );
             string cell( point->GetCode().mb_str() );
-            table << cell;
+            table << "REFERENCIA:  " + cell;
         }
         if ( toPrintOut[ PRINT_WP_COMPONENTE ] ) {
 //            wxString point_course;
 //            point_course.Printf( _T( "%03.0f Deg" ), point->GetCourse() );
 //            point_course.Printf( _T( "CASQUILLO GUIA SUPERIOR" ) );
-            string cell( point->GetName().mb_str() );
 //            string   cell( point_course.mb_str() );
-            table << cell;
+            string cell( point->GetName().mb_str() );
+            table << "COMPONENTE:  " + cell;
         }
         if ( toPrintOut[ PRINT_WP_IMAGEN ] ) {
-            wxString point_distance;
+//            wxString point_distance;
 //            point_distance.Printf( _T( "%6.2f" + getUsrDistanceUnit() ), toUsrDistance( point->GetDistance() ) );
-            point_distance.Printf( _T( "%6.2f" + getUsrDistanceUnit() ) );
-            string   cell( point_distance.mb_str() );
+//            point_distance.Printf( _T( "%6.2f" + getUsrDistanceUnit() ) );
+//            string   cell( point_distance.mb_str() );
+            string cell( point->GetImage().mb_str() );
             table << cell;
         }
         if ( toPrintOut[ PRINT_WP_CODIGOQR ] ) {
-            wxString point_description;
-            point_description.Printf( _T( "gr" ) );
+//            wxString point_description;
+//            point_description.Printf( _T( "gr" ) );
 //            string cell( point->GetDescription().mb_str() );
-            string   cell( point_description.mb_str() );
-            table << cell;
+//            string   cell( point_description.mb_str() );
+            table << "CODIGO QR:  ";
         }
         table << "\n";
     }
@@ -243,46 +253,130 @@ bool MyLabelPrintout::OnPrintPage( int page )
 void MyLabelPrintout::DrawPage( wxDC* dc )
 {
 
+    wxString my_path = "/home/olimex/tmp/old/build/";
+    wxImage m_bitmap(my_path + "logo_negro_200.png");
+    wxString my_code;
+    wxString my_image;
 
-    wxFont labelPrintFont_bold( 10, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD );
+
+    wxFont labelPrintFont_bold( 24, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD );
     dc->SetFont( labelPrintFont_bold );
     wxBrush brush( wxColour(255,255,255),  wxTRANSPARENT );
     dc->SetBrush( brush );
 
-    int header_textOffsetX = 2;
-    int header_textOffsetY = 2;
+    int header_textOffsetX = 25;
+    int header_textOffsetY = 115;
+
+//    int header_textOffsetX = 80;
+//    int header_textOffsetY = 115;
 
     int currentX = marginX;
     int currentY = marginY;
-    vector< PrintCell >& header_content = table.GetHeader();
-    for ( size_t j = 0; j < header_content.size(); j++ ) {
-        PrintCell& cell = header_content[ j ];
-        dc->DrawRectangle( currentX, currentY, cell.GetWidth(), cell.GetHeight() );
-        dc->DrawText( cell.GetText(),  currentX +header_textOffsetX, currentY + header_textOffsetY );
-        currentX += cell.GetWidth();
-    }
+//    vector< PrintCell >& header_content = table.GetHeader();
+//    for ( size_t j = 0; j < header_content.size(); j++ ) {
+//        PrintCell& cell = header_content[ j ];
+//        dc->DrawRectangle( currentX, currentY, cell.GetWidth(), cell.GetHeight() );
+//        dc->DrawText( cell.GetText(),  currentX +header_textOffsetX, currentY + header_textOffsetY );
+//        currentX += cell.GetWidth();
+//    }
 
-    wxFont  labelPrintFont_normal( 10, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL );
-    dc->SetFont( labelPrintFont_normal );
+    dc->DrawBitmap(m_bitmap, 80, 30);
+    dc->DrawBitmap(m_bitmap, 940, 30);
+
+//    dc->DrawBitmap(m_bitmap, 80, 50);
+//    dc->DrawBitmap(m_bitmap, 900, 50);
+
+
+    dc->SetPen(*wxBLACK_PEN);
+//    dc->SetBrush(*wxBLACK_BRUSH);
+
+    dc->DrawLine( 20, 110, 1680, 110);
+    dc->DrawLine( 20, 112, 1680, 112);
+    dc->DrawLine( 20, 1100, 1680, 1100);
+    dc->DrawLine( 20, 1102, 1680, 1102);
+
+//    dc->DrawLine( 80, 110, 1030, 110);
+//    dc->DrawLine( 80, 112, 1030, 112);
+//    dc->DrawLine( 80, 1000, 1030, 1000);
+//    dc->DrawLine( 80, 1002, 1030, 1002);
+
+//    wxFont  labelPrintFont_normal( 24, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL );
+//    dc->SetFont( labelPrintFont_normal );
 
     vector< vector < PrintCell > > & cells = table.GetContent();
-    currentY = marginY + table.GetHeaderHeight();
+    currentY = marginY + table.GetHeaderHeight() + header_textOffsetY;
     int currentHeight = 0;
-    for ( size_t i = 0; i < cells.size(); i++ ) {
+//    for ( size_t i = 0; i < cells.size(); i = i + 2 ) {
+    for ( size_t i = 0; i < 2; i = i + 2 ) {
         vector< PrintCell >& content_row = cells[ i ];
-        currentX = marginX;
+        currentX = marginX + header_textOffsetX;
         for ( size_t j = 0; j < content_row.size(); j++ ) {
             PrintCell& cell = content_row[ j ];
-            if ( cell.GetPage() == pageToPrint ) {
+//            if ( cell.GetPage() == pageToPrint ) {
                 wxRect r( currentX, currentY, cell.GetWidth(), cell.GetHeight() );
-                dc->DrawRectangle( r );
                 r.Offset( textOffsetX, textOffsetY );
-                dc->DrawLabel(cell.GetText(), r);
-                currentX     += cell.GetWidth();
+                if (j == 0) {
+                   my_code = my_path;
+                   my_code += "components/";
+                   my_code += cell.GetText();
+                   my_code += ".bmp";
+                }
+                if (j == 1) dc->DrawLabel(cell.GetText(), r);
+                if (j == 2) dc->DrawLabel(cell.GetText(), r);
+                if (j == 3) {
+                    dc->DrawLabel("IMAGEN: ", r);
+                    my_image = my_path;
+                    my_image += cell.GetText();
+                    wxImage m_image(my_image);
+                    dc->DrawBitmap(m_image.Scale(200, 200, wxIMAGE_QUALITY_HIGH), 280, 300);
+                }
+                if (j == 4) {
+                    r.Offset( 0, 200 );
+                    dc->DrawLabel("CODIGO QR:  ", r);
+                    wxImage m_qrcode(my_code);
+                    dc->DrawBitmap(m_qrcode.Scale(200, 200), 280, 550);
+                }
+//                currentX     += cell.GetWidth();
+                currentY     += cell.GetHeight() + 20;
                 currentHeight = cell.GetHeight();
-            }
+//            }
         }
-        currentY += currentHeight;
+        content_row = cells[ i + 1 ];
+        currentX = marginX + header_textOffsetX;
+        currentY = marginY + table.GetHeaderHeight() + header_textOffsetY;
+
+        for ( size_t j = 0; j < content_row.size(); j++ ) {
+            PrintCell& cell = content_row[ j ];
+                wxRect r( currentX+940, currentY, cell.GetWidth(), cell.GetHeight() );
+                r.Offset( textOffsetX, textOffsetY );
+                if (j == 0) {
+                   my_code = my_path;
+                   my_code += "components/";
+                   my_code += cell.GetText();
+                   my_code += ".bmp";
+                }
+                if (j == 1) dc->DrawLabel(cell.GetText(), r);
+                if (j == 2) dc->DrawLabel(cell.GetText(), r);
+                if (j == 3) {
+                    dc->DrawLabel("IMAGEN: ", r);
+                    my_image = my_path;
+                    my_image += cell.GetText();
+                    wxImage m_image(my_image);
+                    dc->DrawBitmap(m_image.Scale(200, 200, wxIMAGE_QUALITY_HIGH), 280+940, 300);
+                }
+                if (j == 4) {
+                    r.Offset( 0, 200 );
+                    dc->DrawLabel("CODIGO QR:  ", r);
+                    wxImage m_qrcode(my_code);
+                    dc->DrawBitmap(m_qrcode.Scale(200, 200), 280+940, 550);
+                }
+//                currentX     += cell.GetWidth();
+                currentY     += cell.GetHeight() + 20;
+                currentHeight = cell.GetHeight();
+        }
+
+//        OffsetLogicalOrigin (1800, 1300);
+        pageToPrint = 2;
     }
 }
 
@@ -467,8 +561,14 @@ void LabelPrintSelection::OnLabelpropOkClick( wxCommandEvent& event )
     if ( NULL == g_printData ) {
         g_printData = new wxPrintData;
         g_printData->SetOrientation( wxLANDSCAPE );
-        g_printData->SetPaperId( wxPAPER_A6);
+//        g_printData->SetOrientation( wxPORTRAIT );
+        g_printData->SetPaperId( wxPAPER_PENV_1);
+        g_printData->SetPaperId( wxPAPER_P32K);
+        g_printData->SetPaperId( wxPAPER_A6_ROTATED);
+//        g_printData->SetPaperId( wxPAPER_A6);
         g_pageSetupData = new wxPageSetupDialogData(*g_printData);
+        g_pageSetupData->SetMarginTopLeft(wxPoint(0,0));
+        g_pageSetupData->SetMarginBottomRight(wxPoint(0,0));
 
 //        wxPageSetupDialog dialog( NULL, g_pageSetupData );
 //        dialog.ShowModal();

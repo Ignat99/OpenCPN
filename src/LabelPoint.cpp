@@ -111,7 +111,7 @@ LabelPoint::LabelPoint( LabelPoint* orig )
 }
 
 LabelPoint::LabelPoint( const wxString& icon_ident, const wxString& name, const wxString& code,
-        const wxString &pGUID, bool bAddToList )
+        const wxString& image, const wxString &pGUID, bool bAddToList )
 {
 
     //  Nice defaults
@@ -142,6 +142,7 @@ LabelPoint::LabelPoint( const wxString& icon_ident, const wxString& name, const 
 
     SetName( name );
     SetCode( code );
+    SetImage( image );
 
     //  Possibly add the waypoint to the global list maintained by the waypoint manager
 
@@ -181,6 +182,12 @@ void LabelPoint::SetCode(const wxString & code)
     CalculateCodeExtents();
 }
 
+void LabelPoint::SetImage(const wxString & image)
+{
+    m_MarkImage = image;
+    CalculateImageExtents();
+}
+
 void LabelPoint::CalculateNameExtents( void )
 {
     if( m_pMarkFont ) {
@@ -202,6 +209,18 @@ void LabelPoint::CalculateCodeExtents( void )
         m_CodeExtents = dc.GetTextExtent( m_MarkCode );
     } else
         m_CodeExtents = wxSize( 0, 0 );
+
+}
+
+void LabelPoint::CalculateImageExtents( void )
+{
+    if( m_pMarkFont ) {
+        wxScreenDC dc;
+
+        dc.SetFont( *m_pMarkFont );
+        m_ImageExtents = dc.GetTextExtent( m_MarkImage );
+    } else
+        m_ImageExtents = wxSize( 0, 0 );
 
 }
 
@@ -307,9 +326,10 @@ void LabelPoint::Draw( ocpnDC& dc, wxPoint *rpn )
         
     //  Highlite any selected point
 //    if( m_bPtIsSelected || m_bIsBeingEdited) {
+    if( m_bPtIsSelected ) {
         AlphaBlending( dc, r.x + hilitebox.x, r.y + hilitebox.y, hilitebox.width, hilitebox.height, radius,
                 hi_colour, transparency );
-//    }
+    }
 
     bool bDrawHL = false;
 
@@ -444,7 +464,7 @@ void LabelPoint::DrawGL( ViewPort &vp, OCPNRegion &region )
     ocpnDC dc;
 
     //  Highlite any selected point
-//    if( m_bPtIsSelected ) {
+    if( m_bPtIsSelected ) {
         wxColour hi_colour;
 //        if( m_bBlink ){
 //            wxPen *pen = g_pRouteMan->GetActiveRoutePointPen();
@@ -456,7 +476,7 @@ void LabelPoint::DrawGL( ViewPort &vp, OCPNRegion &region )
         
         AlphaBlending( dc, r.x + hilitebox.x, r.y + hilitebox.y, hilitebox.width, hilitebox.height, radius,
                        hi_colour, transparency );
-//    }
+    }
     
     bool bDrawHL = false;
 

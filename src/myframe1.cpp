@@ -84,13 +84,13 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
     picturePanel = new wxBoxSizer(wxVERTICAL);
 
 
-    wxFlexGridSizer* optionsColumn = new wxFlexGridSizer(2);
+    wxFlexGridSizer* optionsColumn = new wxFlexGridSizer(1);
     optionsColumn->SetHGap(border_size);
-    optionsColumn->AddGrowableCol( 0, 2 );
-    optionsColumn->AddGrowableCol( 1, 3 );
+//    optionsColumn->AddGrowableCol( 0, 2 );
+//    optionsColumn->AddGrowableCol( 1, 3 );
     vectorPanel->Add( picturePanel);
 //    vectorPanel->Add( optionsColumn, 3, wxALL | wxEXPAND, border_size );
-    picturePanel->Add( optionsColumn, 3, wxALL | wxEXPAND, border_size );
+    picturePanel->Add( optionsColumn, 3, wxALL, border_size );
 
     // spacer
     optionsColumn->Add( new wxStaticText(pPanel, wxID_ANY, _T("")) );
@@ -101,7 +101,7 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
     optionsColumn->Add( new wxStaticText(pPanel, wxID_ANY, _("Data creation")), labelFlags );
     wxString pDispCatStrings[] = { _("1"), _("2"), _("3"), _("4"), _("5"), _("6"), _("7"), _("10"), _("12"), _("14"), _("21"), _("31"), _("62") };
 //    pDispCat = new wxChoice( pPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, 13, pDispCatStrings );
-    pDispCat = new wxChoice( pPanel, wxID_ANY, wxDefaultPosition, wxSize(120, 60), 13, pDispCatStrings );
+    pDispCat = new wxChoice( pPanel, wxID_ANY, wxDefaultPosition, wxSize(180, 60), 13, pDispCatStrings );
     pDispCat->SetSelection(0);
     optionsColumn->Add( pDispCat, 0, wxALL, 2 );
 
@@ -122,7 +122,7 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
     // graphics options
     optionsColumn->Add( new wxStaticText(pPanel, wxID_ANY, _("Remarks")), labelFlags );
     wxString pPointStyleStrings[] = { _("Paper Chart"), _("Simplified"), };
-    pPointStyle = new wxChoice( pPanel, ID_1RADARDISTUNIT, wxDefaultPosition, wxDefaultSize, 2, pPointStyleStrings );
+    pPointStyle = new wxChoice( pPanel, ID_1RADARDISTUNIT, wxDefaultPosition, wxSize(180, 60), 2, pPointStyleStrings );
     optionsColumn->Add( pPointStyle, inputFlags );
 
     pPointStyle->Connect( wxEVT_COMMAND_CHOICE_SELECTED,  wxCommandEventHandler(MyFrame1::OnPrChoicePointStyle), NULL, this );
@@ -130,8 +130,7 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
 
     optionsColumn->Add( new wxStaticText(pPanel, wxID_ANY, _("Remarks special")), labelFlags );
     wxString pBoundStyleStrings[] = { _("Plain"), _("Symbolized"), };
-    pBoundStyle = new wxChoice( pPanel, ID_1RADARDISTUNIT, wxDefaultPosition,
-            wxDefaultSize, 2, pBoundStyleStrings );
+    pBoundStyle = new wxChoice( pPanel, ID_1RADARDISTUNIT, wxDefaultPosition, wxSize(180, 60), 2, pBoundStyleStrings );
     optionsColumn->Add( pBoundStyle, inputFlags );
 
     pBoundStyle->Connect( wxEVT_COMMAND_CHOICE_SELECTED,  wxCommandEventHandler(MyFrame1::OnBoundStyle), NULL, this );
@@ -139,8 +138,7 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
 
     optionsColumn->Add( new wxStaticText(pPanel, wxID_ANY, _("Remarks internal")), labelFlags );
     wxString pColorNumStrings[] = { _("2 Color loooong"), _("4 Color loooong"), };
-    p24Color = new wxChoice( pPanel, ID_1RADARDISTUNIT, wxDefaultPosition,
-            wxDefaultSize, 2, pColorNumStrings );
+    p24Color = new wxChoice( pPanel, ID_1RADARDISTUNIT, wxDefaultPosition, wxSize(180, 60), 2, pColorNumStrings );
     optionsColumn->Add( p24Color, inputFlags );
 
     p24Color->Connect( wxEVT_COMMAND_CHOICE_SELECTED,  wxCommandEventHandler(MyFrame1::On24Color), NULL, this );
@@ -158,7 +156,7 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
 //    optionsColumn->Add( depShalRow );
   wxString pPointStyleStrings1[] = { _("Pivot"), _("Slide"), _("Double") };
     pPointStyle1 = new wxChoice( pPanel, ID_1RADARDISTUNIT, wxDefaultPosition,
-            wxDefaultSize, 3, pPointStyleStrings1 );
+            wxSize(180, 60), 3, pPointStyleStrings1 );
     optionsColumn->Add( pPointStyle1, inputFlags );
 
     pPointStyle1->Connect( wxEVT_COMMAND_CHOICE_SELECTED,  wxCommandEventHandler(MyFrame1::OnPointStyle1), NULL, this );
@@ -167,7 +165,7 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
     optionsColumn->Add( new wxStaticText( pPanel, wxID_ANY, _("Client") ), labelFlags );
     wxBoxSizer* depSafeRow = new wxBoxSizer( wxHORIZONTAL );
     optionsColumn->Add( depSafeRow );
-    m_SafetyCtl = new wxTextCtrl( pPanel, ID_1TEXTCTRL, _T("596"), wxDefaultPosition, wxSize( 80, -1 ), wxTE_RIGHT );
+    m_SafetyCtl = new wxTextCtrl( pPanel, ID_1TEXTCTRL, _T("596"), wxDefaultPosition, wxSize( 180, 60 ), wxTE_RIGHT );
     depSafeRow->Add( m_SafetyCtl, inputFlags );
     //m_depthUnitsSafe = new wxStaticText( pParent, wxID_ANY, _("metres") );
     //depSafeRow->Add( m_depthUnitsSafe, inputFlags );
@@ -178,7 +176,7 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
     optionsColumn->Add( new wxStaticText( pPanel, wxID_ANY, _("Creator") ), labelFlags );
     wxBoxSizer* depDeepRow = new wxBoxSizer( wxHORIZONTAL );
     optionsColumn->Add( depDeepRow );
-    m_DeepCtl = new wxTextCtrl( pPanel, ID_1TEXTCTRL, _T("596"), wxDefaultPosition, wxSize( 80, -1 ), wxTE_RIGHT );
+    m_DeepCtl = new wxTextCtrl( pPanel, ID_1TEXTCTRL, _T("596"), wxDefaultPosition, wxSize( 180, 60 ), wxTE_RIGHT );
     depDeepRow->Add( m_DeepCtl, inputFlags );
     //m_depthUnitsDeep = new wxStaticText( pParent, wxID_ANY, _("metres") );
     //depDeepRow->Add( m_depthUnitsDeep, inputFlags );
@@ -189,31 +187,32 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
 
 
     // spacer
-    optionsColumn->Add( 0, border_size*4 );
-    optionsColumn->Add( 0, border_size*4 );
+//    optionsColumn->Add( 0, border_size*4 );
+//    optionsColumn->Add( 0, border_size*4 );
 
 
     // create Image panel
     wxBoxSizer* drawSizer = new wxBoxSizer(wxHORIZONTAL);
     drawPane = new ImagePanel(pPanel, wxT("/home/olimex/plan1.bmp"), wxBITMAP_TYPE_BMP);
-    drawSizer->Add(drawPane, 1, wxEXPAND);
+    drawSizer->Add(drawPane, 1, wxALL | wxEXPAND);
 
     wxStaticBox* drawStaticBox = new wxStaticBox( pPanel, wxID_ANY, _("Component") );
     wxStaticBoxSizer* drawStaticSizer = new wxStaticBoxSizer( drawStaticBox, wxVERTICAL );
 
-    drawStaticSizer->Add( drawPane, 1, wxALL | wxEXPAND, group_item_spacing );
+    drawStaticSizer->Add( drawPane, 1, wxALL | wxEXPAND, 0 );
 
 //    picturePanel->Add( drawStaticSizer, 1, wxALL | wxEXPAND, 2  ); 
 //    Cube picture of QR code
-    picturePanel->Add( drawStaticSizer, 1, wxALL, 2  );
+    picturePanel->Add( drawStaticSizer, 1, wxALL | wxEXPAND, 2  );
 
 
     wxBoxSizer* btnRow = new wxBoxSizer( wxHORIZONTAL );
-    itemButtonSelectList = new wxButton( pPanel, ID_1SELECTLIST, _("Print label") );
+    itemButtonSelectList = new wxButton( pPanel, ID_1SELECTLIST, _("Print label"), wxPoint(0, 0), wxSize(180, 60) );
     btnRow->Add( itemButtonSelectList, 1, wxALL | wxEXPAND, group_item_spacing );
 //    itemButtonClearList = new wxButton( pPanel, ID_1CLEARLIST, _("Run Progress") );
 //    btnRow->Add( itemButtonClearList, 1, wxALL | wxEXPAND, group_item_spacing );
-    picturePanel->Add( btnRow );
+//    picturePanel->Add( btnRow, 1, wxALL  | wxEXPAND, 2 );
+    optionsColumn->Add( btnRow, inputFlags );
 
 
 
@@ -290,37 +289,12 @@ MyFrame1::~MyFrame1()
 {
 }
 
-void MyFrame1::DoLabel( wxCommandEvent& event )
-{
-    if( NULL == g_printData ) {
-        g_printData = new wxPrintData;
-        g_printData->SetOrientation( wxLANDSCAPE );
-        g_pageSetupData = new wxPageSetupDialogData;
-    }
-
-    wxPrintDialogData printDialogData( *g_printData );
-    printDialogData.EnablePageNumbers( false );
-
-    wxPrinter printer( &printDialogData );
-
-    MyPrintout printout( _("Label Print") );
-
-    if( !printer.Print( this, &printout, true ) ) {
-        if( wxPrinter::GetLastError() == wxPRINTER_ERROR ) OCPNMessageBox(NULL,
-            _("There was a problem printing. \nPerhaps your current printer is not set correctly?"),
-            _T("OpenCPN"), wxOK );
-    } else {
-        ( *g_printData ) = printer.GetPrintDialogData().GetPrintData();
-    }
-
-    Hide();
-    event.Skip();
-
-}
 
 void MyFrame1::doBasicDemo(const wxString &wx_text)
 {
 	const char *text = wx_text.c_str();
+        wxString my_path = "/home/olimex/tmp/old/build/components/";
+        wxString file = "/home/olimex/plan1.bmp";
 //	enum qrcodegen_Ecc errCorLvl = qrcodegen_Ecc_LOW;
 	enum qrcodegen_Ecc errCorLvl = qrcodegen_Ecc_MEDIUM;
 
@@ -330,7 +304,12 @@ void MyFrame1::doBasicDemo(const wxString &wx_text)
 		qrcodegen_VERSION_MIN, qrcodegen_VERSION_MAX, qrcodegen_Mask_AUTO, true);
 	if (ok)
 		printQr(qrcode);
-		saveBitmap("/home/olimex/plan1.bmp", qrcode);
+		saveBitmap(file, qrcode);
+                my_path += wx_text;
+                my_path += wxT(".bmp");
+		saveBitmap( my_path, qrcode);
+//                wxImage m_image(file);
+//                m_image.Scale(200,200, wxIMAGE_QUALITY_NORMAL).SaveFile(file, wxBITMAP_TYPE_BMP);
 }
 
 void MyFrame1::printQr(const uint8_t qrcode[]) {
@@ -815,7 +794,7 @@ void MyFrame1::GetComponents(wxListCtrl *ps57CtlListCtrl1) {
 //      ps57CtlListCtrl1->SetItem(index, 15, _(row[15]), -1);
 
 
-      LabelPoint *pLP_src = new LabelPoint( g_default_wp_icon, _(row[1]), _(row[3]), GPX_EMPTY_STRING );
+      LabelPoint *pLP_src = new LabelPoint( g_default_wp_icon, _(row[1]), _(row[3]), _(row[6]), GPX_EMPTY_STRING );
       pSelect->AddSelectableLabelPoint( pLP_src );
       m_pLabel->AddPoint(pLP_src);
 
@@ -928,6 +907,33 @@ void MyFrame1::OnButton1(wxCommandEvent& event)
 
 }
 
+void MyFrame1::DoLabel( wxCommandEvent& event )
+{
+    if( NULL == g_printData ) {
+        g_printData = new wxPrintData;
+        g_printData->SetOrientation( wxLANDSCAPE );
+        g_pageSetupData = new wxPageSetupDialogData;
+    }
+
+    wxPrintDialogData printDialogData( *g_printData );
+    printDialogData.EnablePageNumbers( false );
+
+    wxPrinter printer( &printDialogData );
+
+    MyPrintout printout( _("Label Print") );
+
+    if( !printer.Print( this, &printout, true ) ) {
+        if( wxPrinter::GetLastError() == wxPRINTER_ERROR ) OCPNMessageBox(NULL,
+            _("There was a problem printing. \nPerhaps your current printer is not set correctly?"),
+            _T("OpenCPN"), wxOK );
+    } else {
+        ( *g_printData ) = printer.GetPrintDialogData().GetPrintData();
+    }
+
+    Hide();
+    event.Skip();
+
+}
 
 void MyFrame1::OnBtnPrintClick(wxCommandEvent& event)
 {

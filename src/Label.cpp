@@ -121,7 +121,7 @@ void Label::CloneLabel( Label *psourcelabel, int start_nPoint, int end_nPoint, c
         if( !psourcelabel->m_bIsInLayer ) AddPoint( psourcelabel->GetPoint( i ), false );
         else {
             LabelPoint *psourcepoint = psourcelabel->GetPoint( i );
-            LabelPoint *ptargetpoint = new LabelPoint( psourcepoint->GetIconName(), psourcepoint->GetName(), psourcepoint->GetCode(), GPX_EMPTY_STRING, false );
+            LabelPoint *ptargetpoint = new LabelPoint( psourcepoint->GetIconName(), psourcepoint->GetName(), psourcepoint->GetCode(), psourcepoint->GetImage(), GPX_EMPTY_STRING, false );
 
             AddPoint( ptargetpoint, false );
 
@@ -154,7 +154,7 @@ void Label::CloneTrack( Label *psourcelabel, int start_nPoint, int end_nPoint, c
     for( i = start_nPoint; i <= end_nPoint; i++ ) {
 
         LabelPoint *psourcepoint = psourcelabel->GetPoint( i );
-        LabelPoint *ptargetpoint = new LabelPoint( psourcepoint->GetIconName(), psourcepoint->GetName(), psourcepoint->GetCode(), GPX_EMPTY_STRING, false );
+        LabelPoint *ptargetpoint = new LabelPoint( psourcepoint->GetIconName(), psourcepoint->GetName(), psourcepoint->GetCode(), psourcepoint->GetImage(), GPX_EMPTY_STRING, false );
 
         AddPoint( ptargetpoint, false );
         
@@ -697,7 +697,7 @@ void Label::ClearHighlights( void )
 
     while( node ) {
         prp = node->GetData();
-//        if( prp ) prp->m_bPtIsSelected = false;
+        if( prp ) prp->m_bPtIsSelected = false;
         node = node->GetNext();
     }
 }
@@ -705,7 +705,7 @@ void Label::ClearHighlights( void )
 LabelPoint *Label::InsertPointBefore( LabelPoint *pRP, double rlat, double rlon,
         bool bRenamePoints )
 {
-    LabelPoint *newpoint = new LabelPoint( wxString( _T ( "diamond" ) ),
+    LabelPoint *newpoint = new LabelPoint( wxString( _T ( "diamond" ) ), wxString( _T ( "diamond" ) ), wxString( _T ( "diamond" ) ),
             GetNewMarkSequenced(), GPX_EMPTY_STRING );
     newpoint->m_bDynamicName = true;
     newpoint->SetNameShown( false );
@@ -832,7 +832,7 @@ void Label::DeSelectLabel()
     LabelPoint *rp;
     while( node ) {
         rp = node->GetData();
-//        rp->m_bPtIsSelected = false;
+        rp->m_bPtIsSelected = false;
 
         node = node->GetNext();
     }

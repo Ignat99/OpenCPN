@@ -22,6 +22,9 @@ with the following wxWidgets hosts:
          MSWindows            (__WXMSW__)
          MAC OSx              (__WXOSX__)
 
+c. apt install cups foomatic-db-compressed-ppds  cups-pdf smbclient xpp
+   ghostscript-x printer-driver-gutenprint cups-browsed fonts-droid libpaper-utils
+
 
 ----------------------------------------------------------------------
 3.  Platform Specific Build Notes
@@ -128,3 +131,4 @@ a short initial burst of binary garbage).  If you don't see this, you
 may have OS-level problems with your serial support, but more likely
 have the wrong device or permissions.  Look again.
 
+apt install cups foomatic-db-compressed-ppds  cups-pdf smbclient xpp  ghostscript-x printer-driver-gutenprint cups-browsed fonts-droid libpaper-utils
