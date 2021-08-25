@@ -307,7 +307,7 @@ void MyLabelPrintout::DrawPage( wxDC* dc )
     currentY = marginY + table.GetHeaderHeight() + header_textOffsetY;
     int currentHeight = 0;
 //    for ( size_t i = 0; i < cells.size(); i = i + 2 ) {
-    for ( size_t i = 0; i < 2; i = i + 2 ) {
+    for ( size_t i = 2; i < 4; i = i + 2 ) {
         vector< PrintCell >& content_row = cells[ i ];
         currentX = marginX + header_textOffsetX;
         for ( size_t j = 0; j < content_row.size(); j++ ) {
@@ -562,16 +562,16 @@ void LabelPrintSelection::OnLabelpropOkClick( wxCommandEvent& event )
         g_printData = new wxPrintData;
         g_printData->SetOrientation( wxLANDSCAPE );
 //        g_printData->SetOrientation( wxPORTRAIT );
-        g_printData->SetPaperId( wxPAPER_PENV_1);
+//        g_printData->SetPaperId( wxPAPER_PENV_1);
         g_printData->SetPaperId( wxPAPER_P32K);
-        g_printData->SetPaperId( wxPAPER_A6_ROTATED);
+//        g_printData->SetPaperId( wxPAPER_A6_ROTATED);
 //        g_printData->SetPaperId( wxPAPER_A6);
         g_pageSetupData = new wxPageSetupDialogData(*g_printData);
         g_pageSetupData->SetMarginTopLeft(wxPoint(0,0));
         g_pageSetupData->SetMarginBottomRight(wxPoint(0,0));
 
-//        wxPageSetupDialog dialog( NULL, g_pageSetupData );
-//        dialog.ShowModal();
+        wxPageSetupDialog dialog( NULL, g_pageSetupData );
+        dialog.ShowModal();
     }
 
 //    g_printData->SetPaperId( wxPAPER_A6);

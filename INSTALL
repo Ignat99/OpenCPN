@@ -25,6 +25,9 @@ with the following wxWidgets hosts:
 c. apt install cups foomatic-db-compressed-ppds  cups-pdf smbclient xpp
    ghostscript-x printer-driver-gutenprint cups-browsed fonts-droid libpaper-utils
 
+d. xdg-mime default  lp.desktop application/pdf
+
+e. gio set
 
 ----------------------------------------------------------------------
 3.  Platform Specific Build Notes

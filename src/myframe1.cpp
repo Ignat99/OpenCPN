@@ -618,7 +618,6 @@ void MyFrame1::OnPrChoice( wxCommandEvent& event )
     ps57CtlListCtrl->Show();
     ps57CtlListCtrl->Raise();
 
-
 }
 
 void MyFrame1::OnPrChoicePointStyle( wxCommandEvent& event )
@@ -941,7 +940,7 @@ void MyFrame1::OnBtnPrintClick(wxCommandEvent& event)
         pLabelPrintSelection = new LabelPrintSelection( this, m_pLabel );
 
 //    if( !pLabelPrintSelection->IsShown() ) pLabelPrintSelection->ShowModal();
-//    if( !pLabelPrintSelection->IsShown() ) 
+//    if( !pLabelPrintSelection->IsShown() )
     pLabelPrintSelection->Show();
 //        delete pLabelPrintSelection;
 
@@ -1005,14 +1004,16 @@ void MyFrame1::OnLabelListClick( wxListEvent& event )
     wxLabelPointListNode *node = m_pLabel->pLabelPointList->GetFirst();
     while( node && itemno-- ) {
         node = node->GetNext();
-    }
-    if ( node ) {
-        LabelPoint *plp = node->GetData();
-        if ( plp ) {
-            plp->m_bPtIsSelected = true;
-
-            if( !( m_pLabel->m_bIsInLayer ) && !( m_pLabel->m_bRtIsActive ) ) {
-                m_nSelected = selected_no + 1;
+        printf("Node %d\n", itemno);
+//
+        if ( node ) {
+            LabelPoint *plp = node->GetData();
+            if ( plp ) {
+                plp->m_bPtIsSelected = true;
+                printf("bPtIsSelected %d\n", selected_no);
+                if( !( m_pLabel->m_bIsInLayer ) && !( m_pLabel->m_bRtIsActive ) ) {
+                    m_nSelected = selected_no + 1;
+                }
             }
         }
     }
