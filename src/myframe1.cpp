@@ -793,8 +793,8 @@ void MyFrame1::GetComponents(wxListCtrl *ps57CtlListCtrl1) {
 //      ps57CtlListCtrl1->SetItem(index, 15, _(row[15]), -1);
 
 
-      LabelPoint *pLP_src = new LabelPoint( g_default_wp_icon, _(row[1]), _(row[3]), _(row[6]), GPX_EMPTY_STRING );
-      pSelect->AddSelectableLabelPoint( pLP_src );
+      LabelPoint *pLP_src = new LabelPoint( g_default_wp_icon, _(row[0]) ,_(row[1]), _(row[3]), _(row[6]), GPX_EMPTY_STRING );
+//      pSelect->AddSelectableLabelPoint( pLP_src );
       m_pLabel->AddPoint(pLP_src);
 
 //      item1 = ps57CtlListCtrl1->GetNextItem(item1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
@@ -994,10 +994,13 @@ void MyFrame1::OnEraseBackgroun(wxEraseEvent& event)
 void MyFrame1::OnLabelListClick( wxListEvent& event )
 {
     long itemno = 0;
+    long curno = 0;
     m_nSelected = 0;
     int selected_no;
+    long sel_no;
     const wxListItem &i = event.GetItem();
     i.GetText().ToLong( &itemno );
+    sel_no = itemno;
     selected_no = itemno;
 
     m_pLabel->ClearHighlights();
@@ -1005,14 +1008,18 @@ void MyFrame1::OnLabelListClick( wxListEvent& event )
     while( node && itemno-- ) {
         node = node->GetNext();
         printf("Node %d\n", itemno);
-//
+//    }
         if ( node ) {
             LabelPoint *plp = node->GetData();
             if ( plp ) {
-                plp->m_bPtIsSelected = true;
-                printf("bPtIsSelected %d\n", selected_no);
-                if( !( m_pLabel->m_bIsInLayer ) && !( m_pLabel->m_bRtIsActive ) ) {
-                    m_nSelected = selected_no + 1;
+                plp->GetNo().ToLong( &curno );
+                if (curno == sel_no) {
+                    printf("Itemno %d\n", curno);
+                    plp->m_bPtIsSelected = true;
+                    printf("bPtIsSelected %d\n", sel_no);
+                    if( !( m_pLabel->m_bIsInLayer ) && !( m_pLabel->m_bRtIsActive ) ) {
+                        m_nSelected = selected_no + 1;
+                    }
                 }
             }
         }

@@ -110,12 +110,13 @@ LabelPoint::LabelPoint( LabelPoint* orig )
     m_ManagerNode = NULL;
 }
 
-LabelPoint::LabelPoint( const wxString& icon_ident, const wxString& name, const wxString& code,
+LabelPoint::LabelPoint( const wxString& icon_ident, const wxString& no, const wxString& name, const wxString& code,
         const wxString& image, const wxString &pGUID, bool bAddToList )
 {
 
     //  Nice defaults
     m_bDynamicName = false;
+    m_bPtIsSelected = false;
     m_bIsActive = false;
     m_CreateTimeX = wxDateTime::Now();
     m_GPXTrkSegNo = 1;
@@ -140,6 +141,7 @@ LabelPoint::LabelPoint( const wxString& icon_ident, const wxString& name, const 
     m_IconName = icon_ident;
     ReLoadIcon();
 
+    SetNo( no );
     SetName( name );
     SetCode( code );
     SetImage( image );
@@ -170,6 +172,12 @@ LabelPoint::~LabelPoint( void )
 }
 
 
+void LabelPoint::SetNo(const wxString & no)
+{
+    m_MarkNo = no;
+    CalculateNoExtents();
+}
+
 void LabelPoint::SetName(const wxString & name)
 {
     m_MarkName = name;
@@ -186,6 +194,18 @@ void LabelPoint::SetImage(const wxString & image)
 {
     m_MarkImage = image;
     CalculateImageExtents();
+}
+
+void LabelPoint::CalculateNoExtents( void )
+{
+    if( m_pMarkFont ) {
+        wxScreenDC dc;
+
+        dc.SetFont( *m_pMarkFont );
+        m_NoExtents = dc.GetTextExtent( m_MarkNo );
+    } else
+        m_NoExtents = wxSize( 0, 0 );
+
 }
 
 void LabelPoint::CalculateNameExtents( void )

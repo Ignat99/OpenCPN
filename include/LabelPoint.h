@@ -37,7 +37,7 @@ class wxDC;
 class LabelPoint
 {
 public:
-      LabelPoint(const wxString& icon_ident, const wxString& name, const wxString& code, const wxString& image, const wxString &pGUID = GPX_EMPTY_STRING, bool bAddToList = true);
+      LabelPoint(const wxString& icon_ident, const wxString& no, const wxString& name, const wxString& code, const wxString& image, const wxString &pGUID = GPX_EMPTY_STRING, bool bAddToList = true);
       LabelPoint( LabelPoint* orig );
       LabelPoint();
       ~LabelPoint(void);
@@ -57,6 +57,7 @@ public:
       void SetVisible(bool viz = true){ m_bIsVisible = viz; }
       void SetListed(bool viz = true){ m_bIsListed = viz; }
       void SetNameShown(bool viz = true) { m_bShowName = viz; }
+      wxString GetNo(void){ return m_MarkNo; }
       wxString GetName(void){ return m_MarkName; }
       wxString GetCode(void){ return m_MarkCode; }
       wxString GetImage(void){ return m_MarkImage; }
@@ -72,9 +73,11 @@ public:
       void *GetManagerListNode(void) { return m_ManagerNode; }
       void SetManagerListNode(void* node) { m_ManagerNode = node; }
       
+      void SetNo(const wxString & no);
       void SetName(const wxString & name);
       void SetCode(const wxString & code);
       void SetImage(const wxString & image);
+      void CalculateNoExtents(void);
       void CalculateNameExtents(void);
       void CalculateCodeExtents(void);
       void CalculateImageExtents(void);
@@ -90,6 +93,7 @@ public:
       wxFont            *m_pMarkFont;
       wxColour          m_FontColor;
 
+      wxSize            m_NoExtents;
       wxSize            m_NameExtents;
       wxSize            m_CodeExtents;
       wxSize            m_ImageExtents;
@@ -121,6 +125,7 @@ public:
 
       
 private:
+      wxString          m_MarkNo;
       wxString          m_MarkName;
       wxString          m_MarkCode;
       wxString          m_MarkImage;

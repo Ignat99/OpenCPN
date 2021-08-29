@@ -148,7 +148,7 @@ MyLabelPrintout::MyLabelPrintout( std::vector<bool> _toPrintOut,
 
     for ( int n = 1; n <= myLabel->GetnPoints(); n++ ) {
         LabelPoint* point = myLabel->GetPoint( n );
-
+        if (point->m_bPtIsSelected) {
         if ( toPrintOut[ PRINT_WP_LOGO ] ) {
 //            wxString point_name;
 //            point_name.Printf( _T("==========") );
@@ -188,6 +188,7 @@ MyLabelPrintout::MyLabelPrintout( std::vector<bool> _toPrintOut,
             table << "CODIGO QR:  ";
         }
         table << "\n";
+        }
     }
 }
 
@@ -306,8 +307,8 @@ void MyLabelPrintout::DrawPage( wxDC* dc )
     vector< vector < PrintCell > > & cells = table.GetContent();
     currentY = marginY + table.GetHeaderHeight() + header_textOffsetY;
     int currentHeight = 0;
-//    for ( size_t i = 0; i < cells.size(); i = i + 2 ) {
-    for ( size_t i = 2; i < 4; i = i + 2 ) {
+    for ( size_t i = 0; i < cells.size(); i = i + 2 ) {
+//    for ( size_t i = 0; i < 2; i = i + 2 ) {
         vector< PrintCell >& content_row = cells[ i ];
         currentX = marginX + header_textOffsetX;
         for ( size_t j = 0; j < content_row.size(); j++ ) {
@@ -341,7 +342,8 @@ void MyLabelPrintout::DrawPage( wxDC* dc )
                 currentHeight = cell.GetHeight();
 //            }
         }
-        content_row = cells[ i + 1 ];
+//        content_row = cells[ i + 1 ];
+        content_row = cells[ i ];
         currentX = marginX + header_textOffsetX;
         currentY = marginY + table.GetHeaderHeight() + header_textOffsetY;
 

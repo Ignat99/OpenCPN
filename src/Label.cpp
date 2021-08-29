@@ -121,7 +121,7 @@ void Label::CloneLabel( Label *psourcelabel, int start_nPoint, int end_nPoint, c
         if( !psourcelabel->m_bIsInLayer ) AddPoint( psourcelabel->GetPoint( i ), false );
         else {
             LabelPoint *psourcepoint = psourcelabel->GetPoint( i );
-            LabelPoint *ptargetpoint = new LabelPoint( psourcepoint->GetIconName(), psourcepoint->GetName(), psourcepoint->GetCode(), psourcepoint->GetImage(), GPX_EMPTY_STRING, false );
+            LabelPoint *ptargetpoint = new LabelPoint( psourcepoint->GetIconName(), psourcepoint->GetNo(), psourcepoint->GetName(), psourcepoint->GetCode(), psourcepoint->GetImage(), GPX_EMPTY_STRING, false );
 
             AddPoint( ptargetpoint, false );
 
@@ -154,7 +154,7 @@ void Label::CloneTrack( Label *psourcelabel, int start_nPoint, int end_nPoint, c
     for( i = start_nPoint; i <= end_nPoint; i++ ) {
 
         LabelPoint *psourcepoint = psourcelabel->GetPoint( i );
-        LabelPoint *ptargetpoint = new LabelPoint( psourcepoint->GetIconName(), psourcepoint->GetName(), psourcepoint->GetCode(), psourcepoint->GetImage(), GPX_EMPTY_STRING, false );
+        LabelPoint *ptargetpoint = new LabelPoint( psourcepoint->GetIconName(), psourcepoint->GetNo(), psourcepoint->GetName(), psourcepoint->GetCode(), psourcepoint->GetImage(), GPX_EMPTY_STRING, false );
 
         AddPoint( ptargetpoint, false );
         
