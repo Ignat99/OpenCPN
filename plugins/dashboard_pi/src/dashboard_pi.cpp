@@ -580,7 +580,7 @@ void dashboard_pi::SetSentence( wxString &sentence )
                 if(m_NMEA0183.Uw.IsDataValid == NTrue)
                 {
                     unit_weigh = m_NMEA0183.Uw.UnitWeighKg;
-                    SendSentenceToAllInstruments( OCPN_DBP_UNIT_WEIGH, unit_weigh, "kg/pcs" );
+                    SendSentenceToAllInstruments( OCPN_DBP_UNIT_WEIGH, unit_weigh, "kr/pcs" );
                 }
             }
         }
@@ -1183,7 +1183,7 @@ void dashboard_pi::SetPluginMessage(wxString &message_id, wxString &message_body
     if(message_id == _T("OCPN_DBP_DB_WEIGH"))
     {
         db_weigh = decl_val;
-        SendSentenceToAllInstruments( OCPN_DBP_DB_WEIGH, decl_val, _T("kg") );
+        SendSentenceToAllInstruments( OCPN_DBP_DB_WEIGH, decl_val, _T("gr") );
     } else {
         db_quantity = decl_val;
         SendSentenceToAllInstruments( OCPN_DBP_DB_QUANTITY, decl_val, _T("pcs") );

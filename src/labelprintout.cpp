@@ -572,8 +572,8 @@ void LabelPrintSelection::OnLabelpropOkClick( wxCommandEvent& event )
         g_pageSetupData->SetMarginTopLeft(wxPoint(0,0));
         g_pageSetupData->SetMarginBottomRight(wxPoint(0,0));
 
-        wxPageSetupDialog dialog( NULL, g_pageSetupData );
-        dialog.ShowModal();
+//        wxPageSetupDialog dialog( NULL, g_pageSetupData );
+//        dialog.ShowModal();
     }
 
 //    g_printData->SetPaperId( wxPAPER_A6);

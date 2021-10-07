@@ -71,11 +71,11 @@ DashboardInstrument::DashboardInstrument(wxWindow *pparent, wxWindowID id, wxStr
 wxProgressDialog* DashboardInstrument::GetPprog( double bascula_weigh, double db_weigh, double db_quantity )
 {
     int cur_count;
-    cur_count = wxRound( pd_count * bascula_weigh / (db_weigh * db_quantity) );
+    cur_count = wxRound( pd_count * bascula_weigh / (db_weigh * db_quantity * 1000) );
     if (cur_count >  90) { cur_count = 95; }
     wxString msg5;
-    msg5.Printf(_T("%d * %d / ( db_weigh * db_quantity ) = %d "),
-        pd_count, wxRound(bascula_weigh), wxRound(db_weigh * db_quantity));
+    msg5.Printf(_T("%d * %d / ( db_weigh * db_quantity * 1000 ) = %d "),
+        pd_count, wxRound(bascula_weigh), wxRound(db_weigh * db_quantity * 1000));
     ppprog->Update(cur_count, msg5);
     return ppprog;
 }

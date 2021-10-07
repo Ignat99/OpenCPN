@@ -42,6 +42,8 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
 {
 
     wxDC *dc = new wxScreenDC();
+    wxFont *qFont = GetOCPNScaledFont(_("Dialog"));
+//    dc->SetFont( *qFont );
 
     idClient = " WHERE id = 596";
 //    idCreator = " AND a.id = 1";
@@ -53,10 +55,16 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
 //    dbPassword = "7njc4m4mYwmPI4LG";
 //    dbName = "claroflex_v0.2";
 
-    dbHost = "localhost";
+//    dbHost = "localhost";
+//    dbUser = "root";
+//    dbPassword = "Android123";
+//    dbName = "drf_android";
+
+    dbHost = "34.244.61.90";
     dbUser = "root";
-    dbPassword = "Android123";
-    dbName = "drf_android";
+    dbPassword = "dQ0;Cdm5HDM^3]w";
+    dbName = "claroflex_v02";
+
 
     m_whatever = 1;
     m_pageDisplay = -1;
@@ -76,7 +84,10 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
 
         wxPanel *pPanel = new wxPanel( m_pNotebook, wxID_ANY, wxDefaultPosition, wxSize(1480, 950), wxNO_BORDER | wxTAB_TRAVERSAL, _("Bascula") );
 
+        pPanel->SetFont( *qFont );
+
         m_pNotebook->AddPage(pPanel, _("Display") );
+
 
 
 //        Centre();
@@ -120,28 +131,28 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
 
 
     // graphics options
-    optionsColumn->Add( new wxStaticText(pPanel, wxID_ANY, _("Remarks")), labelFlags );
-    wxString pPointStyleStrings[] = { _("Paper Chart"), _("Simplified"), };
-    pPointStyle = new wxChoice( pPanel, ID_1RADARDISTUNIT, wxDefaultPosition, wxSize(180, 60), 2, pPointStyleStrings );
-    optionsColumn->Add( pPointStyle, inputFlags );
+//    optionsColumn->Add( new wxStaticText(pPanel, wxID_ANY, _("Remarks")), labelFlags );
+//    wxString pPointStyleStrings[] = { _("Paper Chart"), _("Simplified"), };
+//    pPointStyle = new wxChoice( pPanel, ID_1RADARDISTUNIT, wxDefaultPosition, wxSize(180, 60), 2, pPointStyleStrings );
+//    optionsColumn->Add( pPointStyle, inputFlags );
 
-    pPointStyle->Connect( wxEVT_COMMAND_CHOICE_SELECTED,  wxCommandEventHandler(MyFrame1::OnPrChoicePointStyle), NULL, this );
-
-
-    optionsColumn->Add( new wxStaticText(pPanel, wxID_ANY, _("Remarks special")), labelFlags );
-    wxString pBoundStyleStrings[] = { _("Plain"), _("Symbolized"), };
-    pBoundStyle = new wxChoice( pPanel, ID_1RADARDISTUNIT, wxDefaultPosition, wxSize(180, 60), 2, pBoundStyleStrings );
-    optionsColumn->Add( pBoundStyle, inputFlags );
-
-    pBoundStyle->Connect( wxEVT_COMMAND_CHOICE_SELECTED,  wxCommandEventHandler(MyFrame1::OnBoundStyle), NULL, this );
+//    pPointStyle->Connect( wxEVT_COMMAND_CHOICE_SELECTED,  wxCommandEventHandler(MyFrame1::OnPrChoicePointStyle), NULL, this );
 
 
-    optionsColumn->Add( new wxStaticText(pPanel, wxID_ANY, _("Remarks internal")), labelFlags );
-    wxString pColorNumStrings[] = { _("2 Color loooong"), _("4 Color loooong"), };
-    p24Color = new wxChoice( pPanel, ID_1RADARDISTUNIT, wxDefaultPosition, wxSize(180, 60), 2, pColorNumStrings );
-    optionsColumn->Add( p24Color, inputFlags );
+//    optionsColumn->Add( new wxStaticText(pPanel, wxID_ANY, _("Remarks special")), labelFlags );
+//    wxString pBoundStyleStrings[] = { _("Plain"), _("Symbolized"), };
+//    pBoundStyle = new wxChoice( pPanel, ID_1RADARDISTUNIT, wxDefaultPosition, wxSize(180, 60), 2, pBoundStyleStrings );
+//    optionsColumn->Add( pBoundStyle, inputFlags );
 
-    p24Color->Connect( wxEVT_COMMAND_CHOICE_SELECTED,  wxCommandEventHandler(MyFrame1::On24Color), NULL, this );
+//    pBoundStyle->Connect( wxEVT_COMMAND_CHOICE_SELECTED,  wxCommandEventHandler(MyFrame1::OnBoundStyle), NULL, this );
+
+
+//    optionsColumn->Add( new wxStaticText(pPanel, wxID_ANY, _("Remarks internal")), labelFlags );
+//    wxString pColorNumStrings[] = { _("2 Color loooong"), _("4 Color loooong"), };
+//    p24Color = new wxChoice( pPanel, ID_1RADARDISTUNIT, wxDefaultPosition, wxSize(180, 60), 2, pColorNumStrings );
+//    optionsColumn->Add( p24Color, inputFlags );
+
+//    p24Color->Connect( wxEVT_COMMAND_CHOICE_SELECTED,  wxCommandEventHandler(MyFrame1::On24Color), NULL, this );
 
 
     // spacer
@@ -151,15 +162,16 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
 
 
     // depth options
-    optionsColumn->Add( new wxStaticText( pPanel, ID_1RADARDISTUNIT, _("Product") ), labelFlags );
+    optionsColumn->Add( new wxStaticText( pPanel, ID_1RADARDISTUNIT, _("Packets") ), labelFlags );
 //    wxBoxSizer* depShalRow = new wxBoxSizer( wxHORIZONTAL );
 //    optionsColumn->Add( depShalRow );
-  wxString pPointStyleStrings1[] = { _("Pivot"), _("Slide"), _("Double") };
+    wxString pPointStyleStrings1[] = { _("1"), _("2"), _("3"), _("4"), _("5"), _("6"), _("7"), _("8"), _("9"), _("10"), _("11") };
     pPointStyle1 = new wxChoice( pPanel, ID_1RADARDISTUNIT, wxDefaultPosition,
-            wxSize(180, 60), 3, pPointStyleStrings1 );
+            wxSize(180, 60), 11, pPointStyleStrings1 );
+    pPointStyle1->SetSelection(0);
     optionsColumn->Add( pPointStyle1, inputFlags );
 
-    pPointStyle1->Connect( wxEVT_COMMAND_CHOICE_SELECTED,  wxCommandEventHandler(MyFrame1::OnPointStyle1), NULL, this );
+     pPointStyle1->Connect( wxEVT_COMMAND_CHOICE_SELECTED,  wxCommandEventHandler(MyFrame1::OnPointStyle1), NULL, this );
 
 
     optionsColumn->Add( new wxStaticText( pPanel, wxID_ANY, _("Client") ), labelFlags );
@@ -744,10 +756,10 @@ void MyFrame1::GetComponents(wxListCtrl *ps57CtlListCtrl1) {
     mysqlcppapi::Result_Store res = query.store();
     // Query::store() executes the query and returns the results
 
-    ps57CtlListCtrl1->InsertColumn(0, _("ID"));
-    ps57CtlListCtrl1->InsertColumn(1, _("Name"), wxLIST_FORMAT_LEFT, 250);
+    ps57CtlListCtrl1->InsertColumn(0, _("ID"), wxLIST_FORMAT_LEFT, 100);
+    ps57CtlListCtrl1->InsertColumn(1, _("Name"), wxLIST_FORMAT_LEFT, 450);
     ps57CtlListCtrl1->InsertColumn(2, _("Category"), wxLIST_FORMAT_LEFT, 100);
-    ps57CtlListCtrl1->InsertColumn(3, _("Code"));
+    ps57CtlListCtrl1->InsertColumn(3, _("Code"), wxLIST_FORMAT_LEFT, 190);
 //    ps57CtlListCtrl1->InsertColumn(4, _("Composition"));
 //    ps57CtlListCtrl1->InsertColumn(5, _("Description"));
 //    ps57CtlListCtrl1->InsertColumn(6, _("Image"));
@@ -856,9 +868,9 @@ void MyFrame1::GetProjects(wxListCtrl  *ps57CtlListCtrl) {
     mysqlcppapi::Result_Store res = query.store();
     // Query::store() executes the query and returns the results
 
-    ps57CtlListCtrl->InsertColumn(0, _("ID"));
-    ps57CtlListCtrl->InsertColumn(1, _("Name"), wxLIST_FORMAT_LEFT, 250);
-    ps57CtlListCtrl->InsertColumn(2, _("Date creation"), wxLIST_FORMAT_LEFT, 150);
+    ps57CtlListCtrl->InsertColumn(0, _("ID"), wxLIST_FORMAT_LEFT, 100);
+    ps57CtlListCtrl->InsertColumn(1, _("Name"), wxLIST_FORMAT_LEFT, 450);
+    ps57CtlListCtrl->InsertColumn(2, _("Date creation"), wxLIST_FORMAT_LEFT, 220);
     ps57CtlListCtrl->InsertColumn(3, _("Product"));
     ps57CtlListCtrl->InsertColumn(4, _("Client ID"));
     ps57CtlListCtrl->InsertColumn(5, _("Creator ID"));
