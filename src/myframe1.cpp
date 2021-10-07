@@ -50,20 +50,10 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
     idCreator = " WHERE a.id = 1";
     idProgress = " Progress 1%";
 
-//    dbHost = "192.168.1.3";
-//    dbUser = "djan_claroflex";
-//    dbPassword = "7njc4m4mYwmPI4LG";
-//    dbName = "claroflex_v0.2";
-
-//    dbHost = "localhost";
-//    dbUser = "root";
-//    dbPassword = "Android123";
-//    dbName = "drf_android";
-
-    dbHost = "34.244.61.90";
+    dbHost = "8.8.8.8";
     dbUser = "root";
-    dbPassword = "dQ0;Cdm5HDM^3]w";
-    dbName = "claroflex_v02";
+    dbPassword = "aaaaa";
+    dbName = "db1";
 
 
     m_whatever = 1;
