@@ -37,7 +37,7 @@ class wxDC;
 class LabelPoint
 {
 public:
-      LabelPoint(const wxString& icon_ident, const wxString& no, const wxString& name, const wxString& code, const wxString& image, const wxString &pGUID = GPX_EMPTY_STRING, bool bAddToList = true);
+      LabelPoint(const wxString& icon_ident, const wxString& no, const wxString& name, const wxString& cname, const wxString& pack, const wxString& pcs, const wxString& last, const wxString& code, const wxString& image, const wxString &pGUID = GPX_EMPTY_STRING, bool bAddToList = true);
       LabelPoint( LabelPoint* orig );
       LabelPoint();
       ~LabelPoint(void);
@@ -62,6 +62,10 @@ public:
       wxString GetCode(void){ return m_MarkCode; }
       wxString GetImage(void){ return m_MarkImage; }
       wxString GetDescription(void) { return m_MarkDescription; }
+      wxString GetCName(void){ return m_MarkCName; }
+      wxString GetPack(void){ return m_MarkPack; }
+      wxString GetPcs(void){ return m_MarkPcs; }
+      wxString GetLast(void){ return m_MarkLast; }
       
       wxString GetIconName(void){ return m_IconName; }
       wxBitmap *GetIconBitmap(){ return m_pbmIcon; }
@@ -77,10 +81,18 @@ public:
       void SetName(const wxString & name);
       void SetCode(const wxString & code);
       void SetImage(const wxString & image);
+      void SetCName(const wxString & cname);
+      void SetPack(const wxString & pack);
+      void SetPcs(const wxString & pcs);
+      void SetLast(const wxString & last);
       void CalculateNoExtents(void);
       void CalculateNameExtents(void);
       void CalculateCodeExtents(void);
       void CalculateImageExtents(void);
+      void CalculateCNameExtents(void);
+      void CalculatePackExtents(void);
+      void CalculatePcsExtents(void);
+      void CalculateLastExtents(void);
 
       bool             m_bPtIsSelected;
 
@@ -97,6 +109,10 @@ public:
       wxSize            m_NameExtents;
       wxSize            m_CodeExtents;
       wxSize            m_ImageExtents;
+      wxSize            m_CNameExtents;
+      wxSize            m_PackExtents;
+      wxSize            m_PcsExtents;
+      wxSize            m_LastExtents;
 
       bool              m_bDynamicName;
       bool              m_bShowName;
@@ -129,6 +145,10 @@ private:
       wxString          m_MarkName;
       wxString          m_MarkCode;
       wxString          m_MarkImage;
+      wxString          m_MarkCName;
+      wxString          m_MarkPack;
+      wxString          m_MarkPcs;
+      wxString          m_MarkLast;
       wxDateTime        m_CreateTimeX;
       wxBitmap          *m_pbmIcon;
       wxString          m_IconName;

@@ -110,8 +110,8 @@ LabelPoint::LabelPoint( LabelPoint* orig )
     m_ManagerNode = NULL;
 }
 
-LabelPoint::LabelPoint( const wxString& icon_ident, const wxString& no, const wxString& name, const wxString& code,
-        const wxString& image, const wxString &pGUID, bool bAddToList )
+LabelPoint::LabelPoint( const wxString& icon_ident, const wxString& no, const wxString& name,
+        const wxString& cname, const wxString& pack, const wxString& pcs, const wxString& last, const wxString& code, const wxString& image, const wxString &pGUID, bool bAddToList )
 {
 
     //  Nice defaults
@@ -143,6 +143,10 @@ LabelPoint::LabelPoint( const wxString& icon_ident, const wxString& no, const wx
 
     SetNo( no );
     SetName( name );
+    SetCName( cname );
+    SetPack ( pack );
+    SetPcs ( pcs );
+    SetLast ( last );
     SetCode( code );
     SetImage( image );
 
@@ -195,6 +199,26 @@ void LabelPoint::SetImage(const wxString & image)
     m_MarkImage = image;
     CalculateImageExtents();
 }
+void LabelPoint::SetCName(const wxString & cname)
+{
+    m_MarkCName = cname;
+    CalculateCNameExtents();
+}
+void LabelPoint::SetPack(const wxString & pack)
+{
+    m_MarkPack = pack;
+    CalculatePackExtents();
+}
+void LabelPoint::SetPcs(const wxString & pcs)
+{
+    m_MarkPcs = pcs;
+    CalculatePcsExtents();
+}
+void LabelPoint::SetLast(const wxString & last)
+{
+    m_MarkPcs = last;
+    CalculateLastExtents();
+}
 
 void LabelPoint::CalculateNoExtents( void )
 {
@@ -241,6 +265,51 @@ void LabelPoint::CalculateImageExtents( void )
         m_ImageExtents = dc.GetTextExtent( m_MarkImage );
     } else
         m_ImageExtents = wxSize( 0, 0 );
+
+}
+void LabelPoint::CalculateCNameExtents( void )
+{
+    if( m_pMarkFont ) {
+        wxScreenDC dc;
+
+        dc.SetFont( *m_pMarkFont );
+        m_CNameExtents = dc.GetTextExtent( m_MarkCName );
+    } else
+        m_CNameExtents = wxSize( 0, 0 );
+
+}
+void LabelPoint::CalculatePackExtents( void )
+{
+    if( m_pMarkFont ) {
+        wxScreenDC dc;
+
+        dc.SetFont( *m_pMarkFont );
+        m_PackExtents = dc.GetTextExtent( m_MarkPack );
+    } else
+        m_PackExtents = wxSize( 0, 0 );
+
+}
+void LabelPoint::CalculatePcsExtents( void )
+{
+    if( m_pMarkFont ) {
+        wxScreenDC dc;
+
+        dc.SetFont( *m_pMarkFont );
+        m_PcsExtents = dc.GetTextExtent( m_MarkPcs );
+    } else
+        m_PcsExtents = wxSize( 0, 0 );
+
+}
+
+void LabelPoint::CalculateLastExtents( void )
+{
+    if( m_pMarkFont ) {
+        wxScreenDC dc;
+
+        dc.SetFont( *m_pMarkFont );
+        m_LastExtents = dc.GetTextExtent( m_MarkLast );
+    } else
+        m_LastExtents = wxSize( 0, 0 );
 
 }
 

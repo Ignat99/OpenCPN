@@ -1199,20 +1199,27 @@ void PlugInManager::SetCanvasContextMenuItemGrey(int item, bool grey)
 
 void PlugInManager::SendNMEASentenceToAllPlugIns(const wxString &sentence)
 {
-//    wxString sentence1 = "G.W. :+ 10.1155kg\n";
+//    wxString sentence1 = "G.W. :+ 0.0000kg\n";
 //    wxString sentence1 = "U.W. :+ 0.08155 g/pcs\n";
 //    wxString sentence1 =   "Total:+ 144 pcs\n";
     wxString decouple_sentence(sentence); // decouples 'const wxString &' and 'wxString &' to keep bin compat for plugins
+//    wxString decouple_sentence1(sentence1); // decouples 'const wxString &' and 'wxString &' to keep bin compat for plugins
     for(unsigned int i = 0 ; i < plugin_array.GetCount() ; i++)
     {
         PlugInContainer *pic = plugin_array.Item(i);
-        pic->m_pplugin->SetSentence(decouple_sentence);
 
         if(pic->m_bEnabled && pic->m_bInitState)
         {
+// Put it thear to not have Segmentation fault
+            pic->m_pplugin->SetSentence(decouple_sentence);
+
             if(pic->m_cap_flag & WANTS_NMEA_SENTENCES)
                 pic->m_pplugin->SetNMEASentence(decouple_sentence);
         }
+//        else
+//        {
+//            pic->m_pplugin->SetSentence(decouple_sentence1);
+//        }
     }
 }
 

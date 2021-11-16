@@ -64,6 +64,14 @@ public:
       std::string      dbHost;
       Label    *m_pLabel;
       int    m_nSelected;
+      int    pack;
+      int    pack_cur;
+      int    pack_pcs;
+      int    pcs_cur;
+      int    pcs_last;
+      int    db_quantity;
+      double db_weigh;
+      wxString dbClientName;
 
       void GetProjects(wxListCtrl *ps57CtlListBoxStrings);
       void GetComponents(wxListCtrl *ps57CtlListBoxStrings);

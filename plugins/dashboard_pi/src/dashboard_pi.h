@@ -56,7 +56,7 @@
 #include "speedometer.h"
 #include "compass.h"
 #include "wind.h"
-#include "rudder_angle.h"
+//#include "rudder_angle.h"
 #include "gps.h"
 #include "depth.h"
 #include "clock.h"
@@ -134,6 +134,14 @@ public:
       wxString GetCommonName();
       wxString GetShortDescription();
       wxString GetLongDescription();
+      int pack;
+      int pack_cur;
+      int pack_cur_flag;
+      int pack_pcs;
+      int pcs_cur;
+      int pcs_last;
+//      int db_quantity;
+//      double db_weigh;
 
 //    The optional method overrides
       void SetSentence(wxString &sentence);

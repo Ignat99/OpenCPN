@@ -74,10 +74,14 @@ using namespace std;
 #define PRINT_WP_LOGO 0
 #define PRINT_WP_REFERENCIA 1
 #define PRINT_WP_COMPONENTE 2
-#define PRINT_WP_IMAGEN 3
-#define PRINT_WP_CODIGOQR 4
-#define PRINT_WP_PESO 5
-#define PRINT_WP_STOCK 6
+//#define PRINT_WP_PESO 3
+//#define PRINT_WP_STOCK 4
+#define PRINT_WP_NAME 3
+#define PRINT_WP_PACK 4
+#define PRINT_WP_PCS 5
+#define PRINT_WP_LAST 6
+#define PRINT_WP_IMAGEN 7
+#define PRINT_WP_CODIGOQR 8
 
 // Global print data, to remember settings during the session
 extern wxPrintData*     g_printData;
@@ -92,39 +96,49 @@ MyLabelPrintout::MyLabelPrintout( std::vector<bool> _toPrintOut,
                                       toPrintOut( _toPrintOut )
 {
     // Let's have at least some device units margin
-//    marginX = 5;
-//    marginY = 5;
-
-
-    marginX = 20;
+    marginX = 5;
     marginY = 5;
 
     // Offset text from the edge of the cell (Needed on Linux)
-    textOffsetX = 5;
-    textOffsetY = 8;
+//    textOffsetX = 5;
+//    textOffsetY = 8;
 
-//    textOffsetX = 50;
-//    textOffsetY = 80;
+    textOffsetX = 1;
+    textOffsetY = 1;
 
-/*
+
     table.StartFillHeader();
     // setup widths for columns
     if ( toPrintOut[ PRINT_WP_LOGO ] ) {
-        table << (const char *)wxString(_("Claroflex")).mb_str();
+        table << (const char *)wxString(_("Claro")).mb_str();
     }
     if ( toPrintOut[ PRINT_WP_REFERENCIA ] ) {
-        table << (const char *)wxString(_("REFERENCIA")).mb_str();
+        table << (const char *)wxString(_("REF")).mb_str();
     }
     if ( toPrintOut[ PRINT_WP_COMPONENTE ] ) {
-        table << (const char *)wxString(_("COMPONENTE")).mb_str();
+        table << (const char *)wxString(_("COM")).mb_str();
+    }
+    if ( toPrintOut[ PRINT_WP_NAME ] ) {
+        table << (const char *)wxString(_("CN")).mb_str();
+    }
+    if ( toPrintOut[ PRINT_WP_PACK ] ) {
+        table << (const char *)wxString(_("PACK")).mb_str();
+    }
+    if ( toPrintOut[ PRINT_WP_PCS ] ) {
+        table << (const char *)wxString(_("PCS")).mb_str();
+    }
+    if ( toPrintOut[ PRINT_WP_LAST ] ) {
+        table << (const char *)wxString(_("LAST")).mb_str();
     }
     if ( toPrintOut[ PRINT_WP_IMAGEN ] ) {
-        table << (const char *)wxString(_("IMAGEN")).mb_str();
+        table << (const char *)wxString(_("IMAG")).mb_str();
     }
     if ( toPrintOut[ PRINT_WP_CODIGOQR ] ) {
-        table << (const char *)wxString(_("CODIGO QR")).mb_str();
+        table << (const char *)wxString(_("QR")).mb_str();
     }
-*/
+
+
+
     table.StartFillWidths();
     // setup widths for columns
     if ( toPrintOut[ PRINT_WP_LOGO ] ) {
@@ -136,12 +150,24 @@ MyLabelPrintout::MyLabelPrintout( std::vector<bool> _toPrintOut,
     if ( toPrintOut[ PRINT_WP_COMPONENTE ] ) {
         table << 500;
     }
+    if ( toPrintOut[ PRINT_WP_NAME ] ) {
+        table << 500;
+    }
+    if ( toPrintOut[ PRINT_WP_PACK ] ) {
+        table << 500;
+    }
+    if ( toPrintOut[ PRINT_WP_PCS ] ) {
+        table << 500;
+    }
+    if ( toPrintOut[ PRINT_WP_LAST ] ) {
+        table << 500;
+    }
     if ( toPrintOut[ PRINT_WP_IMAGEN ] ) {
         table << 500;
     }
     if ( toPrintOut[ PRINT_WP_CODIGOQR ] ) {
         table << 500;
-    } 
+    }
 
     table.StartFillData();
 
@@ -162,7 +188,7 @@ MyLabelPrintout::MyLabelPrintout( std::vector<bool> _toPrintOut,
 //            point_position.Printf( _T( "CAS002" ) );
 //            string   cell( point_position.mb_str() );
             string cell( point->GetCode().mb_str() );
-            table << "REFERENCIA:  " + cell;
+            table << "REF:  " + cell;
         }
         if ( toPrintOut[ PRINT_WP_COMPONENTE ] ) {
 //            wxString point_course;
@@ -170,7 +196,39 @@ MyLabelPrintout::MyLabelPrintout( std::vector<bool> _toPrintOut,
 //            point_course.Printf( _T( "CASQUILLO GUIA SUPERIOR" ) );
 //            string   cell( point_course.mb_str() );
             string cell( point->GetName().mb_str() );
-            table << "COMPONENTE:  " + cell;
+            table << "COM:  " + cell;
+        }
+        if ( toPrintOut[ PRINT_WP_NAME ] ) {
+            string cell( point->GetCName().mb_str() );
+            table << "NAME:  " + cell;
+        }
+        if ( toPrintOut[ PRINT_WP_PACK ] ) {
+            string cell( point->GetPack().mb_str() );
+            table << "PA_N:  " + cell;
+
+//// Setup the number of pages to print
+//            numberOfPages = atoi(point->GetPack().mb_str());
+//            if ( numberOfPages%2 == 0) {
+//                numberOfPages = numberOfPages / 2;
+//                  pageToPrint = numberOfPages;
+//            } else {
+//// Setup number of labels. TODO: Make function to print last labels
+//                numberOfPages = ((numberOfPages - 1) / 2) + 1;
+//                  pageToPrint = numberOfPages;
+//            }
+// Print number of page
+//            string cell1( numberOfPages );
+
+//            table << "PA_N:  " + numberOfPages ;
+
+        }
+        if ( toPrintOut[ PRINT_WP_PCS ] ) {
+            string cell( point->GetPcs().mb_str() );
+            table << "PCS:  " + cell;
+        }
+        if ( toPrintOut[ PRINT_WP_LAST ] ) {
+            string cell( point->GetLast().mb_str() );
+            table << "LAST:  " + cell;
         }
         if ( toPrintOut[ PRINT_WP_IMAGEN ] ) {
 //            wxString point_distance;
@@ -178,15 +236,16 @@ MyLabelPrintout::MyLabelPrintout( std::vector<bool> _toPrintOut,
 //            point_distance.Printf( _T( "%6.2f" + getUsrDistanceUnit() ) );
 //            string   cell( point_distance.mb_str() );
             string cell( point->GetImage().mb_str() );
-            table << cell;
+            table <<  cell;
         }
         if ( toPrintOut[ PRINT_WP_CODIGOQR ] ) {
 //            wxString point_description;
 //            point_description.Printf( _T( "gr" ) );
 //            string cell( point->GetDescription().mb_str() );
-//            string   cell( point_description.mb_str() );
-            table << "CODIGO QR:  ";
+            string   cell( point->GetLast().mb_str() );
+            table <<  cell;
         }
+
         table << "\n";
         }
     }
@@ -212,6 +271,8 @@ void MyLabelPrintout::OnPreparePrinting()
     // Get the size of the DC in pixels
     int w, h;
     dc->GetSize( &w, &h );
+//    w = 2000;
+//    h = 1000;
 
     // We don't know before hand what size the Print DC will be, in pixels.  Varies by host.
     // So, if the dc size is greater than 1000 pixels, we scale accordinly.
@@ -231,7 +292,9 @@ void MyLabelPrintout::OnPreparePrinting()
     dc->SetDeviceOrigin( ( long )marginX, ( long )marginY );
 
     table.AdjustCells( dc, marginX, marginY );
-    numberOfPages = table.GetNumberPages();
+// Numer of pages we setup in pack amout
+//    numberOfPages = table.GetNumberPages();
+    numberOfPages = 1;
 }
 
 
@@ -258,6 +321,7 @@ void MyLabelPrintout::DrawPage( wxDC* dc )
     wxImage m_bitmap(my_path + "logo_negro_200.png");
     wxString my_code;
     wxString my_image;
+    wxRect cur_r;
 
 
     wxFont labelPrintFont_bold( 24, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD );
@@ -265,11 +329,9 @@ void MyLabelPrintout::DrawPage( wxDC* dc )
     wxBrush brush( wxColour(255,255,255),  wxTRANSPARENT );
     dc->SetBrush( brush );
 
-    int header_textOffsetX = 25;
-    int header_textOffsetY = 115;
 
-//    int header_textOffsetX = 80;
-//    int header_textOffsetY = 115;
+    int header_textOffsetX = 80;
+    int header_textOffsetY = 115;
 
     int currentX = marginX;
     int currentY = marginY;
@@ -281,6 +343,8 @@ void MyLabelPrintout::DrawPage( wxDC* dc )
 //        currentX += cell.GetWidth();
 //    }
 
+
+// Print Right and Left Logo and Bold Lines
     dc->DrawBitmap(m_bitmap, 80, 30);
     dc->DrawBitmap(m_bitmap, 940, 30);
 
@@ -291,10 +355,15 @@ void MyLabelPrintout::DrawPage( wxDC* dc )
     dc->SetPen(*wxBLACK_PEN);
 //    dc->SetBrush(*wxBLACK_BRUSH);
 
+// Top Line
     dc->DrawLine( 20, 110, 1680, 110);
     dc->DrawLine( 20, 112, 1680, 112);
-    dc->DrawLine( 20, 1100, 1680, 1100);
-    dc->DrawLine( 20, 1102, 1680, 1102);
+
+// Bottom Line
+//    dc->DrawLine( 20, 1100, 1680, 1100);
+//    dc->DrawLine( 20, 1102, 1680, 1102);
+
+
 
 //    dc->DrawLine( 80, 110, 1030, 110);
 //    dc->DrawLine( 80, 112, 1030, 112);
@@ -305,7 +374,8 @@ void MyLabelPrintout::DrawPage( wxDC* dc )
 //    dc->SetFont( labelPrintFont_normal );
 
     vector< vector < PrintCell > > & cells = table.GetContent();
-    currentY = marginY + table.GetHeaderHeight() + header_textOffsetY;
+//    currentY = marginY + table.GetHeaderHeight() + header_textOffsetY;
+    currentY = marginY + header_textOffsetY;
     int currentHeight = 0;
     for ( size_t i = 0; i < cells.size(); i = i + 2 ) {
 //    for ( size_t i = 0; i < 2; i = i + 2 ) {
@@ -321,21 +391,39 @@ void MyLabelPrintout::DrawPage( wxDC* dc )
                    my_code += "components/";
                    my_code += cell.GetText();
                    my_code += ".bmp";
+// Print code for debug info
+//                    dc->DrawLabel(my_code, r);
+
+                    PrintCell& cell_img = content_row[ 7 ];
+
+// Print first line of full name of image
+//                    dc->DrawLabel(cell_img.GetText(), r);
+
+                    my_image = my_path;
+                    my_image += cell_img.GetText();
+                    wxImage m_image(cell_img.GetText());
+                    dc->DrawBitmap(m_image.Scale(200, 200, wxIMAGE_QUALITY_HIGH), 480, 400);
+                    wxImage m_qrcode(my_code);
+                    dc->DrawBitmap(m_qrcode.Scale(200, 200), 480, 650);
                 }
                 if (j == 1) dc->DrawLabel(cell.GetText(), r);
                 if (j == 2) dc->DrawLabel(cell.GetText(), r);
-                if (j == 3) {
-                    dc->DrawLabel("IMAGEN: ", r);
+                if (j == 3) dc->DrawLabel(cell.GetText(), r);
+                if (j == 4) dc->DrawLabel(cell.GetText(), r);
+                if (j == 5) dc->DrawLabel(cell.GetText(), r);
+                if (j == 6) dc->DrawLabel(cell.GetText(), r);
+                if (j == 7) {
                     my_image = my_path;
                     my_image += cell.GetText();
-                    wxImage m_image(my_image);
-                    dc->DrawBitmap(m_image.Scale(200, 200, wxIMAGE_QUALITY_HIGH), 280, 300);
+                    wxImage m_image(cell.GetText());
+//                    dc->DrawLabel(cell.GetText(), r);
+                    dc->DrawBitmap(m_image.Scale(200, 200, wxIMAGE_QUALITY_HIGH), 480, 400);
                 }
-                if (j == 4) {
-                    r.Offset( 0, 200 );
-                    dc->DrawLabel("CODIGO QR:  ", r);
-                    wxImage m_qrcode(my_code);
-                    dc->DrawBitmap(m_qrcode.Scale(200, 200), 280, 550);
+                if (j == 8) {
+//                    r.Offset( 0, 200 );
+//                    dc->DrawLabel("CODIGO QR:  ", r);
+//                    wxImage m_qrcode(my_code);
+//                    dc->DrawBitmap(m_qrcode.Scale(200, 200), 480, 650);
                 }
 //                currentX     += cell.GetWidth();
                 currentY     += cell.GetHeight() + 20;
@@ -345,7 +433,8 @@ void MyLabelPrintout::DrawPage( wxDC* dc )
 //        content_row = cells[ i + 1 ];
         content_row = cells[ i ];
         currentX = marginX + header_textOffsetX;
-        currentY = marginY + table.GetHeaderHeight() + header_textOffsetY;
+//        currentY = marginY + table.GetHeaderHeight() + header_textOffsetY;
+        currentY = marginY + header_textOffsetY;
 
         for ( size_t j = 0; j < content_row.size(); j++ ) {
             PrintCell& cell = content_row[ j ];
@@ -356,21 +445,34 @@ void MyLabelPrintout::DrawPage( wxDC* dc )
                    my_code += "components/";
                    my_code += cell.GetText();
                    my_code += ".bmp";
+
+                    PrintCell& cell_img = content_row[ 7 ];
+                    my_image = my_path;
+                    my_image += cell_img.GetText();
+                    wxImage m_image(cell_img.GetText());
+                    dc->DrawBitmap(m_image.Scale(200, 200, wxIMAGE_QUALITY_HIGH), 480+940, 400);
+                    wxImage m_qrcode(my_code);
+                    dc->DrawBitmap(m_qrcode.Scale(200, 200), 480+940, 650);
                 }
                 if (j == 1) dc->DrawLabel(cell.GetText(), r);
                 if (j == 2) dc->DrawLabel(cell.GetText(), r);
-                if (j == 3) {
-                    dc->DrawLabel("IMAGEN: ", r);
+                if (j == 3) dc->DrawLabel(cell.GetText(), r);
+                if (j == 4) dc->DrawLabel(cell.GetText(), r);
+                if (j == 5) dc->DrawLabel(cell.GetText(), r);
+                if (j == 6) dc->DrawLabel(cell.GetText(), r);
+                if (j == 7) {
+//                    dc->DrawLabel("IMAGEN: ", r);
                     my_image = my_path;
                     my_image += cell.GetText();
                     wxImage m_image(my_image);
-                    dc->DrawBitmap(m_image.Scale(200, 200, wxIMAGE_QUALITY_HIGH), 280+940, 300);
+//                    dc->DrawLabel(cell.GetText(), r);
+//                    dc->DrawBitmap(m_image.Scale(200, 200, wxIMAGE_QUALITY_HIGH), 480+940, 400);
                 }
-                if (j == 4) {
-                    r.Offset( 0, 200 );
-                    dc->DrawLabel("CODIGO QR:  ", r);
+                if (j == 8) {
+//                    r.Offset( 0, 200 );
+//                    dc->DrawLabel("CODIGO QR:  ", r);
                     wxImage m_qrcode(my_code);
-                    dc->DrawBitmap(m_qrcode.Scale(200, 200), 280+940, 550);
+//                    dc->DrawBitmap(m_qrcode.Scale(200, 200), 480+940, 650);
                 }
 //                currentX     += cell.GetWidth();
                 currentY     += cell.GetHeight() + 20;
@@ -490,19 +592,53 @@ void LabelPrintSelection::CreateControls()
     wxStaticText* label3 = new  wxStaticText( itemDialog1, wxID_ANY, _( "Show Componente. " ), wxDefaultPosition, wxDefaultSize );
     fgSizer2->Add( label3, 1, wxALL | wxALIGN_CENTER_VERTICAL, 5 );
 
+
+
+    m_checkBoxWPCName = new wxCheckBox( itemDialog1, wxID_ANY, _( "Client Name" ),
+                                              wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT );
+    m_checkBoxWPCName->SetValue( true );
+    fgSizer2->Add( m_checkBoxWPCName, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5 );
+    wxStaticText* label4 = new  wxStaticText( itemDialog1, wxID_ANY, _( "Show Client Name." ), wxDefaultPosition, wxDefaultSize );
+    fgSizer2->Add( label4, 1, wxALL | wxALIGN_CENTER_VERTICAL, 5 );
+
+
+    m_checkBoxWPPack = new wxCheckBox( itemDialog1, wxID_ANY, _( "Pack" ),
+                                              wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT );
+    m_checkBoxWPPack->SetValue( true );
+    fgSizer2->Add( m_checkBoxWPPack, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5 );
+    wxStaticText* label5 = new  wxStaticText( itemDialog1, wxID_ANY, _( "Show pack" ), wxDefaultPosition, wxDefaultSize );
+    fgSizer2->Add( label5, 1, wxALL | wxALIGN_CENTER_VERTICAL, 5 );
+
+    m_checkBoxWPPcs = new wxCheckBox( itemDialog1, wxID_ANY, _( "Pcs" ),
+                                              wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT );
+    m_checkBoxWPPcs->SetValue( true );
+    fgSizer2->Add( m_checkBoxWPPcs, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5 );
+    wxStaticText* label6 = new  wxStaticText( itemDialog1, wxID_ANY, _( "Show pcs." ), wxDefaultPosition, wxDefaultSize );
+    fgSizer2->Add( label6, 1, wxALL | wxALIGN_CENTER_VERTICAL, 5 );
+
+
+    m_checkBoxWPLast = new wxCheckBox( itemDialog1, wxID_ANY, _( "Last pack" ),
+                                              wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT );
+    m_checkBoxWPLast->SetValue( true );
+    fgSizer2->Add( m_checkBoxWPLast, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5 );
+    wxStaticText* label7 = new  wxStaticText( itemDialog1, wxID_ANY, _( "Show pcs in last pack." ), wxDefaultPosition, wxDefaultSize );
+    fgSizer2->Add( label7, 1, wxALL | wxALIGN_CENTER_VERTICAL, 5 );
+
+
     m_checkBoxWPDistanceToNext = new wxCheckBox( itemDialog1, wxID_ANY, _( "Imagen" ),
                                                  wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT );
     m_checkBoxWPDistanceToNext->SetValue( true );
     fgSizer2->Add( m_checkBoxWPDistanceToNext, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5 );
-    wxStaticText* label4 = new  wxStaticText( itemDialog1, wxID_ANY, _( "Show Imagen componente." ), wxDefaultPosition, wxDefaultSize );
-    fgSizer2->Add( label4, 1, wxALL | wxALIGN_CENTER_VERTICAL, 5 );
+    wxStaticText* label8 = new  wxStaticText( itemDialog1, wxID_ANY, _( "Show Imagen componente." ), wxDefaultPosition, wxDefaultSize );
+    fgSizer2->Add( label8, 1, wxALL | wxALIGN_CENTER_VERTICAL, 5 );
 
     m_checkBoxWPDescription = new wxCheckBox( itemDialog1, wxID_ANY, _( "Codigo QR" ),
                                               wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT );
     m_checkBoxWPDescription->SetValue( true );
     fgSizer2->Add( m_checkBoxWPDescription, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5 );
-    wxStaticText* label5 = new  wxStaticText( itemDialog1, wxID_ANY, _( "Show codigo QR." ), wxDefaultPosition, wxDefaultSize );
-    fgSizer2->Add( label5, 1, wxALL | wxALIGN_CENTER_VERTICAL, 5 );
+    wxStaticText* label9 = new  wxStaticText( itemDialog1, wxID_ANY, _( "Show codigo QR." ), wxDefaultPosition, wxDefaultSize );
+    fgSizer2->Add( label9, 1, wxALL | wxALIGN_CENTER_VERTICAL, 5 );
+
 
     itemBoxSizer1->Add( fgSizer2, 5, wxEXPAND, 5 );
 
@@ -557,6 +693,10 @@ void LabelPrintSelection::OnLabelpropOkClick( wxCommandEvent& event )
     toPrintOut.push_back( m_checkBoxWPName->GetValue() );
     toPrintOut.push_back( m_checkBoxWPPosition->GetValue() );
     toPrintOut.push_back( m_checkBoxWPCourse->GetValue() );
+    toPrintOut.push_back( m_checkBoxWPCName->GetValue() );
+    toPrintOut.push_back( m_checkBoxWPPack->GetValue() );
+    toPrintOut.push_back( m_checkBoxWPPcs->GetValue() );
+    toPrintOut.push_back( m_checkBoxWPLast->GetValue() );
     toPrintOut.push_back( m_checkBoxWPDistanceToNext->GetValue() );
     toPrintOut.push_back( m_checkBoxWPDescription->GetValue() );
 

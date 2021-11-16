@@ -4,6 +4,7 @@
 #include <iostream>
 #include <iomanip>
 #include <string>
+#include <sstream>
 #include <stdexcept>
 #include "pluginmanager.h"
 #include <stdint.h>
@@ -50,10 +51,20 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
     idCreator = " WHERE a.id = 1";
     idProgress = " Progress 1%";
 
-    dbHost = "8.8.8.8";
+//    dbHost = "192.168.1.3";
+//    dbUser = "djan_claroflex";
+//    dbPassword = "7njc4m4mYwmPI4LG";
+//    dbName = "claroflex_v0.2";
+
+//    dbHost = "localhost";
+//    dbUser = "root";
+//    dbPassword = "Android123";
+//    dbName = "drf_android";
+
+    dbHost = "34.244.61.90";
     dbUser = "root";
-    dbPassword = "aaaaa";
-    dbName = "db1";
+    dbPassword = "dQ0;Cdm5HDM^3]w";
+    dbName = "claroflex_v02";
 
 
     m_whatever = 1;
@@ -155,9 +166,9 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
     optionsColumn->Add( new wxStaticText( pPanel, ID_1RADARDISTUNIT, _("Packets") ), labelFlags );
 //    wxBoxSizer* depShalRow = new wxBoxSizer( wxHORIZONTAL );
 //    optionsColumn->Add( depShalRow );
-    wxString pPointStyleStrings1[] = { _("1"), _("2"), _("3"), _("4"), _("5"), _("6"), _("7"), _("8"), _("9"), _("10"), _("11") };
+    wxString pPointStyleStrings1[] = { _("1"), _("2"), _("3"), _("4"), _("5"), _("6"), _("7"), _("8"), _("9"), _("10"), _("11"), _("25 pcs"), _("30 pcs"), _("50 pcs"), _("100 pcs") };
     pPointStyle1 = new wxChoice( pPanel, ID_1RADARDISTUNIT, wxDefaultPosition,
-            wxSize(180, 60), 11, pPointStyleStrings1 );
+            wxSize(180, 60), 15, pPointStyleStrings1 );
     pPointStyle1->SetSelection(0);
     optionsColumn->Add( pPointStyle1, inputFlags );
 
@@ -443,6 +454,7 @@ void MyFrame1::OnCoSelected( wxListEvent &event )
     wxListItem info4;
     wxListItem info6;
     wxJSONValue v;
+    wxJSONValue pack_txt;
 
     OnLabelListClick(event);
 
@@ -524,9 +536,480 @@ void MyFrame1::OnCoSelected( wxListEvent &event )
     mysqlcppapi::Row row = *i;
 //      printf("On Components Selected Quantity :  %s\n", row[0]);
     printf(wxString::Format("On Components Selected Quantity :  %s\n", _(row[0])));
+      db_quantity = row[0];
       v[_T("Decl")] = _(row[0]);
       wxString msg_id(_T("OCPN_DBP_DB_QUANTITY"));
       g_pi_manager->SendJSONMessageToAllPlugins(msg_id, v);
+
+// Calculate bolsa
+// We will put 4 just for test print more then 1 label without bascula
+    pack = 1;
+    pack_pcs = 30;
+    pcs_last = 0;
+    std::string packets_full_txt("");
+    std::string packet_pcs_txt("");
+
+    if (int(row[0]) > 330) {
+        std::cout << "Quantity: " << row[0] << std::endl;
+
+        if (int(row[0]) % 100  == 0 ) {
+            pcs_last = 0;
+            pack = int(row[0]) / 100;
+            pack_pcs = 100;
+            std::cout << "Quantity: " << row[0] << " Packets: " <<  pack  << std::endl;
+            pPointStyle1->SetSelection(14);
+        } else {
+
+        if (int(row[0]) % 50  == 0 ) {
+            pcs_last = 0;
+            pack = int(row[0]) / 50;
+            pack_pcs = 50;
+            std::cout << "Quantity: " << row[0] << " Packets: " <<  pack << std::endl;
+            pPointStyle1->SetSelection(13);
+        } else {
+
+        if (int(row[0]) % 30  == 0 ) {
+            pcs_last = 0;
+            pack = int(row[0]) / 30;
+            pack_pcs = 30;
+            std::cout << "Quantity: " << row[0] << " Packets: " <<  pack  << std::endl;
+            pPointStyle1->SetSelection(12);
+        } else {
+
+        if (int(row[0]) % 25  == 0 ) {
+            pcs_last = 0;
+            pack = int(row[0]) / 25;
+            pack_pcs = 25;
+            std::cout << "Quantity: " << row[0] << " Packets: " <<  pack  << std::endl;
+            pPointStyle1->SetSelection(11);
+        } else {
+            pcs_last = int(row[0]) % 30;
+            pack = int((int(row[0]) - pcs_last)/ 30);
+            pack_pcs = 30;
+//            packets_full_txt += pack;
+//            packet_pcs_txt += pack_pcs;
+            std::cout << "Quantit " << row[0] << " Packets_full: " << pack  << " Per pocket : " << pack_pcs << " Pcs in fin_pocket: " <<  pcs_last << std::endl;
+            pPointStyle1->SetSelection(12);
+        }
+    }}}}
+
+
+
+
+    if (int(row[0]) < 31 ) {
+        pack = 1;
+        pack_pcs = row[0];
+        std::cout << "Quantity: " << row[0] << " Packets: " <<  "1" << std::endl;
+        pPointStyle1->SetSelection(0);
+    } else {
+
+    if (int(row[0]) < 61 ) {
+        if (int(row[0]) % 2 == 0 ) {
+            pack = 2;
+            pack_pcs = int(int(row[0]) / 2);
+            std::cout << "Quantity: " << row[0] << " Packets: " <<  "2" << std::endl;
+            pPointStyle1->SetSelection(1);
+        } else {
+            pack = 2;
+            std::cout << "Quantity: " << row[0] << " Packets: " <<  "2" << std::endl;
+            pPointStyle1->SetSelection(1);
+        }
+    if (int(row[0]) < 91 ) {
+        if (int(row[0]) % 3 == 0 ) {
+            pack = 3;
+            pack_pcs = int(int(row[0]) / 3);
+            std::cout << "Quantity: " << row[0] << " Packets: " <<  "3" << std::endl;
+            pPointStyle1->SetSelection(2);
+        } else {
+            pack = 2;
+            pcs_last = int(int(row[0]) % 2 );
+            pack_pcs = int((int(row[0]) - pcs_last )/2);
+            std::cout << "Quantity: " << row[0] << " Packets: " <<  "2" << std::endl;
+            pPointStyle1->SetSelection(1);
+        }
+
+    } else {
+
+    if (int(row[0]) < 121 ) {
+        if (int(row[0]) % 4 == 0 ) {
+            pack = 4;
+            pack_pcs = int(int(row[0]) / 4);
+            std::cout << "Quantity: " << row[0] << " Packets: " <<  "4" << std::endl;
+            pPointStyle1->SetSelection(3);
+        } else {
+            if (int(row[0]) % 3 == 0 ) {
+                pack = 3;
+                pack_pcs = int(int(row[0]) / 3);
+                std::cout << "Quantity: " << row[0] << " Packets: " <<  "3" << std::endl;
+                pPointStyle1->SetSelection(2);
+            } else {
+                pack = 2;
+                pcs_last = int(int(row[0]) % 2 );
+                pack_pcs = int((int(row[0]) - pcs_last)/2);
+                std::cout << "Quantity: " << row[0] << " Packets: " <<  "2" << std::endl;
+                pPointStyle1->SetSelection(1);
+            }
+
+        }
+
+    } else {
+
+    if (int(row[0]) < 151 ) {
+        if (int(row[0]) % 5 == 0 ) {
+            pack = 5;
+            pack_pcs = int(int(row[0]) / 5);
+            std::cout << "Quantity: " << row[0] << " Packets: " <<  "5" << std::endl;
+            pPointStyle1->SetSelection(4);
+        } else {
+        if (int(row[0]) % 4 == 0 ) {
+            pack = 4;
+            pack_pcs = int(int(row[0]) / 4);
+            std::cout << "Quantity: " << row[0] << " Packets: " <<  "4" << std::endl;
+            pPointStyle1->SetSelection(3);
+        } else {
+            if (int(row[0]) % 3 == 0 ) {
+                pack = 3;
+                pack_pcs = int(int(row[0]) / 3);
+                std::cout << "Quantity: " << row[0] << " Packets: " <<  "3" << std::endl;
+                pPointStyle1->SetSelection(2);
+            } else {
+                pack = 2;
+                pcs_last = int(int(row[0]) % 2 );
+                pack_pcs = int((int(row[0]) - pcs_last)/2);
+                std::cout << "Quantity: " << row[0] << " Packets: " <<  "2" << std::endl;
+                pPointStyle1->SetSelection(1);
+            }
+
+        }
+
+        }
+    } else {
+
+    if (int(row[0]) < 181 ) {
+        if (int(row[0]) % 6 == 0 ) {
+            pack = 6;
+            pack_pcs = int(int(row[0]) / 6);
+            std::cout << "Quantity: " << row[0] << " Packets: " <<  "6" << std::endl;
+            pPointStyle1->SetSelection(5);
+        } else {
+        if (int(row[0]) % 5 == 0 ) {
+            pack = 5;
+            pack_pcs = int(int(row[0]) / 5);
+            std::cout << "Quantity: " << row[0] << " Packets: " <<  "5" << std::endl;
+            pPointStyle1->SetSelection(4);
+        } else {
+        if (int(row[0]) % 4 == 0 ) {
+            pack = 4;
+            pack_pcs = int(int(row[0]) / 4);
+            std::cout << "Quantity: " << row[0] << " Packets: " <<  "4" << std::endl;
+            pPointStyle1->SetSelection(3);
+        } else {
+            if (int(row[0]) % 3 == 0 ) {
+                pack = 3;
+                pack_pcs = int(int(row[0]) / 3);
+                std::cout << "Quantity: " << row[0] << " Packets: " <<  "3" << std::endl;
+                pPointStyle1->SetSelection(2);
+            } else {
+                pack = 2;
+                pcs_last = int(int(row[0]) % 2 );
+                pack_pcs = int((int(row[0]) - pcs_last)/2);
+                std::cout << "Quantity: " << row[0] << " Packets: " <<  "2" << std::endl;
+                pPointStyle1->SetSelection(1);
+            }
+
+        }
+
+        }
+    }} else {
+
+    if (int(row[0]) < 211 ) {
+        if (int(row[0]) % 7 == 0 ) {
+            pack = 7;
+            pack_pcs = int(int(row[0]) / 7);
+            std::cout << "Quantity: " << row[0] << " Packets: " <<  "7" << std::endl;
+            pPointStyle1->SetSelection(6);
+        } else {
+        if (int(row[0]) % 6 == 0 ) {
+            pack = 6;
+            pack_pcs = int(int(row[0]) / 6);
+            std::cout << "Quantity: " << row[0] << " Packets: " <<  "6" << std::endl;
+            pPointStyle1->SetSelection(5);
+        } else {
+        if (int(row[0]) % 5 == 0 ) {
+            pack = 5;
+            pack_pcs = int(int(row[0]) / 5);
+            std::cout << "Quantity: " << row[0] << " Packets: " <<  "5" << std::endl;
+            pPointStyle1->SetSelection(4);
+        } else {
+        if (int(row[0]) % 4 == 0 ) {
+            pack = 4;
+            pack_pcs = int(int(row[0]) / 4);
+            std::cout << "Quantity: " << row[0] << " Packets: " <<  "4" << std::endl;
+            pPointStyle1->SetSelection(3);
+        } else {
+            if (int(row[0]) % 3 == 0 ) {
+                pack = 3;
+                pack_pcs = int(int(row[0]) / 3);
+                std::cout << "Quantity: " << row[0] << " Packets: " <<  "3" << std::endl;
+                pPointStyle1->SetSelection(2);
+            } else {
+                pack = 2;
+                pcs_last = int(int(row[0]) % 2 );
+                pack_pcs = int((int(row[0]) - pcs_last)/2);
+                std::cout << "Quantity: " << row[0] << " Packets: " <<  "2" << std::endl;
+                pPointStyle1->SetSelection(1);
+            }
+
+        }
+
+        }
+    }}} else {
+
+
+    if (int(row[0]) < 241 ) {
+        if (int(row[0]) % 8 == 0 ) {
+            pack = 8;
+            pack_pcs = int(int(row[0]) / 8);
+            std::cout << "Quantity: " << row[0] << " Packets: " <<  "8" << std::endl;
+            pPointStyle1->SetSelection(7);
+        } else {
+        if (int(row[0]) % 7 == 0 ) {
+            pack = 7;
+            pack_pcs = int(int(row[0]) / 7);
+            std::cout << "Quantity: " << row[0] << " Packets: " <<  "7" << std::endl;
+            pPointStyle1->SetSelection(6);
+        } else {
+        if (int(row[0]) % 6 == 0 ) {
+            pack = 6;
+            pack_pcs = int(int(row[0]) / 6);
+            std::cout << "Quantity: " << row[0] << " Packets: " <<  "6" << std::endl;
+            pPointStyle1->SetSelection(5);
+        } else {
+        if (int(row[0]) % 5 == 0 ) {
+            pack = 5;
+            pack_pcs = int(int(row[0]) / 5);
+            std::cout << "Quantity: " << row[0] << " Packets: " <<  "5" << std::endl;
+            pPointStyle1->SetSelection(4);
+        } else {
+        if (int(row[0]) % 4 == 0 ) {
+            pack = 4;
+            pack_pcs = int(int(row[0]) / 4);
+            std::cout << "Quantity: " << row[0] << " Packets: " <<  "4" << std::endl;
+            pPointStyle1->SetSelection(3);
+        } else {
+            if (int(row[0]) % 3 == 0 ) {
+                pack = 3;
+                pack_pcs = int(int(row[0]) / 3);
+                std::cout << "Quantity: " << row[0] << " Packets: " <<  "3" << std::endl;
+                pPointStyle1->SetSelection(2);
+            } else {
+                pack = 2;
+                pcs_last = int(int(row[0]) % 2 );
+                pack_pcs = int((int(row[0]) - pcs_last)/2);
+                std::cout << "Quantity: " << row[0] << " Packets: " <<  "2" << std::endl;
+                pPointStyle1->SetSelection(1);
+            }
+
+        }
+
+        }
+    }}}} else {
+
+    if (int(row[0]) < 271 ) {
+        if (int(row[0]) % 9 == 0 ) {
+            pack = 9;
+            pack_pcs = int(int(row[0]) / 9);
+            std::cout << "Quantity: " << row[0] << " Packets: " <<  "9" << std::endl;
+            pPointStyle1->SetSelection(8);
+        } else {
+        if (int(row[0]) % 8 == 0 ) {
+            pack = 8;
+            pack_pcs = int(int(row[0]) / 8);
+            std::cout << "Quantity: " << row[0] << " Packets: " <<  "8" << std::endl;
+            pPointStyle1->SetSelection(7);
+        } else {
+        if (int(row[0]) % 7 == 0 ) {
+            pack = 7;
+            pack_pcs = int(int(row[0]) / 7);
+            std::cout << "Quantity: " << row[0] << " Packets: " <<  "7" << std::endl;
+            pPointStyle1->SetSelection(6);
+        } else {
+        if (int(row[0]) % 6 == 0 ) {
+            pack = 6;
+            pack_pcs = int(int(row[0]) / 6);
+            std::cout << "Quantity: " << row[0] << " Packets: " <<  "6" << std::endl;
+            pPointStyle1->SetSelection(5);
+        } else {
+        if (int(row[0]) % 5 == 0 ) {
+            pack = 5;
+            pack_pcs = int(int(row[0]) / 5);
+            std::cout << "Quantity: " << row[0] << " Packets: " <<  "5" << std::endl;
+            pPointStyle1->SetSelection(4);
+        } else {
+        if (int(row[0]) % 4 == 0 ) {
+            pack = 4;
+            pack_pcs = int(int(row[0]) / 4);
+            std::cout << "Quantity: " << row[0] << " Packets: " <<  "4" << std::endl;
+            pPointStyle1->SetSelection(3);
+        } else {
+            if (int(row[0]) % 3 == 0 ) {
+                pack = 3;
+                pack_pcs = int(int(row[0]) / 3);
+                std::cout << "Quantity: " << row[0] << " Packets: " <<  "3" << std::endl;
+                pPointStyle1->SetSelection(2);
+            } else {
+                pack = 2;
+                pcs_last = int(int(row[0]) % 2 );
+                pack_pcs = int((int(row[0]) - pcs_last)/2);
+                std::cout << "Quantity: " << row[0] << " Packets: " <<  "2" << std::endl;
+                pPointStyle1->SetSelection(1);
+            }
+
+        }
+
+        }
+    }}}}} else {
+
+
+    if (int(row[0]) < 301 ) {
+        if (int(row[0]) % 10 == 0 ) {
+            pack = 10;
+            pack_pcs = int(int(row[0]) / 10);
+            std::cout << "Quantity: " << row[0] << " Packets: " <<  "10" << std::endl;
+            pPointStyle1->SetSelection(9);
+        } else {
+        if (int(row[0]) % 9 == 0 ) {
+            pack = 9;
+            pack_pcs = int(int(row[0]) / 9);
+            std::cout << "Quantity: " << row[0] << " Packets: " <<  "9" << std::endl;
+            pPointStyle1->SetSelection(8);
+        } else {
+        if (int(row[0]) % 8 == 0 ) {
+            pack = 8;
+            pack_pcs = int(int(row[0]) / 8);
+            std::cout << "Quantity: " << row[0] << " Packets: " <<  "8" << std::endl;
+            pPointStyle1->SetSelection(7);
+        } else {
+        if (int(row[0]) % 7 == 0 ) {
+            pack = 7;
+            pack_pcs = int(int(row[0]) / 7);
+            std::cout << "Quantity: " << row[0] << " Packets: " <<  "7" << std::endl;
+            pPointStyle1->SetSelection(6);
+        } else {
+        if (int(row[0]) % 6 == 0 ) {
+            pack = 6;
+            pack_pcs = int(int(row[0]) / 6);
+            std::cout << "Quantity: " << row[0] << " Packets: " <<  "6" << std::endl;
+            pPointStyle1->SetSelection(5);
+        } else {
+        if (int(row[0]) % 5 == 0 ) {
+            pack = 5;
+            pack_pcs = int(int(row[0]) / 5);
+            std::cout << "Quantity: " << row[0] << " Packets: " <<  "5" << std::endl;
+            pPointStyle1->SetSelection(4);
+        } else {
+        if (int(row[0]) % 4 == 0 ) {
+            pack = 4;
+            pack_pcs = int(int(row[0]) / 4);
+            std::cout << "Quantity: " << row[0] << " Packets: " <<  "4" << std::endl;
+            pPointStyle1->SetSelection(3);
+        } else {
+            if (int(row[0]) % 3 == 0 ) {
+                pack = 3;
+                pack_pcs = int(int(row[0]) / 3);
+                std::cout << "Quantity: " << row[0] << " Packets: " <<  "3" << std::endl;
+                pPointStyle1->SetSelection(2);
+            } else {
+                pack = 2;
+                pcs_last = int(int(row[0]) % 2 );
+                pack_pcs = int((int(row[0]) - pcs_last)/2);
+                std::cout << "Quantity: " << row[0] << " Packets: " <<  "2" << std::endl;
+                pPointStyle1->SetSelection(1);
+            }
+
+        }
+
+        }
+    }}}}}} else {
+
+    if (int(row[0]) < 331 ) {
+        if (int(row[0]) % 11 == 0 ) {
+            pack = 11;
+            pack_pcs = int(int(row[0]) / 11);
+            std::cout << "Quantity: " << row[0] << " Packets: " <<  "11" << std::endl;
+            pPointStyle1->SetSelection(10);
+        } else {
+        if (int(row[0]) % 10 == 0 ) {
+            pack = 10;
+            pack_pcs = int(int(row[0]) / 10);
+            std::cout << "Quantity: " << row[0] << " Packets: " <<  "10" << std::endl;
+            pPointStyle1->SetSelection(9);
+        } else {
+        if (int(row[0]) % 9 == 0 ) {
+            pack = 9;
+            pack_pcs = int(int(row[0]) / 9);
+            std::cout << "Quantity: " << row[0] << " Packets: " <<  "9" << std::endl;
+            pPointStyle1->SetSelection(8);
+        } else {
+        if (int(row[0]) % 8 == 0 ) {
+            pack = 8;
+            pack_pcs = int(int(row[0]) / 8);
+            std::cout << "Quantity: " << row[0] << " Packets: " <<  "8" << std::endl;
+            pPointStyle1->SetSelection(7);
+        } else {
+        if (int(row[0]) % 7 == 0 ) {
+            pack = 7;
+            pack_pcs = int(int(row[0]) / 7);
+            std::cout << "Quantity: " << row[0] << " Packets: " <<  "7" << std::endl;
+            pPointStyle1->SetSelection(6);
+        } else {
+        if (int(row[0]) % 6 == 0 ) {
+            pack = 6;
+            pack_pcs = int(int(row[0]) / 6);
+            std::cout << "Quantity: " << row[0] << " Packets: " <<  "6" << std::endl;
+            pPointStyle1->SetSelection(5);
+        } else {
+        if (int(row[0]) % 5 == 0 ) {
+            pack = 5;
+            pack_pcs = int(int(row[0]) / 5);
+            std::cout << "Quantity: " << row[0] << " Packets: " <<  "5" << std::endl;
+            pPointStyle1->SetSelection(4);
+        } else {
+        if (int(row[0]) % 4 == 0 ) {
+            pack = 4;
+            pack_pcs = int(int(row[0]) / 4);
+            std::cout << "Quantity: " << row[0] << " Packets: " <<  "4" << std::endl;
+            pPointStyle1->SetSelection(3);
+        } else {
+            if (int(row[0]) % 3 == 0 ) {
+                pack = 3;
+                pack_pcs = int(int(row[0]) / 3);
+                std::cout << "Quantity: " << row[0] << " Packets: " <<  "3" << std::endl;
+                pPointStyle1->SetSelection(2);
+            } else {
+                pack = 2;
+                pcs_last = int(int(row[0]) % 2 );
+                pack_pcs = int((int(row[0]) - pcs_last)/2);
+                std::cout << "Quantity: " << row[0] << " Packets: " <<  "2" << std::endl;
+                pPointStyle1->SetSelection(1);
+            }
+
+        }
+
+        }
+    }}}}}}} else {
+            pcs_last = int(int(row[0]) % 30 );
+            pack = int((int(row[0]) - pcs_last )/ 30) + 1;
+            pack_pcs = 30;
+            std::cout << "Quantity: " << row[0] << " Packets_full: " << pack  << " Per pocket : " << pack_pcs << " Pcs in fin_pocket: " <<  pcs_last << std::endl;
+            pPointStyle1->SetSelection(12);
+
+
+
+    } } } }}}}}}}}
+
+
+
 
   }
   catch(mysqlcppapi::ex_BadQuery& er)
@@ -542,11 +1025,44 @@ void MyFrame1::OnCoSelected( wxListEvent &event )
    << er.get_TypeName() << "\"." << std::endl;
   }
 
+        db_weigh = atof(info2.m_text);
         v[_T("Decl")] = info2.m_text;
         wxString msg_id(_T("OCPN_DBP_DB_WEIGH"));
         g_pi_manager->SendJSONMessageToAllPlugins(msg_id, v);
 
-  
+
+// Every time when select put first curent pack 
+    pack_cur = 1;
+
+    std::ostringstream packets_full_ss("");
+    std::ostringstream packet_pcs_ss("");
+    std::ostringstream packet_cur_ss("");
+    std::ostringstream pcs_last_ss("");
+
+      packets_full_ss << pack;
+      packet_pcs_ss << pack_pcs;
+      pcs_last_ss << pcs_last;
+      packet_cur_ss << pack_cur;
+
+      pack_txt[_T("Decl")] = _(packets_full_ss.str());
+      wxString pack_msg_id(_T("OCPN_DBP_PACK"));
+      g_pi_manager->SendJSONMessageToAllPlugins(pack_msg_id, pack_txt);
+
+      pack_txt[_T("Decl")] = _(packet_cur_ss.str());
+      wxString pack_cur_msg_id(_T("OCPN_DBP_PACK_CUR"));
+      g_pi_manager->SendJSONMessageToAllPlugins(pack_cur_msg_id, pack_txt);
+
+
+      pack_txt[_T("Decl")] = _(packet_pcs_ss.str());
+      wxString pack_psc_msg_id(_T("OCPN_DBP_PACK_PCS"));
+      g_pi_manager->SendJSONMessageToAllPlugins(pack_psc_msg_id, pack_txt);
+
+      pack_txt[_T("Decl")] = _(pcs_last_ss.str());
+      wxString pcs_last_msg_id(_T("OCPN_DBP_PCS_LAST"));
+      g_pi_manager->SendJSONMessageToAllPlugins(pcs_last_msg_id, pack_txt);
+
+
+      std::cout << "Instrunent Weigh: " << info2.m_text << " Packets_full: " << packets_full_ss.str()  << " Per pocket : " << packet_pcs_ss.str() << "Pcs last : " << pcs_last_ss.str() << std::endl;
 
   drawPane->paintNow();
 
@@ -658,11 +1174,75 @@ void MyFrame1::On24Color( wxCommandEvent& event )
 void MyFrame1::OnPointStyle1( wxCommandEvent& event )
 {
     wxString myStr;
+    wxJSONValue pack_txt;
     myStr = wxEmptyString;
     int idChoice = pPointStyle1->GetSelection();
 
+    pack = 1;
+
+    if (idChoice < 11) {
+        pack = idChoice + 1;
+        pcs_last = int(db_quantity % pack);
+        pack_pcs = int((db_quantity - pcs_last)/pack);
+    } else {
+        if (idChoice == 11) {
+            pcs_last = int(db_quantity % 25);
+            pack = int((db_quantity - pcs_last)/25);
+            pack_pcs = 25;
+        }
+        if (idChoice == 12) {
+            pcs_last = int(db_quantity % 30);
+            pack = int((db_quantity - pcs_last)/30);
+            pack_pcs = 30;
+        }
+        if (idChoice == 13) {
+            pcs_last = int(db_quantity % 50);
+            pack = int((db_quantity - pcs_last)/50);
+            pack_pcs = 50;
+        }
+        if (idChoice == 14) {
+            pcs_last = int(db_quantity % 100);
+            pack = int((db_quantity - pcs_last)/100);
+            pack_pcs = 100;
+        }
+
+    }
+
     printf("On Choice PointStyle Selected index %d ", idChoice);
     printf(wxString::Format("%s \n", event.GetString()));
+
+    std::ostringstream packets_full_ss("");
+    std::ostringstream packet_pcs_ss("");
+    std::ostringstream packet_cur_ss("");
+    std::ostringstream pcs_last_ss("");
+
+
+//Every time when select component we put numer current pack to 1
+      pack_cur = 1;
+
+      packets_full_ss << pack;
+      packet_pcs_ss << pack_pcs;
+      pcs_last_ss << pcs_last;
+      packet_cur_ss << pack_cur;
+
+      pack_txt[_T("Decl")] = _(packets_full_ss.str());
+      wxString pack_msg_id(_T("OCPN_DBP_PACK"));
+      g_pi_manager->SendJSONMessageToAllPlugins(pack_msg_id, pack_txt);
+
+
+      pack_txt[_T("Decl")] = _(packet_pcs_ss.str());
+      wxString pack_psc_msg_id(_T("OCPN_DBP_PACK_PCS"));
+      g_pi_manager->SendJSONMessageToAllPlugins(pack_psc_msg_id, pack_txt);
+
+      pack_txt[_T("Decl")] = _(packet_cur_ss.str());
+      wxString pack_cur_msg_id(_T("OCPN_DBP_PACK_CUR"));
+      g_pi_manager->SendJSONMessageToAllPlugins(pack_cur_msg_id, pack_txt);
+
+      pack_txt[_T("Decl")] = _(pcs_last_ss.str());
+      wxString pcs_last_msg_id(_T("OCPN_DBP_PCS_LAST"));
+      g_pi_manager->SendJSONMessageToAllPlugins(pcs_last_msg_id, pack_txt);
+
+      std::cout << "Packet select: " << packets_full_ss.str()  << " Per pocket : " << packet_pcs_ss.str() << "Pcs last : " << pcs_last_ss.str() << std::endl;
 
 }
 
@@ -713,6 +1293,17 @@ void MyFrame1::GetComponents(wxListCtrl *ps57CtlListCtrl1) {
 
     long index=0;
     long item1 = -1;
+
+
+//  Aria of visualibylity not continue to try area
+//    std::ostringstream packets_full_ss("");
+//    std::ostringstream packet_pcs_ss("");
+//    std::ostringstream pcs_last_ss("");
+
+//    packets_full_ss << pack;
+//    packet_pcs_ss << pack_pcs;
+//    pcs_last_ss << pcs_last;
+
 
 
   try {
@@ -794,8 +1385,20 @@ void MyFrame1::GetComponents(wxListCtrl *ps57CtlListCtrl1) {
 //      ps57CtlListCtrl1->SetItem(index, 14, _(row[14]), -1);
 //      ps57CtlListCtrl1->SetItem(index, 15, _(row[15]), -1);
 
+    std::ostringstream packets_full_ss("");
+    std::ostringstream packet_pcs_ss("");
+    std::ostringstream pcs_last_ss("");
 
-      LabelPoint *pLP_src = new LabelPoint( g_default_wp_icon, _(row[0]) ,_(row[1]), _(row[3]), _(row[6]), GPX_EMPTY_STRING );
+
+      packets_full_ss << pack;
+      packet_pcs_ss << pack_pcs;
+      pcs_last_ss << pcs_last;
+
+      
+    std::cout << "Check Pack: " << packets_full_ss.str() << " pcs: " << packet_pcs_ss.str() << " last: " << pcs_last_ss.str() << std::endl;
+
+
+      LabelPoint *pLP_src = new LabelPoint( g_default_wp_icon, _(row[0]) ,_(row[1]), dbClientName, _(packets_full_ss.str()), _(packet_pcs_ss.str()), _(pcs_last_ss.str()), _(row[3]), _(row[6]), GPX_EMPTY_STRING );
 //      pSelect->AddSelectableLabelPoint( pLP_src );
       m_pLabel->AddPoint(pLP_src);
 
@@ -879,6 +1482,7 @@ void MyFrame1::GetProjects(wxListCtrl  *ps57CtlListCtrl) {
       index = ps57CtlListCtrl->InsertItem(0, *item);
       ps57CtlListCtrl->SetItem(index, 0, _(row[0]), -1);
       ps57CtlListCtrl->SetItem(index, 1, _(row[1]), -1);
+      dbClientName = _(row[1]);
       ps57CtlListCtrl->SetItem(index, 2, _(row[2]), -1);
       ps57CtlListCtrl->SetItem(index, 3, _(row[3]), -1);
       ps57CtlListCtrl->SetItem(index, 4, _(row[4]), -1);
@@ -941,15 +1545,28 @@ void MyFrame1::OnBtnPrintClick(wxCommandEvent& event)
     if (pLabelPrintSelection == NULL)
         pLabelPrintSelection = new LabelPrintSelection( this, m_pLabel );
 
+
+
 //    if( !pLabelPrintSelection->IsShown() ) pLabelPrintSelection->ShowModal();
 //    if( !pLabelPrintSelection->IsShown() )
-    pLabelPrintSelection->Show();
+
+
+// Stop show dialog. We are select all. Not need mass click
+//    pLabelPrintSelection->Show();
+
+//We push button automatical
+    pLabelPrintSelection->OnLabelpropOkClick(event);
+
+
+
 //        delete pLabelPrintSelection;
 
 //    pLabelPrintSelection = NULL;
 
 //    Hide();
-    event.Skip();
+
+
+//    event.Skip();
 }
 
 

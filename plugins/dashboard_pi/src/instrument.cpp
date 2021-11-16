@@ -68,14 +68,30 @@ DashboardInstrument::DashboardInstrument(wxWindow *pparent, wxWindowID id, wxStr
 #endif      
 }
 
-wxProgressDialog* DashboardInstrument::GetPprog( double bascula_weigh, double db_weigh, double db_quantity )
+wxProgressDialog* DashboardInstrument::GetPprog( double bascula_weigh, double db_weigh, double db_quantity, int pack, int pack_cur, int pack_pcs, int pcs_cur, int pcs_last )
 {
     int cur_count;
-    cur_count = wxRound( pd_count * bascula_weigh / (db_weigh * db_quantity * 1000) );
-    if (cur_count >  90) { cur_count = 95; }
     wxString msg5;
-    msg5.Printf(_T("%d * %d / ( db_weigh * db_quantity * 1000 ) = %d "),
-        pd_count, wxRound(bascula_weigh), wxRound(db_weigh * db_quantity * 1000));
+
+// Full order
+//    cur_count = wxRound( pd_count  * bascula_weigh / (db_weigh * db_quantity) );
+//    msg5.Printf(_T("%d / ( db_weigh * db_quan ) = %d "),
+//        pd_count * wxRound(bascula_weigh), wxRound(db_weigh * db_quantity )  );
+
+// One full pack
+    cur_count = wxRound( pd_count * bascula_weigh / (db_weigh * pack_pcs) );
+    msg5.Printf(_T("%d / ( db_weigh * pack_pcs ) = %d "),
+        pd_count * wxRound(bascula_weigh), wxRound(db_weigh * pack_pcs )  );
+
+
+//    cur_count = wxRound( pd_count * bascula_weigh / (db_weigh * pack_pcs * 1000) );
+// pd_count - count of Progress Dialog indicator in procent up to 100
+//    msg5.Printf(_T("%d * %d / ( db_weigh * db_quan * 1000 ) = %d "),
+//        pd_count, wxRound(bascula_weigh), wxRound(db_weigh * db_quantity * 1000));
+
+
+    pcs_cur = cur_count;
+    if (cur_count >  90) { cur_count = 95; }
     ppprog->Update(cur_count, msg5);
     return ppprog;
 }
@@ -320,7 +336,8 @@ DashboardInstrument_ProgressDialog::DashboardInstrument_ProgressDialog(wxWindow 
         pprog_size = sz;
         pprog->Center();
 
-        pprog->Move(wxPoint(-17, 445));
+//Position for start progress dialog on the end of size instruments
+        pprog->Move(wxPoint(-17, 845));
         wxString msg0;
         msg0 += _T("\n\n");
         pprog->Update( 0, msg0 );

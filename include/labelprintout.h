@@ -75,7 +75,8 @@ protected:
     PrintTable        table;
     Label*            myLabel;
     std::vector<bool> toPrintOut; // list of fields of bool, if certain element should be print out.
-    static const int  pN = 5;     // number of fields sofar
+//    static const int  pN = 5;     // number of fields sofar Ignat
+    static const int  pN = 11;     // number of fields sofar
     int               pageToPrint;
     int               numberOfPages;
     int               marginX;
@@ -150,6 +151,10 @@ public:
     wxCheckBox* m_checkBoxWPCourse;
     wxCheckBox* m_checkBoxWPDistanceToNext;
     wxCheckBox* m_checkBoxWPDescription;
+    wxCheckBox* m_checkBoxWPCName;
+    wxCheckBox* m_checkBoxWPPack;
+    wxCheckBox* m_checkBoxWPPcs;
+    wxCheckBox* m_checkBoxWPLast;
 
     Label*      label;
 };

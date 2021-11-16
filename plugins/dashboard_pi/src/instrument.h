@@ -73,17 +73,22 @@ enum
     OCPN_DBP_STC_BRG = 1 << 8,
     OCPN_DBP_STC_AWA = 1 << 9,
     OCPN_DBP_STC_AWS = 1 << 10,
-    OCPN_DBP_STC_TWA = 1 << 11,
-    OCPN_DBP_STC_TWS = 1 << 12,
+//    OCPN_DBP_STC_TWA = 1 << 11,
+//    OCPN_DBP_STC_TWS = 1 << 12,
     OCPN_DBP_STC_DPT = 1 << 13,
-    OCPN_DBP_STC_TMP = 1 << 14,
-    OCPN_DBP_STC_VMG = 1 << 15,
-    OCPN_DBP_STC_RSA = 1 << 16,
+//    OCPN_DBP_STC_TMP = 1 << 14,
+//    OCPN_DBP_STC_VMG = 1 << 15,
+//    OCPN_DBP_STC_RSA = 1 << 16,
     OCPN_DBP_STC_SAT = 1 << 17,
     OCPN_DBP_STC_GPS = 1 << 18,
     OCPN_DBP_STC_PLA = 1 << 19, // Cursor latitude
     OCPN_DBP_STC_PLO = 1 << 20, // Cursor longitude
     OCPN_DBP_STC_CLK = 1 << 21,
+    OCPN_DBP_PACK = 1 << 16,
+    OCPN_DBP_PACK_CUR = 1 << 15,
+    OCPN_DBP_PACK_PCS = 1 << 14,
+    OCPN_DBP_PCS_CUR = 1 << 12,
+    OCPN_DBP_PCS_LAST = 1 << 11,
 //    OCPN_DBP_STC_MON = 1 << 22,
 //    OCPN_DBP_STC_ATMP = 1 << 23, //AirTemp
 //    OCPN_DBP_STC_TWD = 1 << 24,
@@ -117,7 +122,7 @@ public:
       virtual void SetData(int st, double data, wxString unit) = 0;
       void SetDrawSoloInPane(bool value);
       void MouseEvent( wxMouseEvent &event );
-      wxProgressDialog* GetPprog(double bascula_weigh, double db_weigh, double db_quantity);
+      wxProgressDialog* GetPprog(double bascula_weigh, double db_weigh, double db_quantity, int pack, int pack_cur, int pack_pcs, int pcs_cur, int pcs_last);
 
       wxProgressDialog  *ppprog;
       int pd_count;

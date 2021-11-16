@@ -93,6 +93,7 @@ void PrintCell::Adjust()
         _font.SetWeight( wxFONTWEIGHT_BOLD );
     }
     dc->SetFont( _font );
+
     vector<wxString>  list;
     list.push_back( wxString() );
     wxString separator = wxT( " " );
@@ -122,7 +123,9 @@ void PrintCell::Adjust()
     wxCoord h = 0;
     wxCoord w = 0;
     dc->GetMultiLineTextExtent( modified_content, &w, &h );
+//    dc->GetMultiLineTextExtent( content, &w, &h );
     SetHeight( h + 8);
+//    SetHeight( 8 + 8);
 
     dc->SetFont( orig_font );
 }
@@ -260,45 +263,55 @@ void PrintTable::AdjustCells( wxDC* dc, int marginX, int marginY )
     h /= scale_y;
     
     int width = w - 4 * marginX;
-    header_height = -1;
-    for ( size_t j = 0; j < header.size(); j++ ) {
-        int cell_width = ( int )( ( double )width * widths[ j ] / sum );
-        PrintCell cell_content;
-        cell_content.Init( header[ j ], dc, cell_width, 10, true );
-        header_content.push_back( cell_content );
-        header_height = std::max( header_height, cell_content.GetHeight() );
-    }
+
+//    header_height = -1;
+//    for ( size_t j = 0; j < header.size(); j++ ) {
+////        int cell_width = ( int )( ( double )width * widths[ j ] / sum );
+//        int cell_width = 20;
+//        PrintCell cell_content;
+//        cell_content.Init( header[ j ], dc, cell_width, 10, true );
+//        header_content.push_back( cell_content );
+//        header_height = std::max( header_height, cell_content.GetHeight() );
+//    }
 
     for ( size_t i = 0; i < data.size(); i++ ) {
         vector<wxString> row = data[ i ];
         vector<PrintCell> contents_row;
         int max_height = -1;
         for ( size_t j = 0; j < row.size(); j++ ) {
-            int cell_width = ( int )( ( double )width * widths[ j ] / sum );
+//            int cell_width = ( int )( ( double )width * widths[ j ] / sum );
+
+// I do not want that URL to image, that is longest one, was modificated. Just take bigger size of every one cell.
+            int cell_width = 1500;
             PrintCell cell_content;
+//            if ( j == 2 || j == 7 || j == 8) { cell_content.Init( row[ j ], dc, 500, 10 ); }
+//            else { cell_content.Init( row[ j ], dc, cell_width, 10 ); }
             cell_content.Init( row[ j ], dc, cell_width, 10 );
             contents_row.push_back( cell_content );
             max_height = std::max( max_height, cell_content.GetHeight() );
         }
         rows_heights.push_back( max_height );
+//        rows_heights.push_back( 8 );
         contents.push_back( contents_row );
     }
 
-    int stripped_page = h - 4 * marginY - header_height;
+//    int stripped_page = h - 4 * marginY - header_height + 200;
+//    int stripped_page = 3000;
     int current_page = 1;
     int current_y = 0;
     for ( size_t i = 0; i < data.size(); i++ ) {
         int row_height = rows_heights[ i ];
-        if ( row_height + current_y > stripped_page ) {
-            current_page++;
-            current_y = row_height;
-        } else {
+//        if ( row_height + current_y > stripped_page ) {
+//            current_page++;
+//            current_y = row_height;
+//        } else {
             current_y += row_height;
-        }
+//        }
         int row_page = current_page;
         vector<PrintCell> & contents_row = contents[ i ];
         for ( size_t j = 0; j < contents_row.size(); j++ ) {
-            contents_row[ j ].SetPage( row_page );
+//            contents_row[ j ].SetPage( row_page );
+            contents_row[ j ].SetPage( 1 );
             contents_row[ j ].SetHeight( row_height );
         }
         number_of_pages = std::max( row_page, number_of_pages );
