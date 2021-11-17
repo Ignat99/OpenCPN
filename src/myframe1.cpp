@@ -1062,7 +1062,55 @@ void MyFrame1::OnCoSelected( wxListEvent &event )
       g_pi_manager->SendJSONMessageToAllPlugins(pcs_last_msg_id, pack_txt);
 
 
-      std::cout << "Instrunent Weigh: " << info2.m_text << " Packets_full: " << packets_full_ss.str()  << " Per pocket : " << packet_pcs_ss.str() << "Pcs last : " << pcs_last_ss.str() << std::endl;
+      std::cout << "Instrunent Weigh: " << info2.m_text << " Packets_full: " << packets_full_ss.str()  << " Per pocket : " << packet_pcs_ss.str() << " Pcs last : " << pcs_last_ss.str() << std::endl;
+
+// Update information in LabelPoint list
+
+//      for ( int n = 1; n <= pLabelList->pLabelPointList->GetnPoints(); n++ ) {
+//          LabelPoint *pLP_upd = pLabelList->pLabelPointList->GetPoint(n);
+//          if (pLP_upd->m_bPtIsSelected) {
+//              string cur_label(pLP_upd->GetCode().mb_str());
+//              std::cout << "Point List: " << cur_label << std::endl;
+//          }
+//      }
+
+
+// Correct right list
+    wxLabelPointListNode *node = m_pLabel->pLabelPointList->GetFirst();
+
+    while( node ) {
+//        node = node->GetNext();
+
+
+//    wxLabelListNode *node = pLabelList->GetFirst();
+//    while(node) {
+//        Label *cur_label = node->GetData();
+
+
+        if ( node ) {
+            LabelPoint *pLP_upd = node->GetData();
+
+//        for ( int n = 1; n <= cur_label->GetnPoints(); n++ ) {
+//            LabelPoint *pLP_upd = cur_label->GetPoint(n);
+
+
+            if (pLP_upd->m_bPtIsSelected) {
+                string cur_label_str(pLP_upd->GetCode().mb_str());
+                std::cout << "Point List: " << cur_label_str << " Packets_full: " << packets_full_ss.str()  << " Per pocket : " << packet_pcs_ss.str() << " Pcs last : " << pcs_last_ss.str() << std::endl;
+                pLP_upd->SetPack(packets_full_ss.str());
+                pLP_upd->SetPcs(packet_pcs_ss.str());
+                pLP_upd->SetLast(pcs_last_ss.str());
+
+            }
+
+//            if (cur_label == m_pLabel) {
+//                std::cout << "m_pLabel: " << cur_label << " Packets_full: " << packets_full_ss.str()  << " Per pocket : " << packet_pcs_ss.str() << "Pcs last : " << pcs_last_ss.str() << std::endl;
+//            }
+//        }
+       }
+
+        node = node->GetNext();
+    }
 
   drawPane->paintNow();
 
@@ -1242,7 +1290,32 @@ void MyFrame1::OnPointStyle1( wxCommandEvent& event )
       wxString pcs_last_msg_id(_T("OCPN_DBP_PCS_LAST"));
       g_pi_manager->SendJSONMessageToAllPlugins(pcs_last_msg_id, pack_txt);
 
-      std::cout << "Packet select: " << packets_full_ss.str()  << " Per pocket : " << packet_pcs_ss.str() << "Pcs last : " << pcs_last_ss.str() << std::endl;
+      std::cout << "Packet select: " << packets_full_ss.str()  << " Per pocket : " << packet_pcs_ss.str() << " Pcs last : " << pcs_last_ss.str() << std::endl;
+
+
+// Correct right list
+    wxLabelPointListNode *node = m_pLabel->pLabelPointList->GetFirst();
+
+    while( node ) {
+
+        if ( node ) {
+            LabelPoint *pLP_upd = node->GetData();
+
+
+            if (pLP_upd->m_bPtIsSelected) {
+                string cur_label_str(pLP_upd->GetCode().mb_str());
+                std::cout << "Point List: " << cur_label_str << " Packets_full: " << packets_full_ss.str()  << " Per pocket : " << packet_pcs_ss.str() << " Pcs last : " << pcs_last_ss.str() << std::endl;
+                pLP_upd->SetPack(packets_full_ss.str());
+                pLP_upd->SetPcs(packet_pcs_ss.str());
+                pLP_upd->SetLast(pcs_last_ss.str());
+
+            }
+
+       }
+
+        node = node->GetNext();
+    }
+
 
 }
 

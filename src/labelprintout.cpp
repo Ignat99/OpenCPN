@@ -204,7 +204,7 @@ MyLabelPrintout::MyLabelPrintout( std::vector<bool> _toPrintOut,
         }
         if ( toPrintOut[ PRINT_WP_PACK ] ) {
             string cell( point->GetPack().mb_str() );
-            table << "PA_N:  " + cell;
+            table << "PACK:  " + cell;
 
 //// Setup the number of pages to print
 //            numberOfPages = atoi(point->GetPack().mb_str());
