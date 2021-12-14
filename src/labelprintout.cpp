@@ -377,7 +377,8 @@ void MyLabelPrintout::DrawPage( wxDC* dc )
 //    currentY = marginY + table.GetHeaderHeight() + header_textOffsetY;
     currentY = marginY + header_textOffsetY;
     int currentHeight = 0;
-    for ( size_t i = 0; i < cells.size(); i = i + 2 ) {
+//    for ( size_t i = 0; i < cells.size(); i = i + 2 ) {
+    for ( size_t i = 0; i < cells.size(); i = i + 1 ) {
 //    for ( size_t i = 0; i < 2; i = i + 2 ) {
         vector< PrintCell >& content_row = cells[ i ];
         currentX = marginX + header_textOffsetX;
@@ -436,48 +437,49 @@ void MyLabelPrintout::DrawPage( wxDC* dc )
 //        currentY = marginY + table.GetHeaderHeight() + header_textOffsetY;
         currentY = marginY + header_textOffsetY;
 
-        for ( size_t j = 0; j < content_row.size(); j++ ) {
-            PrintCell& cell = content_row[ j ];
-                wxRect r( currentX+940, currentY, cell.GetWidth(), cell.GetHeight() );
-                r.Offset( textOffsetX, textOffsetY );
-                if (j == 0) {
-                   my_code = my_path;
-                   my_code += "components/";
-                   my_code += cell.GetText();
-                   my_code += ".bmp";
+//        for ( size_t j = 0; j < content_row.size(); j++ ) {
+//            PrintCell& cell = content_row[ j ];
+//                wxRect r( currentX+940, currentY, cell.GetWidth(), cell.GetHeight() );
+//                r.Offset( textOffsetX, textOffsetY );
+//                if (j == 0) {
+//                   my_code = my_path;
+//                   my_code += "components/";
+//                   my_code += cell.GetText();
+//                   my_code += ".bmp";
 
-                    PrintCell& cell_img = content_row[ 7 ];
-                    my_image = my_path;
-                    my_image += cell_img.GetText();
-                    wxImage m_image(cell_img.GetText());
-                    dc->DrawBitmap(m_image.Scale(200, 200, wxIMAGE_QUALITY_HIGH), 480+940, 400);
-                    wxImage m_qrcode(my_code);
-                    dc->DrawBitmap(m_qrcode.Scale(200, 200), 480+940, 650);
-                }
-                if (j == 1) dc->DrawLabel(cell.GetText(), r);
-                if (j == 2) dc->DrawLabel(cell.GetText(), r);
-                if (j == 3) dc->DrawLabel(cell.GetText(), r);
-                if (j == 4) dc->DrawLabel(cell.GetText(), r);
-                if (j == 5) dc->DrawLabel(cell.GetText(), r);
-                if (j == 6) dc->DrawLabel(cell.GetText(), r);
-                if (j == 7) {
-//                    dc->DrawLabel("IMAGEN: ", r);
-                    my_image = my_path;
-                    my_image += cell.GetText();
-                    wxImage m_image(my_image);
-//                    dc->DrawLabel(cell.GetText(), r);
+//                    PrintCell& cell_img = content_row[ 7 ];
+//                    my_image = my_path;
+//                    my_image += cell_img.GetText();
+//                    wxImage m_image(cell_img.GetText());
 //                    dc->DrawBitmap(m_image.Scale(200, 200, wxIMAGE_QUALITY_HIGH), 480+940, 400);
-                }
-                if (j == 8) {
-//                    r.Offset( 0, 200 );
-//                    dc->DrawLabel("CODIGO QR:  ", r);
-                    wxImage m_qrcode(my_code);
+//                    wxImage m_qrcode(my_code);
 //                    dc->DrawBitmap(m_qrcode.Scale(200, 200), 480+940, 650);
-                }
+//                }
+//                if (j == 1) dc->DrawLabel(cell.GetText(), r);
+//                if (j == 2) dc->DrawLabel(cell.GetText(), r);
+//                if (j == 3) dc->DrawLabel(cell.GetText(), r);
+//                if (j == 4) dc->DrawLabel(cell.GetText(), r);
+//                if (j == 5) dc->DrawLabel(cell.GetText(), r);
+//                if (j == 6) dc->DrawLabel(cell.GetText(), r);
+//                if (j == 7) {
+////                    dc->DrawLabel("IMAGEN: ", r);
+    //                my_image = my_path;
+//                    my_image += cell.GetText();
+//                    wxImage m_image(my_image);
+////                    dc->DrawLabel(cell.GetText(), r);
+//  //                  dc->DrawBitmap(m_image.Scale(200, 200, wxIMAGE_QUALITY_HIGH), 480+940, 400);
+//                }
+//                if (j == 8) {
+////                    r.Offset( 0, 200 );
+//  //                  dc->DrawLabel("CODIGO QR:  ", r);
+//                    wxImage m_qrcode(my_code);
+////                    dc->DrawBitmap(m_qrcode.Scale(200, 200), 480+940, 650);
+//                }
 //                currentX     += cell.GetWidth();
-                currentY     += cell.GetHeight() + 20;
-                currentHeight = cell.GetHeight();
-        }
+//                currentY     += cell.GetHeight() + 20;
+//                currentHeight = cell.GetHeight();
+//        }
+
 
 //        OffsetLogicalOrigin (1800, 1300);
         pageToPrint = 2;
@@ -702,8 +704,8 @@ void LabelPrintSelection::OnLabelpropOkClick( wxCommandEvent& event )
 
     if ( NULL == g_printData ) {
         g_printData = new wxPrintData;
-        g_printData->SetOrientation( wxLANDSCAPE );
-//        g_printData->SetOrientation( wxPORTRAIT );
+//        g_printData->SetOrientation( wxLANDSCAPE );
+        g_printData->SetOrientation( wxPORTRAIT );
 //        g_printData->SetPaperId( wxPAPER_PENV_1);
         g_printData->SetPaperId( wxPAPER_P32K);
 //        g_printData->SetPaperId( wxPAPER_A6_ROTATED);
