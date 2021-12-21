@@ -110,7 +110,7 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
 
 
     // dislay category
-    optionsColumn->Add( new wxStaticText(pPanel, wxID_ANY, _("Data creation")), labelFlags );
+    optionsColumn->Add( new wxStaticText(pPanel, wxID_ANY, _("Date manufact")), labelFlags );
     wxString pDispCatStrings[] = { _("1"), _("2"), _("3"), _("4"), _("5"), _("6"), _("7"), _("10"), _("12"), _("14"), _("21"), _("31"), _("62") };
 //    pDispCat = new wxChoice( pPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, 13, pDispCatStrings );
     pDispCat = new wxChoice( pPanel, wxID_ANY, wxDefaultPosition, wxSize(180, 60), 13, pDispCatStrings );
@@ -1173,7 +1173,7 @@ void MyFrame1::OnPrChoice( wxCommandEvent& event )
     printf(wxString::Format("%s \n", event.GetString()));
 //select id, name from projects_project where  unix_timestamp(date_creation) > UNIX_TIMESTAMP(DATE_ADD(CURDATE(),INTERVAL -40 DAY));
 
-    std::string st3(" where  unix_timestamp(date_creation) > UNIX_TIMESTAMP(DATE_ADD(CURDATE(),INTERVAL -");
+    std::string st3(" where  unix_timestamp(date_manufactured) > UNIX_TIMESTAMP(DATE_ADD(CURDATE(),INTERVAL -");
     st3 += event.GetString();
     st3 += " DAY))";
     idClient = st3;
@@ -1523,7 +1523,8 @@ void MyFrame1::GetProjects(wxListCtrl  *ps57CtlListCtrl) {
     mysqlcppapi::Query query = con.create_Query();
     // This creates a query object that is bound to con.
 
-    std::string curSql("select id, name, date_creation, product, client_id, creator_id  from projects_project ");
+//    std::string curSql("select id, name, date_creation, product, client_id, creator_id  from projects_project ");
+    std::string curSql("select id, name, date_manufactured, product, client_id, creator_id, reference  from production_projects ");
     curSql += idClient;
     query <<  curSql;
     // You can write to the query object like you would any other ostrem
@@ -1535,8 +1536,9 @@ void MyFrame1::GetProjects(wxListCtrl  *ps57CtlListCtrl) {
     // Query::store() executes the query and returns the results
 
     ps57CtlListCtrl->InsertColumn(0, _("ID"), wxLIST_FORMAT_LEFT, 100);
+    ps57CtlListCtrl->InsertColumn(0, _("Order"), wxLIST_FORMAT_LEFT, 200);
     ps57CtlListCtrl->InsertColumn(1, _("Name"), wxLIST_FORMAT_LEFT, 450);
-    ps57CtlListCtrl->InsertColumn(2, _("Date creation"), wxLIST_FORMAT_LEFT, 220);
+    ps57CtlListCtrl->InsertColumn(2, _("Date manufact"), wxLIST_FORMAT_LEFT, 220);
     ps57CtlListCtrl->InsertColumn(3, _("Product"));
     ps57CtlListCtrl->InsertColumn(4, _("Client ID"));
     ps57CtlListCtrl->InsertColumn(5, _("Creator ID"));
@@ -1554,12 +1556,13 @@ void MyFrame1::GetProjects(wxListCtrl  *ps57CtlListCtrl) {
 
       index = ps57CtlListCtrl->InsertItem(0, *item);
       ps57CtlListCtrl->SetItem(index, 0, _(row[0]), -1);
-      ps57CtlListCtrl->SetItem(index, 1, _(row[1]), -1);
+      ps57CtlListCtrl->SetItem(index, 1, _(row[6]), -1);
+      ps57CtlListCtrl->SetItem(index, 2, _(row[1]), -1);
       dbClientName = _(row[1]);
-      ps57CtlListCtrl->SetItem(index, 2, _(row[2]), -1);
-      ps57CtlListCtrl->SetItem(index, 3, _(row[3]), -1);
-      ps57CtlListCtrl->SetItem(index, 4, _(row[4]), -1);
-      ps57CtlListCtrl->SetItem(index, 5, _(row[5]), -1);
+      ps57CtlListCtrl->SetItem(index, 3, _(row[2]), -1);
+      ps57CtlListCtrl->SetItem(index, 4, _(row[3]), -1);
+      ps57CtlListCtrl->SetItem(index, 5, _(row[4]), -1);
+      ps57CtlListCtrl->SetItem(index, 6, _(row[5]), -1);
 
     }
   }
