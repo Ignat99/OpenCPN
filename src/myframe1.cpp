@@ -1536,12 +1536,12 @@ void MyFrame1::GetProjects(wxListCtrl  *ps57CtlListCtrl) {
     // Query::store() executes the query and returns the results
 
     ps57CtlListCtrl->InsertColumn(0, _("ID"), wxLIST_FORMAT_LEFT, 100);
-    ps57CtlListCtrl->InsertColumn(0, _("Order"), wxLIST_FORMAT_LEFT, 200);
-    ps57CtlListCtrl->InsertColumn(1, _("Name"), wxLIST_FORMAT_LEFT, 450);
-    ps57CtlListCtrl->InsertColumn(2, _("Date manufact"), wxLIST_FORMAT_LEFT, 220);
-    ps57CtlListCtrl->InsertColumn(3, _("Product"));
-    ps57CtlListCtrl->InsertColumn(4, _("Client ID"));
-    ps57CtlListCtrl->InsertColumn(5, _("Creator ID"));
+    ps57CtlListCtrl->InsertColumn(1, _("Order"), wxLIST_FORMAT_LEFT, 200);
+    ps57CtlListCtrl->InsertColumn(2, _("Name"), wxLIST_FORMAT_LEFT, 450);
+    ps57CtlListCtrl->InsertColumn(3, _("Date manufact"), wxLIST_FORMAT_LEFT, 220);
+    ps57CtlListCtrl->InsertColumn(4, _("Product"));
+    ps57CtlListCtrl->InsertColumn(5, _("Client ID"));
+    ps57CtlListCtrl->InsertColumn(6, _("Creator ID"));
 
     wxListItem* item = new wxListItem();
 
