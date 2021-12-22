@@ -111,7 +111,7 @@ LabelPoint::LabelPoint( LabelPoint* orig )
 }
 
 LabelPoint::LabelPoint( const wxString& icon_ident, const wxString& no, const wxString& name,
-        const wxString& cname, const wxString& pack, const wxString& pcs, const wxString& last, const wxString& code, const wxString& image, const wxString &pGUID, bool bAddToList )
+        const wxString& cname, const wxString& pack, const wxString& pcs, const wxString& last, const wxString& code, const wxString& image, const wxString& order, const wxString& date, const wxString &pGUID, bool bAddToList )
 {
 
     //  Nice defaults
@@ -149,6 +149,8 @@ LabelPoint::LabelPoint( const wxString& icon_ident, const wxString& no, const wx
     SetLast ( last );
     SetCode( code );
     SetImage( image );
+    SetOrder( order );
+    SetDate( date );
 
     //  Possibly add the waypoint to the global list maintained by the waypoint manager
 
@@ -219,6 +221,19 @@ void LabelPoint::SetLast(const wxString & last)
     m_MarkPcs = last;
     CalculateLastExtents();
 }
+
+void LabelPoint::SetOrder(const wxString & order)
+{
+    m_MarkOrder = order;
+    CalculateOrderExtents();
+}
+
+void LabelPoint::SetDate(const wxString & date)
+{
+    m_MarkDate = date;
+    CalculateDateExtents();
+}
+
 
 void LabelPoint::CalculateNoExtents( void )
 {
@@ -312,6 +327,32 @@ void LabelPoint::CalculateLastExtents( void )
         m_LastExtents = wxSize( 0, 0 );
 
 }
+
+void LabelPoint::CalculateOrderExtents( void )
+{
+    if( m_pMarkFont ) {
+        wxScreenDC dc;
+
+        dc.SetFont( *m_pMarkFont );
+        m_OrderExtents = dc.GetTextExtent( m_MarkOrder );
+    } else
+        m_OrderExtents = wxSize( 0, 0 );
+
+}
+
+void LabelPoint::CalculateDateExtents( void )
+{
+    if( m_pMarkFont ) {
+        wxScreenDC dc;
+
+        dc.SetFont( *m_pMarkFont );
+        m_DateExtents = dc.GetTextExtent( m_MarkDate );
+    } else
+        m_DateExtents = wxSize( 0, 0 );
+
+}
+
+
 
 void LabelPoint::ReLoadIcon( void )
 {

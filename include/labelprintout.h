@@ -155,6 +155,8 @@ public:
     wxCheckBox* m_checkBoxWPPack;
     wxCheckBox* m_checkBoxWPPcs;
     wxCheckBox* m_checkBoxWPLast;
+    wxCheckBox* m_checkBoxWPOrder;
+    wxCheckBox* m_checkBoxWPDate;
 
     Label*      label;
 };

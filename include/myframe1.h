@@ -72,6 +72,8 @@ public:
       int    db_quantity;
       double db_weigh;
       wxString dbClientName;
+      wxString dbOrder;
+      wxString dbDate;
 
       void GetProjects(wxListCtrl *ps57CtlListBoxStrings);
       void GetComponents(wxListCtrl *ps57CtlListBoxStrings);

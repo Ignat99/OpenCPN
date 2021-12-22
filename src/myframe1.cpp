@@ -1471,7 +1471,7 @@ void MyFrame1::GetComponents(wxListCtrl *ps57CtlListCtrl1) {
     std::cout << "Check Pack: " << packets_full_ss.str() << " pcs: " << packet_pcs_ss.str() << " last: " << pcs_last_ss.str() << std::endl;
 
 
-      LabelPoint *pLP_src = new LabelPoint( g_default_wp_icon, _(row[0]) ,_(row[1]), dbClientName, _(packets_full_ss.str()), _(packet_pcs_ss.str()), _(pcs_last_ss.str()), _(row[3]), _(row[6]), GPX_EMPTY_STRING );
+      LabelPoint *pLP_src = new LabelPoint( g_default_wp_icon, _(row[0]) ,_(row[1]), dbClientName, _(packets_full_ss.str()), _(packet_pcs_ss.str()), _(pcs_last_ss.str()), _(row[3]), dbOrder, dbDate, _(row[6]), GPX_EMPTY_STRING );
 //      pSelect->AddSelectableLabelPoint( pLP_src );
       m_pLabel->AddPoint(pLP_src);
 
@@ -1559,6 +1559,8 @@ void MyFrame1::GetProjects(wxListCtrl  *ps57CtlListCtrl) {
       ps57CtlListCtrl->SetItem(index, 1, _(row[6]), -1);
       ps57CtlListCtrl->SetItem(index, 2, _(row[1]), -1);
       dbClientName = _(row[1]);
+      dbOrder = _(row[6]);
+      dbDate = _(row[2]);
       ps57CtlListCtrl->SetItem(index, 3, _(row[2]), -1);
       ps57CtlListCtrl->SetItem(index, 4, _(row[3]), -1);
       ps57CtlListCtrl->SetItem(index, 5, _(row[4]), -1);
