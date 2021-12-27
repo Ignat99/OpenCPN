@@ -264,15 +264,15 @@ void PrintTable::AdjustCells( wxDC* dc, int marginX, int marginY )
     
     int width = w - 4 * marginX;
 
-//    header_height = -1;
-//    for ( size_t j = 0; j < header.size(); j++ ) {
-////        int cell_width = ( int )( ( double )width * widths[ j ] / sum );
+    header_height = -1;
+    for ( size_t j = 0; j < header.size(); j++ ) {
+        int cell_width = ( int )( ( double )width * widths[ j ] / sum );
 //        int cell_width = 20;
-//        PrintCell cell_content;
-//        cell_content.Init( header[ j ], dc, cell_width, 10, true );
-//        header_content.push_back( cell_content );
-//        header_height = std::max( header_height, cell_content.GetHeight() );
-//    }
+        PrintCell cell_content;
+        cell_content.Init( header[ j ], dc, cell_width, 10, true );
+        header_content.push_back( cell_content );
+        header_height = std::max( header_height, cell_content.GetHeight() );
+    }
 
     for ( size_t i = 0; i < data.size(); i++ ) {
         vector<wxString> row = data[ i ];
@@ -282,7 +282,7 @@ void PrintTable::AdjustCells( wxDC* dc, int marginX, int marginY )
 //            int cell_width = ( int )( ( double )width * widths[ j ] / sum );
 
 // I do not want that URL to image, that is longest one, was modificated. Just take bigger size of every one cell.
-            int cell_width = 1500;
+            int cell_width = 300;
             PrintCell cell_content;
 //            if ( j == 2 || j == 7 || j == 8) { cell_content.Init( row[ j ], dc, 500, 10 ); }
 //            else { cell_content.Init( row[ j ], dc, cell_width, 10 ); }

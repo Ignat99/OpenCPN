@@ -218,7 +218,7 @@ void LabelPoint::SetPcs(const wxString & pcs)
 }
 void LabelPoint::SetLast(const wxString & last)
 {
-    m_MarkPcs = last;
+    m_MarkLast = last;
     CalculateLastExtents();
 }
 

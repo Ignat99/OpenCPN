@@ -150,25 +150,25 @@ MyLabelPrintout::MyLabelPrintout( std::vector<bool> _toPrintOut,
     table.StartFillWidths();
     // setup widths for columns
     if ( toPrintOut[ PRINT_WP_LOGO ] ) {
-        table << 500;
+        table << 10;
     }
     if ( toPrintOut[ PRINT_WP_REFERENCIA ] ) {
-        table << 500;
+        table << 25;
     }
     if ( toPrintOut[ PRINT_WP_COMPONENTE ] ) {
-        table << 500;
+        table << 50;
     }
     if ( toPrintOut[ PRINT_WP_NAME ] ) {
-        table << 500;
+        table << 300;
     }
     if ( toPrintOut[ PRINT_WP_PACK ] ) {
-        table << 500;
+        table << 25;
     }
     if ( toPrintOut[ PRINT_WP_PCS ] ) {
-        table << 500;
+        table << 25;
     }
     if ( toPrintOut[ PRINT_WP_LAST ] ) {
-        table << 500;
+        table << 25;
     }
     if ( toPrintOut[ PRINT_WP_IMAGEN ] ) {
         table << 500;
@@ -177,10 +177,10 @@ MyLabelPrintout::MyLabelPrintout( std::vector<bool> _toPrintOut,
         table << 500;
     }
     if ( toPrintOut[ PRINT_WP_ORDER ] ) {
-        table << 500;
+        table << 100;
     }
     if ( toPrintOut[ PRINT_WP_DATE ] ) {
-        table << 500;
+        table << 100;
     }
 
     table.StartFillData();
@@ -214,7 +214,8 @@ MyLabelPrintout::MyLabelPrintout( std::vector<bool> _toPrintOut,
         }
         if ( toPrintOut[ PRINT_WP_NAME ] ) {
             string cell( point->GetCName().mb_str() );
-            table << "NAME:  " + cell;
+//            table << "NAME:  " + cell;
+            table << cell;
         }
         if ( toPrintOut[ PRINT_WP_PACK ] ) {
             string cell( point->GetPack().mb_str() );
@@ -416,9 +417,9 @@ void MyLabelPrintout::DrawPage( wxDC* dc )
                     my_image = my_path;
                     my_image += cell_img.GetText();
                     wxImage m_image(cell_img.GetText());
-                    dc->DrawBitmap(m_image.Scale(200, 200, wxIMAGE_QUALITY_HIGH), 480, 400);
+                    dc->DrawBitmap(m_image.Scale(200, 200, wxIMAGE_QUALITY_HIGH), 480, 950);
                     wxImage m_qrcode(my_code);
-                    dc->DrawBitmap(m_qrcode.Scale(200, 200), 480, 650);
+                    dc->DrawBitmap(m_qrcode.Scale(200, 200), 480, 1200);
                 }
                 if (j == 1) dc->DrawLabel(cell.GetText(), r);
                 if (j == 2) dc->DrawLabel(cell.GetText(), r);
@@ -439,14 +440,14 @@ void MyLabelPrintout::DrawPage( wxDC* dc )
 //                    wxImage m_qrcode(my_code);
 //                    dc->DrawBitmap(m_qrcode.Scale(200, 200), 480, 650);
 //                }
-                if (j == 7) dc->DrawLabel(cell.GetText(), r);
-                if (j == 8) dc->DrawLabel(cell.GetText(), r);
+//                if (j == 7) dc->DrawLabel(cell.GetText(), r);
+//                if (j == 8) dc->DrawLabel(cell.GetText(), r);
                 if (j == 9) dc->DrawLabel(cell.GetText(), r);
                 if (j == 10) dc->DrawLabel(cell.GetText(), r);
 //                if (j == 11) dc->DrawLabel(cell.GetText(), r);
 
 //                currentX     += cell.GetWidth();
-                currentY     += cell.GetHeight() + 20;
+                currentY     += cell.GetHeight() + 25;  // Littel bit more gap (20- no gap, 25 - 5 gap) bitwin cells/line
                 currentHeight = cell.GetHeight();
 //            } // if cell.GetPage()
         }
