@@ -117,6 +117,7 @@ LabelPoint::LabelPoint( const wxString& icon_ident, const wxString& no, const wx
     //  Nice defaults
     m_bDynamicName = false;
     m_bPtIsSelected = false;
+    m_bPtIsNotPrinted = false;  // Activate it in the moment of selection of item
     m_bIsActive = false;
     m_CreateTimeX = wxDateTime::Now();
     m_GPXTrkSegNo = 1;
@@ -163,6 +164,11 @@ LabelPoint::LabelPoint( const wxString& icon_ident, const wxString& no, const wx
         m_bIsListed = false;
     } else
         m_LayerID = 0;
+
+// Put counter of printeted to 0
+
+    m_PrintCounter = 0;
+
 }
 
 LabelPoint::~LabelPoint( void )

@@ -42,6 +42,7 @@ using namespace std; // FIXME: 'using namespace' must not be used in header file
 #include "navutil.h"
 #include "printtable.h"
 
+
 class MyLabelPrintout : public MyPrintout {
 public:
     MyLabelPrintout( std::vector<bool> _toPrintOut,

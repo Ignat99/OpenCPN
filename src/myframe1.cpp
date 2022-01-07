@@ -1621,6 +1621,9 @@ void MyFrame1::DoLabel( wxCommandEvent& event )
 
 void MyFrame1::OnBtnPrintClick(wxCommandEvent& event)
 {
+//    long clicked_index = event.m_itemIndex;
+
+
     if (pLabelPrintSelection == NULL)
         pLabelPrintSelection = new LabelPrintSelection( this, m_pLabel );
 
@@ -1635,6 +1638,86 @@ void MyFrame1::OnBtnPrintClick(wxCommandEvent& event)
 
 //We push button automatical
     pLabelPrintSelection->OnLabelpropOkClick(event);
+
+
+
+
+
+// Change print couner
+    wxLabelPointListNode *node = m_pLabel->pLabelPointList->GetFirst();
+
+    while( node ) {
+        if ( node ) {
+            LabelPoint *pLP_upd = node->GetData();
+
+
+            if (pLP_upd->m_bPtIsNotPrinted && pLP_upd->m_bPtIsSelected) {
+                pLP_upd->m_PrintCounter = pLP_upd->m_PrintCounter + 1;
+// Printed Counter to log
+
+                std::ostringstream print_counter_ss("");
+                print_counter_ss << pLP_upd->m_PrintCounter;
+                std::cerr << "PrintCounter: " << print_counter_ss.str() <<  std::endl;
+
+// Add the last packages with differemt amount if it exist
+
+        if (pcs_last == 0) {
+
+                if (pLP_upd->m_PrintCounter >= pack) {  //pack
+                    std::cerr << "Finished printed and show component item." <<  std::endl;
+                    ps57ListCtrl1->Hide();
+
+// Item Selected Number to log
+
+                std::ostringstream item_number_ss("");
+                item_number_ss << sel_no_del;
+                std::cerr << "Item Selected Number: " << item_number_ss.str() <<  std::endl;
+
+                long item = -1;
+
+                for (;;) {
+                    item = ps57ListCtrl1->GetNextItem(item, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+                    if (item == -1) break;
+                    ps57ListCtrl1->DeleteItem(item);
+                }
+
+
+//                    ps57ListCtrl1->ClearAll();
+//                    ps57ListCtrl1->DeleteItem(sel_no_del);  // Delete selected item if print couner (print counter - haw many time we push button PrintLabel on that item) have the sane mumber like amount of packs.
+
+
+
+//                    ps57ListCtrl1->Update();
+                    ps57ListCtrl1->Show();
+//                    ps57ListCtrl1->Raise();
+                }  // pack
+
+//  Add the last packages with differemt amount if it exist
+
+         } else {
+                if (pLP_upd->m_PrintCounter > pack) {  // pack2 for 1 last pack more
+                    ps57ListCtrl1->Hide();
+                long item = -1;
+
+                for (;;) {
+                    item = ps57ListCtrl1->GetNextItem(item, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+                    if (item == -1) break;
+                    ps57ListCtrl1->DeleteItem(item);
+                }
+
+                    ps57ListCtrl1->Show();
+                }  // pack2
+
+         } // last
+            }
+
+       }
+
+        node = node->GetNext();
+    }
+
+
+
 
 
 
@@ -1700,6 +1783,7 @@ void MyFrame1::OnLabelListClick( wxListEvent& event )
     i.GetText().ToLong( &itemno );
     sel_no = itemno;
     selected_no = itemno;
+    sel_no_del = itemno;
 
     m_pLabel->ClearHighlights();
     wxLabelPointListNode *node = m_pLabel->pLabelPointList->GetFirst();
@@ -1714,6 +1798,7 @@ void MyFrame1::OnLabelListClick( wxListEvent& event )
                 if (curno == sel_no) {
                     printf("Itemno %d\n", curno);
                     plp->m_bPtIsSelected = true;
+                    plp->m_bPtIsNotPrinted = true;  // In that moment we not finished print process
                     printf("bPtIsSelected %d\n", sel_no);
                     if( !( m_pLabel->m_bIsInLayer ) && !( m_pLabel->m_bRtIsActive ) ) {
                         m_nSelected = selected_no + 1;

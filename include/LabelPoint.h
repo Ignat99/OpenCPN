@@ -101,6 +101,7 @@ public:
       void CalculateDateExtents(void);
 
       bool             m_bPtIsSelected;
+      bool             m_bPtIsNotPrinted;  // For deleted item from lists in screen after print all label for every pockets of that item
 
       bool              m_bIsVisible;           // true if should be drawn, false if invisible
       bool              m_bIsListed;
@@ -121,6 +122,8 @@ public:
       wxSize            m_LastExtents;
       wxSize            m_OrderExtents;
       wxSize            m_DateExtents;
+      wxSize            m_PrintCounterExtents;  // Calculate have long the number of prints label
+
 
       bool              m_bDynamicName;
       bool              m_bShowName;
@@ -131,6 +134,7 @@ public:
       int               m_GPXTrkSegNo;
       bool              m_bIsInLayer;
       int               m_LayerID;
+      int               m_PrintCounter;  // Haw many labels print for that item
 
 
       HyperlinkList     *m_HyperlinkList;
@@ -159,6 +163,7 @@ private:
       wxString          m_MarkLast;
       wxString          m_MarkOrder;
       wxString          m_MarkDate;
+      wxString          m_MarkPrintCounter;   // text view of print counter (have many time we push button print)
       wxDateTime        m_CreateTimeX;
       wxBitmap          *m_pbmIcon;
       wxString          m_IconName;

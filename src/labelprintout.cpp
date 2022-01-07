@@ -740,6 +740,18 @@ void LabelPrintSelection::OnLabelpropOkClick( wxCommandEvent& event )
         }
     } else {
         ( *g_printData ) = printer.GetPrintDialogData().GetPrintData();
+        // If we printed label, then change Print Counter
+
+//        wxLablelPointListNode *node = label->pLabelPointList->GetFirst();
+//        while(node) {
+//            if (node) {
+//                LabelPoint *pLP_pc = node->GetData();
+//                if(pLP_pc->m_bPtIsNotPrinted) {
+//                    pLP_pc->m_PrintCounter = pLP_pc->m_PrintCounter + 1;
+//                }
+//            }
+//            node = node->GetNext();
+//        }
     }
 
 //    Hide();

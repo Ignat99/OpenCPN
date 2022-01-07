@@ -74,6 +74,7 @@ public:
       wxString dbClientName;
       wxString dbOrder;
       wxString dbDate;
+      long sel_no_del;
 
       void GetProjects(wxListCtrl *ps57CtlListBoxStrings);
       void GetComponents(wxListCtrl *ps57CtlListBoxStrings);
