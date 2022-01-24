@@ -428,7 +428,6 @@ public:
     {
         if (m_region)
             gdk_region_destroy( m_region );
-        free( m_region );
     }
 
     OGdkRegion  *m_region;
@@ -477,9 +476,15 @@ OCPNRegion::OCPNRegion( size_t n, const wxPoint *points, int fillStyle )
 {
 }
 
-wxRegion *OCPNRegion::GetNew_wxRegion() const
+
+wxRegion &OCPNRegion::ConvertTowxRegion()
 {
-    return new wxRegion(this);
+    return *(wxRegion *)this;
+}
+
+wxRegion *OCPNRegion::GetNew_wxRegion()
+{
+    return (wxRegion *)this;
 }
 
 #endif    
@@ -517,11 +522,6 @@ OCPNRegion::OCPNRegion( const wxRegion& region )
         ri++;
     }
 }
-
-OCPNRegion::~OCPNRegion()
-{
-}
-
 
 void OCPNRegion::InitRect(wxCoord x, wxCoord y, wxCoord w, wxCoord h)
 {
@@ -793,7 +793,37 @@ void *OCPNRegion::GetRegion() const
     return M_REGIONDATA->m_region;
 }
 
-wxRegion *OCPNRegion::GetNew_wxRegion() const
+
+wxRegion &OCPNRegion::ConvertTowxRegion()
+{
+    wxRegion *r = new wxRegion;
+    
+    OGdkRectangle *gdkrects = NULL;
+    int numRects = 0;
+    gdk_region_get_rectangles( (OGdkRegion *)GetRegion(), &gdkrects, &numRects );
+    
+    if (numRects)
+    {
+        for (int i=0; i < numRects; ++i)
+        {
+            OGdkRectangle &gr = gdkrects[i];
+            
+            wxRect wr;
+            wr.x = gr.x;
+            wr.y = gr.y;
+            wr.width = gr.width;
+            wr.height = gr.height;
+            
+            r->Union(wr);
+        }
+    }
+    free( gdkrects );
+    
+    return *r;
+}
+
+
+wxRegion *OCPNRegion::GetNew_wxRegion()
 {
     wxRegion *r = new wxRegion;
     r->Clear();

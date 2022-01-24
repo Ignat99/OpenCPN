@@ -32,13 +32,12 @@
 #include <wx/filename.h>
 #include <wx/dir.h>
 #include <stdlib.h>
-#include "OCPNPlatform.h"
 
 #include "styles.h"
 #include "chart1.h"
-#include "wx28compat.h"
 
-extern OCPNPlatform     *g_Platform;
+extern wxString *pHome_Locn;
+extern wxString g_SData_Locn;
 
 using namespace ocpnStyle;
 
@@ -48,26 +47,20 @@ void bmdump(wxBitmap bm, wxString name)
     img.SaveFile( name << _T(".png"), wxBITMAP_TYPE_PNG );
 }
 
-// This function can be used to create custom bitmap blending for all platforms
+// This function can be used to create custom bitmap blending for platforms
 // where 32 bit bitmap ops are broken. Can hopefully be removed for wxWidgets 3.0...
 
 wxBitmap MergeBitmaps( wxBitmap back, wxBitmap front, wxSize offset )
 {
     wxBitmap merged( back.GetWidth(), back.GetHeight(), back.GetDepth() );
+#if (!wxCHECK_VERSION(2,9,4) && (defined(__WXGTK__) || defined(__WXMAC__)))
 
-    //  If the front bitmap has no alpha channel, then merging will accomplish nothing
-    //  So, simply return the bitmap intact
-    wxImage im_front = front.ConvertToImage();
-    if(!im_front.HasAlpha())
-        return front;
-#if !wxCHECK_VERSION(2,9,4)
-
-    // Manual alpha blending for broken wxWidgets alpha bitmap support, pervasive in wx2.8.
+    // Manual alpha blending for broken wxWidgets platforms.
     merged.UseAlpha();
     back.UseAlpha();
     front.UseAlpha();
-    
-//    wxImage im_front = front.ConvertToImage();
+
+    wxImage im_front = front.ConvertToImage();
     wxImage im_back = back.ConvertToImage();
     wxImage im_result = back.ConvertToImage();// Only way to make result have alpha channel in wxW 2.8.
 
@@ -88,44 +81,43 @@ wxBitmap MergeBitmaps( wxBitmap back, wxBitmap front, wxSize offset )
     aresult = im_result.GetAlpha();
 
     // Do alpha blending, associative version of "over" operator.
-    if(presult && pback && pfront){ 
-        for( int i = 0; i < back.GetHeight(); i++ ) {
-            for( int j = 0; j < back.GetWidth(); j++ ) {
 
-                int fX = j - offset.x;
-                int fY = i - offset.y;
+    for( int i = 0; i < back.GetHeight(); i++ ) {
+        for( int j = 0; j < back.GetWidth(); j++ ) {
 
-                bool inFront = true;
-                if( fX < 0 || fY < 0 ) inFront = false;
-                if( fX >= front.GetWidth() ) inFront = false;
-                if( fY >= front.GetHeight() ) inFront = false;
+            int fX = j - offset.x;
+            int fY = i - offset.y;
 
-                if( inFront ) {
-                    double alphaF = (double) ( *afront++ ) / 256.0;
-                    double alphaB = (double) ( *aback++ ) / 256.0;
-                    double alphaRes = alphaF + alphaB * ( 1.0 - alphaF );
-                    unsigned char a = alphaRes * 256;
-                    *aresult++ = a;
-                    unsigned char r = (*pfront++ * alphaF + *pback++ * alphaB * ( 1.0 - alphaF )) / alphaRes;
-                    *presult++ = r;
-                    unsigned char g = (*pfront++ * alphaF + *pback++ * alphaB * ( 1.0 - alphaF )) / alphaRes;
-                    *presult++ = g;
-                    unsigned char b = (*pfront++ * alphaF + *pback++ * alphaB * ( 1.0 - alphaF )) / alphaRes;
-                    *presult++ = b;
-                } else {
-                    *aresult++ = *aback++;
-                    *presult++ = *pback++;
-                    *presult++ = *pback++;
-                    *presult++ = *pback++;
-                }
+            bool inFront = true;
+            if( fX < 0 || fY < 0 ) inFront = false;
+            if( fX >= front.GetWidth() ) inFront = false;
+            if( fY >= front.GetHeight() ) inFront = false;
+
+            if( inFront ) {
+                double alphaF = (double) ( *afront++ ) / 256.0;
+                double alphaB = (double) ( *aback++ ) / 256.0;
+                double alphaRes = alphaF + alphaB * ( 1.0 - alphaF );
+                unsigned char a = alphaRes * 256;
+                *aresult++ = a;
+                unsigned char r = (*pfront++ * alphaF + *pback++ * alphaB * ( 1.0 - alphaF )) / alphaRes;
+                *presult++ = r;
+                unsigned char g = (*pfront++ * alphaF + *pback++ * alphaB * ( 1.0 - alphaF )) / alphaRes;
+                *presult++ = g;
+                unsigned char b = (*pfront++ * alphaF + *pback++ * alphaB * ( 1.0 - alphaF )) / alphaRes;
+                *presult++ = b;
+            } else {
+                *aresult++ = *aback++;
+                *presult++ = *pback++;
+                *presult++ = *pback++;
+                *presult++ = *pback++;
             }
         }
     }
+
     merged = wxBitmap( im_result );
 
 #else
     wxMemoryDC mdc( merged );
-    mdc.Clear();
     mdc.DrawBitmap( back, 0, 0, true );
     mdc.DrawBitmap( front, offset.x, offset.y, true );
     mdc.SelectObject( wxNullBitmap );
@@ -244,7 +236,7 @@ wxBitmap Style::GetToolIcon(const wxString & toolname, int iconType, bool rollov
             } else {
                 wxBitmap bg( GetToolSize().x, GetToolSize().y );
                 wxMemoryDC mdc( bg );
-                mdc.SetBackground( wxBrush( GetGlobalColor( _T("GREY2") ), wxBRUSHSTYLE_SOLID ) );
+                mdc.SetBackground( wxBrush( GetGlobalColor( _T("GREY2") ), wxSOLID ) );
                 mdc.Clear();
                 mdc.SelectObject( wxNullBitmap );
                 bm = MergeBitmaps( bg, bm, wxSize( 0, 0 ) );
@@ -342,7 +334,7 @@ wxBitmap Style::BuildPluginIcon( const wxBitmap* bm, int iconType )
                 wxMemoryDC mdc( bg );
                 wxSize offset = GetToolSize() - wxSize( bm->GetWidth(), bm->GetHeight() );
                 offset /= 2;
-                mdc.SetBackground( wxBrush( GetGlobalColor( _T("GREY2") ), wxBRUSHSTYLE_SOLID ) );
+                mdc.SetBackground( wxBrush( GetGlobalColor( _T("GREY2") ), wxSOLID ) );
                 mdc.Clear();
                 mdc.SelectObject( wxNullBitmap );
                 iconbm = MergeBitmaps( bg, *bm, offset );
@@ -560,9 +552,9 @@ StyleManager::StyleManager(void)
 {
     isOK = false;
     currentStyle = NULL;
-    Init( g_Platform->GetSharedDataDir() + _T("uidata") + wxFileName::GetPathSeparator() );
-    Init( g_Platform->GetHomeDir() );
-    Init( g_Platform->GetHomeDir() + _T(".opencpn") + wxFileName::GetPathSeparator() );
+    Init( g_SData_Locn + _T("uidata") + wxFileName::GetPathSeparator() );
+    Init( *pHome_Locn );
+    Init( *pHome_Locn + _T(".opencpn") + wxFileName::GetPathSeparator() );
     SetStyle( _T("") );
 }
 

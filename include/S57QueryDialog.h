@@ -59,8 +59,6 @@ class S57QueryDialog: public wxDialog
 
             void CreateControls();
             void OnSize(wxSizeEvent& event);
-            void RecalculateSize( void );
-            
             void OnClose(wxCloseEvent& event);
 
       //    Overrides
@@ -70,7 +68,6 @@ class S57QueryDialog: public wxDialog
 
       //    Data
             wxHtmlWindow      *m_phtml;
-            wxSize            m_createsize;
 
 };
 

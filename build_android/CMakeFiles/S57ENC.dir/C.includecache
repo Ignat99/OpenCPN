@@ -1,0 +1,40 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../include/triangulate.h
+sys/types.h
+-
+stdlib.h
+-
+stdio.h
+-
+
+/home/ignat99/Projects/OpenCPN/src/tri.c
+triangulate.h
+/home/ignat99/Projects/OpenCPN/src/triangulate.h
+windows.h
+-
+signal.h
+-
+setjmp.h
+-
+triangulate.h
+/home/ignat99/Projects/OpenCPN/src/triangulate.h
+time.h
+-
+math.h
+-
+triangulate.h
+/home/ignat99/Projects/OpenCPN/src/triangulate.h
+math.h
+-
+triangulate.h
+/home/ignat99/Projects/OpenCPN/src/triangulate.h
+math.h
+-
+

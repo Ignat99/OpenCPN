@@ -38,11 +38,11 @@
 #include "ocpn_plugin.h"
 #include "chart1.h"                 // for MyFrame
 #include "chcanv.h"                 // for ViewPort
+#include "datastream.h"             // for GenericPosDat
 #include "OCPN_Sound.h"
-#include "chartimg.h"
+#include "s52s57.h"
 
 #ifdef USE_S57
-#include "s52s57.h"
 #include "s57chart.h"               // for Object list
 #endif
 
@@ -51,11 +51,6 @@
 #include <wx/choice.h>
 #include <wx/tglbtn.h>
 #include <wx/bmpcbox.h>
-
-#ifndef __OCPN__ANDROID__
-#include "wx/curl/http.h"
-#include "wx/curl/dialog.h"
-#endif
 
 //    Include wxJSON headers
 //    We undefine MIN/MAX so avoid warning of redefinition coming from
@@ -156,8 +151,7 @@ class PlugInContainer
             bool              m_bToolboxPanel;
             int               m_cap_flag;             // PlugIn Capabilities descriptor
             wxString          m_plugin_file;          // The full file path
-            wxString          m_plugin_filename;      // The short file path
-            wxDateTime        m_plugin_modification;  // used to detect upgraded plugins
+            wxString          m_plugin_filename;          // The short file path
             destroy_t         *m_destroy_fn;
             wxDynamicLibrary  *m_plibrary;
             wxString          m_common_name;            // A common name string for the plugin
@@ -223,14 +217,14 @@ WX_DEFINE_ARRAY_PTR(PlugInToolbarToolContainer *, ArrayOfPlugInToolbarTools);
 //
 //-----------------------------------------------------------------------------------------------------
 
-class PlugInManager: public wxEvtHandler
+class PlugInManager
 {
 
 public:
       PlugInManager(MyFrame *parent);
       virtual ~PlugInManager();
 
-      bool LoadAllPlugIns(const wxString &plugin_dir, bool enabled_plugins, bool b_enable_blackdialog = true);
+      bool LoadAllPlugIns(const wxString &plugin_dir, bool enabled_plugins);
       bool UnLoadAllPlugIns();
       bool DeactivateAllPlugIns();
       bool UpdatePlugIns();
@@ -260,7 +254,6 @@ public:
       void SetToolbarItemBitmaps(int item, wxBitmap *bitmap, wxBitmap *bmpDisabled);
       opencpn_plugin *FindToolOwner(const int id);
       wxString GetToolOwnerCommonName(const int id);
-      void ShowDeferredBlacklistMessages();
 
       ArrayOfPlugInMenuItems &GetPluginContextMenuItemArray(){ return m_PlugInMenuItems; }
       int AddCanvasContextMenuItem(wxMenuItem *pitem, opencpn_plugin *pplugin );
@@ -279,18 +272,17 @@ public:
       void NotifyAuiPlugIns(void);
       bool CallLateInit(void);
       
-      bool IsPlugInAvailable(wxString commonName);
-      
       void SendVectorChartObjectInfo(const wxString &chart, const wxString &feature, const wxString &objname, double &lat, double &lon, double &scale, int &nativescale);
 
       bool SendMouseEventToPlugins( wxMouseEvent &event);
-      bool SendKeyEventToPlugins( wxKeyEvent &event);
       
       wxArrayString GetPlugInChartClassNameArray(void);
 
+#ifdef USE_S57      
       ListOfPI_S57Obj *GetPlugInObjRuleListAtLatLon( ChartPlugInWrapper *target, float zlat, float zlon,
                                                        float SelectRadius, const ViewPort& vp );
       wxString CreateObjDescriptions( ChartPlugInWrapper *target, ListOfPI_S57Obj *rule_list );
+#endif
       
       wxString GetLastError();
       MyFrame *GetParentFrame(){ return pParent; }
@@ -319,29 +311,8 @@ private:
       int               m_plugin_menu_item_id_next;
       wxBitmap          m_cached_overlay_bm;
 
-      bool              m_benable_blackdialog;
-      wxArrayString     m_deferred_blacklist_messages;
-      
-      wxArrayString     m_plugin_order;
-      void SetPluginOrder( wxString serialized_names );
-      wxString GetPluginOrder();
-    
-#ifndef __OCPN__ANDROID__
-public:
-      wxCurlDownloadThread *m_pCurlThread;
-      // returns true if the error can be ignored
-      bool            HandleCurlThreadError(wxCurlThreadError err, wxCurlBaseThread *p,
-                               const wxString &url = wxEmptyString);
-      void            OnEndPerformCurlDownload(wxCurlEndPerformEvent &ev);
-      void            OnCurlDownload(wxCurlDownloadEvent &ev);
-      
-      wxEvtHandler   *m_download_evHandler;
-      long           *m_downloadHandle;
-      bool m_last_online;
-      long m_last_online_chk;
-#endif
 
-DECLARE_EVENT_TABLE()
+
 };
 
 WX_DEFINE_ARRAY_PTR(PluginPanel *, ArrayOfPluginPanel);
@@ -353,17 +324,13 @@ public:
       ~PluginListPanel();
 
       void SelectPlugin( PluginPanel *pi );
-      void MoveUp( PluginPanel *pi );
-      void MoveDown( PluginPanel *pi );
       void UpdateSelections();
-      void UpdatePluginsOrder();
+      
 
 private:
       ArrayOfPlugIns     *m_pPluginArray;
       ArrayOfPluginPanel  m_PluginItems;
       PluginPanel        *m_PluginSelected;
-      
-      wxBoxSizer         *m_pitemBoxSizer01;
 };
 
 class PluginPanel: public wxPanel
@@ -376,11 +343,8 @@ public:
       void SetSelected( bool selected );
       void OnPluginPreferences( wxCommandEvent& event );
       void OnPluginEnable( wxCommandEvent& event );
-      void OnPluginUp( wxCommandEvent& event );
-      void OnPluginDown( wxCommandEvent& event );
       void SetEnabled( bool enabled );
       bool GetSelected(){ return m_bSelected; }
-      PlugInContainer* GetPluginPtr() { return m_pPlugin; };
 
 private:
       PluginListPanel *m_PluginListPanel;
@@ -389,20 +353,15 @@ private:
       wxStaticText    *m_pName;
       wxStaticText    *m_pVersion;
       wxStaticText    *m_pDescription;
+//      wxBoxSizer      *m_pButtons;
       wxFlexGridSizer      *m_pButtons;
       wxButton        *m_pButtonEnable;
       wxButton        *m_pButtonPreferences;
-      
-      wxBoxSizer      *m_pButtonsUpDown;
-      wxButton        *m_pButtonUp;
-      wxButton        *m_pButtonDown;    
 };
 
 
 //  API 1.11 adds access to S52 Presentation library
 //  These are some wrapper conversion utilities
-
-#ifdef USE_S57
 
 class S52PLIB_Context
 {
@@ -439,7 +398,6 @@ public:
 
 void CreateCompatibleS57Object( PI_S57Obj *pObj, S57Obj *cobj, chart_context *pctx );
 void UpdatePIObjectPlibContext( PI_S57Obj *pObj, S57Obj *cobj );
-#endif
 
 #endif            // _PLUGINMGR_H_
 

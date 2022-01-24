@@ -1,0 +1,8 @@
+/home/ignat99/Projects/OpenCPN/build_android/CMakeFiles/po-update.dir
+/home/ignat99/Projects/OpenCPN/build_android/CMakeFiles/dummy.dir
+/home/ignat99/Projects/OpenCPN/build_android/CMakeFiles/SYMBOLS.dir
+/home/ignat99/Projects/OpenCPN/build_android/CMakeFiles/i18n.dir
+/home/ignat99/Projects/OpenCPN/build_android/CMakeFiles/opencpn.dir
+/home/ignat99/Projects/OpenCPN/build_android/CMakeFiles/NMEA0183.dir
+/home/ignat99/Projects/OpenCPN/build_android/CMakeFiles/GARMINHOST.dir
+/home/ignat99/Projects/OpenCPN/build_android/CMakeFiles/pot-update.dir

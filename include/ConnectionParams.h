@@ -35,17 +35,14 @@
 typedef enum
 {
     SERIAL = 0,
-    NETWORK = 1,
-    INTERNAL_GPS = 2,
-    INTERNAL_BT = 3
+    NETWORK = 1
 } ConnectionType;
 
 typedef enum
 {
     TCP = 0,
     UDP = 1,
-    GPSD = 2,
-    PROTO_UNDEFINED = 3
+    GPSD = 2
 } NetworkProtocol;
 
 typedef enum
@@ -105,15 +102,11 @@ public:
     wxString GetFiltersStr();
     wxString GetDSPort();
     wxString GetLastDSPort();
-    wxString GetPortStr(){ return Port; }
-    void SetPortStr( wxString str ){ Port = str; }
-    
     
     bool            Valid;
     bool            b_IsSetup;
 private:
     wxString FilterTypeToStr(ListType type, FilterDirection dir);
-    
 };
 
 WX_DEFINE_ARRAY(ConnectionParams *, wxArrayOfConnPrm);

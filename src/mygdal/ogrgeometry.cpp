@@ -271,7 +271,7 @@ OGRBoolean OGRGeometry::Intersect( OGRGeometry *poOtherGeom ) const
 {
     OGREnvelope         oEnv1, oEnv2;
 
-    if( poOtherGeom == NULL )
+    if( this == NULL || poOtherGeom == NULL )
         return FALSE;
 
     this->getEnvelope( &oEnv1 );

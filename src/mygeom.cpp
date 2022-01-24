@@ -35,13 +35,8 @@
 #include "wx/tokenzr.h"
 #include <wx/mstream.h>
 
-#ifdef USE_S57
-#include <ogr_geometry.h>
-#endif
-
-#include "cutil.h"
-
-#include "vector2D.h"
+#include "dychart.h"
+#include "navutil.h"
 
 #include "s52s57.h"
 
@@ -50,14 +45,102 @@
 
 #include "triangulate.h"
 
-#include "dychart.h"
+#ifdef ocpnUSE_GL
 
+#ifdef USE_GLU_TESS
+#ifdef __WXOSX__
+#include "GL/gl.h"
+#include "GL/glu.h"
+#else
+#include <GL/gl.h>
+#include <GL/glu.h>
+#endif
+
+#endif
 
 #ifdef __WXMSW__
 #include <windows.h>
 #endif
 
+#endif
 
+//------------------------------------------------------------------------------
+//          Some local definitions for opengl/glu types,
+//            just enough to build the glu tesselator option.
+//          Included here to avoid having to find and include
+//            the Microsoft versions of gl.h and glu.h.
+//          You are welcome.....
+//------------------------------------------------------------------------------
+/*
+#ifdef __WXMSW__
+class GLUtesselator;
+
+typedef unsigned int GLenum;
+typedef unsigned char GLboolean;
+typedef unsigned int GLbitfield;
+typedef signed char GLbyte;
+typedef short GLshort;
+typedef int GLint;
+typedef int GLsizei;
+typedef unsigned char GLubyte;
+typedef unsigned short GLushort;
+typedef unsigned int GLuint;
+typedef float GLfloat;
+typedef float GLclampf;
+typedef double GLdouble;
+typedef double GLclampd;
+typedef void GLvoid;
+
+#define GLU_TESS_BEGIN                     100100
+#define GLU_TESS_VERTEX                    100101
+#define GLU_TESS_END                       100102
+#define GLU_TESS_ERROR                     GLU_ERROR
+#define GLU_TESS_EDGE_FLAG                 100104
+#define GLU_TESS_COMBINE                   100105
+#define GLU_TESS_BEGIN_DATA                100106
+#define GLU_TESS_VERTEX_DATA               100107
+#define GLU_TESS_END_DATA                  100108
+#define GLU_TESS_ERROR_DATA                100109
+#define GLU_TESS_EDGE_FLAG_DATA            100110
+#define GLU_TESS_COMBINE_DATA              100111
+#define GLU_BEGIN                          GLU_TESS_BEGIN
+#define GLU_VERTEX                         GLU_TESS_VERTEX
+#define GLU_END                            GLU_TESS_END
+#define GLU_EDGE_FLAG                      GLU_TESS_EDGE_FLAG
+#define GLU_CW                             100120
+#define GLU_CCW                            100121
+#define GLU_INTERIOR                       100122
+#define GLU_EXTERIOR                       100123
+#define GLU_UNKNOWN                        100124
+#define GLU_TESS_WINDING_RULE              100140
+#define GLU_TESS_BOUNDARY_ONLY             100141
+#define GLU_TESS_TOLERANCE                 100142
+#define GLU_TESS_ERROR1                    100151
+#define GLU_TESS_ERROR2                    100152
+#define GLU_TESS_ERROR3                    100153
+#define GLU_TESS_ERROR4                    100154
+#define GLU_TESS_ERROR5                    100155
+#define GLU_TESS_ERROR6                    100156
+#define GLU_TESS_ERROR7                    100157
+#define GLU_TESS_ERROR8                    100158
+#define GLU_TESS_MISSING_BEGIN_POLYGON     100151
+#define GLU_TESS_MISSING_BEGIN_CONTOUR     100152
+#define GLU_TESS_MISSING_END_POLYGON       100153
+#define GLU_TESS_MISSING_END_CONTOUR       100154
+#define GLU_TESS_COORD_TOO_LARGE           100155
+#define GLU_TESS_NEED_COMBINE_CALLBACK     100156
+#define GLU_TESS_WINDING_ODD               100130
+#define GLU_TESS_WINDING_NONZERO           100131
+#define GLU_TESS_WINDING_POSITIVE          100132
+#define GLU_TESS_WINDING_NEGATIVE          100133
+#define GLU_TESS_WINDING_ABS_GEQ_TWO       100134
+
+#define GL_TRIANGLES                       0x0004
+#define GL_TRIANGLE_STRIP                  0x0005
+#define GL_TRIANGLE_FAN                    0x0006
+
+#endif
+*/
 
 //      Module Internal Prototypes
 
@@ -65,7 +148,7 @@
 #ifdef USE_GLU_TESS
 static int            s_nvcall;
 static int            s_nvmax;
-static GLdouble       *s_pwork_buf;
+static double         *s_pwork_buf;
 static int            s_buf_len;
 static int            s_buf_idx;
 static unsigned int   s_gltri_type;
@@ -297,7 +380,7 @@ PolyTessGeo::PolyTessGeo(unsigned char *polybuf, int nrecl, int index, int senc_
     ppg->pn_vertex = (int *)malloc(nctr * sizeof(int));
     int *pctr = ppg->pn_vertex;
 
-    size_t buf_len = wxMax(twkb_len + 2, 20 + (nctr * 6));
+    size_t buf_len = wxMax(twkb_len + 2, 20 + (nctr * 4));
     char *buf = (char *)malloc(buf_len);        // allocate a buffer guaranteed big enough
 
     my_bufgets( buf, buf_len );                 // contour nVert, as a char line
@@ -323,7 +406,7 @@ PolyTessGeo::PolyTessGeo(unsigned char *polybuf, int nrecl, int index, int senc_
     //  Read Raw Geometry
 
     float *ppolygeo = (float *)malloc(twkb_len + 1);    // allow for crlf
-    memcpy(ppolygeo,  m_buf_ptr, twkb_len + 1);
+    memmove(ppolygeo,  m_buf_ptr, twkb_len + 1);
     m_buf_ptr += twkb_len + 1;
     ppg->pgroup_geom = ppolygeo;
 
@@ -336,7 +419,7 @@ PolyTessGeo::PolyTessGeo(unsigned char *polybuf, int nrecl, int index, int senc_
     int nvert;
     int nvert_max = 0;
     bool not_finished = true;
-    int total_byte_size = 2 * sizeof(float);
+    int total_byte_size = 0;
     while(not_finished)
     {
         if((m_buf_ptr - m_buf_head) != m_nrecl)
@@ -369,7 +452,8 @@ PolyTessGeo::PolyTessGeo(unsigned char *polybuf, int nrecl, int index, int senc_
                 int byte_size = nvert * 2 * sizeof(float);
                 total_byte_size += byte_size;
             
-                tp->p_vertex = (double *)m_buf_ptr;
+                tp->p_vertex = (double *)malloc(byte_size);
+                memmove(tp->p_vertex, m_buf_ptr, byte_size);
                 m_buf_ptr += byte_size;
             }
             else{
@@ -377,7 +461,7 @@ PolyTessGeo::PolyTessGeo(unsigned char *polybuf, int nrecl, int index, int senc_
                 total_byte_size += byte_size;
                 
                 tp->p_vertex = (double *)malloc(byte_size);
-                memcpy(tp->p_vertex, m_buf_ptr, byte_size);
+                memmove(tp->p_vertex, m_buf_ptr, byte_size);
                 m_buf_ptr += byte_size;
             }
                 
@@ -413,6 +497,7 @@ PolyTessGeo::PolyTessGeo(unsigned char *polybuf, int nrecl, int index, int senc_
         unsigned char *p_run = vbuf;
         while( p_tp ) {
             memcpy(p_run, p_tp->p_vertex, p_tp->nVert * 2 * sizeof(float));
+            free(p_tp->p_vertex);
             p_tp->p_vertex = (double  *)p_run;
             p_run += p_tp->nVert * 2 * sizeof(float);
             p_tp = p_tp->p_next; // pick up the next in chain
@@ -820,10 +905,10 @@ int PolyTessGeo::PolyTessGeoTri(OGRPolygon *poly, bool bSENC_SM, double ref_lat,
                 double xd = geoPt[ivp].x;
                 double yd = geoPt[ivp].y;
 
-                sxmax = wxMax(xd, sxmax);
-                sxmin = wxMin(xd, sxmin);
-                symax = wxMax(yd, symax);
-                symin = wxMin(yd, symin);
+                sxmax = fmax(xd, sxmax);
+                sxmin = fmin(xd, sxmin);
+                symax = fmax(yd, symax);
+                symin = fmin(yd, symin);
             }
 
             pTP->minx = sxmin;
@@ -842,7 +927,7 @@ int PolyTessGeo::PolyTessGeoTri(OGRPolygon *poly, bool bSENC_SM, double ref_lat,
     //  to reduce SENC size and enable efficient access later
     
     //  First calculate the total byte size
-    int total_byte_size = 2 * sizeof(float);
+    int total_byte_size = 0;
     TriPrim *p_tp = m_ppg_head->tri_prim_head;
     while( p_tp ) {
         total_byte_size += p_tp->nVert * 2 * sizeof(float);
@@ -1258,10 +1343,10 @@ int PolyTessGeo::BuildTessTri(void)
                 double lat = ( 2.0 * atan ( exp ( valy/CM93_semimajor_axis_meters ) ) - PI/2. ) / DEGREE;
                 double lon = ( valx / ( DEGREE * CM93_semimajor_axis_meters ) );
         
-                sxmax = wxMax(lon, sxmax);
-                sxmin = wxMin(lon, sxmin);
-                symax = wxMax(lat, symax);
-                symin = wxMin(lat, symin);
+                sxmax = fmax(lon, sxmax);
+                sxmin = fmin(lon, sxmin);
+                symax = fmax(lat, symax);
+                symin = fmin(lat, symin);
             }
         
 
@@ -1380,7 +1465,7 @@ int PolyTessGeo::Write_PolyTriGroup( FILE *ofs)
     ostream2->Write(stemp.mb_str(), stemp.Len());
 
     int nrecl = ostream1->GetSize() + ostream2->GetSize();
-    stemp.sprintf( _T("  POLYTESSGEO  %08d %f %f\n"), nrecl, m_ref_lat, m_ref_lon);
+    stemp.sprintf( _T("  POLYTESSGEO  %08d %g %g\n"), nrecl, m_ref_lat, m_ref_lon);
 
     fwrite(stemp.mb_str(), 1, stemp.Len(), ofs);                 // Header, + record length
 
@@ -1465,7 +1550,7 @@ int PolyTessGeo::BuildDeferredTess(void)
 
 
 #ifdef __WXMSW__
-#define __CALL_CONVENTION /*__stdcall*/
+#define __CALL_CONVENTION __stdcall
 #else
 #define __CALL_CONVENTION
 #endif
@@ -1882,7 +1967,7 @@ int PolyTessGeo::PolyTessGeoGL(OGRPolygon *poly, bool bSENC_SM, double ref_lat, 
     nptfinal = 1;
     
     m_nwkb = (nptfinal + 1) * 2 * sizeof(float);
-    m_ppg_head->pgroup_geom = (float *)calloc(sizeof(float), (nptfinal + 1) * 2);
+    m_ppg_head->pgroup_geom = (float *)malloc(m_nwkb);
     float *vro = m_ppg_head->pgroup_geom;
     ppt = geoPt;
     float tx,ty;
@@ -1924,7 +2009,7 @@ int PolyTessGeo::PolyTessGeoGL(OGRPolygon *poly, bool bSENC_SM, double ref_lat, 
     //  to reduce SENC size and enable efficient access later
     
     //  First calculate the total byte size
-    int total_byte_size = 2 * sizeof(float);
+    int total_byte_size = 0;
     TriPrim *p_tp = m_ppg_head->tri_prim_head;
     while( p_tp ) {
         total_byte_size += p_tp->nVert * 2 * sizeof(float);
@@ -1936,11 +2021,8 @@ int PolyTessGeo::PolyTessGeoGL(OGRPolygon *poly, bool bSENC_SM, double ref_lat, 
     float *p_run = vbuf;
     while( p_tp ) {
         float *pfbuf = p_run;
-        GLdouble *pdouble_buf = (GLdouble *)p_tp->p_vertex;
-        
         for( int i=0 ; i < p_tp->nVert * 2 ; ++i){
-            float x = (float)( *((GLdouble *)pdouble_buf) );
-            pdouble_buf++;
+            float x = (float)(p_tp->p_vertex[i]);
             *p_run++ = x;
         }
         
@@ -2344,7 +2426,7 @@ int PolyTessGeo::BuildTessGL(void)
       //  to reduce SENC size and enable efficient access later
       
       //  First calculate the total byte size
-      int total_byte_size = 2 * sizeof(float);
+      int total_byte_size = 0;
       TriPrim *p_tp = m_ppg_head->tri_prim_head;
       while( p_tp ) {
           total_byte_size += p_tp->nVert * 2 * sizeof(float);
@@ -2356,12 +2438,9 @@ int PolyTessGeo::BuildTessGL(void)
       float *p_run = vbuf;
       while( p_tp ) {
           float *pfbuf = p_run;
-          GLdouble *pdouble_buf = (GLdouble *)p_tp->p_vertex;
-          
           for( int i=0 ; i < p_tp->nVert * 2 ; ++i){
-              float x = (float)( *((GLdouble *)pdouble_buf) );
+              float x = (float)(p_tp->p_vertex[i]);
               *p_run++ = x;
-              pdouble_buf++;
           }
           
           free(p_tp->p_vertex);
@@ -2475,17 +2554,17 @@ void __CALL_CONVENTION endCallback(void)
                       double lat = ( 2.0 * atan ( exp ( valy/CM93_semimajor_axis_meters ) ) - PI/2. ) / DEGREE;
                       double lon = ( valx / ( DEGREE * CM93_semimajor_axis_meters ) );
 
-                      sxmax = wxMax(lon, sxmax);
-                      sxmin = wxMin(lon, sxmin);
-                      symax = wxMax(lat, symax);
-                      symin = wxMin(lat, symin);
+                      sxmax = fmax(lon, sxmax);
+                      sxmin = fmin(lon, sxmin);
+                      symax = fmax(lat, symax);
+                      symin = fmin(lat, symin);
                 }
                 else
                 {
-                      sxmax = wxMax(xd, sxmax);
-                      sxmin = wxMin(xd, sxmin);
-                      symax = wxMax(yd, symax);
-                      symin = wxMin(yd, symin);
+                      sxmax = fmax(xd, sxmax);
+                      sxmin = fmin(xd, sxmin);
+                      symax = fmax(yd, symax);
+                      symin = fmin(yd, symin);
                 }
             }
 
@@ -2499,9 +2578,9 @@ void __CALL_CONVENTION endCallback(void)
 
             if(s_bSENC_SM)
             {
-                GLdouble *pds = s_pwork_buf;
+                double *pds = s_pwork_buf;
                 pTPG->p_vertex = (double *)malloc(s_nvcall * 2 * sizeof(double));
-                GLdouble *pdd = (GLdouble*)pTPG->p_vertex;
+                double *pdd = pTPG->p_vertex;
 
                 for(int ip = 0 ; ip < s_nvcall ; ip++)
                 {
@@ -2510,8 +2589,10 @@ void __CALL_CONVENTION endCallback(void)
 
                     double easting, northing;
                     toSM(dlat, dlon, s_ref_lat, s_ref_lon, &easting, &northing);
-                    *pdd++ = easting;
-                    *pdd++ = northing;
+                    double deast = easting;
+                    double dnorth = northing;
+                    *pdd++ = deast;
+                    *pdd++ = dnorth;
                 }
             }
             else
@@ -2836,6 +2917,43 @@ PolyTrapGroup::~PolyTrapGroup()
       free (trap_array);
 }
 
+
+
+void DouglasPeucker(double *PointList, int fp, int lp, double epsilon, wxArrayInt *keep)
+{
+    
+// Find the point with the maximum distance
+    double dmax = 0;
+    int index = 0;
+    {
+        for(int i = fp+1 ; i < lp ; ++i) {
+            
+            vector2D va(PointList[2*fp] - PointList[2*lp],
+                        PointList[2*fp+1] - PointList[2*lp+1]);
+            vector2D vb(PointList[2*i] - PointList[2*fp],
+                        PointList[2*i + 1] - PointList[2*fp+1]);
+            vector2D vn;
+            
+            double d = vGetLengthOfNormal( &va, &vb, &vn );
+            
+            if ( d > dmax ) {
+                index = i;
+                dmax = d;
+            }
+        }
+    }
+// If max distance is greater than epsilon, recursively simplify
+    if ( dmax > epsilon ) {
+        keep->Add(index);
+        
+    // Recursive call
+        DouglasPeucker(PointList, fp, index, epsilon, keep);
+        DouglasPeucker(PointList, index, lp, epsilon, keep);
+
+    }
+
+    return;
+}
 
 
 

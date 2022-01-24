@@ -22,13 +22,12 @@
  ***************************************************************************
  */
 
-#include <wx/textctrl.h>
 #include <wx/dcclient.h>
 
 #include "TTYScroll.h"
 
-TTYScroll::TTYScroll(wxWindow *parent, int n_lines, wxTextCtrl &tFilter)
-    : wxScrolledWindow(parent), m_nLines( n_lines ), m_tFilter(tFilter)
+TTYScroll::TTYScroll(wxWindow *parent, int n_lines)
+    : wxScrolledWindow(parent), m_nLines( n_lines )
 {
     bpause = false;
     wxClientDC dc(this);
@@ -48,8 +47,7 @@ TTYScroll::~TTYScroll()
 
 void TTYScroll::Add(const wxString &line)
 {
-    wxString filter = m_tFilter.GetValue();
-    if(!bpause && (filter.IsEmpty() || line.Contains(filter))) {
+    if(!bpause) {
         if( m_plineArray->GetCount() > m_nLines - 1 ) { // shuffle the arraystring
             wxArrayString *p_newArray = new wxArrayString;
 
@@ -86,8 +84,8 @@ void TTYScroll::OnDraw( wxDC& dc )
             dc.SetTextForeground( wxColour(_T("DARK GREEN")) );
             lss = ls.Mid(7);
         }
-        else if(ls.Mid(0, 7) == _T("<GOLD>") ){
-            dc.SetTextForeground( wxColour(_T("GOLD")) );
+        else if(ls.Mid(0, 7) == _T("<AMBER>") ){
+            dc.SetTextForeground( wxColour(_T("#a0832a")) );
             lss = ls.Mid(7);
         }
         else if(ls.Mid(0, 6) == _T("<BLUE>") ){
@@ -98,22 +96,7 @@ void TTYScroll::OnDraw( wxDC& dc )
             dc.SetTextForeground( wxColour(_T("RED")) );
             lss = ls.Mid(5);
         }
-        else if(ls.Mid(0, 7) == _T("<BROWN>") ){
-            dc.SetTextForeground( wxColour(_T("BROWN")) );
-            lss = ls.Mid(7);
-        }
-        else if(ls.Mid(0, 8) == _T("<SIENNA>") ){
-            dc.SetTextForeground( wxColour(_T("SIENNA")) );
-            lss = ls.Mid(8);
-        }
-        else if(ls.Mid(0, 8) == _T("<MAROON>") ){
-            dc.SetTextForeground( wxColour(_T("MAROON")) );
-            lss = ls.Mid(8);
-        }
-        else if(ls.Mid(0, 8) == _T("<CORAL>") ){
-            dc.SetTextForeground( wxColour(_T("CORAL")) );
-            lss = ls.Mid(8);
-        }
+
         dc.DrawText( lss, 0, y );
        y += m_hLine;
     }

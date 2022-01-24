@@ -34,8 +34,11 @@
 #include "wx/wxprec.h"
 #include <wx/wfstream.h>
 
-class OGRGeometry;
-class OGRPolygon;
+
+#ifdef USE_S57
+#include <ogr_geometry.h>
+//#include "s52s57.h"
+#endif
 
 #define TESS_VERT   0                           // constants describing preferred tess orientation
 #define TESS_HORZ   1
@@ -58,6 +61,7 @@ class OGRPolygon;
 #define DATA_TYPE_FLOAT         0
 #define DATA_TYPE_DOUBLE        1
 
+void DouglasPeucker(double *PointList, int fp, int lp, double epsilon, wxArrayInt *keep);
 
 //--------------------------------------------------------------------------------------------------
 //

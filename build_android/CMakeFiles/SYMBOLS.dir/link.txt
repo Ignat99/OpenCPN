@@ -1,0 +1,2 @@
+/opt/android_toolchain/bin/arm-linux-androideabi-ar cq libSYMBOLS.a  CMakeFiles/SYMBOLS.dir/src/chartsymbols.cpp.obj CMakeFiles/SYMBOLS.dir/src/razdsparser.cpp.obj
+/opt/android_toolchain/bin/arm-linux-androideabi-ranlib libSYMBOLS.a

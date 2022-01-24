@@ -245,8 +245,6 @@ class S57Reader
     
     int                 GetNall(){ return Nall; }
     int                 GetAall(){ return Aall; }
-
-    int                 GetFeatureCount() { return oFE_Index.GetCount(); }
     
  };
 

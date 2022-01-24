@@ -29,7 +29,6 @@
 #include <wx/bitmap.h>
 
 class wxButton;
-class wxTextCtrl;
 class TTYScroll;
 class WindowDestroyListener;
 
@@ -55,7 +54,6 @@ class TTYWindow : public wxDialog
         wxButton    *m_buttonPause;
         bool        bpause;
         wxBitmap    m_bm_legend;
-        wxTextCtrl *m_tFilter;
 };
 
 #endif

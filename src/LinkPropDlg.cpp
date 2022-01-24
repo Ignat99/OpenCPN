@@ -35,7 +35,7 @@ LinkPropDlgDef::LinkPropDlgDef( wxWindow* parent, wxWindowID id, const wxString&
     
     wxDialog::Create( parent, id, title, pos, size, wstyle );
 
-    wxFont *qFont = GetOCPNScaledFont(_("Dialog"));
+    wxFont *qFont = GetOCPNScaledFont(_("Dialog"), 10);
     SetFont( *qFont );
     
     this->SetSizeHints( wxDefaultSize, wxDefaultSize );
@@ -127,8 +127,7 @@ void LinkPropImpl::OnLocalFileClick( wxCommandEvent& event )
 void LinkPropImpl::OnOkClick( wxCommandEvent& event )
 {
     if( m_textCtrlLinkUrl->GetValue() == wxEmptyString ) 
-        OCPNMessageBox( NULL, _("Link not complete, can't be saved."), _("OpenCPN Info"), wxICON_HAND );
-    
+        wxMessageBox( _("Link not complete, can't be saved."), _("Problem discovered"), wxICON_HAND );
     else
         event.Skip();
 }

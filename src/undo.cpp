@@ -36,6 +36,7 @@
 #include <wx/datetime.h>
 #include <wx/clipbrd.h>
 
+#include "ocpn_types.h"
 #include "navutil.h"
 #include "styles.h"
 #include "routeman.h"

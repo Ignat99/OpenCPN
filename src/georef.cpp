@@ -46,10 +46,6 @@
 #define snprintf mysnprintf
 #endif
 
-#if !defined(NAN)
-static const long long lNaN = 0xfff8000000000000;
-#define NAN (*(double*)&lNaN)
-#endif
 
 
 
@@ -173,36 +169,7 @@ struct DATUM const gDatum[] = {
       { "Wake-Eniwetok  60",     13,    101,     52,    -39 },    // 99
       { "WGS 72",                19,      0,      0,      5 },    // 100
       { "WGS 84",                20,      0,      0,      0 },    // 101
-      { "Zanderij",              14,   -265,    120,   -358 },    // 102
-      { "WGS_84",                20,      0,      0,      0 },    // 103
-      { "WGS-84",                20,      0,      0,      0 },    // 104
-      { "EUROPEAN DATUM 1950",   14,    -87,    -98,   -121 }, 
-      { "European 1950 (Norway Finland)", 14, -87, -98, -121}, 
-      { "ED50",                  14,    -87,    -98,   -121 }, 
-      { "RT90 (Sweden)",          3,    498,    -36,    568 }, 
-      { "Monte Mario 1940",      14,   -104,    -49,     10 },
-      { "Ord Surv of Gr Britain 1936", 0, 375, -111,    431 }, 
-      { "South American 1969",  16,     -57,      1,    -41 },
-      { "PULKOVO 1942 (2)",     15,      25,   -141,    -79 },
-      { "EUROPEAN DATUM",       14,     -87,    -98,   -121 }, 
-      { "BERMUDA DATUM 1957",    4,     -73,    213,    296 },
-      { "COA",                  14,    -206,    172,     -6 },
-      { "COABR",                14,    -206,    172,     -6 },
-      { "Roma 1940",            14,    -225,    -65,      9 },
-      { "ITALIENISCHES LANDESNETZ",14,  -87,    -98,   -121 },
-      { "HERMANSKOGEL DATUM",     3,    682,   -203,    480 },
-      { "AGD66",                  2 ,  -128,    -52,    153 },
-      { "ED",                    14,    -87,    -98,   -121 },
-      { "EUROPEAN 1950 (SPAIN AND PORTUGAL)",14,-87,-98,-121},
-      { "ED-50",                 14,    -87,    -98,   -121 },
-      { "EUROPEAN",              14,    -87,    -98,   -121 },
-      { "POTSDAM",               14,    -87,    -98,   -121 },
-      { "GRACIOSA SW BASE DATUM",14,   -104,    167,    -38 }, 
-      { "WGS 1984",              20,      0,      0,      0 },
-      { "WGS 1972",              19,      0,      0,      5 },
-      { "WGS",                   19,      0,      0,      5 }
-
-      
+      { "Zanderij",              14,   -265,    120,   -358 }     // 102
 };
 
 struct ELLIPSOID const gEllipsoid[] = {
@@ -229,9 +196,7 @@ struct ELLIPSOID const gEllipsoid[] = {
       {  "WGS 72",                     6378135.0,   298.26        },    // 19
       {  "WGS 84",                     6378137.0,   298.257223563 },    // 20
       {  "Bessel 1841 (Namibia)",      6377483.865, 299.1528128   },    // 21
-      {  "Everest (India 1956)",       6377301.243, 300.8017      },    // 22
-      {  "Struve 1860",                6378298.3,   294.73        }     // 23
-      
+      {  "Everest (India 1956)",       6377301.243, 300.8017      }     // 22
 };
 
 short nDatums = sizeof(gDatum)/sizeof(struct DATUM);
@@ -376,36 +341,6 @@ void toSM(double lat, double lon, double lat0, double lon0, double *x, double *y
     *y = y3 - y30;
 }
 
-double toSMcache_y30(double lat0)
-{
-    const double z = WGS84_semimajor_axis_meters * mercator_k0;
-    const double s0 = sin(lat0 * DEGREE);
-    const double y30 = (.5 * log((1 + s0) / (1 - s0))) * z;
-    return y30;
-}
-
-void toSMcache(double lat, double lon, double y30, double lon0, double *x, double *y)
-{
-    double xlon = lon;
-
-/*  Make sure lon and lon0 are same phase */
-
-    if((lon * lon0 < 0.) && (fabs(lon - lon0) > 180.))
-    {
-        lon < 0.0 ? xlon += 360.0 : xlon -= 360.0;
-    }
-
-    const double z = WGS84_semimajor_axis_meters * mercator_k0;
-
-    *x = (xlon - lon0) * DEGREE * z;
-
-     // y =.5 ln( (1 + sin t) / (1 - sin t) )
-    const double s = sin(lat * DEGREE);
-    const double y3 = (.5 * log((1 + s) / (1 - s))) * z;
-
-    *y = y3 - y30;
-}
-
 void
 fromSM(double x, double y, double lat0, double lon0, double *lat, double *lon)
 {
@@ -502,9 +437,9 @@ toPOLY(double lat, double lon, double lat0, double lon0, double *x, double *y)
       }
       else
       {
-          const double E = (lon - lon0) * DEGREE * sin(lat * DEGREE);
+          const double E = (lon - lon0) * DEGREE;
           const double cot = 1. / tan(lat * DEGREE);
-          *x = sin(E) * cot;
+          *x = sin(E * sin((lat * DEGREE))) * cot;
           *y = (lat * DEGREE) - (lat0 * DEGREE) + cot * (1. - cos(E));
 
           *x *= z;
@@ -546,8 +481,8 @@ fromPOLY(double x, double y, double lat0, double lon0, double *lat, double *lon)
             double dphi;
             do {
                   double tp = tan(lat3);
-                  dphi = (yp * (lat3 * tp + 1.) - lat3 - .5 * ( lat3 * lat3 + B) * tp) / ((lat3 - yp) / tp - 1.);
-                  lat3 -= dphi;
+                  dphi = ((yp) * (lat3 * tp + 1.) - lat3 - .5 * ( lat3 * lat3 + B) * tp);
+                  lat3 -= (dphi / ((lat3 - (yp)) / tp - 1.));
             } while (fabs(dphi) > CONV && --i);
             if (! i)
             {
@@ -655,220 +590,6 @@ void fromTM (double x, double y, double lat0, double lon0, double *lat, double *
 
 }
 
-
-/* orthographic, polar, stereographic, gnomonic and equirectangular projection routines, contributed by Sean D'Epagnier */
-/****************************************************************************/
-/* Convert Lat/Lon <-> Simple Polar                                         */
-/****************************************************************************/
-void cache_phi0(double lat0, double *sin_phi0, double *cos_phi0)
-{
-    double phi0 = lat0*DEGREE;
-    *sin_phi0 = sin(phi0);
-    *cos_phi0 = cos(phi0);
-}
-
-void toORTHO(double lat, double lon, double sin_phi0, double cos_phi0, double lon0, double *x, double *y)
-{
-    const double z = WGS84_semimajor_axis_meters * mercator_k0;
-
-    double xlon = lon;
-    /*  Make sure lon and lon0 are same phase */
-    if((lon * lon0 < 0.) && (fabs(lon - lon0) > 180.))
-        lon < 0.0 ? xlon += 360.0 : xlon -= 360.0;
-
-    double theta = (xlon - lon0) * DEGREE;
-    double phi = lat * DEGREE;
-    double cos_phi = cos(phi);
-
-    double vy = sin(phi), vz = cos(theta)*cos_phi;
-
-    if(vy*sin_phi0 + vz*cos_phi0 < 0) { // on the far side of the earth
-        *x = *y = NAN;
-        return;
-    }
-
-    double vx = sin(theta)*cos_phi;
-    double vw = vy*cos_phi0 - vz*sin_phi0;
-
-    *x = vx*z;
-    *y = vw*z;
-}
-
-void fromORTHO(double x, double y, double lat0, double lon0, double *lat, double *lon)
-{
-    const double z = WGS84_semimajor_axis_meters * mercator_k0;
-
-    double vx = x / z;
-    double vw = y / z;
-
-    double phi0 = lat0 * DEGREE;
-    double d = 1 - vx*vx - vw*vw;
-
-    if(d < 0) { // position is outside of the earth
-        *lat = *lon = NAN;
-        return;
-    }
-
-    double sin_phi0 = sin(phi0), cos_phi0 = cos(phi0);
-    double vy = vw*cos_phi0 + sqrt(d)*sin_phi0;
-    double phi = asin(vy);
-
-    double vz = (vy*cos_phi0 - vw) / sin_phi0;
-    double theta = atan2(vx, vz);
-
-    *lat = phi / DEGREE;
-    *lon = theta / DEGREE + lon0;
-}
-
-double toPOLARcache_e(double lat0)
-{
-   double pole = lat0 > 0 ? 90 : -90;
-   return tan((pole - lat0) * DEGREE / 2);
-}
-
-void toPOLAR(double lat, double lon, double e, double lat0, double lon0, double *x, double *y)
-{
-    const double z = WGS84_semimajor_axis_meters * mercator_k0;
-
-    double xlon = lon;
-    /*  Make sure lon and lon0 are same phase */
-    if((lon * lon0 < 0.) && (fabs(lon - lon0) > 180.))
-        lon < 0.0 ? xlon += 360.0 : xlon -= 360.0;
-
-    double theta = (xlon - lon0) * DEGREE;
-    double pole = lat0 > 0 ? 90 : -90;
-
-    double d = tan((pole - lat) * DEGREE / 2);
-
-    *x = fabs(d)*sin(theta)*z;
-    *y = (e-d*cos(theta))*z;
-}
-
-
-void fromPOLAR(double x, double y, double lat0, double lon0, double *lat, double *lon)
-{
-    const double z = WGS84_semimajor_axis_meters * mercator_k0;
-    double pole = lat0 > 0 ? 90 : -90;
-
-    double e = tan((pole - lat0) * DEGREE / 2);
-
-    double xn = x/z;
-    double yn = e - y/z;
-    double d = sqrt(xn*xn + yn*yn);
-    if(pole < 0) // south polar (negative root and correct branch from cosine)
-        d = -d, yn = -yn;
-
-    *lat = pole - atan(d) * 2 / DEGREE;
-
-    double theta = atan2(xn, yn);
-    *lon = theta / DEGREE + lon0;
-}
-
-static inline void toSTEREO1(double &u, double &v, double &w, double lat, double lon,
-                             double sin_phi0, double cos_phi0, double lon0)
-{
-    double xlon = lon;
-    /*  Make sure lon and lon0 are same phase */
-    if((lon * lon0 < 0.) && (fabs(lon - lon0) > 180.))
-        lon < 0.0 ? xlon += 360.0 : xlon -= 360.0;
-
-    double theta = (xlon - lon0) * DEGREE, phi = lat*DEGREE;
-    double cos_phi = cos(phi), v0 = sin(phi), w0 = cos(theta)*cos_phi;
-
-    u = sin(theta)*cos_phi;
-    v = cos_phi0*v0 - sin_phi0*w0;
-    w = sin_phi0*v0 + cos_phi0*w0;
-}
-
-static inline void fromSTEREO1(double *lat, double *lon, double lat0, double lon0,
-                               double u, double v, double w)
-{
-    double phi0 = lat0*DEGREE;
-    double v0 = sin(phi0)*w + cos(phi0)*v;
-    double w0 = cos(phi0)*w - sin(phi0)*v;
-    double phi = asin(v0);
-    double theta = atan2(u, w0);
-
-    *lat = phi / DEGREE;
-    *lon = theta / DEGREE + lon0;
-}
-
-void toSTEREO(double lat, double lon, double sin_phi0, double cos_phi0, double lon0, double *x, double *y)
-{
-    const double z = WGS84_semimajor_axis_meters * mercator_k0;
-
-    double u, v, w;
-    toSTEREO1(u, v, w, lat, lon, sin_phi0, cos_phi0, lon0);
-
-    double t = 2/(w+1);
-    *x = u*t*z;
-    *y = v*t*z;
-}
-
-void fromSTEREO(double x, double y, double lat0, double lon0, double *lat, double *lon)
-{
-    const double z = WGS84_semimajor_axis_meters * mercator_k0;
-
-    x /= z, y /= z;
-
-    double t = (x*x + y*y) / 4 + 1;
-
-    double u = x/t;
-    double v = y/t;
-    double w = 2/t - 1;
-
-    fromSTEREO1(lat, lon, lat0, lon0, u, v, w);
-}
-
-void toGNO(double lat, double lon, double sin_phi0, double cos_phi0, double lon0, double *x, double *y)
-{
-    const double z = WGS84_semimajor_axis_meters * mercator_k0;
-
-    double u, v, w;
-    toSTEREO1(u, v, w, lat, lon, sin_phi0, cos_phi0, lon0);
-
-    if(w <= 0) {
-        *x = *y = NAN; // far side of world
-        return;
-    }
-
-    *x = u/w*z;
-    *y = v/w*z;
-}
-
-void fromGNO(double x, double y, double lat0, double lon0, double *lat, double *lon)
-{
-    const double z = WGS84_semimajor_axis_meters * mercator_k0;
-
-    x /= z, y /= z;
-
-    double w = 1 / sqrt(x*x + y*y + 1);
-    double u = x*w;
-    double v = y*w;
-
-    fromSTEREO1(lat, lon, lat0, lon0, u, v, w);
-}
-
-void toEQUIRECT(double lat, double lon, double lat0, double lon0, double *x, double *y)
-{
-    const double z = WGS84_semimajor_axis_meters * mercator_k0;
-    double xlon = lon;
-    /*  Make sure lon and lon0 are same phase */
-    if((lon * lon0 < 0.) && (fabs(lon - lon0) > 180.))
-        lon < 0.0 ? xlon += 360.0 : xlon -= 360.0;
-
-    *x = (xlon - lon0) * DEGREE * z;
-    *y = (lat - lat0) * DEGREE * z;
-}
-
-void fromEQUIRECT(double x, double y, double lat0, double lon0, double *lat, double *lon)
-{
-    const double z = WGS84_semimajor_axis_meters * mercator_k0;
-
-    *lat = lat0 + (y / (DEGREE * z));
-//    if(fabs(*lat) > 90) *lat = NAN;
-    *lon = lon0 + (x / (DEGREE * z));
-}
 
 
 /* --------------------------------------------------------------------------------- *
@@ -983,7 +704,7 @@ double adjlon (double lon) {
 /*
 // Given the lat/long of starting point, and traveling a specified distance,
 // at an initial bearing, calculates the lat/long of the resulting location.
-// using sphere earth model.
+// using elliptic earth model.
 */
 /* --------------------------------------------------------------------------------- */
 void ll_gc_ll(double lat, double lon, double brg, double dist, double *dlat, double *dlon)
@@ -1248,7 +969,7 @@ void PositionBearingDistanceMercator(double lat, double lon, double brg, double 
 /* --------------------------------------------------------------------------------- */
 /*
 // Given the lat/long of starting point and ending point,
-// calculates the distance along a geodesic curve, using sphere earth model.
+// calculates the distance along a geodesic curve, using elliptic earth model.
 */
 /* --------------------------------------------------------------------------------- */
 

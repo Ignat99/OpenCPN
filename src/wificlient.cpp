@@ -41,7 +41,7 @@
 #include "chart1.h"
 #include "statwin.h"
 
-extern ChartBarWin     *g_ChartBarWin;
+extern StatWin          *stats;
 
 static int              wifi_s_dns_test_flag;
 
@@ -333,14 +333,14 @@ void WIFIWindow::OnSocketEvent(wxSocketEvent& event)
                 {
                     if(station_data[ilocal].bisvalid)
                     {
-//                        g_ChartBarWin->pWiFi->SetStationQuality(ilocal, station_data[ilocal].sig_quality);
-//                        g_ChartBarWin->pWiFi->SetStationSecureFlag(ilocal, station_data[ilocal].secure);
-//                        g_ChartBarWin->pWiFi->SetStationAge(ilocal, station_data[ilocal].age);
+//                        stats->pWiFi->SetStationQuality(ilocal, station_data[ilocal].sig_quality);
+//                        stats->pWiFi->SetStationSecureFlag(ilocal, station_data[ilocal].secure);
+//                        stats->pWiFi->SetStationAge(ilocal, station_data[ilocal].age);
                     }
 //                    else
-//                        g_ChartBarWin->pWiFi->SetStationQuality(ilocal, 0);
+//                        stats->pWiFi->SetStationQuality(ilocal, 0);
                 }
-            g_ChartBarWin->Refresh(true);
+            stats->Refresh(true);
 
             break;
 
@@ -437,12 +437,12 @@ void WIFIWindow::OnTimer1(wxTimerEvent& event)
     if(m_sock->IsConnected())
     {
         //      Keep a watchdog on received data
-        if(g_ChartBarWin)
+        if(stats)
         {
             if(m_watchtick++ > WIFI_DOG_TIMEOUT)       // nothing received recently
             {
-//                g_ChartBarWin->pWiFi->SetServerStatus(false);
-                g_ChartBarWin->Refresh(true);
+//                stats->pWiFi->SetServerStatus(false);
+                stats->Refresh(true);
 
                 // Try to totally reset the socket
                 m_sock->Destroy();
@@ -459,7 +459,7 @@ void WIFIWindow::OnTimer1(wxTimerEvent& event)
                 m_watchtick = 0;
             }
 //            else
-//                g_ChartBarWin->pWiFi->SetServerStatus(true);
+//                stats->pWiFi->SetServerStatus(true);
         }
 
         unsigned char c = WIFI_TRANSMIT_DATA_EXT;       // and call for more data
@@ -467,10 +467,10 @@ void WIFIWindow::OnTimer1(wxTimerEvent& event)
     }
     else                                     // try to connect
     {
-        if(g_ChartBarWin)
+        if(stats)
         {
-//            g_ChartBarWin->pWiFi->SetServerStatus(false);
-            g_ChartBarWin->Refresh(true);
+//            stats->pWiFi->SetServerStatus(false);
+            stats->Refresh(true);
         }
         m_sock->Connect(addr, FALSE);       // Non-blocking connect
     }

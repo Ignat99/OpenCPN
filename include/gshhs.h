@@ -44,8 +44,6 @@
 
 #include "ocpn_types.h"
 #include "ocpndc.h"
-#include "viewport.h"
-#include "cutil.h"
 
 #ifdef __MSVC__
 #pragma warning(disable: 4251)   // relates to std::string fpath
@@ -94,17 +92,14 @@ typedef std::vector<contour> contour_list;
 
 //==========================================================================
 
-
 class GshhsPolyCell {
 public:
 
     GshhsPolyCell( FILE *fpoly, int x0, int y0, PolygonFileHeader *header );
     ~GshhsPolyCell();
 
-    void ClearPolyV();
-
     void drawMapPlain( ocpnDC &pnt, double dx, ViewPort &vp, wxColor seaColor,
-                       wxColor landColor, bool idl );
+                       wxColor landColor, int cellcount );
 
     void drawSeaBorderLines( ocpnDC &pnt, double dx, ViewPort &vp );
     std::vector<wxLineF> * getCoasts() { return &coasts; }
@@ -124,15 +119,8 @@ private:
     PolygonFileHeader *header;
     contour_list poly1, poly2, poly3, poly4, poly5;
 
-    // used for opengl vertex cache
-    float_2Dpt *polyv[6];
-    int polyc[6];
-
     void DrawPolygonFilled( ocpnDC &pnt, contour_list * poly, double dx, ViewPort &vp,
-            wxColor const &color );
-#ifdef ocpnUSE_GL        
-    void DrawPolygonFilledGL( contour_list * p, float_2Dpt **pv, int *pvc, ViewPort &vp,  wxColor const &color, bool idl );
-#endif
+            wxColor color );
     void DrawPolygonContour( ocpnDC &pnt, contour_list * poly, double dx, ViewPort &vp );
 
     void ReadPoly( contour_list &poly );
@@ -144,8 +132,8 @@ public:
     GshhsPolyReader( int quality );
     ~GshhsPolyReader();
 
-    void drawGshhsPolyMapPlain( ocpnDC &pnt, ViewPort &vp, wxColor const &seaColor,
-            wxColor const &landColor );
+    void drawGshhsPolyMapPlain( ocpnDC &pnt, ViewPort &vp, wxColor seaColor,
+            wxColor landColor );
 
     void drawGshhsPolyMapSeaBorders( ocpnDC &pnt, ViewPort &vp );
 
@@ -163,8 +151,6 @@ private:
     void readPolygonFileHeader( FILE *polyfile, PolygonFileHeader *header );
 
     wxMutex mutex1, mutex2;
-
-    ViewPort last_rendered_vp;
 };
 
 // GSHHS file format:
@@ -229,7 +215,7 @@ public:
     GshhsReader();
     ~GshhsReader();
 
-    void drawContinents( ocpnDC &pnt, ViewPort &vp, wxColor const &seaColor, wxColor const &landColor );
+    void drawContinents( ocpnDC &pnt, ViewPort &vp, wxColor seaColor, wxColor landColor );
 
     void drawSeaBorders( ocpnDC &pnt, ViewPort &vp );
     void drawBoundaries( ocpnDC &pnt, ViewPort &vp );
@@ -245,7 +231,7 @@ public:
 
     int getQuality() { return quality; }
 
-    //    bool crossing( wxLineF traject, wxLineF trajectWorld ) const;
+//    bool crossing( wxLineF traject, wxLineF trajectWorld ) const;
     bool crossing1( wxLineF trajectWorld );
     int ReadPolyVersion();
     bool qualityAvailable[6];

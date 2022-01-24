@@ -1,0 +1,230 @@
+The target system is: Generic - 1 - 
+The host system is: Linux - 3.2.0-4-686-pae - i686
+Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+Compiler: /opt/android_toolchain/bin/arm-linux-androideabi-gcc 
+Build flags: 
+Id flags: 
+
+The output was:
+0
+
+
+Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "a.out"
+
+The C compiler identification is GNU, found in "/home/ignat99/Projects/OpenCPN/build_android/CMakeFiles/3.1.1/CompilerIdC/a.out"
+
+Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
+Compiler: /opt/android_toolchain/bin/arm-linux-androideabi-g++ 
+Build flags: 
+Id flags: 
+
+The output was:
+0
+
+
+Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "a.out"
+
+The CXX compiler identification is GNU, found in "/home/ignat99/Projects/OpenCPN/build_android/CMakeFiles/3.1.1/CompilerIdCXX/a.out"
+
+Determining if the C compiler works passed with the following output:
+Change Dir: /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTryCompileExec2868978297/fast"
+/usr/bin/make -f CMakeFiles/cmTryCompileExec2868978297.dir/build.make CMakeFiles/cmTryCompileExec2868978297.dir/build
+make[1]: Entering directory `/home/ignat99/Projects/OpenCPN/build_android/CMakeFiles/CMakeTmp'
+/usr/local/bin/cmake -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles/CMakeTmp/CMakeFiles 1
+Building C object CMakeFiles/cmTryCompileExec2868978297.dir/testCCompiler.c.obj
+/opt/android_toolchain/bin/arm-linux-androideabi-gcc    -o CMakeFiles/cmTryCompileExec2868978297.dir/testCCompiler.c.obj   -c /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles/CMakeTmp/testCCompiler.c
+Linking C executable cmTryCompileExec2868978297
+/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec2868978297.dir/link.txt --verbose=1
+/opt/android_toolchain/bin/arm-linux-androideabi-gcc      CMakeFiles/cmTryCompileExec2868978297.dir/testCCompiler.c.obj  -o cmTryCompileExec2868978297  
+make[1]: Leaving directory `/home/ignat99/Projects/OpenCPN/build_android/CMakeFiles/CMakeTmp'
+
+
+Detecting C compiler ABI info compiled with the following output:
+Change Dir: /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTryCompileExec57084495/fast"
+/usr/bin/make -f CMakeFiles/cmTryCompileExec57084495.dir/build.make CMakeFiles/cmTryCompileExec57084495.dir/build
+make[1]: Entering directory `/home/ignat99/Projects/OpenCPN/build_android/CMakeFiles/CMakeTmp'
+/usr/local/bin/cmake -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles/CMakeTmp/CMakeFiles 1
+Building C object CMakeFiles/cmTryCompileExec57084495.dir/CMakeCCompilerABI.c.obj
+/opt/android_toolchain/bin/arm-linux-androideabi-gcc    -o CMakeFiles/cmTryCompileExec57084495.dir/CMakeCCompilerABI.c.obj   -c /usr/local/share/cmake-3.1/Modules/CMakeCCompilerABI.c
+Linking C executable cmTryCompileExec57084495
+/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec57084495.dir/link.txt --verbose=1
+/opt/android_toolchain/bin/arm-linux-androideabi-gcc     -v CMakeFiles/cmTryCompileExec57084495.dir/CMakeCCompilerABI.c.obj  -o cmTryCompileExec57084495   
+Using built-in specs.
+COLLECT_GCC=/opt/android_toolchain/bin/arm-linux-androideabi-gcc
+COLLECT_LTO_WRAPPER=/opt/android_toolchain/bin/../libexec/gcc/arm-linux-androideabi/4.8/lto-wrapper
+Target: arm-linux-androideabi
+Configured with: /s/ndk-toolchain/src/build/../gcc/gcc-4.8/configure --prefix=/tmp/ndk-andrewhsieh/build/toolchain/prefix --target=arm-linux-androideabi --host=x86_64-linux-gnu --build=x86_64-linux-gnu --with-gnu-as --with-gnu-ld --enable-languages=c,c++ --with-gmp=/tmp/ndk-andrewhsieh/build/toolchain/temp-install --with-mpfr=/tmp/ndk-andrewhsieh/build/toolchain/temp-install --with-mpc=/tmp/ndk-andrewhsieh/build/toolchain/temp-install --with-cloog=/tmp/ndk-andrewhsieh/build/toolchain/temp-install --with-isl=/tmp/ndk-andrewhsieh/build/toolchain/temp-install --with-ppl=/tmp/ndk-andrewhsieh/build/toolchain/temp-install --disable-ppl-version-check --disable-cloog-version-check --disable-isl-version-check --enable-cloog-backend=isl --with-host-libstdcxx='-static-libgcc -Wl,-Bstatic,-lstdc++,-Bdynamic -lm' --disable-libssp --enable-threads --disable-nls --disable-libmudflap --disable-libgomp --disable-libstdc__-v3 --disable-sjlj-exceptions --disable-shared --disable-tls --disable-libitm --with-float=soft --with-fpu=vfp --with-arch=armv5te --enable-target-optspace --enable-initfini-array --disable-nls --prefix=/tmp/ndk-andrewhsieh/build/toolchain/prefix --with-sysroot=/tmp/ndk-andrewhsieh/build/toolchain/prefix/sysroot --with-binutils-version=2.25 --with-mpfr-version=3.1.1 --with-mpc-version=1.0.1 --with-gmp-version=5.0.5 --with-gcc-version=4.8 --with-gdb-version=7.7 --with-python=/usr/local/google/home/andrewhsieh/mydroid/ndk/prebuilt/linux-x86/bin/python-config.sh --with-gxx-include-dir=/tmp/ndk-andrewhsieh/build/toolchain/prefix/include/c++/4.8 --with-bugurl=http://source.android.com/source/report-bugs.html --enable-languages=c,c++ --disable-bootstrap --enable-plugins --enable-libgomp --enable-gnu-indirect-function --disable-libsanitizer --enable-gold --enable-threads --enable-graphite=yes --with-cloog-version=0.18.0 --with-isl-version=0.11.1 --enable-eh-frame-hdr-for-static --with-arch=armv5te --program-transform-name='s&^&arm-linux-androideabi-&' --enable-gold=default
+Thread model: posix
+gcc version 4.8 (GCC) 
+COMPILER_PATH=/opt/android_toolchain/bin/../libexec/gcc/arm-linux-androideabi/4.8/:/opt/android_toolchain/bin/../libexec/gcc/:/opt/android_toolchain/bin/../lib/gcc/arm-linux-androideabi/4.8/../../../../arm-linux-androideabi/bin/
+LIBRARY_PATH=/opt/android_toolchain/bin/../lib/gcc/arm-linux-androideabi/4.8/:/opt/android_toolchain/bin/../lib/gcc/:/opt/android_toolchain/bin/../lib/gcc/arm-linux-androideabi/4.8/../../../../arm-linux-androideabi/lib/:/opt/android_toolchain/bin/../sysroot/usr/lib/
+COLLECT_GCC_OPTIONS='-v' '-o' 'cmTryCompileExec57084495' '-march=armv5te' '-mfloat-abi=soft' '-mfpu=vfp' '-mtls-dialect=gnu'
+ /opt/android_toolchain/bin/../libexec/gcc/arm-linux-androideabi/4.8/collect2 --sysroot=/opt/android_toolchain/bin/../sysroot --eh-frame-hdr -dynamic-linker /system/bin/linker -X -m armelf_linux_eabi -z noexecstack -z relro -z now -o cmTryCompileExec57084495 /opt/android_toolchain/bin/../sysroot/usr/lib/crtbegin_dynamic.o -L/opt/android_toolchain/bin/../lib/gcc/arm-linux-androideabi/4.8 -L/opt/android_toolchain/bin/../lib/gcc -L/opt/android_toolchain/bin/../lib/gcc/arm-linux-androideabi/4.8/../../../../arm-linux-androideabi/lib -L/opt/android_toolchain/bin/../sysroot/usr/lib CMakeFiles/cmTryCompileExec57084495.dir/CMakeCCompilerABI.c.obj -lgcc -lc -ldl -lgcc /opt/android_toolchain/bin/../sysroot/usr/lib/crtend_android.o
+make[1]: Leaving directory `/home/ignat99/Projects/OpenCPN/build_android/CMakeFiles/CMakeTmp'
+
+
+Parsed C implicit link information from above output:
+  link line regex: [^( *|.*[/\])(arm-linux-androideabi-ld|([^/\]+-)?ld|collect2)[^/\]*( |$)]
+  ignore line: [Change Dir: /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles/CMakeTmp]
+  ignore line: []
+  ignore line: [Run Build Command:"/usr/bin/make" "cmTryCompileExec57084495/fast"]
+  ignore line: [/usr/bin/make -f CMakeFiles/cmTryCompileExec57084495.dir/build.make CMakeFiles/cmTryCompileExec57084495.dir/build]
+  ignore line: [make[1]: Entering directory `/home/ignat99/Projects/OpenCPN/build_android/CMakeFiles/CMakeTmp']
+  ignore line: [/usr/local/bin/cmake -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles/CMakeTmp/CMakeFiles 1]
+  ignore line: [Building C object CMakeFiles/cmTryCompileExec57084495.dir/CMakeCCompilerABI.c.obj]
+  ignore line: [/opt/android_toolchain/bin/arm-linux-androideabi-gcc    -o CMakeFiles/cmTryCompileExec57084495.dir/CMakeCCompilerABI.c.obj   -c /usr/local/share/cmake-3.1/Modules/CMakeCCompilerABI.c]
+  ignore line: [Linking C executable cmTryCompileExec57084495]
+  ignore line: [/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec57084495.dir/link.txt --verbose=1]
+  ignore line: [/opt/android_toolchain/bin/arm-linux-androideabi-gcc     -v CMakeFiles/cmTryCompileExec57084495.dir/CMakeCCompilerABI.c.obj  -o cmTryCompileExec57084495   ]
+  ignore line: [Using built-in specs.]
+  ignore line: [COLLECT_GCC=/opt/android_toolchain/bin/arm-linux-androideabi-gcc]
+  ignore line: [COLLECT_LTO_WRAPPER=/opt/android_toolchain/bin/../libexec/gcc/arm-linux-androideabi/4.8/lto-wrapper]
+  ignore line: [Target: arm-linux-androideabi]
+  ignore line: [Configured with: /s/ndk-toolchain/src/build/../gcc/gcc-4.8/configure --prefix=/tmp/ndk-andrewhsieh/build/toolchain/prefix --target=arm-linux-androideabi --host=x86_64-linux-gnu --build=x86_64-linux-gnu --with-gnu-as --with-gnu-ld --enable-languages=c,c++ --with-gmp=/tmp/ndk-andrewhsieh/build/toolchain/temp-install --with-mpfr=/tmp/ndk-andrewhsieh/build/toolchain/temp-install --with-mpc=/tmp/ndk-andrewhsieh/build/toolchain/temp-install --with-cloog=/tmp/ndk-andrewhsieh/build/toolchain/temp-install --with-isl=/tmp/ndk-andrewhsieh/build/toolchain/temp-install --with-ppl=/tmp/ndk-andrewhsieh/build/toolchain/temp-install --disable-ppl-version-check --disable-cloog-version-check --disable-isl-version-check --enable-cloog-backend=isl --with-host-libstdcxx='-static-libgcc -Wl,-Bstatic,-lstdc++,-Bdynamic -lm' --disable-libssp --enable-threads --disable-nls --disable-libmudflap --disable-libgomp --disable-libstdc__-v3 --disable-sjlj-exceptions --disable-shared --disable-tls --disable-libitm --with-float=soft --with-fpu=vfp --with-arch=armv5te --enable-target-optspace --enable-initfini-array --disable-nls --prefix=/tmp/ndk-andrewhsieh/build/toolchain/prefix --with-sysroot=/tmp/ndk-andrewhsieh/build/toolchain/prefix/sysroot --with-binutils-version=2.25 --with-mpfr-version=3.1.1 --with-mpc-version=1.0.1 --with-gmp-version=5.0.5 --with-gcc-version=4.8 --with-gdb-version=7.7 --with-python=/usr/local/google/home/andrewhsieh/mydroid/ndk/prebuilt/linux-x86/bin/python-config.sh --with-gxx-include-dir=/tmp/ndk-andrewhsieh/build/toolchain/prefix/include/c++/4.8 --with-bugurl=http://source.android.com/source/report-bugs.html --enable-languages=c,c++ --disable-bootstrap --enable-plugins --enable-libgomp --enable-gnu-indirect-function --disable-libsanitizer --enable-gold --enable-threads --enable-graphite=yes --with-cloog-version=0.18.0 --with-isl-version=0.11.1 --enable-eh-frame-hdr-for-static --with-arch=armv5te --program-transform-name='s&^&arm-linux-androideabi-&' --enable-gold=default]
+  ignore line: [Thread model: posix]
+  ignore line: [gcc version 4.8 (GCC) ]
+  ignore line: [COMPILER_PATH=/opt/android_toolchain/bin/../libexec/gcc/arm-linux-androideabi/4.8/:/opt/android_toolchain/bin/../libexec/gcc/:/opt/android_toolchain/bin/../lib/gcc/arm-linux-androideabi/4.8/../../../../arm-linux-androideabi/bin/]
+  ignore line: [LIBRARY_PATH=/opt/android_toolchain/bin/../lib/gcc/arm-linux-androideabi/4.8/:/opt/android_toolchain/bin/../lib/gcc/:/opt/android_toolchain/bin/../lib/gcc/arm-linux-androideabi/4.8/../../../../arm-linux-androideabi/lib/:/opt/android_toolchain/bin/../sysroot/usr/lib/]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTryCompileExec57084495' '-march=armv5te' '-mfloat-abi=soft' '-mfpu=vfp' '-mtls-dialect=gnu']
+  link line: [ /opt/android_toolchain/bin/../libexec/gcc/arm-linux-androideabi/4.8/collect2 --sysroot=/opt/android_toolchain/bin/../sysroot --eh-frame-hdr -dynamic-linker /system/bin/linker -X -m armelf_linux_eabi -z noexecstack -z relro -z now -o cmTryCompileExec57084495 /opt/android_toolchain/bin/../sysroot/usr/lib/crtbegin_dynamic.o -L/opt/android_toolchain/bin/../lib/gcc/arm-linux-androideabi/4.8 -L/opt/android_toolchain/bin/../lib/gcc -L/opt/android_toolchain/bin/../lib/gcc/arm-linux-androideabi/4.8/../../../../arm-linux-androideabi/lib -L/opt/android_toolchain/bin/../sysroot/usr/lib CMakeFiles/cmTryCompileExec57084495.dir/CMakeCCompilerABI.c.obj -lgcc -lc -ldl -lgcc /opt/android_toolchain/bin/../sysroot/usr/lib/crtend_android.o]
+    arg [/opt/android_toolchain/bin/../libexec/gcc/arm-linux-androideabi/4.8/collect2] ==> ignore
+    arg [--sysroot=/opt/android_toolchain/bin/../sysroot] ==> ignore
+    arg [--eh-frame-hdr] ==> ignore
+    arg [-dynamic-linker] ==> ignore
+    arg [/system/bin/linker] ==> ignore
+    arg [-X] ==> ignore
+    arg [-m] ==> ignore
+    arg [armelf_linux_eabi] ==> ignore
+    arg [-znoexecstack] ==> ignore
+    arg [-zrelro] ==> ignore
+    arg [-znow] ==> ignore
+    arg [-o] ==> ignore
+    arg [cmTryCompileExec57084495] ==> ignore
+    arg [/opt/android_toolchain/bin/../sysroot/usr/lib/crtbegin_dynamic.o] ==> ignore
+    arg [-L/opt/android_toolchain/bin/../lib/gcc/arm-linux-androideabi/4.8] ==> dir [/opt/android_toolchain/bin/../lib/gcc/arm-linux-androideabi/4.8]
+    arg [-L/opt/android_toolchain/bin/../lib/gcc] ==> dir [/opt/android_toolchain/bin/../lib/gcc]
+    arg [-L/opt/android_toolchain/bin/../lib/gcc/arm-linux-androideabi/4.8/../../../../arm-linux-androideabi/lib] ==> dir [/opt/android_toolchain/bin/../lib/gcc/arm-linux-androideabi/4.8/../../../../arm-linux-androideabi/lib]
+    arg [-L/opt/android_toolchain/bin/../sysroot/usr/lib] ==> dir [/opt/android_toolchain/bin/../sysroot/usr/lib]
+    arg [CMakeFiles/cmTryCompileExec57084495.dir/CMakeCCompilerABI.c.obj] ==> ignore
+    arg [-lgcc] ==> lib [gcc]
+    arg [-lc] ==> lib [c]
+    arg [-ldl] ==> lib [dl]
+    arg [-lgcc] ==> lib [gcc]
+    arg [/opt/android_toolchain/bin/../sysroot/usr/lib/crtend_android.o] ==> ignore
+  remove lib [gcc]
+  remove lib [gcc]
+  collapse library dir [/opt/android_toolchain/bin/../lib/gcc/arm-linux-androideabi/4.8] ==> [/opt/android_toolchain/lib/gcc/arm-linux-androideabi/4.8]
+  collapse library dir [/opt/android_toolchain/bin/../lib/gcc] ==> [/opt/android_toolchain/lib/gcc]
+  collapse library dir [/opt/android_toolchain/bin/../lib/gcc/arm-linux-androideabi/4.8/../../../../arm-linux-androideabi/lib] ==> [/opt/android_toolchain/arm-linux-androideabi/lib]
+  collapse library dir [/opt/android_toolchain/bin/../sysroot/usr/lib] ==> [/opt/android_toolchain/sysroot/usr/lib]
+  implicit libs: [c;dl]
+  implicit dirs: [/opt/android_toolchain/lib/gcc/arm-linux-androideabi/4.8;/opt/android_toolchain/lib/gcc;/opt/android_toolchain/arm-linux-androideabi/lib;/opt/android_toolchain/sysroot/usr/lib]
+  implicit fwks: []
+
+
+Determining if the CXX compiler works passed with the following output:
+Change Dir: /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTryCompileExec4209219467/fast"
+/usr/bin/make -f CMakeFiles/cmTryCompileExec4209219467.dir/build.make CMakeFiles/cmTryCompileExec4209219467.dir/build
+make[1]: Entering directory `/home/ignat99/Projects/OpenCPN/build_android/CMakeFiles/CMakeTmp'
+/usr/local/bin/cmake -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles/CMakeTmp/CMakeFiles 1
+Building CXX object CMakeFiles/cmTryCompileExec4209219467.dir/testCXXCompiler.cxx.obj
+/opt/android_toolchain/bin/arm-linux-androideabi-g++     -o CMakeFiles/cmTryCompileExec4209219467.dir/testCXXCompiler.cxx.obj -c /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles/CMakeTmp/testCXXCompiler.cxx
+Linking CXX executable cmTryCompileExec4209219467
+/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec4209219467.dir/link.txt --verbose=1
+/opt/android_toolchain/bin/arm-linux-androideabi-g++       CMakeFiles/cmTryCompileExec4209219467.dir/testCXXCompiler.cxx.obj  -o cmTryCompileExec4209219467  
+make[1]: Leaving directory `/home/ignat99/Projects/OpenCPN/build_android/CMakeFiles/CMakeTmp'
+
+
+Detecting CXX compiler ABI info compiled with the following output:
+Change Dir: /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTryCompileExec3032481874/fast"
+/usr/bin/make -f CMakeFiles/cmTryCompileExec3032481874.dir/build.make CMakeFiles/cmTryCompileExec3032481874.dir/build
+make[1]: Entering directory `/home/ignat99/Projects/OpenCPN/build_android/CMakeFiles/CMakeTmp'
+/usr/local/bin/cmake -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles/CMakeTmp/CMakeFiles 1
+Building CXX object CMakeFiles/cmTryCompileExec3032481874.dir/CMakeCXXCompilerABI.cpp.obj
+/opt/android_toolchain/bin/arm-linux-androideabi-g++     -o CMakeFiles/cmTryCompileExec3032481874.dir/CMakeCXXCompilerABI.cpp.obj -c /usr/local/share/cmake-3.1/Modules/CMakeCXXCompilerABI.cpp
+Linking CXX executable cmTryCompileExec3032481874
+/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec3032481874.dir/link.txt --verbose=1
+/opt/android_toolchain/bin/arm-linux-androideabi-g++      -v CMakeFiles/cmTryCompileExec3032481874.dir/CMakeCXXCompilerABI.cpp.obj  -o cmTryCompileExec3032481874   
+Using built-in specs.
+COLLECT_GCC=/opt/android_toolchain/bin/arm-linux-androideabi-g++
+COLLECT_LTO_WRAPPER=/opt/android_toolchain/bin/../libexec/gcc/arm-linux-androideabi/4.8/lto-wrapper
+Target: arm-linux-androideabi
+Configured with: /s/ndk-toolchain/src/build/../gcc/gcc-4.8/configure --prefix=/tmp/ndk-andrewhsieh/build/toolchain/prefix --target=arm-linux-androideabi --host=x86_64-linux-gnu --build=x86_64-linux-gnu --with-gnu-as --with-gnu-ld --enable-languages=c,c++ --with-gmp=/tmp/ndk-andrewhsieh/build/toolchain/temp-install --with-mpfr=/tmp/ndk-andrewhsieh/build/toolchain/temp-install --with-mpc=/tmp/ndk-andrewhsieh/build/toolchain/temp-install --with-cloog=/tmp/ndk-andrewhsieh/build/toolchain/temp-install --with-isl=/tmp/ndk-andrewhsieh/build/toolchain/temp-install --with-ppl=/tmp/ndk-andrewhsieh/build/toolchain/temp-install --disable-ppl-version-check --disable-cloog-version-check --disable-isl-version-check --enable-cloog-backend=isl --with-host-libstdcxx='-static-libgcc -Wl,-Bstatic,-lstdc++,-Bdynamic -lm' --disable-libssp --enable-threads --disable-nls --disable-libmudflap --disable-libgomp --disable-libstdc__-v3 --disable-sjlj-exceptions --disable-shared --disable-tls --disable-libitm --with-float=soft --with-fpu=vfp --with-arch=armv5te --enable-target-optspace --enable-initfini-array --disable-nls --prefix=/tmp/ndk-andrewhsieh/build/toolchain/prefix --with-sysroot=/tmp/ndk-andrewhsieh/build/toolchain/prefix/sysroot --with-binutils-version=2.25 --with-mpfr-version=3.1.1 --with-mpc-version=1.0.1 --with-gmp-version=5.0.5 --with-gcc-version=4.8 --with-gdb-version=7.7 --with-python=/usr/local/google/home/andrewhsieh/mydroid/ndk/prebuilt/linux-x86/bin/python-config.sh --with-gxx-include-dir=/tmp/ndk-andrewhsieh/build/toolchain/prefix/include/c++/4.8 --with-bugurl=http://source.android.com/source/report-bugs.html --enable-languages=c,c++ --disable-bootstrap --enable-plugins --enable-libgomp --enable-gnu-indirect-function --disable-libsanitizer --enable-gold --enable-threads --enable-graphite=yes --with-cloog-version=0.18.0 --with-isl-version=0.11.1 --enable-eh-frame-hdr-for-static --with-arch=armv5te --program-transform-name='s&^&arm-linux-androideabi-&' --enable-gold=default
+Thread model: posix
+gcc version 4.8 (GCC) 
+COMPILER_PATH=/opt/android_toolchain/bin/../libexec/gcc/arm-linux-androideabi/4.8/:/opt/android_toolchain/bin/../libexec/gcc/:/opt/android_toolchain/bin/../lib/gcc/arm-linux-androideabi/4.8/../../../../arm-linux-androideabi/bin/
+LIBRARY_PATH=/opt/android_toolchain/bin/../lib/gcc/arm-linux-androideabi/4.8/:/opt/android_toolchain/bin/../lib/gcc/:/opt/android_toolchain/bin/../lib/gcc/arm-linux-androideabi/4.8/../../../../arm-linux-androideabi/lib/:/opt/android_toolchain/bin/../sysroot/usr/lib/
+COLLECT_GCC_OPTIONS='-v' '-o' 'cmTryCompileExec3032481874' '-march=armv5te' '-mfloat-abi=soft' '-mfpu=vfp' '-mtls-dialect=gnu'
+ /opt/android_toolchain/bin/../libexec/gcc/arm-linux-androideabi/4.8/collect2 --sysroot=/opt/android_toolchain/bin/../sysroot --eh-frame-hdr -dynamic-linker /system/bin/linker -X -m armelf_linux_eabi -z noexecstack -z relro -z now -o cmTryCompileExec3032481874 /opt/android_toolchain/bin/../sysroot/usr/lib/crtbegin_dynamic.o -L/opt/android_toolchain/bin/../lib/gcc/arm-linux-androideabi/4.8 -L/opt/android_toolchain/bin/../lib/gcc -L/opt/android_toolchain/bin/../lib/gcc/arm-linux-androideabi/4.8/../../../../arm-linux-androideabi/lib -L/opt/android_toolchain/bin/../sysroot/usr/lib CMakeFiles/cmTryCompileExec3032481874.dir/CMakeCXXCompilerABI.cpp.obj -lstdc++ -lm -lgcc -lc -ldl -lgcc /opt/android_toolchain/bin/../sysroot/usr/lib/crtend_android.o
+make[1]: Leaving directory `/home/ignat99/Projects/OpenCPN/build_android/CMakeFiles/CMakeTmp'
+
+
+Parsed CXX implicit link information from above output:
+  link line regex: [^( *|.*[/\])(arm-linux-androideabi-ld|([^/\]+-)?ld|collect2)[^/\]*( |$)]
+  ignore line: [Change Dir: /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles/CMakeTmp]
+  ignore line: []
+  ignore line: [Run Build Command:"/usr/bin/make" "cmTryCompileExec3032481874/fast"]
+  ignore line: [/usr/bin/make -f CMakeFiles/cmTryCompileExec3032481874.dir/build.make CMakeFiles/cmTryCompileExec3032481874.dir/build]
+  ignore line: [make[1]: Entering directory `/home/ignat99/Projects/OpenCPN/build_android/CMakeFiles/CMakeTmp']
+  ignore line: [/usr/local/bin/cmake -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles/CMakeTmp/CMakeFiles 1]
+  ignore line: [Building CXX object CMakeFiles/cmTryCompileExec3032481874.dir/CMakeCXXCompilerABI.cpp.obj]
+  ignore line: [/opt/android_toolchain/bin/arm-linux-androideabi-g++     -o CMakeFiles/cmTryCompileExec3032481874.dir/CMakeCXXCompilerABI.cpp.obj -c /usr/local/share/cmake-3.1/Modules/CMakeCXXCompilerABI.cpp]
+  ignore line: [Linking CXX executable cmTryCompileExec3032481874]
+  ignore line: [/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec3032481874.dir/link.txt --verbose=1]
+  ignore line: [/opt/android_toolchain/bin/arm-linux-androideabi-g++      -v CMakeFiles/cmTryCompileExec3032481874.dir/CMakeCXXCompilerABI.cpp.obj  -o cmTryCompileExec3032481874   ]
+  ignore line: [Using built-in specs.]
+  ignore line: [COLLECT_GCC=/opt/android_toolchain/bin/arm-linux-androideabi-g++]
+  ignore line: [COLLECT_LTO_WRAPPER=/opt/android_toolchain/bin/../libexec/gcc/arm-linux-androideabi/4.8/lto-wrapper]
+  ignore line: [Target: arm-linux-androideabi]
+  ignore line: [Configured with: /s/ndk-toolchain/src/build/../gcc/gcc-4.8/configure --prefix=/tmp/ndk-andrewhsieh/build/toolchain/prefix --target=arm-linux-androideabi --host=x86_64-linux-gnu --build=x86_64-linux-gnu --with-gnu-as --with-gnu-ld --enable-languages=c,c++ --with-gmp=/tmp/ndk-andrewhsieh/build/toolchain/temp-install --with-mpfr=/tmp/ndk-andrewhsieh/build/toolchain/temp-install --with-mpc=/tmp/ndk-andrewhsieh/build/toolchain/temp-install --with-cloog=/tmp/ndk-andrewhsieh/build/toolchain/temp-install --with-isl=/tmp/ndk-andrewhsieh/build/toolchain/temp-install --with-ppl=/tmp/ndk-andrewhsieh/build/toolchain/temp-install --disable-ppl-version-check --disable-cloog-version-check --disable-isl-version-check --enable-cloog-backend=isl --with-host-libstdcxx='-static-libgcc -Wl,-Bstatic,-lstdc++,-Bdynamic -lm' --disable-libssp --enable-threads --disable-nls --disable-libmudflap --disable-libgomp --disable-libstdc__-v3 --disable-sjlj-exceptions --disable-shared --disable-tls --disable-libitm --with-float=soft --with-fpu=vfp --with-arch=armv5te --enable-target-optspace --enable-initfini-array --disable-nls --prefix=/tmp/ndk-andrewhsieh/build/toolchain/prefix --with-sysroot=/tmp/ndk-andrewhsieh/build/toolchain/prefix/sysroot --with-binutils-version=2.25 --with-mpfr-version=3.1.1 --with-mpc-version=1.0.1 --with-gmp-version=5.0.5 --with-gcc-version=4.8 --with-gdb-version=7.7 --with-python=/usr/local/google/home/andrewhsieh/mydroid/ndk/prebuilt/linux-x86/bin/python-config.sh --with-gxx-include-dir=/tmp/ndk-andrewhsieh/build/toolchain/prefix/include/c++/4.8 --with-bugurl=http://source.android.com/source/report-bugs.html --enable-languages=c,c++ --disable-bootstrap --enable-plugins --enable-libgomp --enable-gnu-indirect-function --disable-libsanitizer --enable-gold --enable-threads --enable-graphite=yes --with-cloog-version=0.18.0 --with-isl-version=0.11.1 --enable-eh-frame-hdr-for-static --with-arch=armv5te --program-transform-name='s&^&arm-linux-androideabi-&' --enable-gold=default]
+  ignore line: [Thread model: posix]
+  ignore line: [gcc version 4.8 (GCC) ]
+  ignore line: [COMPILER_PATH=/opt/android_toolchain/bin/../libexec/gcc/arm-linux-androideabi/4.8/:/opt/android_toolchain/bin/../libexec/gcc/:/opt/android_toolchain/bin/../lib/gcc/arm-linux-androideabi/4.8/../../../../arm-linux-androideabi/bin/]
+  ignore line: [LIBRARY_PATH=/opt/android_toolchain/bin/../lib/gcc/arm-linux-androideabi/4.8/:/opt/android_toolchain/bin/../lib/gcc/:/opt/android_toolchain/bin/../lib/gcc/arm-linux-androideabi/4.8/../../../../arm-linux-androideabi/lib/:/opt/android_toolchain/bin/../sysroot/usr/lib/]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTryCompileExec3032481874' '-march=armv5te' '-mfloat-abi=soft' '-mfpu=vfp' '-mtls-dialect=gnu']
+  link line: [ /opt/android_toolchain/bin/../libexec/gcc/arm-linux-androideabi/4.8/collect2 --sysroot=/opt/android_toolchain/bin/../sysroot --eh-frame-hdr -dynamic-linker /system/bin/linker -X -m armelf_linux_eabi -z noexecstack -z relro -z now -o cmTryCompileExec3032481874 /opt/android_toolchain/bin/../sysroot/usr/lib/crtbegin_dynamic.o -L/opt/android_toolchain/bin/../lib/gcc/arm-linux-androideabi/4.8 -L/opt/android_toolchain/bin/../lib/gcc -L/opt/android_toolchain/bin/../lib/gcc/arm-linux-androideabi/4.8/../../../../arm-linux-androideabi/lib -L/opt/android_toolchain/bin/../sysroot/usr/lib CMakeFiles/cmTryCompileExec3032481874.dir/CMakeCXXCompilerABI.cpp.obj -lstdc++ -lm -lgcc -lc -ldl -lgcc /opt/android_toolchain/bin/../sysroot/usr/lib/crtend_android.o]
+    arg [/opt/android_toolchain/bin/../libexec/gcc/arm-linux-androideabi/4.8/collect2] ==> ignore
+    arg [--sysroot=/opt/android_toolchain/bin/../sysroot] ==> ignore
+    arg [--eh-frame-hdr] ==> ignore
+    arg [-dynamic-linker] ==> ignore
+    arg [/system/bin/linker] ==> ignore
+    arg [-X] ==> ignore
+    arg [-m] ==> ignore
+    arg [armelf_linux_eabi] ==> ignore
+    arg [-znoexecstack] ==> ignore
+    arg [-zrelro] ==> ignore
+    arg [-znow] ==> ignore
+    arg [-o] ==> ignore
+    arg [cmTryCompileExec3032481874] ==> ignore
+    arg [/opt/android_toolchain/bin/../sysroot/usr/lib/crtbegin_dynamic.o] ==> ignore
+    arg [-L/opt/android_toolchain/bin/../lib/gcc/arm-linux-androideabi/4.8] ==> dir [/opt/android_toolchain/bin/../lib/gcc/arm-linux-androideabi/4.8]
+    arg [-L/opt/android_toolchain/bin/../lib/gcc] ==> dir [/opt/android_toolchain/bin/../lib/gcc]
+    arg [-L/opt/android_toolchain/bin/../lib/gcc/arm-linux-androideabi/4.8/../../../../arm-linux-androideabi/lib] ==> dir [/opt/android_toolchain/bin/../lib/gcc/arm-linux-androideabi/4.8/../../../../arm-linux-androideabi/lib]
+    arg [-L/opt/android_toolchain/bin/../sysroot/usr/lib] ==> dir [/opt/android_toolchain/bin/../sysroot/usr/lib]
+    arg [CMakeFiles/cmTryCompileExec3032481874.dir/CMakeCXXCompilerABI.cpp.obj] ==> ignore
+    arg [-lstdc++] ==> lib [stdc++]
+    arg [-lm] ==> lib [m]
+    arg [-lgcc] ==> lib [gcc]
+    arg [-lc] ==> lib [c]
+    arg [-ldl] ==> lib [dl]
+    arg [-lgcc] ==> lib [gcc]
+    arg [/opt/android_toolchain/bin/../sysroot/usr/lib/crtend_android.o] ==> ignore
+  remove lib [gcc]
+  remove lib [gcc]
+  collapse library dir [/opt/android_toolchain/bin/../lib/gcc/arm-linux-androideabi/4.8] ==> [/opt/android_toolchain/lib/gcc/arm-linux-androideabi/4.8]
+  collapse library dir [/opt/android_toolchain/bin/../lib/gcc] ==> [/opt/android_toolchain/lib/gcc]
+  collapse library dir [/opt/android_toolchain/bin/../lib/gcc/arm-linux-androideabi/4.8/../../../../arm-linux-androideabi/lib] ==> [/opt/android_toolchain/arm-linux-androideabi/lib]
+  collapse library dir [/opt/android_toolchain/bin/../sysroot/usr/lib] ==> [/opt/android_toolchain/sysroot/usr/lib]
+  implicit libs: [stdc++;m;c;dl]
+  implicit dirs: [/opt/android_toolchain/lib/gcc/arm-linux-androideabi/4.8;/opt/android_toolchain/lib/gcc;/opt/android_toolchain/arm-linux-androideabi/lib;/opt/android_toolchain/sysroot/usr/lib]
+  implicit fwks: []
+
+

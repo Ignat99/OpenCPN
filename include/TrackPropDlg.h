@@ -80,12 +80,6 @@ class   HyperlinkList;
 class TrackPropDlg : public wxDialog 
 {
 private:
-        static bool instanceFlag;
-        static TrackPropDlg *single;
-        TrackPropDlg( wxWindow* parent, wxWindowID id, const wxString& title,
-                      const wxPoint& pos, const wxSize& size,
-                      long style ); 
-        
         Route      *m_pHead; // for route splitting
         Route      *m_pTail;
         RoutePoint *m_pExtendPoint;
@@ -153,10 +147,6 @@ private:
         wxButton* m_sdbBtmBtnsSizerExtend;
         wxButton* m_sdbBtmBtnsSizerToRoute;
         wxButton* m_sdbBtmBtnsSizerExport;
-        
-        wxScrolledWindow *itemDialog1;
-        bool m_bcompact;
-        
 
         // Virtual event handlers, overide them in your derived class
         void OnCancelBtnClick( wxCommandEvent& event );
@@ -175,14 +165,11 @@ private:
         void OnAddLink( wxCommandEvent& event );
         void OnEditLinkToggle( wxCommandEvent& event );
         void OnShowTimeTZ( wxCommandEvent& event );
-        void CreateControls( void );
-        void CreateControlsCompact( void );
-        
+
 public:
-        static TrackPropDlg *getInstance( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Track Properties"),
-                                      const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 680,440 ),
-                                      long style = wxCAPTION|wxDEFAULT_DIALOG_STYLE|wxMAXIMIZE_BOX|wxMINIMIZE_BOX|wxRESIZE_BORDER ); 
-        static bool getInstanceFlag(){ return instanceFlag; } 
+        TrackPropDlg( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Track Properties"),
+                              const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 680,440 ),
+                              long style = wxCAPTION|wxDEFAULT_DIALOG_STYLE|wxMAXIMIZE_BOX|wxMINIMIZE_BOX|wxRESIZE_BORDER ); 
         ~TrackPropDlg();
 
         void m_hyperlink1OnContextMenu( wxMouseEvent &event )
@@ -194,8 +181,6 @@ public:
         bool UpdateProperties();
         void InitializeList();
         Route *GetTrack(void){return m_pRoute;}
-        
-        void RecalculateSize( void );
         
         Route      *m_pRoute;
         

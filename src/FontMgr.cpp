@@ -27,13 +27,9 @@
 #include <wx/tokenzr.h>
 
 #include "FontMgr.h"
-#include "OCPNPlatform.h"
 
 extern wxString g_locale;
-extern OCPNPlatform     *g_Platform;
-
 wxString s_locale;
-int g_default_font_size;
 
 FontMgr * FontMgr::instance = NULL;
 
@@ -64,7 +60,7 @@ FontMgr::FontMgr()
     s_locale = g_locale;
     
     //    Get a nice generic font as default
-    pDefFont = wxTheFontList->FindOrCreateFont( 12, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, FALSE,
+    pDefFont = wxTheFontList->FindOrCreateFont( 12, wxDEFAULT, wxNORMAL, wxBOLD, FALSE,
             wxString( _T ( "" ) ), wxFONTENCODING_SYSTEM );
 
 }
@@ -104,21 +100,18 @@ wxString FontMgr::GetFontConfigKey( const wxString &description )
     using namespace std;
     locale loc;
     const collate<char>& coll = use_facet<collate<char> >( loc );
-//    char cFontDesc[101];
-//    wcstombs( cFontDesc, description.c_str(), 100 );
-//    cFontDesc[100] = 0;
-
-    wxCharBuffer abuf = description.ToUTF8();
-    
-    int fdLen = strlen( abuf );
+    char cFontDesc[101];
+    wcstombs( cFontDesc, description.c_str(), 100 );
+    cFontDesc[100] = 0;
+    int fdLen = strlen( cFontDesc );
 
     configkey.Append(
             wxString::Format( _T("%08lx"),
-                              coll.hash( abuf.data(), abuf.data() + fdLen ) ) );
+                    coll.hash( cFontDesc, cFontDesc + fdLen ) ) );
     return configkey;
 }
 
-wxFont *FontMgr::GetFont( const wxString &TextElement, int user_default_size )
+wxFont *FontMgr::GetFont( const wxString &TextElement, int default_size )
 {
     //    Look thru the font list for a match
     MyFontDesc *pmfd;
@@ -135,29 +128,17 @@ wxFont *FontMgr::GetFont( const wxString &TextElement, int user_default_size )
     // Found no font, so create a nice one and add to the list
     wxString configkey = GetFontConfigKey( TextElement );
 
-    //    Now create a benign, always present native font
-    //    with optional user requested default size
-    
-    //    Get the system default font.
-    wxFont sys_font = *wxNORMAL_FONT;
-    int sys_font_size = sys_font.GetPointSize();
-    wxString FaceName = sys_font.GetFaceName();
-    
-#ifdef __OCPN__ANDROID__
-    sys_font_size = 18;
-    FaceName = _T("Roboto");
-#endif    
-    
-
+    //    Now create a benign, always present native string
+    //    Optional user requested default size
     int new_size;
-    if( 0 == user_default_size )
-        new_size = sys_font_size;
+    if( 0 == default_size ) new_size = 12;
     else
-        new_size = user_default_size;
+        new_size = default_size;
 
-    wxString nativefont = GetSimpleNativeFont( new_size, FaceName );
+    wxString nativefont = GetSimpleNativeFont( new_size );
+
     wxFont *nf = wxFont::New( nativefont );
-    
+
     wxColor color( *wxBLACK );
 
     MyFontDesc *pnewfd = new MyFontDesc( TextElement, configkey, nf, color );
@@ -167,17 +148,17 @@ wxFont *FontMgr::GetFont( const wxString &TextElement, int user_default_size )
 
 }
 
-wxString FontMgr::GetSimpleNativeFont( int size, wxString face )
+wxString FontMgr::GetSimpleNativeFont( int size )
 {
     //    Now create a benign, always present native string
     wxString nativefont;
 
     // this should work for all platforms
-    nativefont = wxFont(size, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, face)
-    .GetNativeFontInfoDesc();
-    
+    nativefont = wxFont(size, wxFONTFAMILY_DEFAULT, (int) wxFONTSTYLE_NORMAL, (int) wxFONTWEIGHT_NORMAL)
+        .GetNativeFontInfoDesc();
+
 #if 0
-    //    For those platforms which have no native font description string format
+//    For those platforms which have no native font description string format
     nativefont.Printf( _T ( "%d;%d;%d;%d;%d;%d;%s;%d" ),
             0,                                 // version
             size, wxFONTFAMILY_DEFAULT, (int) wxFONTSTYLE_NORMAL, (int) wxFONTWEIGHT_NORMAL, false,
@@ -195,13 +176,14 @@ wxString FontMgr::GetSimpleNativeFont( int size, wxString face )
 #ifdef __WXMSW__
 //      nativefont = _T ( "0;-11;0;0;0;400;0;0;0;0;0;0;0;0;MS Sans Serif" );
 
-    wxFont sys_font = wxSystemSettings::GetFont(wxSYS_DEFAULT_GUI_FONT);
-    sys_font.SetPointSize( size + 1 );
-
-    int size_px = sys_font.GetPixelSize().GetHeight();
+    int h, w, hm, wm;
+    ::wxDisplaySize( &w, &h );            // pixels
+    ::wxDisplaySizeMM( &wm, &hm );        // MM
+    double pix_per_inch_v = wxMax( 72.0, ( h / hm ) * 25.4);
+    int lfHeight = -(int) ( ( size * ( pix_per_inch_v / 72.0 ) ) + 0.5 );
 
     nativefont.Printf( _T("%d;%ld;%ld;%ld;%ld;%ld;%d;%d;%d;%d;%d;%d;%d;%d;"), 0, // version, in case we want to change the format later
-            size_px,             //lf.lfHeight
+            lfHeight,            //lf.lfHeight
             0,                   //lf.lfWidth,
             0,                   //lf.lfEscapement,
             0,                   //lf.lfOrientation,
@@ -215,10 +197,10 @@ wxString FontMgr::GetSimpleNativeFont( int size, wxString face )
             0,                   //lf.lfQuality,
             0 );                    //lf.lfPitchAndFamily,
 
-    nativefont.Append( sys_font.GetFaceName() );
+    nativefont.Append( _T("Verdana") );
+#endif
+#endif
 
-#endif
-#endif
     return nativefont;
 }
 
@@ -323,15 +305,7 @@ void FontMgr::LoadFontNative( wxString *pConfigString, wxString *pNativeDesc )
     if( !node ) {
 
         wxFont *nf0 = new wxFont();
-        
-#ifdef __OCPN__ANDROID__
-        wxFont *nf = new wxFont( nativefont );
-#else
         wxFont *nf = nf0->New( nativefont );
-#endif
-        
-        double font_size = nf->GetPointSize();
-        wxString s = nf->GetNativeFontInfoDesc();
 
         //    Scrub the native font string for bad unicode conversion
 #ifdef __WXMSW__
@@ -339,7 +313,7 @@ void FontMgr::LoadFontNative( wxString *pConfigString, wxString *pNativeDesc )
         const wxChar *t = face.c_str();
         if( *t > 255 ) {
             delete nf;
-            wxString substitute_native = GetSimpleNativeFont( 12, _T("") );
+            wxString substitute_native = GetSimpleNativeFont( 12 );
             nf = nf0->New( substitute_native );
         }
 #endif
@@ -364,7 +338,9 @@ wxString FontCandidates[] = {
     _T("Console Value"),
     _T("AISRollover"),
     _T("TideCurrentGraphRollover"),
-    _T("Marks"),
+    _T("RouteLegInfoRollover"),
+    _T("AISRollover"),
+    _T("Marks" ),
     _T("ChartTexts"),
     _T("ToolTips"),
     _T("Dialog"),
@@ -372,18 +348,15 @@ wxString FontCandidates[] = {
     _T("END_OF_LIST")
 };
 
-
 void FontMgr::ScrubList( )
 {
-    wxString now_locale = g_locale;
-    wxArrayString string_array;
+    //  Logic:
+    //  For each element entry in the candidate list, 
+    //          Look through the font list
+    //          If the the element appears and the locale prefix on the element is NOT en_US, fix it
     
-    //  Build the composite candidate array
-    wxArrayString candidateArray;
     bool done = false;
     unsigned int i = 0;
-    
-    // The fixed, static list
     while( ! done ){
         wxString candidate = FontCandidates[i];
         if(candidate == _T("END_OF_LIST") ) {
@@ -391,70 +364,52 @@ void FontMgr::ScrubList( )
             break;
         }
         
-        candidateArray.Add(candidate);
-        i++;
-    }
-        
-    //  The Aux Key array    
-    for(unsigned int i=0 ; i <  m_AuxKeyArray.GetCount() ; i++){
-        candidateArray.Add(m_AuxKeyArray[i]);
-    }
-    
-    
-    for(unsigned int i = 0; i < candidateArray.GetCount() ; i++ ){
-        wxString candidate = candidateArray[i];
-        
-        //  For each font identifier string in the FontCandidate array...
-        
-        //  In the current locale, walk the loaded list looking for a translation
-        //  that is correct, according to the currently load .mo file.
-        //  If found, add to a temporary array
-        
-        wxString trans = wxGetTranslation(candidate);
-        
         MyFontDesc *pmfd;
         wxNode *node = (wxNode *) ( m_fontlist->GetFirst() );
         while( node ) {
             pmfd = (MyFontDesc *) node->GetData();
-            wxString tlocale = pmfd->m_configstring.BeforeFirst('-');
-            if( tlocale == now_locale) {
-                if(trans == pmfd->m_dialogstring){
-                    string_array.Add(pmfd->m_dialogstring);
+            if( pmfd->m_dialogstring == candidate ) {
+                wxString tlocale = pmfd->m_configstring.BeforeFirst('-');
+                if( tlocale != _T("en_US") ) {
+                    // Here is a potential bad entry, seems to NOT be en_US, but is in the list of english candidates
+                    // Try to get a translation
+                    wxString trans = wxGetTranslation(pmfd->m_dialogstring);
+                    if( trans == pmfd->m_dialogstring ){   //no translation. so keep it
+                    }
+                    //  Translated into something.
+                    //  If the something is in the list already, with the correct locale prefix, then
+                    //  the item under consideration is bogus
+                    //  Search the list for exact match
+                    else {
+                        MyFontDesc *plmfd;
+                        wxNode *lnode = (wxNode *) ( m_fontlist->GetFirst() );
+                        while( lnode ) {
+                            plmfd = (MyFontDesc *) lnode->GetData();
+                            wxString tllocale = plmfd->m_configstring.BeforeFirst('-');
+                            if( (tlocale == tllocale) && (plmfd->m_dialogstring == trans) ){
+                                //  found a usable translation, so drop the bad one
+                                pmfd->m_dialogstring = _T("");
+                                pmfd->m_configstring = _T("");
+                                break;
+                            }
+                            
+                            lnode = lnode->GetNext();
+                        }
+                            
+                            
+                    }
+                    
                 }
             }
- 
             node = node->GetNext();
         }
-    }        
+        
+        i++;
+    }
 
-    // now we have an array of correct translations    
-    // Walk the loaded list again.
-    // If a list item's translation is not in the "good" array, mark it for removal
-    
+    //  Remove the marked list items
     MyFontDesc *pmfd;
     wxNode *node = (wxNode *) ( m_fontlist->GetFirst() );
-    while( node ) {
-        pmfd = (MyFontDesc *) node->GetData();
-        wxString tlocale = pmfd->m_configstring.BeforeFirst('-');
-        if( tlocale == now_locale) {
-            bool bfound = false;
-            for(unsigned int i=0 ; i < string_array.GetCount() ; i++){
-                if( string_array[i] == pmfd->m_dialogstring){
-                    bfound = true;
-                    break;
-                }
-            }
-            if(!bfound){        // mark for removal
-                pmfd->m_dialogstring = _T("");
-                pmfd->m_configstring = _T("");
-            }
-        }
-        
-        node = node->GetNext();
-    }
-    
-    //  Remove the marked list items
-    node = (wxNode *) ( m_fontlist->GetFirst() );
     while( node ) {
         pmfd = (MyFontDesc *) node->GetData();
         if( pmfd->m_dialogstring == _T("") ) {
@@ -466,32 +421,7 @@ void FontMgr::ScrubList( )
             node = node->GetNext();
         
     }
- 
-    //  And finally, for good measure, make sure that everything in the candidate array has a valid entry in the list
-    done = false;
-    i = 0;
-    while( ! done ){
-        wxString candidate = FontCandidates[i];
-        if(candidate == _T("END_OF_LIST") ) {
-            done = true;
-            break;
-        }
-
-        GetFont( wxGetTranslation(candidate), g_default_font_size );
-     
-        i++;
-    }
- 
-     
-}
-
-bool FontMgr::AddAuxKey( wxString key )
-{
-    for(unsigned int i=0 ; i <  m_AuxKeyArray.GetCount() ; i++){
-        if(m_AuxKeyArray[i] == key)
-            return false;
-    }
-    m_AuxKeyArray.Add(key);
-    return true;
+            
+            
 }
 

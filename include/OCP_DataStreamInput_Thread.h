@@ -29,8 +29,6 @@
 #include <wx/event.h>
 #include <wx/arrstr.h>
 
-#include <queue>                // std::queue
-
 #ifdef __WXMSW__
 	#include <windows.h>
 	#include <winioctl.h>
@@ -58,14 +56,14 @@ public:
                                   wxEvtHandler *MessageTarget,
                                   const wxString& PortName,
                                   const wxString& strBaudRate,
+                                  wxMutex *out_mutex,
                                   dsPortType io_select
                               );
 
     ~OCP_DataStreamInput_Thread(void);
     void *Entry();
-    bool SetOutMsg(const wxString &msg);
+    bool SetOutMsg(const wxString & msg);
     void OnExit(void);
-
 
 private:
     void ThreadMessage(const wxString &msg);
@@ -76,10 +74,8 @@ private:
     int WriteComPortPhysical(int port_descriptor, char *msg);
     int ReadComPortPhysical(int port_descriptor, int count, unsigned char *p);
     bool CheckComPortPhysical(int port_descriptor);
-    
-    void HandleASuccessfulRead( char *buf, int nread );
-    
-    wxCriticalSection       m_outCritical;
+
+    wxMutex                 *m_pout_mutex;
     wxEvtHandler            *m_pMessageTarget;
     DataStream              *m_launcher;
     wxString                m_PortName;
@@ -99,16 +95,13 @@ private:
     int                     m_baud;
     int                     m_n_timeout;
 
-    //int                     m_takIndex;
-    //int                     m_putIndex;
-    //char                    *m_poutQueue[OUT_QUEUE_LENGTH];
-    
-    std::queue<char *>  out_que;
+    int                     m_takIndex;
+    int                     m_putIndex;
+    char                    *m_poutQueue[OUT_QUEUE_LENGTH];
     
 
 #ifdef __WXMSW__
     HANDLE                  m_hSerialComm;
-    bool                    m_nl_found;
 #endif
 
 };

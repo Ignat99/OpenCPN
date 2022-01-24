@@ -62,13 +62,10 @@ class NMEALogWindow : public WindowDestroyListener
         void SetPos(const wxPoint & pos);
         void CheckPos(int display_width, int display_height);
         virtual void DestroyWindow();
-        static void Shutdown();
-        wxWindow *GetTTYWindow( void ){ return (wxWindow *)window; }
-        
     private: // prevent class from being copied, needed by singleton
         NMEALogWindow();
         NMEALogWindow(const NMEALogWindow &) {}
-        virtual ~NMEALogWindow() {};
+        ~NMEALogWindow() {};
         NMEALogWindow & operator=(const NMEALogWindow &) { return *this; }
         void UpdateGeometry();
     private:

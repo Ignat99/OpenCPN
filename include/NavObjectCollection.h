@@ -49,8 +49,6 @@ class Track;
 #define         OUT_ACTION_DEL  1 << 15
 #define         OUT_ACTION_UPD  1 << 16
 #define         OUT_EXTENSION   1 << 17
-#define         OUT_ARRIVAL_RADIUS 1 << 18
-#define         OUT_WAYPOINT_RANGE_RINGS 1 << 19
 
 #define  OPT_TRACKPT    OUT_TIME
 #define  OPT_WPT        (OUT_TYPE) +\
@@ -63,9 +61,7 @@ class Track;
                         (OUT_VIZ_NAME) +\
                         (OUT_SHARED) +\
                         (OUT_AUTO_NAME) +\
-                        (OUT_HYPERLINKS) +\
-                        (OUT_ARRIVAL_RADIUS) +\
-                        (OUT_WAYPOINT_RANGE_RINGS)
+                        (OUT_HYPERLINKS)
 #define OPT_ROUTEPT     OPT_WPT                        
 
 //      Bitfield definitions controlling the GPX nodes output for Route.Track objects
@@ -92,13 +88,12 @@ public:
     bool AddGPXWaypoint(RoutePoint *pWP );
     
     bool CreateAllGPXObjects();
-    bool LoadAllGPXObjects( bool b_full_viz = false);
+    bool LoadAllGPXObjects(void);
     int LoadAllGPXObjectsAsLayer(int layer_id, bool b_layerviz);
     
     bool SaveFile( const wxString filename );
 
     void SetRootGPXNode(void);
-    bool IsOpenCPN();
     
     pugi::xml_node      m_gpx_root;
 };

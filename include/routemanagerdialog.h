@@ -49,15 +49,9 @@ class RouteManagerDialog : public wxDialog {
       DECLARE_EVENT_TABLE()
 
       public:
-            static RouteManagerDialog* getInstance(wxWindow *parent);
-            static bool getInstanceFlag(){ return instanceFlag; } 
+            RouteManagerDialog(wxWindow *parent);
             ~RouteManagerDialog();
-            
-            void OnClose(wxCloseEvent& event);
-            void OnOK(wxCommandEvent& event);
-            
             void SetColorScheme();
-            void RecalculateSize();
             void UpdateRouteListCtrl();     // Rebuild route list
             void UpdateTrkListCtrl();
             void UpdateWptListCtrl(RoutePoint *rp_select = NULL, bool b_retain_sort = false);
@@ -69,11 +63,6 @@ class RouteManagerDialog : public wxDialog {
             void TrackToRoute( Track *track );
 
       private:
-            static bool instanceFlag;
-            static RouteManagerDialog *single;
-            
-            RouteManagerDialog(wxWindow *parent);
-            
             void Create();
             void UpdateRteButtons();           // Correct button state
             void MakeAllRoutesInvisible();  // Mark all routes as invisible. Does not flush settings.
@@ -187,8 +176,6 @@ class RouteManagerDialog : public wxDialog {
             int m_lastWptItem;
             int m_lastTrkItem;
             int m_lastRteItem;
-            
-            int m_charWidth;
 };
 
 #endif // _RouteManagerDialog_h_

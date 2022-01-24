@@ -144,16 +144,16 @@ void RolloverWin::SetBestPosition( int x, int y, int off_x, int off_y, int rollo
     switch( rollover ) {
 
     case AIS_ROLLOVER:
-        dFont = FontMgr::Get().GetFont( _("AISRollover") );
+        dFont = FontMgr::Get().GetFont( _("AISRollover"), 12 );
         break;
 
     case TC_ROLLOVER:
-        dFont = FontMgr::Get().GetFont( _("TideCurrentGraphRollover") );
+        dFont = FontMgr::Get().GetFont( _("TideCurrentGraphRollover"), 12 );
         break;
 
     default:
     case LEG_ROLLOVER:
-        dFont = FontMgr::Get().GetFont( _("RouteLegInfoRollover") );
+        dFont = FontMgr::Get().GetFont( _("RouteLegInfoRollover"), 12 );
         break;
 
     }

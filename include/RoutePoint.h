@@ -28,7 +28,6 @@
 #include <wx/datetime.h>
 #include <wx/gdicmn.h>
 #include <wx/gauge.h>
-#include <wx/clrpicker.h>
 #include "Hyperlink.h"
 #include "gpxdocument.h"
 
@@ -62,11 +61,7 @@ public:
       void SetNameShown(bool viz = true) { m_bShowName = viz; }
       wxString GetName(void){ return m_MarkName; }
       wxString GetDescription(void) { return m_MarkDescription; }
-      
-      wxString GetIconName(void){ return m_IconName; }
-      wxBitmap *GetIconBitmap(){ return m_pbmIcon; }
-      void SetIconName( wxString name ){ m_IconName = name; }
-      
+
       void *GetSelectNode(void) { return m_SelectNode; }
       void SetSelectNode(void* node) { m_SelectNode = node; }
 
@@ -81,19 +76,6 @@ public:
       void SetDistance( double distance) { m_routeprop_distance = distance; };
       double GetDistance() { return m_routeprop_distance; };
 
-      void SetWaypointArrivalRadius(double dArrivalDistance) { m_WaypointArrivalRadius = dArrivalDistance; };
-      void SetWaypointArrivalRadius( wxString wxArrivalDistance ) { wxArrivalDistance.ToDouble( &m_WaypointArrivalRadius ); };
-      double GetWaypointArrivalRadius();
-      bool  GetShowWaypointRangeRings(void) { return m_bShowWaypointRangeRings; };
-      int   GetWaypointRangeRingsNumber(void);
-      float GetWaypointRangeRingsStep(void);
-      int   GetWaypointRangeRingsStepUnits(void);
-      wxColour GetWaypointRangeRingsColour(void);
-      void  SetShowWaypointRangeRings(bool b_showWaypointRangeRings) { m_bShowWaypointRangeRings = b_showWaypointRangeRings; };
-      void  SetWaypointRangeRingsNumber(int i_WaypointRangeRingsNumber) { m_iWaypointRangeRingsNumber = i_WaypointRangeRingsNumber; };
-      void  SetWaypointRangeRingsStep(float f_WaypointRangeRingsStep) { m_fWaypointRangeRingsStep = f_WaypointRangeRingsStep; };
-      void  SetWaypointRangeRingsStepUnits(int i_WaypointRangeRingsStepUnits) { m_iWaypointRangeRingsStepUnits = i_WaypointRangeRingsStepUnits; };
-      void  SetWaypointRangeRingsColour( wxColour wxc_WaypointRangeRingsColour ) { m_wxcWaypointRangeRingsColour = wxc_WaypointRangeRingsColour; };
 
       bool SendToGPS(const wxString& com_name, wxGauge *pProgress);
 
@@ -122,12 +104,14 @@ public:
       bool              m_bIsActive;
       wxString          m_MarkDescription;
       wxString          m_GUID;
+      wxString          m_IconName;
 
       wxFont            *m_pMarkFont;
       wxColour          m_FontColor;
 
       wxSize            m_NameExtents;
 
+      wxBitmap          *m_pbmIcon;
       bool              m_bBlink;
       bool              m_bDynamicName;
       bool              m_bShowName;
@@ -144,32 +128,21 @@ public:
 
       HyperlinkList     *m_HyperlinkList;
       bool              m_btemp;
-      
-      bool              m_bShowWaypointRangeRings;
-      int               m_iWaypointRangeRingsNumber;
-      float             m_fWaypointRangeRingsStep;
-      int               m_iWaypointRangeRingsStepUnits;
-      wxColour          m_wxcWaypointRangeRingsColour;
 
 #ifdef ocpnUSE_GL
-      void DrawGL( ViewPort &vp, bool use_cached_screen_coords=false );
+      void DrawGL( ViewPort &vp, OCPNRegion &region );
       unsigned int m_iTextTexture;
       int m_iTextTextureWidth, m_iTextTextureHeight;
 
       LLBBox m_wpBBox;
-      double m_wpBBox_view_scale_ppm, m_wpBBox_rotation;
+      double m_wpBBox_chart_scale, m_wpBBox_rotation;
 
-      bool m_pos_on_screen;
-      wxPoint2DDouble m_screen_pos; // cached for arrows and points
+      static bool s_bUpdateWaypointsDisplayList;
 #endif
 
-      double m_WaypointArrivalRadius;
-      
 private:
       wxString          m_MarkName;
       wxDateTime        m_CreateTimeX;
-      wxBitmap          *m_pbmIcon;
-      wxString          m_IconName;
       
       void              *m_SelectNode;
       void              *m_ManagerNode;

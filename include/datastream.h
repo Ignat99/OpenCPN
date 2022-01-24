@@ -108,6 +108,18 @@ enum {
 
 // Class declarations
 
+//    A generic Position Data structure
+typedef struct {
+    double kLat;
+    double kLon;
+    double kCog;
+    double kSog;
+    double kVar;            // Variation, typically from RMC message
+    double kHdm;            // Magnetic heading
+    double kHdt;            // true heading
+    time_t FixTime;
+    int    nSats;
+} GenericPosDatEx;
 
 
 
@@ -118,9 +130,6 @@ class DataStream;
 class GarminProtocolHandler;
 
 extern  const wxEventType wxEVT_OCPN_DATASTREAM;
-extern  const wxEventType wxEVT_OCPN_THREADMSG;
-
-bool CheckSumCheck(const std::string& sentence);
 
 //----------------------------------------------------------------------------
 // DataStream
@@ -138,7 +147,6 @@ class DataStream: public wxEvtHandler
 {
 public:
     DataStream(wxEvtHandler *input_consumer,
-               const ConnectionType conn_type,
                const wxString& Port,
                const wxString& BaudRate,
                dsPortType io_select,
@@ -179,6 +187,7 @@ public:
     bool ChecksumOK(const std::string& sentence);
     bool GetGarminMode(){ return m_bGarmin_GRMN_mode; }
 
+
     wxString GetBaudRate(){ return m_BaudRate; }
     dsPortType GetPortType(){ return m_io_select; }
     wxArrayString GetInputSentenceList(){ return m_input_filter; }
@@ -193,10 +202,10 @@ private:
     void Init(void);
     void Open(void);
 
-    void OnSocketEvent(wxSocketEvent& event);
     void OnTimerSocket(wxTimerEvent& event);
     void OnSocketReadWatchdogTimer(wxTimerEvent& event);
     
+    wxMutex             m_output_mutex;
     bool                m_bok;
     wxEvtHandler        *m_consumer;
     wxString            m_portstring;
@@ -211,6 +220,8 @@ private:
     bool                m_bsec_thread_active;
     int                 m_last_error;
 
+#if wxUSE_SOCKETS    
+    void OnSocketEvent(wxSocketEvent& event);
     wxIPV4address       m_addr;
     wxSocketBase        *m_sock;
     wxSocketBase        *m_tsock;
@@ -225,7 +236,9 @@ private:
 
     wxSocketServer      *m_socket_server;                       //  The listening server
     wxSocketBase        *m_socket_server_active;                //  The active connection
-    
+
+#endif
+
     std::string         m_sock_buffer;
     wxString            m_net_addr;
     wxString            m_net_port;
@@ -251,7 +264,7 @@ DECLARE_EVENT_TABLE()
 };
 
 
-//extern const wxEventType EVT_THREADMSG;
+extern const wxEventType EVT_THREADMSG;
 
 //----------------------------------------------------------------------------
 // Garmin Device Management
@@ -430,7 +443,7 @@ public:
 #ifdef __WXMSW__
     HANDLE garmin_usb_start();
     bool ResetGarminUSBDriver();
-    static bool IsGarminPlugged();
+    bool IsGarminPlugged();
     bool gusb_syncup(void);
 
     int gusb_win_get(garmin_usb_packet *ibuf, size_t sz);

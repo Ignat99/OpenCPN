@@ -562,7 +562,6 @@ int DDFRecord::ReadHeader()
                (int) VSIFRead(tmpBuf, 1, nFieldEntryWidth, poModule->GetFP())) {
                 CPLError(CE_Failure, CPLE_FileIO,
                          "Data record is short on DDF file.");
-                CPLFree(tmpBuf);
                 return FALSE;
             }
 
@@ -603,7 +602,6 @@ int DDFRecord::ReadHeader()
                (int) VSIFRead(tmpBuf, 1, nFieldLength, poModule->GetFP())) {
                 CPLError(CE_Failure, CPLE_FileIO,
                          "Data record is short on DDF file.");
-                CPLFree(tmpBuf);
                 return FALSE;
             }
 
@@ -650,7 +648,6 @@ int DDFRecord::ReadHeader()
                 CPLError( CE_Failure, CPLE_AppDefined,
                           "Undefined field `%s' encountered in data record.",
                           szTag );
-                CPLFree(tmpBuf);
                 return FALSE;
             }
 
@@ -663,7 +660,7 @@ int DDFRecord::ReadHeader()
                                      + nFieldPos - nLeaderSize,
                                      nFieldLength );
         }
-        CPLFree(tmpBuf);
+
         return TRUE;
     }
 }

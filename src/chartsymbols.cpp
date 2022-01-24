@@ -33,9 +33,6 @@
 #include <stdlib.h>
 
 #include "chartsymbols.h"
-#ifdef ocpnUSE_GL
-#include <wx/glcanvas.h>
-#endif
 
 extern bool g_bopengl;
 
@@ -262,7 +259,7 @@ void ChartSymbols::ProcessLookups( TiXmlElement* lookupNodes )
 
 void ChartSymbols::BuildLookup( Lookup &lookup )
 {
-
+#ifdef USE_S57
     LUPrec *LUP = (LUPrec*) calloc( 1, sizeof(LUPrec) );
     plib->pAlloc->Add( LUP );
 
@@ -300,6 +297,7 @@ void ChartSymbols::BuildLookup( Lookup &lookup )
     }
 
     pLUPARRAYtyped->Add( LUP );
+#endif    
 }
 
 void ChartSymbols::ProcessVectorTag( TiXmlElement* vectorNode, SymbolSizeInfo_t &vectorSize )
@@ -518,6 +516,7 @@ void ChartSymbols::ProcessPatterns( TiXmlElement* patternNodes )
 
 void ChartSymbols::BuildPattern( OCPNPattern &pattern )
 {
+#ifdef USE_S57    
     Rule *pattmp = NULL;
 
     Rule *patt = (Rule*) calloc( 1, sizeof(Rule) );
@@ -575,6 +574,7 @@ void ChartSymbols::BuildPattern( OCPNPattern &pattern )
             // the node itself is destroyed as part of pAlloc
         }
     }
+#endif    
 }
 
 void ChartSymbols::ProcessSymbols( TiXmlElement* symbolNodes )
@@ -838,6 +838,11 @@ int ChartSymbols::LoadRasterFileForColorTable( int tableNo, bool flush )
     }
         
     
+#ifdef ocpnUSE_GL            
+    if(g_bopengl && !g_texture_rectangle_format)
+        wxLogMessage(_("Warning: unable to use NPOT texture for chart symbols"));
+#endif    
+    
     colTable* coltab = (colTable *) colorTables->Item( tableNo );
 
     wxString filename = configFileDirectory + wxFileName::GetPathSeparator()
@@ -858,17 +863,16 @@ int ChartSymbols::LoadRasterFileForColorTable( int tableNo, bool flush )
 
             /* combine rgb with alpha */
             unsigned char *e = (unsigned char *) malloc( w * h * 4 );
-            if(d && a){
-                for( int y = 0; y < h; y++ )
-                    for( int x = 0; x < w; x++ ) {
-                        int off = ( y * w + x );
+            for( int y = 0; y < h; y++ )
+                for( int x = 0; x < w; x++ ) {
+                    int off = ( y * w + x );
 
-                        e[off * 4 + 0] = d[off * 3 + 0];
-                        e[off * 4 + 1] = d[off * 3 + 1];
-                        e[off * 4 + 2] = d[off * 3 + 2];
-                        e[off * 4 + 3] = a[off];
-                    }
-            }
+                    e[off * 4 + 0] = d[off * 3 + 0];
+                    e[off * 4 + 1] = d[off * 3 + 1];
+                    e[off * 4 + 2] = d[off * 3 + 2];
+                    e[off * 4 + 3] = a[off];
+                }
+
             if(!rasterSymbolsTexture)
                 glGenTextures(1, &rasterSymbolsTexture);
 

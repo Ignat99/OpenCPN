@@ -33,8 +33,6 @@
 #include "navutil.h"
 #include "FontMgr.h"
 #include "cutil.h"
-#include "georef.h"
-#include "wx28compat.h"
 
 extern WayPointman *pWayPointMan;
 extern bool g_bIsNewLayer;
@@ -46,14 +44,6 @@ extern Multiplexer *g_pMUX;
 extern MyFrame *gFrame;
 extern bool g_btouch;
 extern bool g_bresponsive;
-extern ocpnStyle::StyleManager* g_StyleManager;
-extern double g_n_arrival_circle_radius;
-extern int g_iWaypointRangeRingsNumber;
-extern float g_fWaypointRangeRingsStep;
-extern int g_iWaypointRangeRingsStepUnits;
-extern wxColour g_colourWaypointRangeRingsColour;
-
-extern float g_ChartScaleFactorExp;
 
 #include <wx/listimpl.cpp>
 WX_DEFINE_LIST ( RoutePointList );
@@ -99,19 +89,6 @@ RoutePoint::RoutePoint()
 
     m_bIsInLayer = false;
     m_LayerID = 0;
-    
-    m_WaypointArrivalRadius = g_n_arrival_circle_radius;
-
-    m_bShowWaypointRangeRings = false;
-   
-    m_iWaypointRangeRingsNumber = g_iWaypointRangeRingsNumber;
-    m_fWaypointRangeRingsStep = g_fWaypointRangeRingsStep;
-    m_iWaypointRangeRingsStepUnits = g_iWaypointRangeRingsStepUnits;
-    m_wxcWaypointRangeRingsColour = g_colourWaypointRangeRingsColour;
-#ifdef ocpnUSE_GL
-    m_pos_on_screen = false;
-#endif
-    
 }
 
 // Copy Constructor
@@ -153,15 +130,6 @@ RoutePoint::RoutePoint( RoutePoint* orig )
     
     m_SelectNode = NULL;
     m_ManagerNode = NULL;
-    
-    m_WaypointArrivalRadius = orig->GetWaypointArrivalRadius();
-
-    m_bShowWaypointRangeRings = false;
-   
-    m_iWaypointRangeRingsNumber = g_iWaypointRangeRingsNumber;
-    m_fWaypointRangeRingsStep = g_fWaypointRangeRingsStep;
-    m_iWaypointRangeRingsStepUnits = g_iWaypointRangeRingsStepUnits;
-    m_wxcWaypointRangeRingsColour = g_colourWaypointRangeRingsColour;
     
 }
 
@@ -228,14 +196,6 @@ RoutePoint::RoutePoint( double lat, double lon, const wxString& icon_ident, cons
         m_bIsListed = false;
     } else
         m_LayerID = 0;
-    
-    SetWaypointArrivalRadius( g_n_arrival_circle_radius );
-
-    m_bShowWaypointRangeRings = false;
-    m_iWaypointRangeRingsNumber = g_iWaypointRangeRingsNumber;
-    m_fWaypointRangeRingsStep = g_fWaypointRangeRingsStep;
-    m_iWaypointRangeRingsStepUnits = g_iWaypointRangeRingsStepUnits;
-    m_wxcWaypointRangeRingsColour = g_colourWaypointRangeRingsColour;
 }
 
 RoutePoint::~RoutePoint( void )
@@ -276,14 +236,8 @@ void RoutePoint::CalculateNameExtents( void )
     if( m_pMarkFont ) {
         wxScreenDC dc;
 
-#ifdef __WXQT__                 // avoiding "painter not active" warning
-        int w, h;
-        dc.GetTextExtent(m_MarkName, &w, &h, NULL, NULL, m_pMarkFont);
-        m_NameExtents = wxSize(w,h);
-#else        
         dc.SetFont( *m_pMarkFont );
         m_NameExtents = dc.GetTextExtent( m_MarkName );
-#endif        
     } else
         m_NameExtents = wxSize( 0, 0 );
 
@@ -291,29 +245,10 @@ void RoutePoint::CalculateNameExtents( void )
 
 void RoutePoint::ReLoadIcon( void )
 {
-    bool icon_exists = pWayPointMan->DoesIconExist(m_IconName);
-    if( !icon_exists ){
-        
-        //  Try all lower case as a favor in the case where imported waypoints use mixed case names
-        wxString tentative_icon = m_IconName.Lower();
-        if(pWayPointMan->DoesIconExist(tentative_icon)){
-            // if found, convert point's icon name permanently.
-            m_IconName = tentative_icon;
-        }
-        //      Icon name is not in the standard or user lists, so add to the list a generic placeholder
-        else{
-            ocpnStyle::Style* style = g_StyleManager->GetCurrentStyle();
-            if(style){
-                wxBitmap bmp = style->GetIcon( _T("circle") );
-                pWayPointMan->ProcessIcon( bmp, m_IconName, m_IconName );
-            }
-        }
-    }
-        
     m_pbmIcon = pWayPointMan->GetIconBitmap( m_IconName );
 
 #ifdef ocpnUSE_GL
-    m_wpBBox_view_scale_ppm = -1;
+    m_wpBBox_chart_scale = -1;
 
     m_iTextTexture = 0;
 #endif
@@ -415,35 +350,6 @@ void RoutePoint::Draw( ocpnDC& dc, wxPoint *rpn )
         }
     }
 
-    // Draw waypoint radar rings if activated
-    if( m_iWaypointRangeRingsNumber && m_bShowWaypointRangeRings ) {
-        double factor = 1.00;
-        if( m_iWaypointRangeRingsStepUnits == 1 )          // nautical miles
-            factor = 1 / 1.852;
-
-        factor *= m_fWaypointRangeRingsStep;
-
-        double tlat, tlon;
-        wxPoint r1;
-        ll_gc_ll( m_lat, m_lon, 0, factor, &tlat, &tlon );
-        cc1->GetCanvasPointPix( tlat, tlon, &r1 );
-
-        double lpp = sqrt( pow( (double) (r.x - r1.x), 2) +
-                           pow( (double) (r.y - r1.y), 2 ) );
-        int pix_radius = (int) lpp;
-
-        wxPen ppPen1( m_wxcWaypointRangeRingsColour, 2 );
-        wxBrush saveBrush = dc.GetBrush();
-        wxPen savePen = dc.GetPen();
-        dc.SetPen( ppPen1 );
-        dc.SetBrush( wxBrush( m_wxcWaypointRangeRingsColour, wxBRUSHSTYLE_TRANSPARENT ) );
-
-        for( int i = 1; i <= m_iWaypointRangeRingsNumber; i++ )
-            dc.StrokeCircle( r.x, r.y, i * pix_radius );
-        dc.SetPen( savePen );
-        dc.SetBrush( saveBrush );
-    }
-    
     //  Save the current draw rectangle in the current DC
     //    This will be useful for fast icon redraws
     CurrentRect_in_DC.x = r.x + hilitebox.x;
@@ -456,34 +362,44 @@ void RoutePoint::Draw( ocpnDC& dc, wxPoint *rpn )
 }
 
 #ifdef ocpnUSE_GL
-void RoutePoint::DrawGL( ViewPort &vp, bool use_cached_screen_coords )
+void RoutePoint::DrawGL( ViewPort &vp, OCPNRegion &region )
 {
     if( !m_bIsVisible )
-        return;
+    return;
 
     //    Optimization, especially apparent on tracks in normal cases
     if( m_IconName == _T("empty") && !m_bShowName && !m_bPtIsSelected ) return;
 
     if(m_wpBBox.GetValid() &&
-       vp.view_scale_ppm == m_wpBBox_view_scale_ppm &&
+       vp.chart_scale == m_wpBBox_chart_scale &&
        vp.rotation == m_wpBBox_rotation) {
         /* see if this waypoint can intersect with bounding box */
         LLBBox vpBBox = vp.GetBBox();
-        if( vpBBox.IntersectOut( m_wpBBox ) )
-            return;
+        if( vpBBox.IntersectOut( m_wpBBox ) ) {
+            /* try with vp crossing IDL */
+            if(vpBBox.GetMinX() < -180 && vpBBox.GetMaxX() > -180) {
+                wxPoint2DDouble xlate( -360., 0. );
+                wxBoundingBox test_box2 = m_wpBBox;
+                test_box2.Translate( xlate );
+                if( vp.GetBBox().IntersectOut( test_box2 ) )
+                    return;
+            } else 
+            if(vpBBox.GetMinX() < 180 && vpBBox.GetMaxX() > 180) {
+                wxPoint2DDouble xlate( 360., 0. );
+                wxBoundingBox test_box2 = m_wpBBox;
+                test_box2.Translate( xlate );
+                if( vp.GetBBox().IntersectOut( test_box2 ) )
+                    return;
+            } else
+                return;
+        }
     }
 
     wxPoint r;
     wxRect hilitebox;
     unsigned char transparency = 150;
 
-    if(use_cached_screen_coords && m_pos_on_screen)
-        r.x = m_screen_pos.m_x, r.y = m_screen_pos.m_y;
-    else
-        cc1->GetCanvasPointPix( m_lat, m_lon, &r );
-
-    if(r.x == INVALID_COORD)
-        return;
+    cc1->GetCanvasPointPix( m_lat, m_lon, &r );
 
 //    Substitue icon?
     wxBitmap *pbm;
@@ -527,25 +443,19 @@ void RoutePoint::DrawGL( ViewPort &vp, bool use_cached_screen_coords )
     }
     
     /* update bounding box */
-    if(!m_wpBBox.GetValid() || vp.view_scale_ppm != m_wpBBox_view_scale_ppm || vp.rotation != m_wpBBox_rotation) {
+    if(!m_wpBBox.GetValid() || vp.chart_scale != m_wpBBox_chart_scale || vp.rotation != m_wpBBox_rotation) {
         double lat1, lon1, lat2, lon2;
         cc1->GetCanvasPixPoint(r.x+hilitebox.x, r.y+hilitebox.y+hilitebox.height, lat1, lon1);
         cc1->GetCanvasPixPoint(r.x+hilitebox.x+hilitebox.width, r.y+hilitebox.y, lat2, lon2);
 
-        if(lon1 > lon2) {
-            m_wpBBox.SetMin(lon1, lat1);
-            m_wpBBox.SetMax(lon2+360, lat2);
-        } else {
-            m_wpBBox.SetMin(lon1, lat1);
-            m_wpBBox.SetMax(lon2, lat2);
-        }
-        m_wpBBox_view_scale_ppm = vp.view_scale_ppm;
+        m_wpBBox.SetMin(lon1, lat1);
+        m_wpBBox.SetMax(lon2, lat2);
+        m_wpBBox_chart_scale = vp.chart_scale;
         m_wpBBox_rotation = vp.rotation;
     }
 
-//    if(region.Contains(r3) == wxOutRegion)
-//        return;
-    
+    if(region.Contains(r3) == wxOutRegion)
+        return;
 
     ocpnDC dc;
 
@@ -576,40 +486,19 @@ void RoutePoint::DrawGL( ViewPort &vp, bool use_cached_screen_coords )
         
         glEnable(GL_TEXTURE_2D);
         glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glTexEnvi( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );
-        
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         
         glColor3f(1, 1, 1);
         
         int x = r1.x, y = r1.y, w = r1.width, h = r1.height;
-        
-        float scale = 1.0;
-        if(g_bresponsive){
-            scale =  g_ChartScaleFactorExp;
-        }
-            
-        float ws = r1.width * scale;
-        float hs = r1.height * scale;
-        float xs = r.x - ws/2.;
-        float ys = r.y - hs/2.;
         float u = (float)w/glw, v = (float)h/glh;
-        
         glBegin(GL_QUADS);
-        glTexCoord2f(0, 0); glVertex2f(xs, ys);
-        glTexCoord2f(u, 0); glVertex2f(xs+ws, ys);
-        glTexCoord2f(u, v); glVertex2f(xs+ws, ys+hs);
-        glTexCoord2f(0, v); glVertex2f(xs, ys+hs);
+        glTexCoord2f(0, 0); glVertex2f(x, y);
+        glTexCoord2f(u, 0); glVertex2f(x+w, y);
+        glTexCoord2f(u, v); glVertex2f(x+w, y+h);
+        glTexCoord2f(0, v); glVertex2f(x, y+h);
         glEnd();
-        
-//         glBegin(GL_QUADS);
-//         glTexCoord2f(0, 0); glVertex2f(x, y);
-//         glTexCoord2f(u, 0); glVertex2f(x+w, y);
-//         glTexCoord2f(u, v); glVertex2f(x+w, y+h);
-//         glTexCoord2f(0, v); glVertex2f(x, y+h);
-//         glEnd();
-
         glDisable(GL_BLEND);
         glDisable(GL_TEXTURE_2D);
     }
@@ -631,10 +520,8 @@ void RoutePoint::DrawGL( ViewPort &vp, bool use_cached_screen_coords )
             wxImage image = tbm.ConvertToImage();
             unsigned char *d = image.GetData();
             unsigned char *e = new unsigned char[w * h];
-            if(d && e){
-                for( int p = 0; p < w*h; p++)
-                    e[p] = d[3*p + 0];
-            }
+            for( int p = 0; p < w*h; p++)
+                e[p] = d[3*p + 0];
             
             /* create texture for rendered text */
             glGenTextures(1, &m_iTextTexture);
@@ -658,6 +545,7 @@ void RoutePoint::DrawGL( ViewPort &vp, bool use_cached_screen_coords )
             
             glEnable(GL_TEXTURE_2D);
             glEnable(GL_BLEND);
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         
             glColor3ub(m_FontColor.Red(), m_FontColor.Green(), m_FontColor.Blue());
             
@@ -669,39 +557,9 @@ void RoutePoint::DrawGL( ViewPort &vp, bool use_cached_screen_coords )
             glTexCoord2f(u, v); glVertex2f(x+w, y+h);
             glTexCoord2f(0, v); glVertex2f(x, y+h);
             glEnd();
-
             glDisable(GL_BLEND);
             glDisable(GL_TEXTURE_2D);
         }
-    }
-    
-    // Draw waypoint radar rings if activated
-    if( m_iWaypointRangeRingsNumber && m_bShowWaypointRangeRings ) {
-        double factor = 1.00;
-        if( m_iWaypointRangeRingsStepUnits == 1 )          // nautical miles
-            factor = 1 / 1.852;
-        
-        factor *= m_fWaypointRangeRingsStep;
-        
-        double tlat, tlon;
-        wxPoint r1;
-        ll_gc_ll( m_lat, m_lon, 0, factor, &tlat, &tlon );
-        cc1->GetCanvasPointPix( tlat, tlon, &r1 );
-        
-        double lpp = sqrt( pow( (double) (r.x - r1.x), 2) +
-        pow( (double) (r.y - r1.y), 2 ) );
-        int pix_radius = (int) lpp;
-        
-        wxPen ppPen1( m_wxcWaypointRangeRingsColour, 2 );
-        wxBrush saveBrush = dc.GetBrush();
-        wxPen savePen = dc.GetPen();
-        dc.SetPen( ppPen1 );
-        dc.SetBrush( wxBrush( m_wxcWaypointRangeRingsColour, wxBRUSHSTYLE_TRANSPARENT ) );
-        
-        for( int i = 1; i <= m_iWaypointRangeRingsNumber; i++ )
-            dc.StrokeCircle( r.x, r.y, i * pix_radius );
-        dc.SetPen( savePen );
-        dc.SetBrush( saveBrush );
     }
     
     if( m_bBlink ) g_blink_rect = CurrentRect_in_DC;               // also save for global blinker
@@ -771,39 +629,3 @@ bool RoutePoint::SendToGPS(const wxString & com_name, wxGauge *pProgress)
     return (result == 0);
 }
 
-double RoutePoint::GetWaypointArrivalRadius() {
-    if ((m_WaypointArrivalRadius >= 0) && (m_WaypointArrivalRadius < 0.001)) {
-        SetWaypointArrivalRadius( g_n_arrival_circle_radius );
-        return m_WaypointArrivalRadius;
-    }
-    else
-        return m_WaypointArrivalRadius;
-}
-
-int   RoutePoint::GetWaypointRangeRingsNumber() { 
-    if ( m_iWaypointRangeRingsNumber == -1 )
-        return g_iWaypointRangeRingsNumber;
-    else
-        return m_iWaypointRangeRingsNumber; 
-}
-
-float RoutePoint::GetWaypointRangeRingsStep() { 
-    if ( m_fWaypointRangeRingsStep == -1 )
-        return g_fWaypointRangeRingsStep;
-    else
-        return m_fWaypointRangeRingsStep; 
-}
-
-int   RoutePoint::GetWaypointRangeRingsStepUnits() { 
-    if ( m_iWaypointRangeRingsStepUnits == -1 )
-        return g_iWaypointRangeRingsStepUnits;
-    else
-        return m_iWaypointRangeRingsStepUnits ; 
-}
-
-wxColour RoutePoint::GetWaypointRangeRingsColour(void) { 
-    if ( m_wxcWaypointRangeRingsColour.GetAsString(wxC2S_HTML_SYNTAX) == _T("#FFFFFF") )
-        return g_colourWaypointRangeRingsColour;
-    else
-        return m_wxcWaypointRangeRingsColour; 
-}
