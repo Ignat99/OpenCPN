@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dashboard_pi 2.2.1124\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-12-24 23:40-0500\n"
+"POT-Creation-Date: 2014-05-30 09:13-0400\n"
 "PO-Revision-Date: 2010-11-28 18:28+0100\n"
 "Last-Translator: Piotr Carlson <pjotrc@interia.pl>\n"
 "Language-Team: \n"
@@ -159,9 +159,6 @@ msgstr ""
 #
 msgid "Label:"
 msgstr "Etykieta:"
-#
-msgid "Mag COG"
-msgstr ""
 #
 msgid "Mag HDG"
 msgstr ""
@@ -334,10 +331,8 @@ msgstr ""
 #
 #
 #
-#
 #~ msgid "Apparent wind"
 #~ msgstr "Wiatr pozorny"
-#
 #
 #
 #
@@ -352,7 +347,6 @@ msgstr ""
 #
 #
 #
-#
 #~ msgid "HDG"
 #~ msgstr "HDG"
 #
@@ -361,10 +355,8 @@ msgstr ""
 #
 #
 #
-#
 #~ msgid "Instrument width:"
 #~ msgstr "Szerokość instrumentu"
-#
 #
 #
 #

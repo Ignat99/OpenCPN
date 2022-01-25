@@ -227,8 +227,8 @@ clean: CMakeFiles/i18n.dir/clean
 
 # All Build rule for target.
 CMakeFiles/opencpn.dir/all: CMakeFiles/NMEA0183.dir/all
-CMakeFiles/opencpn.dir/all: CMakeFiles/SYMBOLS.dir/all
 CMakeFiles/opencpn.dir/all: CMakeFiles/GARMINHOST.dir/all
+CMakeFiles/opencpn.dir/all: CMakeFiles/SYMBOLS.dir/all
 CMakeFiles/opencpn.dir/all: CMakeFiles/i18n.dir/all
 	$(MAKE) -f CMakeFiles/opencpn.dir/build.make CMakeFiles/opencpn.dir/depend
 	$(MAKE) -f CMakeFiles/opencpn.dir/build.make CMakeFiles/opencpn.dir/build

@@ -131,16 +131,20 @@ unsigned char SENTENCE::ComputeChecksum( void ) const
 {
    unsigned char checksum_value = 0;
 
-   int string_length = Sentence.Length();
+   char str_ascii[101];
+   strncpy(str_ascii, (const char *)Sentence.mb_str(), 99);
+   str_ascii[100] = '\0';
+
+   int string_length = strlen(str_ascii);
    int index = 1; // Skip over the $ at the begining of the sentence
 
    while( index < string_length    &&
-       Sentence[ index ] != '*' &&
-       Sentence[ index ] != CARRIAGE_RETURN &&
-       Sentence[ index ] != LINE_FEED )
+          str_ascii[ index ] != '*' &&
+          str_ascii[ index ] != CARRIAGE_RETURN &&
+          str_ascii[ index ] != LINE_FEED )
    {
-       checksum_value ^= (char)Sentence[ index ];
-       index++;
+         checksum_value ^= str_ascii[ index ];
+         index++;
    }
 
    return( checksum_value );
@@ -149,11 +153,10 @@ unsigned char SENTENCE::ComputeChecksum( void ) const
 double SENTENCE::Double( int field_number ) const
 {
  //  ASSERT_VALID( this );
-    wxCharBuffer abuf = Field( field_number).ToUTF8();
-    if( !abuf.data() || strlen(abuf.data()) == 0 )                            // badly formed sentence?
-        return (999.);
- 
-    return( ::atof( abuf.data() ));
+      if(Field( field_number ).Len() == 0)
+            return 999.;
+
+      return( ::atof( Field( field_number ).mb_str() ) );
 }
 
 
@@ -265,11 +268,7 @@ int SENTENCE::Integer( int field_number ) const
 {
 //   ASSERT_VALID( this );
 
-    wxCharBuffer abuf = Field( field_number).ToUTF8();
-    if( !abuf.data() )                            // badly formed sentence?
-        return 0;
-    
-    return( ::atoi( abuf.data() ));
+    return( ::atoi( Field( field_number ).mb_str() ) );
 }
 
 NMEA0183_BOOLEAN SENTENCE::IsChecksumBad( int checksum_field_number ) const

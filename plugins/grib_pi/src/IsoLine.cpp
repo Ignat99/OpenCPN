@@ -395,19 +395,13 @@ void IsoLine::drawIsoLine(GRIBOverlayFactory *pof, wxDC *dc, PlugIn_ViewPort *vp
           pgc = wxGraphicsContext::Create(*pmdc);
           pgc->SetPen(ppISO);
 #endif
+
           dc->SetPen(ppISO);
       } else { /* opengl */
+
 #ifdef ocpnUSE_GL          
-          //      Enable anti-aliased lines, at best quality
-          glEnable( GL_LINE_SMOOTH );
-          glEnable( GL_BLEND );
-          glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
-          glHint( GL_LINE_SMOOTH_HINT, GL_NICEST );
-          glLineWidth( 2 );
-          
           glColor4ub(isoLineColor.Red(), isoLineColor.Green(), isoLineColor.Blue(),
                      255/*isoLineColor.Alpha()*/);
-          glBegin( GL_LINES );
 #endif          
       }
 
@@ -444,9 +438,8 @@ void IsoLine::drawIsoLine(GRIBOverlayFactory *pof, wxDC *dc, PlugIn_ViewPort *vp
 #endif
                       dc->DrawLine(ab.x, ab.y, cd.x, cd.y);
             } else { /* opengl */
-#ifdef ocpnUSE_GL
-                glVertex2d(ab.x, ab.y);
-                glVertex2d(cd.x, cd.y);
+#ifdef ocpnUSE_GL                
+                pof->DrawGLLine(ab.x, ab.y, cd.x, cd.y, 2);
 #endif                
             }
         }
@@ -570,8 +563,6 @@ void IsoLine::drawIsoLine(GRIBOverlayFactory *pof, wxDC *dc, PlugIn_ViewPort *vp
       delete pgc;
 #endif
 
-      if(!dc) /* opengl */
-          glEnd();
 }
 
 //---------------------------------------------------------------
@@ -588,7 +579,6 @@ void IsoLine::drawIsoLineLabels(GRIBOverlayFactory *pof, wxDC *dc,
     //---------------------------------------------------------
     // Ecrit les labels
     //---------------------------------------------------------
-    wxRect prev;
     for (it=trace.begin(); it!=trace.end(); it++,nb++)
     {
         if (nb % density == 0)
@@ -609,17 +599,10 @@ void IsoLine::drawIsoLineLabels(GRIBOverlayFactory *pof, wxDC *dc,
                 int xd = (ab.x + cd.x-(w+label_offset * 2))/2;
                 int yd = (ab.y + cd.y - h)/2;
 
-                int x = xd - label_offset;
-                wxRect r(x ,yd ,w ,h);
-                r.Inflate(w);
-                if (!prev.Intersects(r))  {
-                      prev = r;
-
-                      /* don't use alpha for isobars, for some reason draw bitmap ignores
-                         the 4th argument (true or false has same result) */
-                      wxImage img(w, h, imageLabel.GetData(), true);
-                      dc->DrawBitmap(img, xd, yd, false);
-                }
+                /* don't use alpha for isobars, for some reason draw bitmap ignores
+                   the 4th argument (true or false has same result) */
+                wxImage img(w, h, imageLabel.GetData(), true);
+                dc->DrawBitmap(img, xd, yd, false);
             }
         }
     }
@@ -641,7 +624,6 @@ void IsoLine::drawIsoLineLabelsGL(GRIBOverlayFactory *pof,
     //---------------------------------------------------------
     // Ecrit les labels
     //---------------------------------------------------------
-    wxRect prev;
     for (it=trace.begin(); it!=trace.end(); it++,nb++)
     {
         if (nb % density == 0)
@@ -664,34 +646,28 @@ void IsoLine::drawIsoLineLabelsGL(GRIBOverlayFactory *pof,
                 int x = xd - label_offsetx, y = yd - label_offsety;
                 w += 2*label_offsetx, h += 2*label_offsety;
 
-                wxRect r(x,y, w,h);
-                r.Inflate(w);
-                if (!prev.Intersects(r)) 
-                {
-                      prev = r;
-                      glColor4ub(color.Red(), color.Green(), color.Blue(), color.Alpha());
+                glColor4ub(color.Red(), color.Green(), color.Blue(), color.Alpha());
 
-                      /* draw bounding rectangle */
-                      glBegin(GL_QUADS);
-                      glVertex2i(x,   y);
-                      glVertex2i(x+w, y);
-                      glVertex2i(x+w, y+h);
-                      glVertex2i(x,   y+h);
-                      glEnd();
+                /* draw bounding rectangle */
+                glBegin(GL_QUADS);
+                glVertex2i(x,   y);
+                glVertex2i(x+w, y);
+                glVertex2i(x+w, y+h);
+                glVertex2i(x,   y+h);
+                glEnd();
 
-                      glColor3ub(0, 0, 0);
+                glColor3ub(0, 0, 0);
 
-                      glBegin(GL_LINE_LOOP);
-                      glVertex2i(x,   y);
-                      glVertex2i(x+w, y);
-                      glVertex2i(x+w, y+h);
-                      glVertex2i(x,   y+h);
-                      glEnd();
+                glBegin(GL_LINE_LOOP);
+                glVertex2i(x,   y);
+                glVertex2i(x+w, y);
+                glVertex2i(x+w, y+h);
+                glVertex2i(x,   y+h);
+                glEnd();
 
-                      glEnable(GL_TEXTURE_2D);
-                      texfont.RenderString(label, xd, yd);
-                      glDisable(GL_TEXTURE_2D);
-                }
+                glEnable(GL_TEXTURE_2D);
+                texfont.RenderString(label, xd, yd);
+                glDisable(GL_TEXTURE_2D);
             }
         }
     }
@@ -767,21 +743,18 @@ void IsoLine::extractIsoLine(const GribRecord *rec)
 
     for (j=1; j<H; j++)     // !!!! 1 to end
     {
-        a = rec->getValue( 0, j-1 );
-        c = rec->getValue( 0, j   );
-        for (i=1; i<W; i++, a = b, c = d)
+        for (i=1; i<W; i++)
         {
 //            x = rec->getX(i);
 //            y = rec->getY(j);
 
+            a = rec->getValue( i-1, j-1 );
             b = rec->getValue( i,   j-1 );
+            c = rec->getValue( i-1, j   );
             d = rec->getValue( i,   j   );
 
             if( a == GRIB_NOTDEF || b == GRIB_NOTDEF || c == GRIB_NOTDEF || d == GRIB_NOTDEF ) continue;
 
-            if ((a< value && b< value && c< value  && d < value)
-                 || (a>value && b>value && c>value  && d > value))
-                continue;
             // Détermine si 1 ou 2 segments traversent la case ab-cd
             // a  b
             // c  d

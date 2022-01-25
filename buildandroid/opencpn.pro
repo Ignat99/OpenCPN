@@ -14,11 +14,11 @@ TEMPLATE = app
 
 
 # Qt target
-wxQt_Base=/home/ignat99/Projects/wxqt/wxWidgets
+wxQt_Base=/home/dsr/Projects/wxqt/wxWidgets
 wxQt_Build=build_android
 
 # OCPN target
-OCPN_Base=/home/ignat99/Projects/OpenCPN
+OCPN_Base=/home/dsr/Projects/opencpn_sf/opencpn
 OCPN_Build=build_android
 
 

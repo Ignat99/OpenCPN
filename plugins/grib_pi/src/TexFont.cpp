@@ -109,6 +109,8 @@ void TexFont::Build( wxFont &font, bool blur, bool luminance )
         col++;
     }
 
+    dc.SelectObject(wxNullBitmap);
+
     wxImage image = tbmp.ConvertToImage();
 
     GLuint format, internalformat;
@@ -130,11 +132,10 @@ void TexFont::Build( wxFont &font, bool blur, bool luminance )
     unsigned char *imgdata = image.GetData();
     unsigned char *teximage = (unsigned char *) malloc( stride * tex_w * tex_h );
 
-    if(teximage && imgdata ){
-        for( int j = 0; j < tex_w*tex_h; j++ )
-            for( int k = 0; k < stride; k++ )
-                teximage[j * stride + k] = imgdata[3*j];
-    }
+    for( int j = 0; j < tex_w*tex_h; j++ )
+        for( int k = 0; k < stride; k++ )
+            teximage[j * stride + k] = imgdata[3*j];
+
     if(texobj)
         Delete();
 
@@ -160,14 +161,12 @@ void TexFont::Delete( )
 
 void TexFont::GetTextExtent(const wxString &string, int *width, int *height)
 {
-    int w0=0, w1=0, h=0;
+    int w=0, h=0;
 
     for(unsigned int i = 0; i < string.size(); i++ ) {
         wchar_t c = string[i];
         if(c == '\n') {
             h += tgi[(int)'A'].height;
-            w1 = wxMax(w0, w1);
-            w0 = 0;
             continue;
         }
 
@@ -180,7 +179,7 @@ void TexFont::GetTextExtent(const wxString &string, int *width, int *height)
             dc.SetFont( m_font );
             wxCoord gw, gh;
             dc.GetTextExtent( c, &gw, &gh ); // measure the text
-            w0 += gw;
+            w += gw;
             if(h > gh)
                 gh = h;
             continue;
@@ -188,11 +187,11 @@ void TexFont::GetTextExtent(const wxString &string, int *width, int *height)
 
         TexGlyphInfo &tgisi = tgi[c];
 
-        w0 += tgisi.advance;
+        w += tgisi.advance;
         if(tgisi.height > h)
             h = tgisi.height;
     }
-    if(width) *width = wxMax( w0, w1 );
+    if(width) *width = w;
     if(height) *height = h;
 }
 
@@ -221,13 +220,11 @@ void TexFont::RenderGlyph( wchar_t c )
         unsigned char *imgdata = image.GetData();
 
         char *data = new char[gw*gh*2];
-        
-        if(data && imgdata ){
-            for(int i=0; i<gw*gh; i++) {
-                data[2*i+0] = imgdata[3*i];
-                data[2*i+1] = imgdata[3*i];
-            }
+        for(int i=0; i<gw*gh; i++) {
+            data[2*i+0] = imgdata[3*i];
+            data[2*i+1] = imgdata[3*i];
         }
+
         glBindTexture( GL_TEXTURE_2D, 0);
         glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
         glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );

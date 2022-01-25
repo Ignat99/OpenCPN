@@ -55,7 +55,7 @@
 ** Turn off the warning about precompiled headers, it is rather annoying
 */
 
-#ifdef __MSVC__
+#ifdef __WXMSW__
 #pragma warning( disable : 4699 )
 #endif
 

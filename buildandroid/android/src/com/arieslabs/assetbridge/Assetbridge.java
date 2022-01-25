@@ -10,7 +10,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import android.content.pm.ApplicationInfo;
 
 
 public class Assetbridge {
@@ -23,19 +22,8 @@ public class Assetbridge {
     public static void unpack(Context c) {
 
         try {
-            String tmpdir = "";
-
             // first let's get the temp directory
-
-            ApplicationInfo ai = c.getApplicationInfo();
-            if((ai.flags & ApplicationInfo.FLAG_EXTERNAL_STORAGE) ==  ApplicationInfo.FLAG_EXTERNAL_STORAGE)
-                tmpdir = c.getExternalFilesDir(null).getPath();
-            else
-                tmpdir = c.getFilesDir().getPath();
-
- //            String tmpdir = c.getCacheDir().getPath();
- //           Log.i("DEBUGGER_TAG", "assetbridge target " + tmpdir);
-
+            String tmpdir = c.getCacheDir().getPath();
 
             // now we need the assetmanager
             AssetManager am = c.getAssets();
@@ -43,13 +31,12 @@ public class Assetbridge {
 
             // iterate on the files...
             for(String asset : assets) {
- //               Log.i("DEBUGGER_TAG", "assetbridge asset: " + asset);
                 copyAssetFolder(am, asset, tmpdir + "/" + asset);
             }
 
             // last, set the ASSETDIR environment variable for the C
             // parts of the procee
-//            setassetdir(c.getCacheDir().getPath());
+            setassetdir(c.getCacheDir().getPath());
 
         } catch (IOException e) {
             Log.e("Assetbridge", "Can't unpack assets from APK", e);
@@ -60,8 +47,6 @@ public class Assetbridge {
 
     public static void copyAssetFolder(AssetManager am, String src, String dest)
     	throws IOException{
-
- //       Log.i("DEBUGGER_TAG", "assetbridge copyAssetFolder " + src + " " + dest);
 
         InputStream srcIS = null;
         File destfh;
@@ -82,8 +67,6 @@ public class Assetbridge {
         // and now, depending on ..
     	if(isDir) {
 
- //           Log.i("DEBUGGER_TAG", "assetbridge copying dir " + dest);
-
             // If the directory doesn't yet exist, create it
             if( !destfh.exists() ){
                 destfh.mkdir();
@@ -99,7 +82,6 @@ public class Assetbridge {
 
     	} else {
 
-//            Log.i("DEBUGGER_TAG", "assetbridge copying file " + dest);
             int count, buffer_len = 2048;
             byte[] data = new byte[buffer_len];
 

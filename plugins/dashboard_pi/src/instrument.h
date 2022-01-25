@@ -88,10 +88,7 @@ enum
     OCPN_DBP_STC_TWS2 = 1 << 25,
     OCPN_DBP_STC_VLW1 = 1 << 26, // Trip Log
     OCPN_DBP_STC_VLW2 = 1 << 27,  // Sum Log
-    OCPN_DBP_STC_MDA = 1 << 28,  // Bareometic pressure
-    OCPN_DBP_STC_MCOG = 1 << 29,  // Magnetic Course over Ground
-	OCPN_DBP_STC_PITCH = 1 << 30, //Pitch
-	OCPN_DBP_STC_HEEL = 1 << 31   //Heel 
+    OCPN_DBP_STC_MDA = 1 << 28  // Bareometic pressure
 };
 
 class DashboardInstrument : public wxControl
@@ -106,8 +103,7 @@ public:
       void OnPaint(wxPaintEvent& WXUNUSED(event));
       virtual void SetData(int st, double data, wxString unit) = 0;
       void SetDrawSoloInPane(bool value);
-      void MouseEvent( wxMouseEvent &event );
-      
+
       int               instrumentTypeId;
 
 protected:

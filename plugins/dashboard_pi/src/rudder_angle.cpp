@@ -26,7 +26,6 @@
  */
 
 #include "rudder_angle.h"
-#include "wx28compat.h"
 
 // For compilers that support precompilation, includes "wx/wx.h".
 #include <wx/wxprec.h>
@@ -103,7 +102,7 @@ void DashboardInstrument_RudderAngle::DrawFrame(wxGCDC* dc)
       dc->SetBrush(*wxTRANSPARENT_BRUSH);
 
       wxPen pen;
-      pen.SetStyle(wxPENSTYLE_SOLID);
+      pen.SetStyle(wxSOLID);
       pen.SetWidth(2);
       GetGlobalColor(_T("DASHF"), &cl);
       pen.SetColour(cl);
@@ -123,6 +122,6 @@ void DashboardInstrument_RudderAngle::DrawBackground(wxGCDC* dc)
 {
       wxCoord x = m_cx - (m_radius * 0.3);
       wxCoord y = m_cy - (m_radius * 0.5);
-//      dc->DrawEllipticArc(x, y, m_radius * 0.6, m_radius * 1.4, 0, 180);
+      dc->DrawEllipticArc(x, y, m_radius * 0.6, m_radius * 1.4, 0, 180);
 }
 

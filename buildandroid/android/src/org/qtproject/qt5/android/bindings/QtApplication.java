@@ -30,7 +30,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
-import android.util.Log;
 
 import android.app.Application;
 
@@ -146,14 +145,5 @@ public class QtApplication extends Application
             e.printStackTrace();
         }
         return null;
-    }
-
-    @Override
-    public void onLowMemory() {
-        super.onLowMemory();
-
-        Log.i("DEBUGGER_TAG", "onLowMemory");
-
-        // free your memory, clean cache for example
     }
 }

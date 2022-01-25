@@ -36,64 +36,39 @@
 
 #include "ocpn_plugin.h"
 
-
 //----------------------------------------------------------------------------------------------------------
 //    Request setting Specification
 //----------------------------------------------------------------------------------------------------------
 class GribRequestSetting : public GribRequestSettingBase
 {
 public:
-      GribRequestSetting( GRIBUICtrlBar &parent );
+      GribRequestSetting( wxWindow *parent )
+          : GribRequestSettingBase(parent) {};
 
       ~GribRequestSetting() {}
 
-      void OnClose( wxCloseEvent& event );
+      void InitRequestConfig();
       void SetVpSize(PlugIn_ViewPort *vp);
       void OnVpChange(PlugIn_ViewPort *vp);
-      bool MouseEventHook( wxMouseEvent &event );
-      bool RenderZoneOverlay( wxDC &dc );
-      bool RenderGlZoneOverlay();
-      bool DoRenderZoneOverlay();
-      void SetRequestDialogSize();
-      void StopGraphicalZoneSelection();
-      void Save() { wxCommandEvent evt; OnSaveMail( evt); }
 
       wxString m_RequestConfigBase;
       wxString m_MailToAddresses;
-      int m_RenderZoneOverlay;
-
-      wxPoint         m_StartPoint;
-      PlugIn_ViewPort *m_Vp;
-      double          m_Lat;
-      double          m_Lon;
-
+      int m_LatmaxBase;
+      int m_LatminBase;
+      int m_LonminBase;
+      int m_LonmaxBase;
+    
 private:
-
       void ApplyRequestConfig( unsigned rs, unsigned it, unsigned tr );
       wxString WriteMail();
-      int EstimateFileSize( double *size );
+      bool EstimateFileSize();
 
-      void InitRequestConfig();
-      void OnExit(wxCommandEvent &event) { wxCloseEvent evt; OnClose ( evt ); }
       void OnTopChange(wxCommandEvent &event);
       void OnMovingClick( wxCommandEvent& event );
       void OnAnyChange( wxCommandEvent& event );
-      void OnAnySpinChange( wxSpinEvent& event ) { wxCommandEvent evt; OnAnyChange( evt); }
       void OnTimeRangeChange( wxCommandEvent& event );
       void OnSendMaiL( wxCommandEvent& event );
       void OnSaveMail( wxCommandEvent& event );
-      void OnZoneSelectionModeChange( wxCommandEvent& event  );
-      void OnCancel( wxCommandEvent& event ) { wxCloseEvent evt; OnClose( evt); }
-      void OnCoordinatesChange( wxSpinEvent& event );
-      void OnMouseEventTimer( wxTimerEvent & event);
-      void SetCoordinatesText();
-
-      GRIBUICtrlBar &m_parent;
-
-      wxDC           *m_pdc;
-      wxTimer        m_tMouseEventTimer;
-      wxTimer        m_tMouseClickTimer;
-      wxMouseEvent   m_SingleClickEvent;
 
       bool IsZYGRIB;
       bool IsGFS;
