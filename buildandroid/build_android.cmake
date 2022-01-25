@@ -19,4 +19,4 @@ SET(wxQt_Base /home/ignat99/Projects/wxqt/wxWidgets)
 SET(wxQt_Build build_android)
 
 #Location of the root of the Qt installation
-SET(Qt_Base /opt/Qt5.5.1/5.5/android_armv7)
+SET(Qt_Base /opt/Qt5.5.1)

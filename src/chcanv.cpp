@@ -4462,18 +4462,19 @@ void ChartCanvas::AlertDraw( ocpnDC& dc )
         AnchorAlertOn2 = false;
 
 
-    if( play_sound ) {
-        if( !g_anchorwatch_sound.IsOk() ) g_anchorwatch_sound.Create( g_sAIS_Alert_Sound_File );
+//    if( play_sound ) {
+//        if( !g_anchorwatch_sound.IsOk() ) g_anchorwatch_sound.Create( g_sAIS_Alert_Sound_File );
 
-#ifndef __WXMSW__
-        if(g_anchorwatch_sound.IsOk() && !g_anchorwatch_sound.IsPlaying())
-            g_anchorwatch_sound.Play();
-#else
-            if( g_anchorwatch_sound.IsOk() ) g_anchorwatch_sound.Play();
-#endif
-    } else {
-        if( g_anchorwatch_sound.IsOk() ) g_anchorwatch_sound.Stop();
-    }
+//#ifndef __WXMSW__
+//Ignat99
+//        if(g_anchorwatch_sound.IsOk() && !g_anchorwatch_sound.IsPlaying())
+//            g_anchorwatch_sound.Play();
+//#else
+//            if( g_anchorwatch_sound.IsOk() ) g_anchorwatch_sound.Play();
+//#endif
+//    } else {
+//        if( g_anchorwatch_sound.IsOk() ) g_anchorwatch_sound.Stop();
+//    }
 
 }
 // End of prototype anchor watch alerting-----------------------

@@ -74,7 +74,7 @@ static void OCPNSoundFinishedCallback( void *userData )
     splaying = false;
 }
 
-
+/*
 OCPN_Sound::OCPN_Sound()
 {
     m_osdata = NULL;
@@ -91,7 +91,7 @@ OCPN_Sound::~OCPN_Sound()
 
     FreeMem();
 }
-
+*/
 bool OCPN_Sound::IsOk() const
 {
     return m_OK;
@@ -204,13 +204,13 @@ bool OCPN_Sound::IsPlaying() const
 {
     return splaying;
 }
-
+/*
 void OCPN_Sound::Stop()
 {
     Pa_StopStream( m_stream );
     splaying = false;
 }
-
+*/
 void OCPN_Sound::UnLoad(void)
 {
     if(m_stream) {
@@ -345,6 +345,8 @@ void OCPN_Sound::FreeMem(void)
 }
 
 #else  //OCPN_USE_PORTAUDIO
+
+/* Ignat99
 OCPN_Sound::OCPN_Sound()
 {
 //    wxSound::wxSound();
@@ -356,16 +358,20 @@ OCPN_Sound::~OCPN_Sound()
     Stop();
 }
 
+*/
+
 bool OCPN_Sound::IsOk() const
 {
     return m_OK;
 }
 
+/*
 bool OCPN_Sound::Create(const wxString& fileName, bool isResource)
 {
     m_OK = wxSound::Create(fileName, isResource);
     return m_OK;
 }
+*/
 
 void OCPN_Sound::UnLoad(void)
 {
@@ -376,9 +382,11 @@ void OCPN_Sound::UnLoad(void)
 
 bool OCPN_Sound::Play(unsigned flags) const
 {
-    return wxSound::Play(flags);
+//    return wxSound::Play(flags);
+    return false;
 }
 
+/*
 bool OCPN_Sound::IsPlaying() const
 {
 #ifndef __WXMSW__    
@@ -392,6 +400,7 @@ void OCPN_Sound::Stop()
 {
     wxSound::Stop();
 }
+*/
 
 #endif  //OCPN_USE_PORTAUDIO
 

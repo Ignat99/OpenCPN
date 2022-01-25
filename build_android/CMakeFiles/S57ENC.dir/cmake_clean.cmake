@@ -1,4 +1,4 @@
-file(REMOVE_RECURSE
+FILE(REMOVE_RECURSE
   "../include/version.h"
   "CMakeFiles/S57ENC.dir/src/TexFont.cpp.obj"
   "CMakeFiles/S57ENC.dir/src/s52cnsy.cpp.obj"
@@ -53,6 +53,6 @@ file(REMOVE_RECURSE
 )
 
 # Per-language clean rules from dependency scanning.
-foreach(lang C CXX)
-  include(CMakeFiles/S57ENC.dir/cmake_clean_${lang}.cmake OPTIONAL)
-endforeach()
+FOREACH(lang C CXX)
+  INCLUDE(CMakeFiles/S57ENC.dir/cmake_clean_${lang}.cmake OPTIONAL)
+ENDFOREACH(lang)

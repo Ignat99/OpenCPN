@@ -4089,6 +4089,7 @@ void options::OnButtonSelectSound( wxCommandEvent& event )
 void options::OnButtonTestSound( wxCommandEvent& event )
 {
 
+/* Ignat99
     OCPN_Sound AIS_Sound;
     AIS_Sound.Create( g_sAIS_Alert_Sound_File );
 
@@ -4108,6 +4109,7 @@ void options::OnButtonTestSound( wxCommandEvent& event )
         AIS_Sound.Play(wxSOUND_SYNC);
 #endif
     }
+*/
 
 }
 

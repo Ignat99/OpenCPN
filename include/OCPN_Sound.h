@@ -32,17 +32,18 @@
     #include "portaudio.h"
 #endif
 
-class OCPN_Sound: public wxSound
+//class OCPN_Sound: public wxSound
+class OCPN_Sound
 {
 public:
-    OCPN_Sound();
-    ~OCPN_Sound();
+    OCPN_Sound() {m_OK = false;};
+    ~OCPN_Sound() {};
 
     bool IsOk() const;
-    bool Create(const wxString& fileName, bool isResource = false);
+    bool Create(const wxString& fileName, bool isResource = false) {return false;};
     bool Play(unsigned flags = wxSOUND_ASYNC) const;
     bool IsPlaying() const;
-    void Stop();
+    void Stop() {};
     void UnLoad(void);
 
 private:

@@ -1,14 +1,14 @@
 # The set of languages for which implicit dependencies are needed:
-set(CMAKE_DEPENDS_LANGUAGES
+SET(CMAKE_DEPENDS_LANGUAGES
   "C"
   "CXX"
   )
 # The set of files for implicit dependencies of each language:
-set(CMAKE_DEPENDS_CHECK_C
+SET(CMAKE_DEPENDS_CHECK_C
   "/home/ignat99/Projects/OpenCPN/src/tri.c" "/home/ignat99/Projects/OpenCPN/build_android/CMakeFiles/S57ENC.dir/src/tri.c.obj"
   )
-set(CMAKE_C_COMPILER_ID "GNU")
-set(CMAKE_DEPENDS_CHECK_CXX
+SET(CMAKE_C_COMPILER_ID "GNU")
+SET(CMAKE_DEPENDS_CHECK_CXX
   "/home/ignat99/Projects/OpenCPN/src/TexFont.cpp" "/home/ignat99/Projects/OpenCPN/build_android/CMakeFiles/S57ENC.dir/src/TexFont.cpp.obj"
   "/home/ignat99/Projects/OpenCPN/src/cm93.cpp" "/home/ignat99/Projects/OpenCPN/build_android/CMakeFiles/S57ENC.dir/src/cm93.cpp.obj"
   "/home/ignat99/Projects/OpenCPN/src/mygdal/cpl_conv.cpp" "/home/ignat99/Projects/OpenCPN/build_android/CMakeFiles/S57ENC.dir/src/mygdal/cpl_conv.cpp.obj"
@@ -57,40 +57,40 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/home/ignat99/Projects/OpenCPN/src/s57RegistrarMgr.cpp" "/home/ignat99/Projects/OpenCPN/build_android/CMakeFiles/S57ENC.dir/src/s57RegistrarMgr.cpp.obj"
   "/home/ignat99/Projects/OpenCPN/src/s57chart.cpp" "/home/ignat99/Projects/OpenCPN/build_android/CMakeFiles/S57ENC.dir/src/s57chart.cpp.obj"
   )
-set(CMAKE_CXX_COMPILER_ID "GNU")
+SET(CMAKE_CXX_COMPILER_ID "GNU")
 
 # Preprocessor definitions for this target.
-set(CMAKE_TARGET_DEFINITIONS
+SET(CMAKE_TARGET_DEFINITIONS
   "LINUX_CRASHRPT"
+  "__WXQT__"
   "OCPN_USE_WRAPPER"
+  "__OCPN__ANDROID__"
   "QT_WIDGETS_LIB"
   "TIXML_USE_STL"
-  "USE_GARMINHOST"
   "USE_S57"
-  "__OCPN__ANDROID__"
-  "__WXQT__"
+  "USE_GARMINHOST"
   )
 
 # Targets to which this target links.
-set(CMAKE_TARGET_LINKED_INFO_FILES
+SET(CMAKE_TARGET_LINKED_INFO_FILES
   )
 
 # The include file search paths:
-set(CMAKE_C_TARGET_INCLUDE_PATH
+SET(CMAKE_C_TARGET_INCLUDE_PATH
   "../include"
   "../src"
-  "/opt/Qt5.5.1/5.5/android_armv7/5.3/android_armv7/include/QtCore"
-  "/opt/Qt5.5.1/5.5/android_armv7/5.3/android_armv7/include"
-  "/opt/Qt5.5.1/5.5/android_armv7/5.3/android_armv7/include/QtWidgets"
-  "/opt/Qt5.5.1/5.5/android_armv7/5.3/android_armv7/include/QtGui"
-  "/opt/Qt5.5.1/5.5/android_armv7/5.3/android_armv7/include/QtOpenGL"
-  "/opt/Qt5.5.1/5.5/android_armv7/5.3/android_armv7/include/QtTest"
+  "/opt/Qt5.2.1/5.3/android_armv7/include/QtCore"
+  "/opt/Qt5.2.1/5.3/android_armv7/include"
+  "/opt/Qt5.2.1/5.3/android_armv7/include/QtWidgets"
+  "/opt/Qt5.2.1/5.3/android_armv7/include/QtGui"
+  "/opt/Qt5.2.1/5.3/android_armv7/include/QtOpenGL"
+  "/opt/Qt5.2.1/5.3/android_armv7/include/QtTest"
   "/home/ignat99/Projects/wxqt/wxWidgets/include"
   "/home/ignat99/Projects/wxqt/wxWidgets/build_android/lib/wx/include/arm-linux-androideabi-qt-unicode-static-3.1"
   "../src/nmea0183"
   "../src/mygdal"
   "../src/garmin/jeeps"
   )
-set(CMAKE_CXX_TARGET_INCLUDE_PATH ${CMAKE_C_TARGET_INCLUDE_PATH})
-set(CMAKE_Fortran_TARGET_INCLUDE_PATH ${CMAKE_C_TARGET_INCLUDE_PATH})
-set(CMAKE_ASM_TARGET_INCLUDE_PATH ${CMAKE_C_TARGET_INCLUDE_PATH})
+SET(CMAKE_CXX_TARGET_INCLUDE_PATH ${CMAKE_C_TARGET_INCLUDE_PATH})
+SET(CMAKE_Fortran_TARGET_INCLUDE_PATH ${CMAKE_C_TARGET_INCLUDE_PATH})
+SET(CMAKE_ASM_TARGET_INCLUDE_PATH ${CMAKE_C_TARGET_INCLUDE_PATH})

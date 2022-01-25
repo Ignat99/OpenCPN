@@ -5346,11 +5346,12 @@ void MyFrame::OnBellsTimer(wxTimerEvent& event)
         wxLogMessage( _T("Using bells sound file: ") + soundfile );
     }
 
-    if(!bells_sound[bells - 1].IsPlaying()) {
-        bells_sound[bells - 1].Play();
-        m_BellsToPlay -= bells;
-    }
-
+//Ignat99
+//    if(!bells_sound[bells - 1].IsPlaying()) {
+//        bells_sound[bells - 1].Play();
+//        m_BellsToPlay -= bells;
+//    }
+//
     BellsTimer.Start(20, wxTIMER_ONE_SHOT);
 }
 

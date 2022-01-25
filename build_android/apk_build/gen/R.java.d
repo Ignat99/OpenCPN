@@ -1,0 +1,24 @@
+/home/ignat99/Projects/OpenCPN/build_android/apk_build/gen/org/opencpn/opencpn/R.java \
+ : /home/ignat99/Projects/OpenCPN/build_android/apk_build/res/values-nb/strings.xml \
+/home/ignat99/Projects/OpenCPN/build_android/apk_build/res/values-es/strings.xml \
+/home/ignat99/Projects/OpenCPN/build_android/apk_build/res/values-de/strings.xml \
+/home/ignat99/Projects/OpenCPN/build_android/apk_build/res/values-it/strings.xml \
+/home/ignat99/Projects/OpenCPN/build_android/apk_build/res/values-ro/strings.xml \
+/home/ignat99/Projects/OpenCPN/build_android/apk_build/res/layout/splash.xml \
+/home/ignat99/Projects/OpenCPN/build_android/apk_build/res/values-el/strings.xml \
+/home/ignat99/Projects/OpenCPN/build_android/apk_build/res/values-rs/strings.xml \
+/home/ignat99/Projects/OpenCPN/build_android/apk_build/res/values-ja/strings.xml \
+/home/ignat99/Projects/OpenCPN/build_android/apk_build/res/values-ru/strings.xml \
+/home/ignat99/Projects/OpenCPN/build_android/apk_build/res/values-fa/strings.xml \
+/home/ignat99/Projects/OpenCPN/build_android/apk_build/res/values-zh-rTW/strings.xml \
+/home/ignat99/Projects/OpenCPN/build_android/apk_build/res/values-et/strings.xml \
+/home/ignat99/Projects/OpenCPN/build_android/apk_build/res/values-nl/strings.xml \
+/home/ignat99/Projects/OpenCPN/build_android/apk_build/res/values/strings.xml \
+/home/ignat99/Projects/OpenCPN/build_android/apk_build/res/values/libs.xml \
+/home/ignat99/Projects/OpenCPN/build_android/apk_build/res/values-id/strings.xml \
+/home/ignat99/Projects/OpenCPN/build_android/apk_build/res/values-pt-rBR/strings.xml \
+/home/ignat99/Projects/OpenCPN/build_android/apk_build/res/values-ms/strings.xml \
+/home/ignat99/Projects/OpenCPN/build_android/apk_build/res/values-pl/strings.xml \
+/home/ignat99/Projects/OpenCPN/build_android/apk_build/res/values-fr/strings.xml \
+/home/ignat99/Projects/OpenCPN/build_android/apk_build/res/values-zh-rCN/strings.xml \
+/home/ignat99/Projects/OpenCPN/build_android/apk_build/bin/AndroidManifest.xml \
