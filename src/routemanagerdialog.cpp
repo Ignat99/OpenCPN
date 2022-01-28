@@ -1478,7 +1478,7 @@ void RouteManagerDialog::OnTrkMenuSelected( wxCommandEvent &event )
                 mergeList.Add( track );
             }
 
-//Ignat99            mergeList.Sort( (CMPFUNC_wxArrayTrackArray) CompareTracks );
+//            mergeList.Sort( (CMPFUNC_wxArrayTrackArray) CompareTracks );
 
             targetTrack = (Track *) mergeList.Item( 0 );
             lastPoint = targetTrack->GetLastPoint();

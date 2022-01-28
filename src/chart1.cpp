@@ -3024,11 +3024,17 @@ ocpnToolBarSimple *MyFrame::CreateAToolbar()
 
     CheckAndAddPlugInTool( tb );
     tipString = wxString( _("Show ENC Text") ) << _T(" (T)");
-    if( _toolbarConfigMenuUtil( ID_TEXT, tipString ) )
-        tb->AddTool( ID_TEXT, _T("text"),
+//#ifdef BASCULA
+    if( _toolbarConfigMenuUtil( ID_ENC_TEXT, tipString ) )
+        tb->AddTool( ID_ENC_TEXT, _T("text"),
             style->GetToolIcon( _T("text"), TOOLICON_NORMAL ),
             style->GetToolIcon( _T("text"), TOOLICON_TOGGLED ), wxITEM_CHECK, tipString );
-
+//#else
+//    if( _toolbarConfigMenuUtil( ID_TEXT, tipString ) )
+//        tb->AddTool( ID_TEXT, _T("text"),
+//            style->GetToolIcon( _T("text"), TOOLICON_NORMAL ),
+//            style->GetToolIcon( _T("text"), TOOLICON_TOGGLED ), wxITEM_CHECK, tipString );
+//#endif
     m_pAISTool = NULL;
     CheckAndAddPlugInTool( tb );
     tipString = _("Hide AIS Targets");          // inital state is on
@@ -3081,9 +3087,15 @@ ocpnToolBarSimple *MyFrame::CreateAToolbar()
 
     CheckAndAddPlugInTool( tb );
     tipString = _("About OpenCPN");
-    if( _toolbarConfigMenuUtil( ID_HELP, tipString ) )
-        tb->AddTool( ID_HELP, _T("help"),
+//#ifdef BASCULA
+    if( _toolbarConfigMenuUtil( ID_ABOUT, tipString ) )
+        tb->AddTool( ID_ABOUT, _T("help"),
             style->GetToolIcon( _T("help"), TOOLICON_NORMAL ), tipString, wxITEM_NORMAL );
+//#else
+//    if( _toolbarConfigMenuUtil( ID_HELP, tipString ) )
+//        tb->AddTool( ID_HELP, _T("help"),
+//            style->GetToolIcon( _T("help"), TOOLICON_NORMAL ), tipString, wxITEM_NORMAL );
+//#endif
 
     //      Add any PlugIn toolbar tools that request default positioning
     AddDefaultPositionPlugInTools( tb );
@@ -3291,10 +3303,18 @@ void MyFrame::EnableToolbar( bool newstate )
         g_toolbar->EnableTool( ID_ROUTE, newstate );
         g_toolbar->EnableTool( ID_FOLLOW, newstate );
         g_toolbar->EnableTool( ID_SETTINGS, newstate );
-        g_toolbar->EnableTool( ID_TEXT, newstate );
+//#ifdef BASCULA
+        g_toolbar->EnableTool( ID_ENC_TEXT, newstate );
+//#else
+//        g_toolbar->EnableTool( ID_TEXT, newstate );
+//#endif
         g_toolbar->EnableTool( ID_CURRENT, newstate );
         g_toolbar->EnableTool( ID_TIDE, newstate );
-        g_toolbar->EnableTool( ID_HELP, newstate );
+//#ifdef BASCULA
+        g_toolbar->EnableTool( ID_ABOUT, newstate );
+//#else
+//        g_toolbar->EnableTool( ID_HELP, newstate );
+//#endif
         g_toolbar->EnableTool( ID_TBEXIT, newstate );
         g_toolbar->EnableTool( ID_TBSTAT, newstate );
         g_toolbar->EnableTool( ID_PRINT, newstate );
@@ -3985,8 +4005,11 @@ void MyFrame::OnToolLeftClick( wxCommandEvent& event )
             break;
 
         }
-
-        case ID_HELP: {
+//#ifdef BASCULA
+        case ID_ABOUT: {
+//#else
+//        case ID_HELP: {
+//#endif
             if( !g_pAboutDlg ) g_pAboutDlg = new about( this, &g_SData_Locn );
 
             g_pAboutDlg->Update();
@@ -7500,10 +7523,17 @@ void MyFrame::OnEvtPlugInMessage( OCPN_MsgEvent & event )
     }
 }
 
+#ifdef BASCULA
+void MyFrame::OnEvtTHREADMSG( OCPN_ThreadMessageEvent & event )
+{
+    wxLogMessage( wxString(event.GetSString().c_str(), wxConvUTF8 ));
+}
+#else
 void MyFrame::OnEvtTHREADMSG( wxCommandEvent & event )
 {
     wxLogMessage( event.GetString() );
 }
+#endif
 
 
 bool MyFrame::EvalPriority(const wxString & message, DataStream *pDS )
@@ -10018,9 +10048,22 @@ wxFont *GetOCPNScaledFont( wxString item, int default_size )
     return dFont;
 }
 
+#ifdef BASCULA
+OCPN_ThreadMessageEvent::OCPN_ThreadMessageEvent(wxEventType commandType, int id):wxEvent(id, commandType)
+{
+}
 
+OCPN_ThreadMessageEvent::~OCPN_ThreadMessageEvent()
+{
+}
 
-
+wxEvent* OCPN_ThreadMessageEvent::Clone() const
+{
+    OCPN_ThreadMessageEvent *newevent=new OCPN_ThreadMessageEvent(*this);
+    newevent->m_string=this->m_string;
+    return newevent;
+}
+#endif
 
 #if 0
 /*************************************************************************

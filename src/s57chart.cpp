@@ -25,8 +25,6 @@
 
 // For compilers that support precompilation, includes "wx.h".
 #include "wx/wxprec.h"
-//Ignat99
-//#include "wx/dynarray.h"
 
 #ifndef  WX_PRECOMP
   #include "wx/wx.h"
@@ -7055,8 +7053,7 @@ wxString s57chart::CreateObjDescriptions( ListOfObjRazRules* rule_list )
         // For lights we now have all the info gathered but no HTML output yet, now
         // run through the data and build a merged table for all lights.
 
-//        lights.Sort( ( CMPFUNC_wxArraywxArrayPtrVoid )( &s57chart::CompareLights ) );
-//Ignat99        lights.Sort( ( CMPFUNC_wxArrayPtrVoid )( &s57chart::CompareLights ) );
+        lights.Sort( ( CMPFUNC_wxArraywxArrayPtrVoid )( &s57chart::CompareLights ) );
 
         wxString lastPos;
 

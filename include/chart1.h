@@ -39,6 +39,13 @@
 
 #include "nmea0183.h"
 
+#define BASCULA
+
+#ifdef BASCULA
+#include "myweigh/myweigh.h"
+#endif
+
+
 WX_DEFINE_ARRAY_INT(int, ArrayOfInts);
 
 #ifdef USE_S57
@@ -47,19 +54,32 @@ WX_DEFINE_ARRAY_INT(int, ArrayOfInts);
 //    Global Static error reporting function
 extern "C" void MyCPLErrorHandler( CPLErr eErrClass, int nError,
                              const char * pszErrorMsg );
+
 #endif
 
+
 wxFont *GetOCPNScaledFont( wxString item, int default_size );
+
 
 wxArrayString *EnumerateSerialPorts(void);
 wxColour GetGlobalColor(wxString colorName);
 
 int GetApplicationMemoryUse(void);
 
+#ifdef BASCULA
+// Helper to create menu label + hotkey string when registering menus
+wxString _menuText(wxString name, wxString shortcut);
+#endif
+
+
 // The point for anchor watch should really be a class...
 double AnchorDistFix( double const d, double const AnchorPointMinDist, double const AnchorPointMaxDist);   //  pjotrc 2010.02.22
 
 bool TestGLCanvas(wxString &prog_dir);
+#ifdef BASCULA
+bool ReloadLocale();
+#endif
+
 
 class NMEA_Msg_Container;
 WX_DECLARE_STRING_HASH_MAP( NMEA_Msg_Container*, MsgPriorityHash );
@@ -71,6 +91,9 @@ class ocpnFloatingToolbarDialog;
 class OCPN_MsgEvent;
 class options;
 class Track;
+#ifdef BASCULA
+class OCPN_ThreadMessageEvent;
+#endif
 
 //----------------------------------------------------------------------------
 //   constants
@@ -86,6 +109,9 @@ const int ID_TOOLBAR = 500;
 
 enum
 {
+      // The following constants represent the toolbar items (some are also used in menus).
+      // They MUST be in the SAME ORDER as on the toolbar and new items MUST NOT be added
+      // amongst them, due to the way the toolbar button visibility is saved and calculated.
       ID_ZOOMIN = 1550,
       ID_ZOOMOUT,
       ID_STKUP,
@@ -94,10 +120,10 @@ enum
       ID_FOLLOW,
       ID_SETTINGS,
       ID_AIS,           // pjotrc 2010.02.09
-      ID_TEXT,
+      ID_ENC_TEXT,
       ID_CURRENT,
       ID_TIDE,
-      ID_HELP,
+      ID_ABOUT,
       ID_TBEXIT,
       ID_TBSTAT,
       ID_PRINT,
@@ -106,7 +132,9 @@ enum
       ID_TRACK,
       ID_TBSTATBOX,
       ID_MOB,
-      ID_PLUGIN_BASE
+
+
+      ID_PLUGIN_BASE // This MUST be the last item in the enum
 
 };
 
@@ -131,6 +159,52 @@ enum
 
     ID_COMBO = 1000
 };
+
+
+#ifdef BASCULA
+// Menu item IDs for the main menu bar
+enum
+{
+    ID_MENU_ZOOM_IN = 2000,
+    ID_MENU_ZOOM_OUT,
+    ID_MENU_SCALE_IN,
+    ID_MENU_SCALE_OUT,
+
+    ID_MENU_NAV_FOLLOW,
+    ID_MENU_NAV_TRACK,
+
+    ID_MENU_CHART_NORTHUP,
+    ID_MENU_CHART_COGUP,
+    ID_MENU_CHART_QUILTING,
+    ID_MENU_CHART_OUTLINES,
+
+    ID_MENU_UI_CHARTBAR,
+    ID_MENU_UI_COLSCHEME,
+    ID_MENU_UI_FULLSCREEN,
+
+    ID_MENU_ENC_TEXT,
+    ID_MENU_ENC_LIGHTS,
+    ID_MENU_ENC_SOUNDINGS,
+    ID_MENU_ENC_ANCHOR,
+
+    ID_MENU_SHOW_TIDES,
+    ID_MENU_SHOW_CURRENTS,
+
+    ID_MENU_TOOL_MEASURE,
+    ID_MENU_ROUTE_MANAGER,
+    ID_MENU_ROUTE_NEW,
+    ID_MENU_MARK_BOAT,
+    ID_MENU_MARK_CURSOR,
+    ID_MENU_MARK_MOB,
+
+    ID_MENU_AIS_TARGETS,
+    ID_MENU_AIS_TRACKS,
+    ID_MENU_AIS_CPADIALOG,
+    ID_MENU_AIS_CPASOUND,
+    ID_MENU_AIS_TARGETLIST,
+    ID_MENU_OQUIT
+};
+#endif
 
 
 
@@ -179,6 +253,26 @@ class ChartDirInfo
       wxString    magic_number;
 };
 
+#ifdef BASCULA
+class OCPN_ThreadMessageEvent: public wxEvent
+{
+public:
+    OCPN_ThreadMessageEvent( wxEventType commandType = wxEVT_NULL, int id = 0 );
+    ~OCPN_ThreadMessageEvent( );
+
+    // accessors
+    void SetSString(std::string string) { m_string = string; }
+    std::string GetSString() { return m_string; }
+
+    // required for sending with wxPostEvent()
+    wxEvent *Clone() const;
+
+private:
+    std::string m_string;
+};
+#endif
+
+
 WX_DECLARE_OBJARRAY(ChartDirInfo, ArrayOfCDI);
 WX_DECLARE_OBJARRAY(wxRect, ArrayOfRect);
 
@@ -195,6 +289,14 @@ class MyApp: public wxApp
 #ifdef LINUX_CRASHRPT
     //! fatal exeption handling
     void OnFatalException();
+#endif
+
+#ifdef BASCULA
+#ifdef __WXMSW__
+    // Catch malloc/new fail exceptions
+    // All the rest will be caught be CrashRpt
+    bool OnExceptionInMainLoop();
+#endif
 #endif
 
     void TrackOff(void);
@@ -223,11 +325,24 @@ class MyFrame: public wxFrame
     void OnMove(wxMoveEvent& event);
     void OnFrameTimer1(wxTimerEvent& event);
     bool DoChartUpdate(void);
+#ifdef BASCULA
+    void OnEvtTHREADMSG(OCPN_ThreadMessageEvent& event);
+#else
     void OnEvtTHREADMSG(wxCommandEvent& event);
+#endif
+
     void OnEvtOCPN_NMEA(OCPN_DataStreamEvent & event);
     void OnEvtPlugInMessage( OCPN_MsgEvent & event );
     void OnMemFootTimer(wxTimerEvent& event);
     void OnBellsTimer(wxTimerEvent& event);
+#ifdef BASCULA
+#ifdef wxHAS_POWER_EVENTS
+    void OnSuspending(wxPowerEvent &event);
+    void OnSuspended(wxPowerEvent &event);
+    void OnSuspendCancel(wxPowerEvent &event);
+    void OnResume(wxPowerEvent &event);
+#endif // wxHAS_POWER_EVENTS
+#endif
 
     void UpdateAllFonts(void);
     void PositionConsole(void);
@@ -236,7 +351,9 @@ class MyFrame: public wxFrame
     void DoStackUp(void);
     void DoStackDown(void);
     void DoStackDelta( int direction );
-    
+#ifdef BASCULA
+    void DoSettings( void );
+#endif
     void MouseEvent(wxMouseEvent& event);
     void SelectChartFromStack(int index,  bool bDir = false,  ChartTypeEnum New_Type = CHART_TYPE_DONTCARE, ChartFamilyEnum New_Family = CHART_FAMILY_DONTCARE);
     void SelectdbChart(int dbindex);
@@ -248,14 +365,24 @@ class MyFrame: public wxFrame
     void ProcessCanvasResize(void);
 
     void ApplyGlobalSettings(bool bFlyingUpdate, bool bnewtoolbar);
+#ifdef BASCULA
+    void RegisterGlobalMenuItems();
+    void UpdateGlobalMenuItems();
+#endif
     void SetChartThumbnail(int index);
     int  DoOptionsDialog();
     int  ProcessOptionsDialog(int resultFlags , options* dialog );
     void DoPrint(void);
+#ifdef BASCULA
+    void LaunchLocalHelp(void);
+#endif
     void StopSockets(void);
     void ResumeSockets(void);
     void TogglebFollow(void);
     void ToggleFullScreen();
+#ifdef BASCULA
+    void ToggleStats(void);
+#endif
     void SetbFollow(void);
     void ClearbFollow(void);
     void ToggleChartOutlines(void);
@@ -269,6 +396,9 @@ class MyFrame: public wxFrame
     void TrackMidnightRestart(void);
     void ToggleColorScheme();
     int GetnChartStack(void);
+#ifdef BASCULA
+    void SetMenubarItemState ( int tool_id, bool state );
+#endif
     void SetToolbarItemState ( int tool_id, bool state );
     void SetToolbarItemBitmaps ( int tool_id, wxBitmap *bitmap, wxBitmap *bmpDisabled );
     void ToggleQuiltMode(void);
@@ -291,6 +421,9 @@ class MyFrame: public wxFrame
     void PianoPopupMenu ( int x, int y, int selected_index, int selected_dbIndex );
     void OnPianoMenuDisableChart(wxCommandEvent& event);
     void OnPianoMenuEnableChart(wxCommandEvent& event);
+#ifdef BASCULA
+    bool IsPianoContextMenuActive(){ return piano_ctx_menu != 0; }
+#endif
 
     void SetGroupIndex(int index);
 
@@ -319,6 +452,9 @@ class MyFrame: public wxFrame
     void UpdateAISMOBRoute( AIS_Target_Data *ptarget );
     
     wxStatusBar         *m_pStatusBar;
+#ifdef BASCULA
+    wxMenuBar           *m_pMenuBar;
+#endif
     int                 nRoute_State;
     int                 nBlinkerTick;
     bool                m_bTimeIsSet;
@@ -338,6 +474,9 @@ class MyFrame: public wxFrame
 
     void ActivateMOB(void);
     void UpdateGPSCompassStatusBox(bool b_force_new = false);
+#ifdef BASCULA
+    void UpdateRotationState( double rotation );
+#endif
     bool UpdateChartDatabaseInplace(ArrayOfCDI &DirArray,
                                     bool b_force, bool b_prog,
                                     const wxString &ChartListFileName);
@@ -375,6 +514,9 @@ class MyFrame: public wxFrame
     ChartCanvas         *m_pchart_canvas;
 
     NMEA0183        m_NMEA0183;                 // Used to parse messages from NMEA threads
+#ifdef BASCULA
+    MyWeigh         m_MyWeigh;
+#endif
 
     wxDateTime       m_MMEAeventTime;
     unsigned long    m_ulLastNEMATicktime;
@@ -410,7 +552,9 @@ class MyFrame: public wxFrame
     wxString            m_VDO_accumulator;
     
     time_t              m_fixtime;
-
+#ifdef BASCULA
+    wxMenu              *piano_ctx_menu;
+#endif
     DECLARE_EVENT_TABLE()
 };
 
@@ -421,7 +565,11 @@ class MyFrame: public wxFrame
 class MyPrintout: public wxPrintout
 {
  public:
+//#ifdef BASCULA
+//  MyPrintout(const wxChar &title = _T("My printout")):wxPrintout(title){}
+//#else
   MyPrintout(const wxString &title = wxT("My printout")):wxPrintout(title){}
+//#endif
   virtual
   bool OnPrintPage(int page);
   virtual
@@ -433,7 +581,11 @@ class MyPrintout: public wxPrintout
 
   void DrawPageOne(wxDC *dc);
 
-
+#ifdef BASCULA
+    void GenerateGLbmp(void);
+private:
+    wxBitmap m_GLbmp;
+#endif
 
 
 };

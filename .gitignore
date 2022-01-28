@@ -3,6 +3,7 @@ tags
 index.sh
 include/version.h
 build
+build_android
 cscope.out
 *~
 *.kdev*
