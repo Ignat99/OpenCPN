@@ -1614,6 +1614,7 @@ bool MyApp::OnInit()
     //    Manage internationalization of embedded messages
     //    using wxWidgets/gettext methodology....
 
+// Ignat whant see debug message for lang but it take a lot of time of mmcdriver
 //    wxLog::SetVerbose(true);            // log all messages for debugging language stuff
 
     if( lang_list[0] ) {

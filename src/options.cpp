@@ -4359,6 +4359,7 @@ void options::OnPageChange( wxListbookEvent& event )
 
             // always add us english
             lang_array.Add(_T("en_US"));
+//            lang_array.Add(_T("es_ES"));  //ignat
 
             for( int it = 0; it < nLang; it++)
             {

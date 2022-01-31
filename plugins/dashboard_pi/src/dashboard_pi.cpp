@@ -581,11 +581,14 @@ void dashboard_pi::SetSentence( wxString &sentence )
                 {
                     bascula_weigh = m_NMEA0183.Gw.UnitWeighKg;
                     bGoodData = true;
-                    SendSentenceToAllInstruments( OCPN_DBP_WEIGH, bascula_weigh * 1000, "gr" );
+//Ignat99                    SendSentenceToAllInstruments( OCPN_DBP_WEIGH, bascula_weigh * 1000, "gr" );
+                    SendSentenceToAllInstruments( OCPN_DBP_WEIGH, bascula_weigh, "gr" );
 //                    wxString msg1;
 //                    msg1 += _T("\n\n");
 // pd_count = 100 - max indicator of Progress Dialog
-                    pcs_cur = wxRound( 100 * bascula_weigh * 100 / (db_weigh * pack_pcs) );
+//pcs_cur Ignat99                   pcs_cur = wxRound( 100 * bascula_weigh * 100 / (db_weigh * pack_pcs) );
+//Ignat99                    pcs_cur = wxRound( bascula_weigh * 10 / (db_weigh * pack_pcs) );
+                    pcs_cur = wxRound( bascula_weigh / db_weigh );
 // 94% from mass in 1 kg is 9400 gr
                     if ( wxRound(bascula_weigh * 9400) >= (db_weigh * pack_pcs) && pack_cur_flag == 0 )
                     {
@@ -1253,7 +1256,7 @@ void dashboard_pi::SetPluginMessage(wxString &message_id, wxString &message_body
             if(message_id == _T("OCPN_DBP_PCS_CUR"))
             {
                 SendSentenceToAllInstruments( OCPN_DBP_PCS_CUR, decl_val, _T("pcs") );
-                pack_cur = int(decl_val);
+                pcs_cur = int(decl_val);
             }
             if(message_id == _T("OCPN_DBP_PCS_LAST"))
             {
