@@ -50,6 +50,13 @@
 #include "Route.h"
 #include "SelectItem.h"
 
+#define LABELPRINTOUT
+
+#ifdef LABELPRINTOUT
+#include "Label.h"
+#include "LabelPoint.h"
+#endif
+
 enum
 {
     DISTANCE_NMI = 0,

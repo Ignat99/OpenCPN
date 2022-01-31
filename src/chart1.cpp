@@ -89,6 +89,13 @@
 #include "OCPN_DataStreamEvent.h"
 #include "multiplexer.h"
 #include "routeprintout.h"
+
+#define LABELPRINTOUT
+
+#ifdef LABELPRINTOUT
+#include "labelprintout.h"
+#endif
+
 #include "Select.h"
 #include "FontMgr.h"
 #include "NMEALogWindow.h"
@@ -104,6 +111,12 @@
 #include "routemanagerdialog.h"
 #include "pluginmanager.h"
 #include "AIS_Target_Data.h"
+
+#define MYFRAME1
+
+#ifdef MYFRAME1
+#include "myframe1.h"
+#endif
 
 #ifdef ocpnUSE_GL
 #include "glChartCanvas.h"
@@ -165,6 +178,10 @@ bool                      g_start_fullscreen;
 bool                      g_rebuild_gl_cache;
 
 MyFrame                   *gFrame;
+#ifdef MYFRAME1
+MyFrame1                   *gFrame1;
+#endif
+
 
 ChartCanvas               *cc1;
 ConsoleCanvas             *console;
@@ -282,6 +299,9 @@ wxPageSetupData*          g_pageSetupData = (wxPageSetupData*) NULL;
 bool                      g_bShowOutlines;
 bool                      g_bShowDepthUnits;
 bool                      g_bDisplayGrid;  // Flag indicating weather the lat/lon grid should be displayed
+#ifdef BASCULA
+bool                      g_bShowChartBar;
+#endif
 bool                      g_bShowActiveRouteHighway;
 int                       g_nNMEADebug;
 int                       g_nAWDefault;
@@ -291,6 +311,9 @@ bool                      g_bFullscreenToolbar;
 bool                      g_bShowLayers;
 bool                      g_bTransparentToolbar;
 bool                      g_bPermanentMOBIcon;
+#ifdef BASCULA
+bool                      g_bTempShowMenuBar;
+#endif
 
 int                       g_iSDMMFormat;
 int                       g_iDistanceFormat;
@@ -338,6 +361,10 @@ int                       g_lastClientRectx;
 int                       g_lastClientRecty;
 int                       g_lastClientRectw;
 int                       g_lastClientRecth;
+#ifdef BASCULA
+double                    g_display_size_mm;
+double                    g_config_display_size_mm;
+#endif
 
 #ifdef USE_S57
 s52plib                   *ps52plib;
@@ -419,9 +446,21 @@ double                    g_COGAvg;
 bool                      g_bLookAhead;
 bool                      g_bskew_comp;
 bool                      g_bopengl;
+#ifdef BASCULA
+bool                      g_bShowFPS;
+#endif
 bool                      g_bsmoothpanzoom;
+#ifdef BASCULA
+bool                      g_fog_overzoom;
+double                    g_overzoom_emphasis_base;
+bool                      g_oz_vector_scale;
+#endif
 
 int                       g_nCOMPortCheck;
+
+#ifdef BASCULA
+bool                      g_b_legacy_input_filter_behaviour;  // Support original input filter process or new process
+#endif
 
 bool                      g_bbigred;
 
@@ -460,11 +499,15 @@ struct sigaction          sa_all_old;
 
 bool                      g_boptionsactive;
 options                   *g_options;
-int                       options_lastPage = -1;
+int                       options_lastPage = 0;
 wxPoint                   options_lastWindowPos( 0,0 );
 wxSize                    options_lastWindowSize( 0,0 );
 
+#ifdef BASCULA
+
+#else
 double                    g_pix_per_mm;
+#endif
 
 bool GetMemoryStatus(int *mem_total, int *mem_used);
 
@@ -626,6 +669,9 @@ wxRect                    g_last_tb_rect;
 float                     g_toolbar_scalefactor;
 
 MyDialogPtrArray          g_MacShowDialogArray;
+#ifdef BASCULA
+bool                      g_benable_rotate;
+#endif
 
 bool                      g_bShowMag;
 double                    g_UserVar;
@@ -657,6 +703,17 @@ bool             g_bresponsive;
 
 bool             b_inCompressAllCharts;
 bool             g_bexpert;
+
+#ifdef BASCULA
+int              g_chart_zoom_modifier;
+
+int              g_NMEAAPBPrecision;
+int              g_NMEAAPBXTEPrecision;
+
+bool             g_bSailing;
+bool             g_bEmailCrashReport;
+wxArrayString    g_locale_catalog_array;
+#endif
 
 #ifdef LINUX_CRASHRPT
 wxCrashPrint g_crashprint;
@@ -692,7 +749,7 @@ void DeInitializeUserColors( void );
 void SetSystemColors( ColorScheme cs );
 extern "C" bool CheckSerialAccess( void );
 
-DEFINE_EVENT_TYPE(EVT_THREADMSG)
+//DEFINE_EVENT_TYPE(EVT_THREADMSG)
 
 //------------------------------------------------------------------------------
 //    PNG Icon resources
@@ -712,7 +769,17 @@ enum {
 //------------------------------------------------------------------------------
 //              Fwd Refs
 //------------------------------------------------------------------------------
+#ifdef BASCULA
+#ifdef __WXMSW__
+int MyNewHandler( size_t size )
+{
+    // Pass to wxWidgets Main Loop handler
+    throw std::bad_alloc();
 
+    return 0;
+}
+#endif
+#endif
 //-----------------------------------------------------------------------
 //      Signal Handlers
 //-----------------------------------------------------------------------
@@ -742,6 +809,9 @@ catch_signals(int signo)
         case SIGTERM:
         LogMessageOnce(_T("Sigterm received"));
         gFrame->Close();
+#ifdef MYFRAME1
+        gFrame1->Close();
+#endif
         break;
 
         default:
@@ -924,7 +994,9 @@ void MyApp::OnActivateApp( wxActivateEvent& event )
             pOptions->Raise();
         else
             gFrame->Raise();
-
+#ifdef MYFRAME1
+            gFrame1->Raise();
+#endif
     }
 #endif
 
@@ -1088,8 +1160,9 @@ bool MyApp::OnInit()
     int sx, sy;
     wxDisplaySize( &sx, &sy );
 
+#ifndef BASCULA
     g_pix_per_mm = ( (double) sx ) / ( (double) mmx );
-
+#endif
 
     g_start_time = wxDateTime::Now();
 
@@ -1995,6 +2068,9 @@ bool MyApp::OnInit()
     }
 
     gFrame = new MyFrame( NULL, myframe_window_title, position, new_frame_size, app_style ); //Gunther
+#ifdef MYFRAME1
+    gFrame1 = new MyFrame1( NULL, myframe_window_title, wxPoint(350,0), wxSize(1500,1010), app_style ); //Gunther
+#endif
 
     g_pauimgr = new wxAuiManager;
 //        g_pauidockart= new wxAuiDefaultDockArt;
@@ -2016,7 +2092,9 @@ bool MyApp::OnInit()
     cc1->SetViewPoint( vLat, vLon, initial_scale_ppm, 0., initial_rotation );
 
     gFrame->Enable();
-
+#ifdef MYFRAME1
+    gFrame1->Enable();
+#endif
     cc1->SetFocus();
 
     console = new ConsoleCanvas( gFrame );                    // the console
@@ -2055,13 +2133,20 @@ bool MyApp::OnInit()
 
     gFrame->ClearBackground();
     gFrame->Show( TRUE );
-
+#ifdef MYFRAME1
+    gFrame1->Show( TRUE );
+#endif
     gFrame->SetAndApplyColorScheme( global_color_scheme );
 
     if( g_bframemax ) gFrame->Maximize( true );
 
+#ifdef BASCULA
+    if( g_bresponsive  && ( cc1->GetPixPerMM() > 4.0))
+        gFrame->Maximize( true );
+#else
     if( g_bresponsive  && ( g_pix_per_mm > 4.0))
         gFrame->Maximize( true );
+#endif
 
     stats = new StatWin( cc1 );
     stats->SetColorScheme( global_color_scheme );
@@ -2201,6 +2286,9 @@ bool MyApp::OnInit()
 
 #ifndef __OCPN__ANDROID__            
             OCPNMessageBox(gFrame, msg1, wxString( _("OpenCPN Info") ), wxICON_INFORMATION | wxOK );
+#ifdef MYFRAME1
+            OCPNMessageBox(gFrame1, msg1, wxString( _("BASCULA Info") ), wxICON_INFORMATION | wxOK );
+#endif
 #endif            
 
             gFrame->DoOptionsDialog();
@@ -2389,6 +2477,10 @@ extern ocpnGLOptions g_GLOptions;
 
     gFrame->Refresh( false );
     gFrame->Raise();
+#ifdef MYFRAME1
+    gFrame1->Refresh( false );
+    gFrame1->Raise();
+#endif
 
 #ifdef __WXQT__
     g_FloatingToolbarDialog->Raise();
@@ -2418,6 +2510,19 @@ extern ocpnGLOptions g_GLOptions;
 
     if ( g_start_fullscreen )
         gFrame->ToggleFullScreen();
+
+#ifdef BASCULA
+    stats->Show(g_bShowChartBar );
+#endif
+
+    gFrame->Raise();
+#ifdef MYFRAME1
+    gFrame1->Raise();
+#endif
+
+    cc1->Enable();
+    cc1->SetFocus();
+
 
     return TRUE;
 }
