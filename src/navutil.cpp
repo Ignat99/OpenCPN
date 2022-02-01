@@ -65,6 +65,13 @@
 #include "multiplexer.h"
 #include "ais.h"
 #include "Route.h"
+
+#define LABELPRINTOUT
+
+#ifdef LABELPRINTOUT
+#include "Label.h"
+#endif
+
 #include "Select.h"
 #include "FontMgr.h"
 #include "OCPN_Sound.h"
@@ -91,6 +98,11 @@ extern double           g_ChartNotRenderScaleFactor;
 extern int              g_restore_stackindex;
 extern int              g_restore_dbindex;
 extern RouteList        *pRouteList;
+
+//#ifdef LABELPRINTOUT
+//extern LabelList        *pLabelList;
+//#endif
+
 extern LayerList        *pLayerList;
 extern int              g_LayerIdx;
 extern Select           *pSelect;
@@ -1909,6 +1921,12 @@ int MyConfig::LoadMyConfig( int iteration )
     //  Routes
     if( 0 == iteration )
         pRouteList = new RouteList;
+
+//#ifdef LABELPRINTOUT
+    //  Label
+//    if( 0 == iteration )
+//        pLabelList = new LabelList;
+//#endif
 
     //    Groups
     if( 0 == iteration )

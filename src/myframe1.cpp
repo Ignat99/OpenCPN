@@ -26,7 +26,7 @@
 extern PlugInManager    *g_pi_manager;
 extern LabelPrintSelection    *pLabelPrintSelection;
 extern wxString    g_default_wp_icon;
-extern LabelList *pLabelList;
+//extern LabelList *pLabelList;
 extern Select *pSelect;
 
 #define BUTTON1 11000
@@ -291,7 +291,7 @@ MyFrame1::MyFrame1( wxFrame *frame, const wxString& title, const wxPoint& pos,
 
 // Make memory list of selected component
     m_pLabel = new Label();
-    pLabelList->Append( m_pLabel );
+//    pLabelList->Append( m_pLabel );
     InitializeList(ps57ListCtrl1);
 
 

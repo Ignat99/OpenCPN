@@ -656,6 +656,9 @@ wxAuiDefaultDockArt       *g_pauidockart;
 bool                      g_blocale_changed;
 
 RoutePrintSelection       *pRoutePrintSelection;
+#ifdef LABELPRINTOUT
+LabelPrintSelection       *pLabelPrintSelection;
+#endif
 
 wxMenu                    *g_FloatingToolbarConfigMenu;
 wxString                  g_toolbarConfig = _T("XXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
@@ -2817,7 +2820,11 @@ MyFrame::MyFrame( wxFrame *frame, const wxString& title, const wxPoint& pos, con
     //  Create/connect a dynamic event handler slot for OCPN_MsgEvent(s) coming from PlugIn system
     Connect( wxEVT_OCPN_MSG, (wxObjectEventFunction) (wxEventFunction) &MyFrame::OnEvtPlugInMessage );
 
+#ifdef BASCULA
+    Connect( wxEVT_OCPN_THREADMSG, (wxObjectEventFunction) (wxEventFunction) &MyFrame::OnEvtTHREADMSG );
+#else
     Connect( EVT_THREADMSG, (wxObjectEventFunction) (wxEventFunction) &MyFrame::OnEvtTHREADMSG );
+#endif
 
     //        Establish the system icons for the frame.
 

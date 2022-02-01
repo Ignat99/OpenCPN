@@ -514,9 +514,9 @@ class MyFrame: public wxFrame
     ChartCanvas         *m_pchart_canvas;
 
     NMEA0183        m_NMEA0183;                 // Used to parse messages from NMEA threads
-#ifdef BASCULA
-    MyWeigh         m_MyWeigh;
-#endif
+//#ifdef BASCULA
+//    MyWeigh         m_MyWeigh;
+//#endif
 
     wxDateTime       m_MMEAeventTime;
     unsigned long    m_ulLastNEMATicktime;

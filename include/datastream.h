@@ -130,6 +130,8 @@ class DataStream;
 class GarminProtocolHandler;
 
 extern  const wxEventType wxEVT_OCPN_DATASTREAM;
+extern  const wxEventType wxEVT_OCPN_THREADMSG;
+
 
 //----------------------------------------------------------------------------
 // DataStream
@@ -264,7 +266,7 @@ DECLARE_EVENT_TABLE()
 };
 
 
-extern const wxEventType EVT_THREADMSG;
+//extern const wxEventType EVT_THREADMSG;
 
 //----------------------------------------------------------------------------
 // Garmin Device Management
