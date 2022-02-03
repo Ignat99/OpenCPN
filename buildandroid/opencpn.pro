@@ -60,6 +60,7 @@ CONFIG += debug
 MOBILITY =
 
 ANDROID_EXTRA_LIBS = $$PWD/../buildandroid/libassetbridge.so
+#ANDROID_EXTRA_LIBS += /home/ignat99/Projects/OpenCPN/build_android/plugins/dashboard_pi/libdashboard_pi.so
 
 
 # To execute the assetbridge runtime code, we make a custom modification to the android Activity method.
@@ -82,4 +83,19 @@ gshhs_deployment.files += $$PWD/../data/gshhs/poly-c-1.dat
 gshhs_deployment.path = /assets/gshhs
 INSTALLS += gshhs_deployment
 
+# Dashboard------------------
+#library
+so_dashboard_plugin_deployment.files += $${OCPN_Base}/$${OCPN_Build}/plugins/dashboard_pi/libdashboard_pi.so
+so_dashboard_plugin_deployment.path = /assets
+INSTALLS += so_dashboard_plugin_deployment
+
+#SVG
+svg_dashboard_plugin_deployment.files += $$PWD/../plugins/dashboard_pi/data/Dashboard.svg
+svg_dashboard_plugin_deployment.files += $$PWD/../plugins/dashboard_pi/data/Dashboard_toggled.svg
+svg_dashboard_plugin_deployment.files += $$PWD/../plugins/dashboard_pi/data/plus.svg
+svg_dashboard_plugin_deployment.files += $$PWD/../plugins/dashboard_pi/data/minus.svg
+svg_dashboard_plugin_deployment.files += $$PWD/../plugins/dashboard_pi/data/dial.svg
+svg_dashboard_plugin_deployment.files += $$PWD/../plugins/dashboard_pi/data/instrument.svg
+svg_dashboard_plugin_deployment.path = /assets/dashboard_pi
+INSTALLS += svg_dashboard_plugin_deployment
 
