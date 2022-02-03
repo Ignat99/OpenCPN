@@ -66,8 +66,10 @@ class SENTENCE
       virtual unsigned char ComputeChecksum( void ) const;
       virtual COMMUNICATIONS_MODE CommunicationsMode( int field_number ) const;
       virtual double Double( int field_number ) const;
+      virtual double Double1( int field_number ) const;
       virtual EASTWEST EastOrWest( int field_number ) const;
       virtual const wxString& Field( int field_number ) const;
+      virtual const wxString& Field1( int field_number ) const;
       virtual void Finish( void );
       virtual int GetNumberOfDataFields( void ) const;
       virtual int Integer( int field_number ) const;

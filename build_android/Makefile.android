@@ -1413,7 +1413,10 @@ ocpn_wrapper.o: ../buildandroid/ocpn_wrapper.cpp ../../wxqt/wxWidgets/include/wx
 		../src/nmea0183/gsv.hpp \
 		../src/nmea0183/gga.hpp \
 		../src/nmea0183/GPwpl.hpp \
-		../src/nmea0183/apb.hpp
+		../src/nmea0183/apb.hpp \
+		../include/myweigh/myweigh.h \
+		../include/myweigh/myweigh.hpp \
+		../include/myweigh/Response1.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ocpn_wrapper.o ../buildandroid/ocpn_wrapper.cpp
 
 ####### Install

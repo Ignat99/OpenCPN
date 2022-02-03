@@ -131,32 +131,39 @@ unsigned char SENTENCE::ComputeChecksum( void ) const
 {
    unsigned char checksum_value = 0;
 
-   char str_ascii[101];
-   strncpy(str_ascii, (const char *)Sentence.mb_str(), 99);
-   str_ascii[100] = '\0';
-
-   int string_length = strlen(str_ascii);
+   int string_length = Sentence.Length();
    int index = 1; // Skip over the $ at the begining of the sentence
 
    while( index < string_length    &&
-          str_ascii[ index ] != '*' &&
-          str_ascii[ index ] != CARRIAGE_RETURN &&
-          str_ascii[ index ] != LINE_FEED )
+       Sentence[ index ] != '*' &&
+       Sentence[ index ] != CARRIAGE_RETURN &&
+       Sentence[ index ] != LINE_FEED )
    {
-         checksum_value ^= str_ascii[ index ];
-         index++;
+       checksum_value ^= (char)Sentence[ index ];
+       index++;
    }
 
    return( checksum_value );
 }
 
+double SENTENCE::Double1( int field_number ) const
+{
+ //  ASSERT_VALID( this );
+    wxCharBuffer abuf = Field1( field_number).ToUTF8();
+    if( !abuf.data() )                            // badly formed sentence?
+        return (999.);
+ 
+    return( ::atof( abuf.data() ));
+}
+
 double SENTENCE::Double( int field_number ) const
 {
  //  ASSERT_VALID( this );
-      if(Field( field_number ).Len() == 0)
-            return 999.;
-
-      return( ::atof( Field( field_number ).mb_str() ) );
+    wxCharBuffer abuf = Field( field_number).ToUTF8();
+    if( !abuf.data() )                            // badly formed sentence?
+        return (999.);
+ 
+    return( ::atof( abuf.data() ));
 }
 
 
@@ -181,6 +188,53 @@ EASTWEST SENTENCE::EastOrWest( int field_number ) const
       return( EW_Unknown );
    }
 }
+
+const wxString& SENTENCE::Field1( int desired_field_number ) const
+{
+//   ASSERT_VALID( this );
+
+   static wxString return_string;
+   return_string.Empty();
+
+   int index = 0; // Keep over the G/U at the begining of the sentence
+   int current_field_number = 0;
+   int string_length        = 0;
+
+
+   string_length = Sentence.Len();
+
+   while( current_field_number < desired_field_number && index < string_length )
+   {
+      if ( Sentence[ index ] == ' ' )
+      {
+         current_field_number++;
+      }
+
+      if( Sentence[ index ] == '+')
+          return_string += Sentence[ index ];
+
+      index++;
+   }
+
+   if ( current_field_number == desired_field_number )
+   {
+      while( index < string_length    &&
+//             Sentence[ index ] != '+' &&
+             Sentence[ index ] != ' ' &&
+//             Sentence[ index ] != ',' &&
+             Sentence[ index ] != '+' &&
+             Sentence[ index ] != 0x00 )
+      {
+         return_string += Sentence[ index ];
+         index++;
+      }
+   }
+
+
+
+   return( return_string );
+}
+
 
 const wxString& SENTENCE::Field( int desired_field_number ) const
 {
@@ -241,7 +295,7 @@ int SENTENCE::GetNumberOfDataFields( void ) const
          return( (int) current_field_number );
       }
 
-      if ( Sentence[ index ] == ',' )
+      if ( Sentence[ index ] == ',')
       {
          current_field_number++;
       }
@@ -268,7 +322,11 @@ int SENTENCE::Integer( int field_number ) const
 {
 //   ASSERT_VALID( this );
 
-    return( ::atoi( Field( field_number ).mb_str() ) );
+    wxCharBuffer abuf = Field( field_number).ToUTF8();
+    if( !abuf.data() )                            // badly formed sentence?
+        return 0;
+    
+    return( ::atoi( abuf.data() ));
 }
 
 NMEA0183_BOOLEAN SENTENCE::IsChecksumBad( int checksum_field_number ) const

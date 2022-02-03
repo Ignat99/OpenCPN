@@ -40,8 +40,9 @@
     #include <wx/wx.h>
 #endif
 
+//      DashboardInstrument_Dial( parent, id, title, OCPN_DBP_STC_RSA, 100, 160, -40, +40)
 DashboardInstrument_RudderAngle::DashboardInstrument_RudderAngle( wxWindow *parent, wxWindowID id, wxString title) :
-      DashboardInstrument_Dial( parent, id, title, OCPN_DBP_STC_RSA, 100, 160, -40, +40)
+      DashboardInstrument_Dial( parent, id, title, OCPN_DBP_PACK, 100, 160, -40, +40)
 {
       // Default Rudder position is centered
       m_MainValue = 0;

@@ -137,6 +137,11 @@ NMEA0183::NMEA0183()
    response_table.Append( (RESPONSE *) &Zfo );
    response_table.Append( (RESPONSE *) &Ztg );
 */
+   response_table.Append( (RESPONSE *) &Uw );
+   response_table.Append( (RESPONSE *) &Gw );
+   response_table.Append( (RESPONSE *) &Tot );
+
+
    sort_response_table();
    set_container_pointers();
 }
@@ -216,6 +221,41 @@ void NMEA0183::sort_response_table( void )
 ** Public Interface
 */
 
+bool NMEA0183::IsGood1( void ) const
+{
+//   ASSERT_VALID( this );
+
+   /*
+   ** NMEA 0183 sentences begin with $ and and with CR LF
+   */
+
+   if ( sentence.Sentence[ 0 ] != 'G' && sentence.Sentence[ 0 ] != 'U' && sentence.Sentence[ 0 ] != 'T')
+   {
+      return( FALSE );
+   }
+
+   /*
+   ** Next to last character must be a CR
+   */
+   /*  This seems too harsh for cross platform work
+    *
+    */
+
+//   if ( sentence.Sentence.Mid( sentence.Sentence.Len() - 2, 1 ) != wxString(_T("\r")) )
+//   {
+//      return( FALSE );
+//   }
+
+   if ( sentence.Sentence.Right( 1 ) != _T("\n") )
+   {
+      return( FALSE );
+   }
+
+   return( TRUE );
+}
+
+
+
 bool NMEA0183::IsGood( void ) const
 {
 //   ASSERT_VALID( this );
@@ -248,9 +288,46 @@ bool NMEA0183::IsGood( void ) const
    return( TRUE );
 }
 
+bool NMEA0183::PreParse1( void )
+{
+    wxCharBuffer buf = sentence.Sentence.ToUTF8();
+    if( !buf.data() )                            // badly formed sentence?
+        return false;
+
+      if ( IsGood1() )
+      {
+            wxString mnemonic = sentence.Field1( 0 );
+
+            if ( mnemonic.Left( 1 ) == 'T' )
+                  mnemonic = _T("Tota");
+            else {
+
+                if ( mnemonic.Left( 1 ) == 'G')
+                      mnemonic = _T("G.W.");
+                else {
+                    if  ( mnemonic.Left( 1 ) == 'U')
+                          mnemonic = _T("U.W.");
+                    else
+                      mnemonic = mnemonic.Left( 4 );
+                }
+           }
+
+
+            LastSentenceIDReceived = mnemonic;
+
+            return true;
+      }
+      else
+            return false;
+}
+
 
 bool NMEA0183::PreParse( void )
 {
+    wxCharBuffer buf = sentence.Sentence.ToUTF8();
+    if( !buf.data() )                            // badly formed sentence?
+        return false;
+
       if ( IsGood() )
       {
             wxString mnemonic = sentence.Field( 0 );
@@ -272,6 +349,76 @@ bool NMEA0183::PreParse( void )
       }
       else
             return false;
+}
+
+bool NMEA0183::Parse1( void )
+{
+   bool return_value = FALSE;
+
+   if(PreParse1())
+   {
+
+      wxString mnemonic = sentence.Field1( 0 );
+
+//      LastSentenceIDReceived = mnemonic;
+
+      if ( mnemonic.Left( 4 ) == "G.W." )  mnemonic = _T("G.W.");
+      else if ( mnemonic.Left( 4 ) == "U.W." ) mnemonic = _T("U.W.");
+      else if ( mnemonic.Left( 4 ) == "Tota" ) mnemonic = _T("Tota");
+      else
+         mnemonic = mnemonic.Left( 4 );
+
+
+      ErrorMessage = mnemonic;
+      ErrorMessage += _T(" is an unknown type of sentence");
+
+      LastSentenceIDReceived = mnemonic;
+
+      RESPONSE *response_p = (RESPONSE *) NULL;
+
+
+//          Traverse the response list to find a mnemonic match
+
+       wxMRLNode *node = response_table.GetFirst();
+
+       int comparison  = 0;
+
+        while(node)
+        {
+           RESPONSE *resp = node->GetData();
+
+            comparison = mnemonic.Cmp( resp->Mnemonic );
+
+            if ( comparison == 0 )
+            {
+                        response_p = (RESPONSE *) resp;
+                        return_value = response_p->Parse( sentence );
+
+                        if ( return_value == TRUE )
+                        {
+                           ErrorMessage = _T("No Error");
+                           LastSentenceIDParsed = response_p->Mnemonic;
+                           TalkerID = talker_id( sentence );
+                           ExpandedTalkerID = expand_talker_id( TalkerID );
+                        }
+                        else
+                        {
+                           ErrorMessage = response_p->ErrorMessage;
+                        }
+
+                        break;
+            }
+
+              node = node->GetNext();
+        }
+
+   }
+   else
+   {
+      return_value = FALSE;
+   }
+
+   return( return_value );
 }
 
 

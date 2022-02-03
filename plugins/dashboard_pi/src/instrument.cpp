@@ -54,6 +54,58 @@ DashboardInstrument::DashboardInstrument(wxWindow *pparent, wxWindowID id, wxStr
 
       Connect(wxEVT_ERASE_BACKGROUND, wxEraseEventHandler(DashboardInstrument::OnEraseBackground));
       Connect(wxEVT_PAINT, wxPaintEventHandler(DashboardInstrument::OnPaint));
+      
+      //  On OSX, there is an orphan mouse event that comes from the automatic
+      //  exEVT_CONTEXT_MENU synthesis on the main wxWindow mouse handler.
+      //  The event goes to an instrument window (here) that may have been deleted by the
+      //  preferences dialog.  Result is NULL deref.
+      //  Solution:  Handle right-click here, and DO NOT skip()
+      //  Strangely, this does not work for GTK...
+      //  See: http://trac.wxwidgets.org/ticket/15417
+      
+#ifdef __WXOSX__
+      Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(DashboardInstrument::MouseEvent), NULL, this);
+#endif      
+}
+
+wxProgressDialog* DashboardInstrument::GetPprog( double bascula_weigh, double db_weigh, double db_quantity, int pack, int pack_cur, int pack_pcs, int pcs_cur, int pcs_last )
+{
+    int cur_count;
+    wxString msg5;
+
+// Full order
+//    cur_count = wxRound( pd_count  * bascula_weigh / (db_weigh * db_quantity) );
+//    msg5.Printf(_T("%d / ( db_weigh * db_quan ) = %d "),
+//        pd_count * wxRound(bascula_weigh), wxRound(db_weigh * db_quantity )  );
+
+// One full pack
+    cur_count = wxRound( pd_count * bascula_weigh / (db_weigh * pack_pcs) );
+    msg5.Printf(_T("%d / ( db_weigh * pack_pcs ) = %d "),
+        pd_count * wxRound(bascula_weigh), wxRound(db_weigh * pack_pcs )  );
+
+
+//    cur_count = wxRound( pd_count * bascula_weigh / (db_weigh * pack_pcs * 1000) );
+// pd_count - count of Progress Dialog indicator in procent up to 100
+//    msg5.Printf(_T("%d * %d / ( db_weigh * db_quan * 1000 ) = %d "),
+//        pd_count, wxRound(bascula_weigh), wxRound(db_weigh * db_quantity * 1000));
+
+
+    pcs_cur = cur_count;
+    if (cur_count >  90) { cur_count = 95; }
+    ppprog->Update(cur_count, msg5);
+    return ppprog;
+}
+
+void DashboardInstrument::MouseEvent( wxMouseEvent &event )
+{
+    if ( event.GetEventType() == wxEVT_RIGHT_DOWN )
+    {
+       wxContextMenuEvent evtCtx(wxEVT_CONTEXT_MENU,
+                                  this->GetId(),
+                                  this->ClientToScreen(event.GetPosition()));
+        evtCtx.SetEventObject(this);
+        GetParent()->GetEventHandler()->AddPendingEvent(evtCtx );
+    }
 }
 
 int DashboardInstrument::GetCapacity()
@@ -220,6 +272,7 @@ void DashboardInstrument_Single::Draw(wxGCDC* dc)
 
 }
 
+
 void DashboardInstrument_Single::SetData(int st, double data, wxString unit)
 {
       if (m_cap_flag & st){
@@ -252,6 +305,188 @@ void DashboardInstrument_Single::SetData(int st, double data, wxString unit)
                 m_data = _T("---");
       }
 }
+
+//----------------------------------------------------------------
+//
+//    DashboardInstrument_BasculaProgress Implementation
+//
+//----------------------------------------------------------------
+
+DashboardInstrument_ProgressDialog::DashboardInstrument_ProgressDialog(wxWindow *pparent, wxWindowID id, wxString title, int cap_flag, wxString format)
+      :DashboardInstrument(pparent, id, title, cap_flag)
+{
+      pd_count=100;
+      m_format = format;
+      m_data = _T("---");
+
+        long style = wxPD_ELAPSED_TIME | wxPD_ESTIMATED_TIME | wxPD_REMAINING_TIME;
+//        long style = wxPD_APP_MODAL | wxPD_SMOOTH | wxPD_ELAPSED_TIME | wxPD_ESTIMATED_TIME | wxPD_REMAINING_TIME | wxPD_CAN_SKIP;
+        style |= wxSTAY_ON_TOP;
+
+        pprog = new wxProgressDialog(_("Bascula Claroflex"), _T("Progress Dialog"), pd_count+1, pparent, style);
+        ppprog = pprog;
+        pprog->Hide();
+        wxSize sz = pprog->GetSize();
+        wxSize csz = pparent->GetClientSize();
+//        sz.x = csz.x * 7 / 10;
+//        sz.y += 20;
+        sz.x = 200;
+        sz.y = 100;
+        pprog->SetSize( sz );
+        pprog_size = sz;
+        pprog->Center();
+
+//Position for start progress dialog on the end of size instruments
+        pprog->Move(wxPoint(-17, 845));
+        wxString msg0;
+        msg0 += _T("\n\n");
+        pprog->Update( 0, msg0 );
+        pprog->Show();
+        pprog->Raise();
+
+//        b_skipout = false;
+//        pprog_count = 0;
+//        bool skip = false;
+//        wxString msg;
+//        double distance = 2.0;
+
+/*
+       for (int step =1; step <= pprog->GetRange()-5; ++step) {
+//        int step = 1;
+        msg.Printf(_("Weigh: %4.0f kg , Range: %d "), distance, pprog->GetRange());
+        pprog->Update(step, wxString::Format("Step %d/%d ==> %s", step, pprog->GetRange(), pprog->WasSkipped() ? "skipped" : "done") + msg, &skip);
+//        pprog->Update(pprog_count, wxString::Format("Step %d/%d ==> %s", pprog_count, pprog->GetRange(), pprog->WasSkipped() ? "skipped" : "done") + m$
+//        this_thread::sleep_for(100);
+       }
+*/
+//        return true;
+
+
+}
+
+wxProgressDialog* DashboardInstrument_ProgressDialog::GetPprog()
+{
+    return ppprog;
+}
+
+wxSize DashboardInstrument_ProgressDialog::GetSize( int orient, wxSize hint )
+{
+      wxClientDC dc(this);
+      int w;
+      dc.GetTextExtent(m_title, &w, &m_TitleHeight, 0, 0, g_pFontTitle);
+      dc.GetTextExtent(_T("000"), &w, &m_DataHeight, 0, 0, g_pFontData);
+
+      if( orient == wxHORIZONTAL ) {
+          return wxSize( DefaultWidth+100, wxMax(hint.y, m_TitleHeight+m_DataHeight) );
+      } else {
+          return wxSize( wxMax(hint.x, DefaultWidth)+100, m_TitleHeight+m_DataHeight );
+      }
+}
+
+
+//----------------------------------------------------------------
+//
+//    DashboardInstrument_Weight Implementation
+//
+//----------------------------------------------------------------
+
+DashboardInstrument_Weight::DashboardInstrument_Weight(wxWindow *pparent, wxWindowID id, wxString title, int cap_flag, wxString format)
+      :DashboardInstrument(pparent, id, title, cap_flag)
+{
+      m_format = format;
+      m_data = _T("---");
+}
+
+wxSize DashboardInstrument_Weight::GetSize( int orient, wxSize hint )
+{
+      wxClientDC dc(this);
+      int w;
+      dc.GetTextExtent(m_title, &w, &m_TitleHeight, 0, 0, g_pFontTitle);
+      dc.GetTextExtent(_T("000"), &w, &m_DataHeight, 0, 0, g_pFontData);
+
+      if( orient == wxHORIZONTAL ) {
+          return wxSize( DefaultWidth+100, wxMax(hint.y, m_TitleHeight+m_DataHeight) );
+      } else {
+          return wxSize( wxMax(hint.x, DefaultWidth)+100, m_TitleHeight+m_DataHeight );
+      }
+}
+
+void DashboardInstrument_Weight::Draw(wxGCDC* dc)
+{
+      wxColour cl;
+#ifdef __WXMSW__
+      wxBitmap tbm( dc->GetSize().x, m_DataHeight, -1 );
+      wxMemoryDC tdc( tbm );
+      wxColour c2;
+      GetGlobalColor( _T("DASHB"), &c2 );
+      tdc.SetBackground( c2 );
+      tdc.Clear();
+
+      tdc.SetFont(*g_pFontData );
+      GetGlobalColor( _T("DASHF"), &cl );
+      tdc.SetTextForeground( cl );
+
+      tdc.DrawText(m_data, 10, 0);
+
+      tdc.SelectObject( wxNullBitmap );
+
+      dc->DrawBitmap(tbm, 0, m_TitleHeight, false);
+#else
+      dc->SetFont(*g_pFontData );
+      GetGlobalColor( _T("DASHF"), &cl );
+      dc->SetTextForeground( cl );
+
+      dc->DrawText(m_data, 10, m_TitleHeight);
+
+#endif
+
+}
+
+void DashboardInstrument_Weight::SetData(int st, int data, wxString unit)
+{
+      if (m_cap_flag & st){
+            if(!wxIsNaN(data)){
+                  m_data = wxString::Format(m_format, data)+_T(" ")+unit;
+            }
+            else
+                m_data = _T("---");
+      }
+}
+
+
+void DashboardInstrument_Weight::SetData(int st, double data, wxString unit)
+{
+      if (m_cap_flag & st){
+            if(!wxIsNaN(data)){
+                if (unit == _T("C"))
+                  m_data = wxString::Format(m_format, data)+DEGREE_SIGN+_T("C");
+                else if (unit == _T("\u00B0"))
+                  m_data = wxString::Format(m_format, data)+DEGREE_SIGN;
+                else if (unit == _T("\u00B0T"))
+                  m_data = wxString::Format(m_format, data)+DEGREE_SIGN+_(" true");
+                else if (unit == _T("\u00B0M"))
+                  m_data = wxString::Format(m_format, data)+DEGREE_SIGN+_(" mag");
+                else if (unit == _T("\u00B0L"))
+                  m_data = _T(">")+ wxString::Format(m_format, data)+DEGREE_SIGN;
+                else if (unit == _T("\u00B0R"))
+                  m_data = wxString::Format(m_format, data)+DEGREE_SIGN+_T("<");
+                else if (unit == _T("N")) //Knots
+                  m_data = wxString::Format(m_format, data)+_T(" Kg");
+/* maybe in the future ...
+                else if (unit == _T("M")) // m/s
+                  m_data = wxString::Format(m_format, data)+_T(" m/s");
+                else if (unit == _T("K")) // km/h
+                  m_data = wxString::Format(m_format, data)+_T(" km/h");
+ ... to be completed
+ */
+                else
+                  m_data = wxString::Format(m_format, data)+_T(" ")+unit;
+            }
+            else
+                m_data = _T("---");
+      }
+}
+
 
 //----------------------------------------------------------------
 //

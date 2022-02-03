@@ -42,6 +42,7 @@
 #include "../../../include/ocpn_plugin.h"
 #include <wx/dcbuffer.h>
 #include <wx/dcgraph.h>         // supplemental, for Mac
+#include <wx/progdlg.h>
 
 const wxString DEGREE_SIGN = wxString::Format(_T("%c"), 0x00B0); // This is the degree sign in UTF8. It should be correctly handled on both Win & Unix
 #define DefaultWidth 150
@@ -55,6 +56,7 @@ wxString toSDMM ( int NEflag, double a );
 
 class DashboardInstrument;
 class DashboardInstrument_Single;
+class DashboardInstrument_Weight;
 class DashboardInstrument_Position;
 class DashboardInstrument_Sun;
 
@@ -71,24 +73,40 @@ enum
     OCPN_DBP_STC_BRG = 1 << 8,
     OCPN_DBP_STC_AWA = 1 << 9,
     OCPN_DBP_STC_AWS = 1 << 10,
-    OCPN_DBP_STC_TWA = 1 << 11,
-    OCPN_DBP_STC_TWS = 1 << 12,
+//    OCPN_DBP_STC_TWA = 1 << 11,
+//    OCPN_DBP_STC_TWS = 1 << 12,
     OCPN_DBP_STC_DPT = 1 << 13,
-    OCPN_DBP_STC_TMP = 1 << 14,
-    OCPN_DBP_STC_VMG = 1 << 15,
-    OCPN_DBP_STC_RSA = 1 << 16,
+//    OCPN_DBP_STC_TMP = 1 << 14,
+//    OCPN_DBP_STC_VMG = 1 << 15,
+//    OCPN_DBP_STC_RSA = 1 << 16,
     OCPN_DBP_STC_SAT = 1 << 17,
     OCPN_DBP_STC_GPS = 1 << 18,
     OCPN_DBP_STC_PLA = 1 << 19, // Cursor latitude
     OCPN_DBP_STC_PLO = 1 << 20, // Cursor longitude
     OCPN_DBP_STC_CLK = 1 << 21,
-    OCPN_DBP_STC_MON = 1 << 22,
-    OCPN_DBP_STC_ATMP = 1 << 23, //AirTemp
-    OCPN_DBP_STC_TWD = 1 << 24,
-    OCPN_DBP_STC_TWS2 = 1 << 25,
-    OCPN_DBP_STC_VLW1 = 1 << 26, // Trip Log
-    OCPN_DBP_STC_VLW2 = 1 << 27,  // Sum Log
-    OCPN_DBP_STC_MDA = 1 << 28  // Bareometic pressure
+    OCPN_DBP_PACK = 1 << 16,
+    OCPN_DBP_PACK_CUR = 1 << 15,
+    OCPN_DBP_PACK_PCS = 1 << 14,
+    OCPN_DBP_PCS_CUR = 1 << 12,
+    OCPN_DBP_PCS_LAST = 1 << 11,
+//    OCPN_DBP_STC_MON = 1 << 22,
+//    OCPN_DBP_STC_ATMP = 1 << 23, //AirTemp
+//    OCPN_DBP_STC_TWD = 1 << 24,
+//    OCPN_DBP_STC_TWS2 = 1 << 25,
+//    OCPN_DBP_STC_VLW1 = 1 << 26, // Trip Log
+//    OCPN_DBP_STC_VLW2 = 1 << 27,  // Sum Log
+//    OCPN_DBP_STC_MDA = 1 << 28,  // Bareometic pressure
+//    OCPN_DBP_STC_MCOG = 1 << 29,  // Magnetic Course over Ground
+    OCPN_DBP_WEIGH = 1 << 30, // Weight screen
+    OCPN_DBP_UNIT_WEIGH = 1 << 31, // Unit weight screen
+    OCPN_DBP_TOTAL_QUANTITY = 1 << 29, // Total quantity screen
+    OCPN_DBP_PROJECT = 1 << 28, // Project screen
+    OCPN_DBP_COMPONENT = 1 << 27, // Component screen
+    OCPN_DBP_QR = 1 << 26, // QR screen
+    OCPN_DBP_DB_WEIGH = 1 << 25, // Data Base weigh screen
+    OCPN_DBP_DB_QUANTITY = 1 << 24, // Data Base weigh screen
+    OCPN_DBP_DB_CODE = 1 << 23, // Data Base code screen
+    OCPN_DBP_PROGRESS_DIALOG = 1 << 22
 };
 
 class DashboardInstrument : public wxControl
@@ -103,7 +121,12 @@ public:
       void OnPaint(wxPaintEvent& WXUNUSED(event));
       virtual void SetData(int st, double data, wxString unit) = 0;
       void SetDrawSoloInPane(bool value);
+      void MouseEvent( wxMouseEvent &event );
+      wxProgressDialog* GetPprog(double bascula_weigh, double db_weigh, double db_quantity, int pack, int pack_cur, int pack_pcs, int pcs_cur, int pcs_last);
 
+      wxProgressDialog  *ppprog;
+      int pd_count;
+      
       int               instrumentTypeId;
 
 protected:
@@ -132,6 +155,50 @@ protected:
 
       void Draw(wxGCDC* dc);
 };
+
+class DashboardInstrument_ProgressDialog : public DashboardInstrument
+{
+public:
+      DashboardInstrument_ProgressDialog(wxWindow *pparent, wxWindowID id, wxString title, int cap, wxString format);
+      ~DashboardInstrument_ProgressDialog(){}
+
+      wxSize GetSize( int orient, wxSize hint );
+      void SetData(int st, double data, wxString unit){}
+      void SetData(int st, int data, wxString unit){}
+      wxProgressDialog* GetPprog();
+
+protected:
+      wxString          m_data;
+      wxString          m_format;
+      int               m_DataHeight;
+      wxProgressDialog  *pprog;
+      bool              b_skipout;
+      wxSize            pprog_size;
+      int               pprog_count;
+
+      void Draw(wxGCDC* dc){}
+};
+
+
+
+class DashboardInstrument_Weight : public DashboardInstrument
+{
+public:
+      DashboardInstrument_Weight(wxWindow *pparent, wxWindowID id, wxString title, int cap, wxString format);
+      ~DashboardInstrument_Weight(){}
+
+      wxSize GetSize( int orient, wxSize hint );
+      void SetData(int st, double data, wxString unit);
+      void SetData(int st, int data, wxString unit);
+
+protected:
+      wxString          m_data;
+      wxString          m_format;
+      int               m_DataHeight;
+
+      void Draw(wxGCDC* dc);
+};
+
 
 class DashboardInstrument_Position : public DashboardInstrument
 {

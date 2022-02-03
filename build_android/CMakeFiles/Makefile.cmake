@@ -13,6 +13,9 @@ set(CMAKE_MAKEFILE_DEPENDS
   "CMakeFiles/3.1.1/CMakeCXXCompiler.cmake"
   "CMakeFiles/3.1.1/CMakeSystem.cmake"
   "../buildandroid/build_android.cmake"
+  "../plugins/CMakeLists.txt"
+  "../plugins/PluginLocalization.cmake"
+  "../plugins/dashboard_pi/CMakeLists.txt"
   "../version.h.in"
   "/usr/local/share/cmake-3.1/Modules/CMakeCInformation.cmake"
   "/usr/local/share/cmake-3.1/Modules/CMakeCXXInformation.cmake"
@@ -45,6 +48,8 @@ set(CMAKE_MAKEFILE_PRODUCTS
   "CPackConfig.cmake"
   "CPackSourceConfig.cmake"
   "CMakeFiles/CMakeDirectoryInformation.cmake"
+  "plugins/CMakeFiles/CMakeDirectoryInformation.cmake"
+  "plugins/dashboard_pi/CMakeFiles/CMakeDirectoryInformation.cmake"
   )
 
 # Dependency information for all targets:
@@ -57,4 +62,8 @@ set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/NMEA0183.dir/DependInfo.cmake"
   "CMakeFiles/GARMINHOST.dir/DependInfo.cmake"
   "CMakeFiles/pot-update.dir/DependInfo.cmake"
+  "plugins/dashboard_pi/CMakeFiles/dashboard-pot-update.dir/DependInfo.cmake"
+  "plugins/dashboard_pi/CMakeFiles/dashboard-i18n.dir/DependInfo.cmake"
+  "plugins/dashboard_pi/CMakeFiles/dashboard_pi.dir/DependInfo.cmake"
+  "plugins/dashboard_pi/CMakeFiles/dashboard-po-update.dir/DependInfo.cmake"
   )

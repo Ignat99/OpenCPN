@@ -42,8 +42,9 @@ extern int g_iDashDepthUnit;
     #include <wx/wx.h>
 #endif
 
+//      DashboardInstrument(parent, id, title, OCPN_DBP_STC_DPT | OCPN_DBP_STC_TMP)
 DashboardInstrument_Depth::DashboardInstrument_Depth( wxWindow *parent, wxWindowID id, wxString title) :
-      DashboardInstrument(parent, id, title, OCPN_DBP_STC_DPT | OCPN_DBP_STC_TMP)
+      DashboardInstrument(parent, id, title, OCPN_DBP_STC_DPT )
 {
       m_MaxDepth = 0;
       m_Depth = 0;
@@ -80,10 +81,10 @@ void DashboardInstrument_Depth::SetData(int st, double data, wxString unit)
             m_ArrayDepth[DEPTH_RECORD_COUNT-1] = data;
             m_DepthUnit = unit;
       }
-      else if (st == OCPN_DBP_STC_TMP)
-      {
-            m_Temp = wxString::Format(_T("%.1f"), data)+DEGREE_SIGN+unit;
-      }
+//      else if (st == OCPN_DBP_STC_TMP)
+//      {
+//            m_Temp = wxString::Format(_T("%.1f"), data)+DEGREE_SIGN+unit;
+//      }
 }
 
 void DashboardInstrument_Depth::Draw(wxGCDC* dc)
@@ -110,7 +111,13 @@ void DashboardInstrument_Depth::DrawBackground(wxGCDC* dc)
       dc->DrawLine(3, 40, size.x-3, 40);
       dc->DrawLine(3, 140, size.x-3, 140);
 
+#ifdef __WXMSW__      
       pen.SetStyle(wxSHORT_DASH);
+#else
+      pen.SetStyle(wxDOT);
+      pen.SetWidth(1);
+#endif      
+      
       dc->SetPen(pen);
       dc->DrawLine(3, 65, size.x-3, 65);
       dc->DrawLine(3, 90, size.x-3, 90);

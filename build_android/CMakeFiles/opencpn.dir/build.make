@@ -673,9 +673,55 @@ CMakeFiles/opencpn.dir/src/Route.cpp.obj.provides: CMakeFiles/opencpn.dir/src/Ro
 
 CMakeFiles/opencpn.dir/src/Route.cpp.obj.provides.build: CMakeFiles/opencpn.dir/src/Route.cpp.obj
 
+CMakeFiles/opencpn.dir/src/LabelPoint.cpp.obj: CMakeFiles/opencpn.dir/flags.make
+CMakeFiles/opencpn.dir/src/LabelPoint.cpp.obj: ../src/LabelPoint.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_28)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/opencpn.dir/src/LabelPoint.cpp.obj"
+	/opt/android_toolchain/bin/arm-linux-androideabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/opencpn.dir/src/LabelPoint.cpp.obj -c /home/ignat99/Projects/OpenCPN/src/LabelPoint.cpp
+
+CMakeFiles/opencpn.dir/src/LabelPoint.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/opencpn.dir/src/LabelPoint.cpp.i"
+	/opt/android_toolchain/bin/arm-linux-androideabi-g++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/ignat99/Projects/OpenCPN/src/LabelPoint.cpp > CMakeFiles/opencpn.dir/src/LabelPoint.cpp.i
+
+CMakeFiles/opencpn.dir/src/LabelPoint.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/opencpn.dir/src/LabelPoint.cpp.s"
+	/opt/android_toolchain/bin/arm-linux-androideabi-g++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/ignat99/Projects/OpenCPN/src/LabelPoint.cpp -o CMakeFiles/opencpn.dir/src/LabelPoint.cpp.s
+
+CMakeFiles/opencpn.dir/src/LabelPoint.cpp.obj.requires:
+.PHONY : CMakeFiles/opencpn.dir/src/LabelPoint.cpp.obj.requires
+
+CMakeFiles/opencpn.dir/src/LabelPoint.cpp.obj.provides: CMakeFiles/opencpn.dir/src/LabelPoint.cpp.obj.requires
+	$(MAKE) -f CMakeFiles/opencpn.dir/build.make CMakeFiles/opencpn.dir/src/LabelPoint.cpp.obj.provides.build
+.PHONY : CMakeFiles/opencpn.dir/src/LabelPoint.cpp.obj.provides
+
+CMakeFiles/opencpn.dir/src/LabelPoint.cpp.obj.provides.build: CMakeFiles/opencpn.dir/src/LabelPoint.cpp.obj
+
+CMakeFiles/opencpn.dir/src/Label.cpp.obj: CMakeFiles/opencpn.dir/flags.make
+CMakeFiles/opencpn.dir/src/Label.cpp.obj: ../src/Label.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_29)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/opencpn.dir/src/Label.cpp.obj"
+	/opt/android_toolchain/bin/arm-linux-androideabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/opencpn.dir/src/Label.cpp.obj -c /home/ignat99/Projects/OpenCPN/src/Label.cpp
+
+CMakeFiles/opencpn.dir/src/Label.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/opencpn.dir/src/Label.cpp.i"
+	/opt/android_toolchain/bin/arm-linux-androideabi-g++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/ignat99/Projects/OpenCPN/src/Label.cpp > CMakeFiles/opencpn.dir/src/Label.cpp.i
+
+CMakeFiles/opencpn.dir/src/Label.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/opencpn.dir/src/Label.cpp.s"
+	/opt/android_toolchain/bin/arm-linux-androideabi-g++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/ignat99/Projects/OpenCPN/src/Label.cpp -o CMakeFiles/opencpn.dir/src/Label.cpp.s
+
+CMakeFiles/opencpn.dir/src/Label.cpp.obj.requires:
+.PHONY : CMakeFiles/opencpn.dir/src/Label.cpp.obj.requires
+
+CMakeFiles/opencpn.dir/src/Label.cpp.obj.provides: CMakeFiles/opencpn.dir/src/Label.cpp.obj.requires
+	$(MAKE) -f CMakeFiles/opencpn.dir/build.make CMakeFiles/opencpn.dir/src/Label.cpp.obj.provides.build
+.PHONY : CMakeFiles/opencpn.dir/src/Label.cpp.obj.provides
+
+CMakeFiles/opencpn.dir/src/Label.cpp.obj.provides.build: CMakeFiles/opencpn.dir/src/Label.cpp.obj
+
 CMakeFiles/opencpn.dir/src/SelectItem.cpp.obj: CMakeFiles/opencpn.dir/flags.make
 CMakeFiles/opencpn.dir/src/SelectItem.cpp.obj: ../src/SelectItem.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_28)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_30)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/opencpn.dir/src/SelectItem.cpp.obj"
 	/opt/android_toolchain/bin/arm-linux-androideabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/opencpn.dir/src/SelectItem.cpp.obj -c /home/ignat99/Projects/OpenCPN/src/SelectItem.cpp
 
@@ -698,7 +744,7 @@ CMakeFiles/opencpn.dir/src/SelectItem.cpp.obj.provides.build: CMakeFiles/opencpn
 
 CMakeFiles/opencpn.dir/src/Select.cpp.obj: CMakeFiles/opencpn.dir/flags.make
 CMakeFiles/opencpn.dir/src/Select.cpp.obj: ../src/Select.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_29)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_31)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/opencpn.dir/src/Select.cpp.obj"
 	/opt/android_toolchain/bin/arm-linux-androideabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/opencpn.dir/src/Select.cpp.obj -c /home/ignat99/Projects/OpenCPN/src/Select.cpp
 
@@ -721,7 +767,7 @@ CMakeFiles/opencpn.dir/src/Select.cpp.obj.provides.build: CMakeFiles/opencpn.dir
 
 CMakeFiles/opencpn.dir/src/FontMgr.cpp.obj: CMakeFiles/opencpn.dir/flags.make
 CMakeFiles/opencpn.dir/src/FontMgr.cpp.obj: ../src/FontMgr.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_30)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_32)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/opencpn.dir/src/FontMgr.cpp.obj"
 	/opt/android_toolchain/bin/arm-linux-androideabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/opencpn.dir/src/FontMgr.cpp.obj -c /home/ignat99/Projects/OpenCPN/src/FontMgr.cpp
 
@@ -744,7 +790,7 @@ CMakeFiles/opencpn.dir/src/FontMgr.cpp.obj.provides.build: CMakeFiles/opencpn.di
 
 CMakeFiles/opencpn.dir/src/FontDesc.cpp.obj: CMakeFiles/opencpn.dir/flags.make
 CMakeFiles/opencpn.dir/src/FontDesc.cpp.obj: ../src/FontDesc.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_31)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_33)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/opencpn.dir/src/FontDesc.cpp.obj"
 	/opt/android_toolchain/bin/arm-linux-androideabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/opencpn.dir/src/FontDesc.cpp.obj -c /home/ignat99/Projects/OpenCPN/src/FontDesc.cpp
 
@@ -767,7 +813,7 @@ CMakeFiles/opencpn.dir/src/FontDesc.cpp.obj.provides.build: CMakeFiles/opencpn.d
 
 CMakeFiles/opencpn.dir/src/OCPNSoundData.cpp.obj: CMakeFiles/opencpn.dir/flags.make
 CMakeFiles/opencpn.dir/src/OCPNSoundData.cpp.obj: ../src/OCPNSoundData.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_32)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_34)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/opencpn.dir/src/OCPNSoundData.cpp.obj"
 	/opt/android_toolchain/bin/arm-linux-androideabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/opencpn.dir/src/OCPNSoundData.cpp.obj -c /home/ignat99/Projects/OpenCPN/src/OCPNSoundData.cpp
 
@@ -790,7 +836,7 @@ CMakeFiles/opencpn.dir/src/OCPNSoundData.cpp.obj.provides.build: CMakeFiles/open
 
 CMakeFiles/opencpn.dir/src/OCPN_Sound.cpp.obj: CMakeFiles/opencpn.dir/flags.make
 CMakeFiles/opencpn.dir/src/OCPN_Sound.cpp.obj: ../src/OCPN_Sound.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_33)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_35)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/opencpn.dir/src/OCPN_Sound.cpp.obj"
 	/opt/android_toolchain/bin/arm-linux-androideabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/opencpn.dir/src/OCPN_Sound.cpp.obj -c /home/ignat99/Projects/OpenCPN/src/OCPN_Sound.cpp
 
@@ -813,7 +859,7 @@ CMakeFiles/opencpn.dir/src/OCPN_Sound.cpp.obj.provides.build: CMakeFiles/opencpn
 
 CMakeFiles/opencpn.dir/src/NMEALogWindow.cpp.obj: CMakeFiles/opencpn.dir/flags.make
 CMakeFiles/opencpn.dir/src/NMEALogWindow.cpp.obj: ../src/NMEALogWindow.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_34)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_36)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/opencpn.dir/src/NMEALogWindow.cpp.obj"
 	/opt/android_toolchain/bin/arm-linux-androideabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/opencpn.dir/src/NMEALogWindow.cpp.obj -c /home/ignat99/Projects/OpenCPN/src/NMEALogWindow.cpp
 
@@ -836,7 +882,7 @@ CMakeFiles/opencpn.dir/src/NMEALogWindow.cpp.obj.provides.build: CMakeFiles/open
 
 CMakeFiles/opencpn.dir/src/TTYWindow.cpp.obj: CMakeFiles/opencpn.dir/flags.make
 CMakeFiles/opencpn.dir/src/TTYWindow.cpp.obj: ../src/TTYWindow.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_35)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_37)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/opencpn.dir/src/TTYWindow.cpp.obj"
 	/opt/android_toolchain/bin/arm-linux-androideabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/opencpn.dir/src/TTYWindow.cpp.obj -c /home/ignat99/Projects/OpenCPN/src/TTYWindow.cpp
 
@@ -859,7 +905,7 @@ CMakeFiles/opencpn.dir/src/TTYWindow.cpp.obj.provides.build: CMakeFiles/opencpn.
 
 CMakeFiles/opencpn.dir/src/TTYScroll.cpp.obj: CMakeFiles/opencpn.dir/flags.make
 CMakeFiles/opencpn.dir/src/TTYScroll.cpp.obj: ../src/TTYScroll.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_36)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_38)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/opencpn.dir/src/TTYScroll.cpp.obj"
 	/opt/android_toolchain/bin/arm-linux-androideabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/opencpn.dir/src/TTYScroll.cpp.obj -c /home/ignat99/Projects/OpenCPN/src/TTYScroll.cpp
 
@@ -882,7 +928,7 @@ CMakeFiles/opencpn.dir/src/TTYScroll.cpp.obj.provides.build: CMakeFiles/opencpn.
 
 CMakeFiles/opencpn.dir/src/SendToGpsDlg.cpp.obj: CMakeFiles/opencpn.dir/flags.make
 CMakeFiles/opencpn.dir/src/SendToGpsDlg.cpp.obj: ../src/SendToGpsDlg.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_37)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_39)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/opencpn.dir/src/SendToGpsDlg.cpp.obj"
 	/opt/android_toolchain/bin/arm-linux-androideabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/opencpn.dir/src/SendToGpsDlg.cpp.obj -c /home/ignat99/Projects/OpenCPN/src/SendToGpsDlg.cpp
 
@@ -905,7 +951,7 @@ CMakeFiles/opencpn.dir/src/SendToGpsDlg.cpp.obj.provides.build: CMakeFiles/openc
 
 CMakeFiles/opencpn.dir/src/Layer.cpp.obj: CMakeFiles/opencpn.dir/flags.make
 CMakeFiles/opencpn.dir/src/Layer.cpp.obj: ../src/Layer.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_38)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_40)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/opencpn.dir/src/Layer.cpp.obj"
 	/opt/android_toolchain/bin/arm-linux-androideabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/opencpn.dir/src/Layer.cpp.obj -c /home/ignat99/Projects/OpenCPN/src/Layer.cpp
 
@@ -928,7 +974,7 @@ CMakeFiles/opencpn.dir/src/Layer.cpp.obj.provides.build: CMakeFiles/opencpn.dir/
 
 CMakeFiles/opencpn.dir/src/concanv.cpp.obj: CMakeFiles/opencpn.dir/flags.make
 CMakeFiles/opencpn.dir/src/concanv.cpp.obj: ../src/concanv.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_39)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_41)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/opencpn.dir/src/concanv.cpp.obj"
 	/opt/android_toolchain/bin/arm-linux-androideabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/opencpn.dir/src/concanv.cpp.obj -c /home/ignat99/Projects/OpenCPN/src/concanv.cpp
 
@@ -951,7 +997,7 @@ CMakeFiles/opencpn.dir/src/concanv.cpp.obj.provides.build: CMakeFiles/opencpn.di
 
 CMakeFiles/opencpn.dir/src/cutil.cpp.obj: CMakeFiles/opencpn.dir/flags.make
 CMakeFiles/opencpn.dir/src/cutil.cpp.obj: ../src/cutil.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_40)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_42)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/opencpn.dir/src/cutil.cpp.obj"
 	/opt/android_toolchain/bin/arm-linux-androideabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/opencpn.dir/src/cutil.cpp.obj -c /home/ignat99/Projects/OpenCPN/src/cutil.cpp
 
@@ -974,7 +1020,7 @@ CMakeFiles/opencpn.dir/src/cutil.cpp.obj.provides.build: CMakeFiles/opencpn.dir/
 
 CMakeFiles/opencpn.dir/src/georef.cpp.obj: CMakeFiles/opencpn.dir/flags.make
 CMakeFiles/opencpn.dir/src/georef.cpp.obj: ../src/georef.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_41)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_43)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/opencpn.dir/src/georef.cpp.obj"
 	/opt/android_toolchain/bin/arm-linux-androideabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/opencpn.dir/src/georef.cpp.obj -c /home/ignat99/Projects/OpenCPN/src/georef.cpp
 
@@ -997,7 +1043,7 @@ CMakeFiles/opencpn.dir/src/georef.cpp.obj.provides.build: CMakeFiles/opencpn.dir
 
 CMakeFiles/opencpn.dir/src/navutil.cpp.obj: CMakeFiles/opencpn.dir/flags.make
 CMakeFiles/opencpn.dir/src/navutil.cpp.obj: ../src/navutil.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_42)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_44)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/opencpn.dir/src/navutil.cpp.obj"
 	/opt/android_toolchain/bin/arm-linux-androideabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/opencpn.dir/src/navutil.cpp.obj -c /home/ignat99/Projects/OpenCPN/src/navutil.cpp
 
@@ -1020,7 +1066,7 @@ CMakeFiles/opencpn.dir/src/navutil.cpp.obj.provides.build: CMakeFiles/opencpn.di
 
 CMakeFiles/opencpn.dir/src/routeman.cpp.obj: CMakeFiles/opencpn.dir/flags.make
 CMakeFiles/opencpn.dir/src/routeman.cpp.obj: ../src/routeman.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_43)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_45)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/opencpn.dir/src/routeman.cpp.obj"
 	/opt/android_toolchain/bin/arm-linux-androideabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/opencpn.dir/src/routeman.cpp.obj -c /home/ignat99/Projects/OpenCPN/src/routeman.cpp
 
@@ -1043,7 +1089,7 @@ CMakeFiles/opencpn.dir/src/routeman.cpp.obj.provides.build: CMakeFiles/opencpn.d
 
 CMakeFiles/opencpn.dir/src/routemanagerdialog.cpp.obj: CMakeFiles/opencpn.dir/flags.make
 CMakeFiles/opencpn.dir/src/routemanagerdialog.cpp.obj: ../src/routemanagerdialog.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_44)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_46)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/opencpn.dir/src/routemanagerdialog.cpp.obj"
 	/opt/android_toolchain/bin/arm-linux-androideabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/opencpn.dir/src/routemanagerdialog.cpp.obj -c /home/ignat99/Projects/OpenCPN/src/routemanagerdialog.cpp
 
@@ -1066,7 +1112,7 @@ CMakeFiles/opencpn.dir/src/routemanagerdialog.cpp.obj.provides.build: CMakeFiles
 
 CMakeFiles/opencpn.dir/src/routeprop.cpp.obj: CMakeFiles/opencpn.dir/flags.make
 CMakeFiles/opencpn.dir/src/routeprop.cpp.obj: ../src/routeprop.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_45)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_47)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/opencpn.dir/src/routeprop.cpp.obj"
 	/opt/android_toolchain/bin/arm-linux-androideabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/opencpn.dir/src/routeprop.cpp.obj -c /home/ignat99/Projects/OpenCPN/src/routeprop.cpp
 
@@ -1089,7 +1135,7 @@ CMakeFiles/opencpn.dir/src/routeprop.cpp.obj.provides.build: CMakeFiles/opencpn.
 
 CMakeFiles/opencpn.dir/src/routeprintout.cpp.obj: CMakeFiles/opencpn.dir/flags.make
 CMakeFiles/opencpn.dir/src/routeprintout.cpp.obj: ../src/routeprintout.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_46)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_48)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/opencpn.dir/src/routeprintout.cpp.obj"
 	/opt/android_toolchain/bin/arm-linux-androideabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/opencpn.dir/src/routeprintout.cpp.obj -c /home/ignat99/Projects/OpenCPN/src/routeprintout.cpp
 
@@ -1110,9 +1156,32 @@ CMakeFiles/opencpn.dir/src/routeprintout.cpp.obj.provides: CMakeFiles/opencpn.di
 
 CMakeFiles/opencpn.dir/src/routeprintout.cpp.obj.provides.build: CMakeFiles/opencpn.dir/src/routeprintout.cpp.obj
 
+CMakeFiles/opencpn.dir/src/labelprintout.cpp.obj: CMakeFiles/opencpn.dir/flags.make
+CMakeFiles/opencpn.dir/src/labelprintout.cpp.obj: ../src/labelprintout.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_49)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/opencpn.dir/src/labelprintout.cpp.obj"
+	/opt/android_toolchain/bin/arm-linux-androideabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/opencpn.dir/src/labelprintout.cpp.obj -c /home/ignat99/Projects/OpenCPN/src/labelprintout.cpp
+
+CMakeFiles/opencpn.dir/src/labelprintout.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/opencpn.dir/src/labelprintout.cpp.i"
+	/opt/android_toolchain/bin/arm-linux-androideabi-g++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/ignat99/Projects/OpenCPN/src/labelprintout.cpp > CMakeFiles/opencpn.dir/src/labelprintout.cpp.i
+
+CMakeFiles/opencpn.dir/src/labelprintout.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/opencpn.dir/src/labelprintout.cpp.s"
+	/opt/android_toolchain/bin/arm-linux-androideabi-g++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/ignat99/Projects/OpenCPN/src/labelprintout.cpp -o CMakeFiles/opencpn.dir/src/labelprintout.cpp.s
+
+CMakeFiles/opencpn.dir/src/labelprintout.cpp.obj.requires:
+.PHONY : CMakeFiles/opencpn.dir/src/labelprintout.cpp.obj.requires
+
+CMakeFiles/opencpn.dir/src/labelprintout.cpp.obj.provides: CMakeFiles/opencpn.dir/src/labelprintout.cpp.obj.requires
+	$(MAKE) -f CMakeFiles/opencpn.dir/build.make CMakeFiles/opencpn.dir/src/labelprintout.cpp.obj.provides.build
+.PHONY : CMakeFiles/opencpn.dir/src/labelprintout.cpp.obj.provides
+
+CMakeFiles/opencpn.dir/src/labelprintout.cpp.obj.provides.build: CMakeFiles/opencpn.dir/src/labelprintout.cpp.obj
+
 CMakeFiles/opencpn.dir/src/PositionParser.cpp.obj: CMakeFiles/opencpn.dir/flags.make
 CMakeFiles/opencpn.dir/src/PositionParser.cpp.obj: ../src/PositionParser.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_47)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_50)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/opencpn.dir/src/PositionParser.cpp.obj"
 	/opt/android_toolchain/bin/arm-linux-androideabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/opencpn.dir/src/PositionParser.cpp.obj -c /home/ignat99/Projects/OpenCPN/src/PositionParser.cpp
 
@@ -1135,7 +1204,7 @@ CMakeFiles/opencpn.dir/src/PositionParser.cpp.obj.provides.build: CMakeFiles/ope
 
 CMakeFiles/opencpn.dir/src/printtable.cpp.obj: CMakeFiles/opencpn.dir/flags.make
 CMakeFiles/opencpn.dir/src/printtable.cpp.obj: ../src/printtable.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_48)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_51)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/opencpn.dir/src/printtable.cpp.obj"
 	/opt/android_toolchain/bin/arm-linux-androideabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/opencpn.dir/src/printtable.cpp.obj -c /home/ignat99/Projects/OpenCPN/src/printtable.cpp
 
@@ -1158,7 +1227,7 @@ CMakeFiles/opencpn.dir/src/printtable.cpp.obj.provides.build: CMakeFiles/opencpn
 
 CMakeFiles/opencpn.dir/src/statwin.cpp.obj: CMakeFiles/opencpn.dir/flags.make
 CMakeFiles/opencpn.dir/src/statwin.cpp.obj: ../src/statwin.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_49)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_52)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/opencpn.dir/src/statwin.cpp.obj"
 	/opt/android_toolchain/bin/arm-linux-androideabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/opencpn.dir/src/statwin.cpp.obj -c /home/ignat99/Projects/OpenCPN/src/statwin.cpp
 
@@ -1181,7 +1250,7 @@ CMakeFiles/opencpn.dir/src/statwin.cpp.obj.provides.build: CMakeFiles/opencpn.di
 
 CMakeFiles/opencpn.dir/src/tcmgr.cpp.obj: CMakeFiles/opencpn.dir/flags.make
 CMakeFiles/opencpn.dir/src/tcmgr.cpp.obj: ../src/tcmgr.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_50)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_53)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/opencpn.dir/src/tcmgr.cpp.obj"
 	/opt/android_toolchain/bin/arm-linux-androideabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/opencpn.dir/src/tcmgr.cpp.obj -c /home/ignat99/Projects/OpenCPN/src/tcmgr.cpp
 
@@ -1204,7 +1273,7 @@ CMakeFiles/opencpn.dir/src/tcmgr.cpp.obj.provides.build: CMakeFiles/opencpn.dir/
 
 CMakeFiles/opencpn.dir/src/Station_Data.cpp.obj: CMakeFiles/opencpn.dir/flags.make
 CMakeFiles/opencpn.dir/src/Station_Data.cpp.obj: ../src/Station_Data.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_51)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_54)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/opencpn.dir/src/Station_Data.cpp.obj"
 	/opt/android_toolchain/bin/arm-linux-androideabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/opencpn.dir/src/Station_Data.cpp.obj -c /home/ignat99/Projects/OpenCPN/src/Station_Data.cpp
 
@@ -1227,7 +1296,7 @@ CMakeFiles/opencpn.dir/src/Station_Data.cpp.obj.provides.build: CMakeFiles/openc
 
 CMakeFiles/opencpn.dir/src/IDX_entry.cpp.obj: CMakeFiles/opencpn.dir/flags.make
 CMakeFiles/opencpn.dir/src/IDX_entry.cpp.obj: ../src/IDX_entry.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_52)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_55)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/opencpn.dir/src/IDX_entry.cpp.obj"
 	/opt/android_toolchain/bin/arm-linux-androideabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/opencpn.dir/src/IDX_entry.cpp.obj -c /home/ignat99/Projects/OpenCPN/src/IDX_entry.cpp
 
@@ -1250,7 +1319,7 @@ CMakeFiles/opencpn.dir/src/IDX_entry.cpp.obj.provides.build: CMakeFiles/opencpn.
 
 CMakeFiles/opencpn.dir/src/TCDataFactory.cpp.obj: CMakeFiles/opencpn.dir/flags.make
 CMakeFiles/opencpn.dir/src/TCDataFactory.cpp.obj: ../src/TCDataFactory.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_53)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_56)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/opencpn.dir/src/TCDataFactory.cpp.obj"
 	/opt/android_toolchain/bin/arm-linux-androideabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/opencpn.dir/src/TCDataFactory.cpp.obj -c /home/ignat99/Projects/OpenCPN/src/TCDataFactory.cpp
 
@@ -1273,7 +1342,7 @@ CMakeFiles/opencpn.dir/src/TCDataFactory.cpp.obj.provides.build: CMakeFiles/open
 
 CMakeFiles/opencpn.dir/src/TCDS_Ascii_Harmonic.cpp.obj: CMakeFiles/opencpn.dir/flags.make
 CMakeFiles/opencpn.dir/src/TCDS_Ascii_Harmonic.cpp.obj: ../src/TCDS_Ascii_Harmonic.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_54)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_57)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/opencpn.dir/src/TCDS_Ascii_Harmonic.cpp.obj"
 	/opt/android_toolchain/bin/arm-linux-androideabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/opencpn.dir/src/TCDS_Ascii_Harmonic.cpp.obj -c /home/ignat99/Projects/OpenCPN/src/TCDS_Ascii_Harmonic.cpp
 
@@ -1296,7 +1365,7 @@ CMakeFiles/opencpn.dir/src/TCDS_Ascii_Harmonic.cpp.obj.provides.build: CMakeFile
 
 CMakeFiles/opencpn.dir/src/TCDS_Binary_Harmonic.cpp.obj: CMakeFiles/opencpn.dir/flags.make
 CMakeFiles/opencpn.dir/src/TCDS_Binary_Harmonic.cpp.obj: ../src/TCDS_Binary_Harmonic.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_55)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_58)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/opencpn.dir/src/TCDS_Binary_Harmonic.cpp.obj"
 	/opt/android_toolchain/bin/arm-linux-androideabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/opencpn.dir/src/TCDS_Binary_Harmonic.cpp.obj -c /home/ignat99/Projects/OpenCPN/src/TCDS_Binary_Harmonic.cpp
 
@@ -1319,7 +1388,7 @@ CMakeFiles/opencpn.dir/src/TCDS_Binary_Harmonic.cpp.obj.provides.build: CMakeFil
 
 CMakeFiles/opencpn.dir/src/TCDataSource.cpp.obj: CMakeFiles/opencpn.dir/flags.make
 CMakeFiles/opencpn.dir/src/TCDataSource.cpp.obj: ../src/TCDataSource.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_56)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_59)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/opencpn.dir/src/TCDataSource.cpp.obj"
 	/opt/android_toolchain/bin/arm-linux-androideabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/opencpn.dir/src/TCDataSource.cpp.obj -c /home/ignat99/Projects/OpenCPN/src/TCDataSource.cpp
 
@@ -1342,7 +1411,7 @@ CMakeFiles/opencpn.dir/src/TCDataSource.cpp.obj.provides.build: CMakeFiles/openc
 
 CMakeFiles/opencpn.dir/src/thumbwin.cpp.obj: CMakeFiles/opencpn.dir/flags.make
 CMakeFiles/opencpn.dir/src/thumbwin.cpp.obj: ../src/thumbwin.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_57)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_60)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/opencpn.dir/src/thumbwin.cpp.obj"
 	/opt/android_toolchain/bin/arm-linux-androideabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/opencpn.dir/src/thumbwin.cpp.obj -c /home/ignat99/Projects/OpenCPN/src/thumbwin.cpp
 
@@ -1365,7 +1434,7 @@ CMakeFiles/opencpn.dir/src/thumbwin.cpp.obj.provides.build: CMakeFiles/opencpn.d
 
 CMakeFiles/opencpn.dir/src/options.cpp.obj: CMakeFiles/opencpn.dir/flags.make
 CMakeFiles/opencpn.dir/src/options.cpp.obj: ../src/options.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_58)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_61)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/opencpn.dir/src/options.cpp.obj"
 	/opt/android_toolchain/bin/arm-linux-androideabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/opencpn.dir/src/options.cpp.obj -c /home/ignat99/Projects/OpenCPN/src/options.cpp
 
@@ -1388,7 +1457,7 @@ CMakeFiles/opencpn.dir/src/options.cpp.obj.provides.build: CMakeFiles/opencpn.di
 
 CMakeFiles/opencpn.dir/src/gshhs.cpp.obj: CMakeFiles/opencpn.dir/flags.make
 CMakeFiles/opencpn.dir/src/gshhs.cpp.obj: ../src/gshhs.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_59)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_62)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/opencpn.dir/src/gshhs.cpp.obj"
 	/opt/android_toolchain/bin/arm-linux-androideabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/opencpn.dir/src/gshhs.cpp.obj -c /home/ignat99/Projects/OpenCPN/src/gshhs.cpp
 
@@ -1411,7 +1480,7 @@ CMakeFiles/opencpn.dir/src/gshhs.cpp.obj.provides.build: CMakeFiles/opencpn.dir/
 
 CMakeFiles/opencpn.dir/src/kml.cpp.obj: CMakeFiles/opencpn.dir/flags.make
 CMakeFiles/opencpn.dir/src/kml.cpp.obj: ../src/kml.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_60)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_63)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/opencpn.dir/src/kml.cpp.obj"
 	/opt/android_toolchain/bin/arm-linux-androideabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/opencpn.dir/src/kml.cpp.obj -c /home/ignat99/Projects/OpenCPN/src/kml.cpp
 
@@ -1434,7 +1503,7 @@ CMakeFiles/opencpn.dir/src/kml.cpp.obj.provides.build: CMakeFiles/opencpn.dir/sr
 
 CMakeFiles/opencpn.dir/src/undo.cpp.obj: CMakeFiles/opencpn.dir/flags.make
 CMakeFiles/opencpn.dir/src/undo.cpp.obj: ../src/undo.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_61)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_64)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/opencpn.dir/src/undo.cpp.obj"
 	/opt/android_toolchain/bin/arm-linux-androideabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/opencpn.dir/src/undo.cpp.obj -c /home/ignat99/Projects/OpenCPN/src/undo.cpp
 
@@ -1457,7 +1526,7 @@ CMakeFiles/opencpn.dir/src/undo.cpp.obj.provides.build: CMakeFiles/opencpn.dir/s
 
 CMakeFiles/opencpn.dir/src/about.cpp.obj: CMakeFiles/opencpn.dir/flags.make
 CMakeFiles/opencpn.dir/src/about.cpp.obj: ../src/about.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_62)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_65)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/opencpn.dir/src/about.cpp.obj"
 	/opt/android_toolchain/bin/arm-linux-androideabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/opencpn.dir/src/about.cpp.obj -c /home/ignat99/Projects/OpenCPN/src/about.cpp
 
@@ -1480,7 +1549,7 @@ CMakeFiles/opencpn.dir/src/about.cpp.obj.provides.build: CMakeFiles/opencpn.dir/
 
 CMakeFiles/opencpn.dir/src/ais.cpp.obj: CMakeFiles/opencpn.dir/flags.make
 CMakeFiles/opencpn.dir/src/ais.cpp.obj: ../src/ais.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_63)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_66)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/opencpn.dir/src/ais.cpp.obj"
 	/opt/android_toolchain/bin/arm-linux-androideabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/opencpn.dir/src/ais.cpp.obj -c /home/ignat99/Projects/OpenCPN/src/ais.cpp
 
@@ -1503,7 +1572,7 @@ CMakeFiles/opencpn.dir/src/ais.cpp.obj.provides.build: CMakeFiles/opencpn.dir/sr
 
 CMakeFiles/opencpn.dir/src/pluginmanager.cpp.obj: CMakeFiles/opencpn.dir/flags.make
 CMakeFiles/opencpn.dir/src/pluginmanager.cpp.obj: ../src/pluginmanager.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_64)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_67)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/opencpn.dir/src/pluginmanager.cpp.obj"
 	/opt/android_toolchain/bin/arm-linux-androideabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/opencpn.dir/src/pluginmanager.cpp.obj -c /home/ignat99/Projects/OpenCPN/src/pluginmanager.cpp
 
@@ -1526,7 +1595,7 @@ CMakeFiles/opencpn.dir/src/pluginmanager.cpp.obj.provides.build: CMakeFiles/open
 
 CMakeFiles/opencpn.dir/src/gpxdocument.cpp.obj: CMakeFiles/opencpn.dir/flags.make
 CMakeFiles/opencpn.dir/src/gpxdocument.cpp.obj: ../src/gpxdocument.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_65)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_68)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/opencpn.dir/src/gpxdocument.cpp.obj"
 	/opt/android_toolchain/bin/arm-linux-androideabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/opencpn.dir/src/gpxdocument.cpp.obj -c /home/ignat99/Projects/OpenCPN/src/gpxdocument.cpp
 
@@ -1549,7 +1618,7 @@ CMakeFiles/opencpn.dir/src/gpxdocument.cpp.obj.provides.build: CMakeFiles/opencp
 
 CMakeFiles/opencpn.dir/src/wxJSON/jsonwriter.cpp.obj: CMakeFiles/opencpn.dir/flags.make
 CMakeFiles/opencpn.dir/src/wxJSON/jsonwriter.cpp.obj: ../src/wxJSON/jsonwriter.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_66)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_69)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/opencpn.dir/src/wxJSON/jsonwriter.cpp.obj"
 	/opt/android_toolchain/bin/arm-linux-androideabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/opencpn.dir/src/wxJSON/jsonwriter.cpp.obj -c /home/ignat99/Projects/OpenCPN/src/wxJSON/jsonwriter.cpp
 
@@ -1572,7 +1641,7 @@ CMakeFiles/opencpn.dir/src/wxJSON/jsonwriter.cpp.obj.provides.build: CMakeFiles/
 
 CMakeFiles/opencpn.dir/src/wxJSON/jsonreader.cpp.obj: CMakeFiles/opencpn.dir/flags.make
 CMakeFiles/opencpn.dir/src/wxJSON/jsonreader.cpp.obj: ../src/wxJSON/jsonreader.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_67)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_70)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/opencpn.dir/src/wxJSON/jsonreader.cpp.obj"
 	/opt/android_toolchain/bin/arm-linux-androideabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/opencpn.dir/src/wxJSON/jsonreader.cpp.obj -c /home/ignat99/Projects/OpenCPN/src/wxJSON/jsonreader.cpp
 
@@ -1595,7 +1664,7 @@ CMakeFiles/opencpn.dir/src/wxJSON/jsonreader.cpp.obj.provides.build: CMakeFiles/
 
 CMakeFiles/opencpn.dir/src/wxJSON/jsonval.cpp.obj: CMakeFiles/opencpn.dir/flags.make
 CMakeFiles/opencpn.dir/src/wxJSON/jsonval.cpp.obj: ../src/wxJSON/jsonval.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_68)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_71)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/opencpn.dir/src/wxJSON/jsonval.cpp.obj"
 	/opt/android_toolchain/bin/arm-linux-androideabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/opencpn.dir/src/wxJSON/jsonval.cpp.obj -c /home/ignat99/Projects/OpenCPN/src/wxJSON/jsonval.cpp
 
@@ -1618,7 +1687,7 @@ CMakeFiles/opencpn.dir/src/wxJSON/jsonval.cpp.obj.provides.build: CMakeFiles/ope
 
 CMakeFiles/opencpn.dir/src/styles.cpp.obj: CMakeFiles/opencpn.dir/flags.make
 CMakeFiles/opencpn.dir/src/styles.cpp.obj: ../src/styles.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_69)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_72)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/opencpn.dir/src/styles.cpp.obj"
 	/opt/android_toolchain/bin/arm-linux-androideabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/opencpn.dir/src/styles.cpp.obj -c /home/ignat99/Projects/OpenCPN/src/styles.cpp
 
@@ -1641,7 +1710,7 @@ CMakeFiles/opencpn.dir/src/styles.cpp.obj.provides.build: CMakeFiles/opencpn.dir
 
 CMakeFiles/opencpn.dir/src/toolbar.cpp.obj: CMakeFiles/opencpn.dir/flags.make
 CMakeFiles/opencpn.dir/src/toolbar.cpp.obj: ../src/toolbar.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_70)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_73)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/opencpn.dir/src/toolbar.cpp.obj"
 	/opt/android_toolchain/bin/arm-linux-androideabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/opencpn.dir/src/toolbar.cpp.obj -c /home/ignat99/Projects/OpenCPN/src/toolbar.cpp
 
@@ -1664,7 +1733,7 @@ CMakeFiles/opencpn.dir/src/toolbar.cpp.obj.provides.build: CMakeFiles/opencpn.di
 
 CMakeFiles/opencpn.dir/src/compasswin.cpp.obj: CMakeFiles/opencpn.dir/flags.make
 CMakeFiles/opencpn.dir/src/compasswin.cpp.obj: ../src/compasswin.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_71)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_74)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/opencpn.dir/src/compasswin.cpp.obj"
 	/opt/android_toolchain/bin/arm-linux-androideabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/opencpn.dir/src/compasswin.cpp.obj -c /home/ignat99/Projects/OpenCPN/src/compasswin.cpp
 
@@ -1687,7 +1756,7 @@ CMakeFiles/opencpn.dir/src/compasswin.cpp.obj.provides.build: CMakeFiles/opencpn
 
 CMakeFiles/opencpn.dir/src/geodesic.cpp.obj: CMakeFiles/opencpn.dir/flags.make
 CMakeFiles/opencpn.dir/src/geodesic.cpp.obj: ../src/geodesic.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_72)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_75)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/opencpn.dir/src/geodesic.cpp.obj"
 	/opt/android_toolchain/bin/arm-linux-androideabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/opencpn.dir/src/geodesic.cpp.obj -c /home/ignat99/Projects/OpenCPN/src/geodesic.cpp
 
@@ -1710,7 +1779,7 @@ CMakeFiles/opencpn.dir/src/geodesic.cpp.obj.provides.build: CMakeFiles/opencpn.d
 
 CMakeFiles/opencpn.dir/src/datastream.cpp.obj: CMakeFiles/opencpn.dir/flags.make
 CMakeFiles/opencpn.dir/src/datastream.cpp.obj: ../src/datastream.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_73)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_76)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/opencpn.dir/src/datastream.cpp.obj"
 	/opt/android_toolchain/bin/arm-linux-androideabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/opencpn.dir/src/datastream.cpp.obj -c /home/ignat99/Projects/OpenCPN/src/datastream.cpp
 
@@ -1733,7 +1802,7 @@ CMakeFiles/opencpn.dir/src/datastream.cpp.obj.provides.build: CMakeFiles/opencpn
 
 CMakeFiles/opencpn.dir/src/OCPN_DataStreamEvent.cpp.obj: CMakeFiles/opencpn.dir/flags.make
 CMakeFiles/opencpn.dir/src/OCPN_DataStreamEvent.cpp.obj: ../src/OCPN_DataStreamEvent.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_74)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_77)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/opencpn.dir/src/OCPN_DataStreamEvent.cpp.obj"
 	/opt/android_toolchain/bin/arm-linux-androideabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/opencpn.dir/src/OCPN_DataStreamEvent.cpp.obj -c /home/ignat99/Projects/OpenCPN/src/OCPN_DataStreamEvent.cpp
 
@@ -1756,7 +1825,7 @@ CMakeFiles/opencpn.dir/src/OCPN_DataStreamEvent.cpp.obj.provides.build: CMakeFil
 
 CMakeFiles/opencpn.dir/src/ConnectionParams.cpp.obj: CMakeFiles/opencpn.dir/flags.make
 CMakeFiles/opencpn.dir/src/ConnectionParams.cpp.obj: ../src/ConnectionParams.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_75)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_78)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/opencpn.dir/src/ConnectionParams.cpp.obj"
 	/opt/android_toolchain/bin/arm-linux-androideabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/opencpn.dir/src/ConnectionParams.cpp.obj -c /home/ignat99/Projects/OpenCPN/src/ConnectionParams.cpp
 
@@ -1779,7 +1848,7 @@ CMakeFiles/opencpn.dir/src/ConnectionParams.cpp.obj.provides.build: CMakeFiles/o
 
 CMakeFiles/opencpn.dir/src/OCP_DataStreamInput_Thread.cpp.obj: CMakeFiles/opencpn.dir/flags.make
 CMakeFiles/opencpn.dir/src/OCP_DataStreamInput_Thread.cpp.obj: ../src/OCP_DataStreamInput_Thread.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_76)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_79)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/opencpn.dir/src/OCP_DataStreamInput_Thread.cpp.obj"
 	/opt/android_toolchain/bin/arm-linux-androideabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/opencpn.dir/src/OCP_DataStreamInput_Thread.cpp.obj -c /home/ignat99/Projects/OpenCPN/src/OCP_DataStreamInput_Thread.cpp
 
@@ -1802,7 +1871,7 @@ CMakeFiles/opencpn.dir/src/OCP_DataStreamInput_Thread.cpp.obj.provides.build: CM
 
 CMakeFiles/opencpn.dir/src/multiplexer.cpp.obj: CMakeFiles/opencpn.dir/flags.make
 CMakeFiles/opencpn.dir/src/multiplexer.cpp.obj: ../src/multiplexer.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_77)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_80)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/opencpn.dir/src/multiplexer.cpp.obj"
 	/opt/android_toolchain/bin/arm-linux-androideabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/opencpn.dir/src/multiplexer.cpp.obj -c /home/ignat99/Projects/OpenCPN/src/multiplexer.cpp
 
@@ -1825,7 +1894,7 @@ CMakeFiles/opencpn.dir/src/multiplexer.cpp.obj.provides.build: CMakeFiles/opencp
 
 CMakeFiles/opencpn.dir/src/pugixml.cpp.obj: CMakeFiles/opencpn.dir/flags.make
 CMakeFiles/opencpn.dir/src/pugixml.cpp.obj: ../src/pugixml.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_78)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_81)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/opencpn.dir/src/pugixml.cpp.obj"
 	/opt/android_toolchain/bin/arm-linux-androideabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/opencpn.dir/src/pugixml.cpp.obj -c /home/ignat99/Projects/OpenCPN/src/pugixml.cpp
 
@@ -1848,7 +1917,7 @@ CMakeFiles/opencpn.dir/src/pugixml.cpp.obj.provides.build: CMakeFiles/opencpn.di
 
 CMakeFiles/opencpn.dir/src/OCPNRegion.cpp.obj: CMakeFiles/opencpn.dir/flags.make
 CMakeFiles/opencpn.dir/src/OCPNRegion.cpp.obj: ../src/OCPNRegion.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_79)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_82)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/opencpn.dir/src/OCPNRegion.cpp.obj"
 	/opt/android_toolchain/bin/arm-linux-androideabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/opencpn.dir/src/OCPNRegion.cpp.obj -c /home/ignat99/Projects/OpenCPN/src/OCPNRegion.cpp
 
@@ -1871,7 +1940,7 @@ CMakeFiles/opencpn.dir/src/OCPNRegion.cpp.obj.provides.build: CMakeFiles/opencpn
 
 CMakeFiles/opencpn.dir/src/TrackPropDlg.cpp.obj: CMakeFiles/opencpn.dir/flags.make
 CMakeFiles/opencpn.dir/src/TrackPropDlg.cpp.obj: ../src/TrackPropDlg.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_80)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_83)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/opencpn.dir/src/TrackPropDlg.cpp.obj"
 	/opt/android_toolchain/bin/arm-linux-androideabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/opencpn.dir/src/TrackPropDlg.cpp.obj -c /home/ignat99/Projects/OpenCPN/src/TrackPropDlg.cpp
 
@@ -1894,7 +1963,7 @@ CMakeFiles/opencpn.dir/src/TrackPropDlg.cpp.obj.provides.build: CMakeFiles/openc
 
 CMakeFiles/opencpn.dir/src/LinkPropDlg.cpp.obj: CMakeFiles/opencpn.dir/flags.make
 CMakeFiles/opencpn.dir/src/LinkPropDlg.cpp.obj: ../src/LinkPropDlg.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_81)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_84)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/opencpn.dir/src/LinkPropDlg.cpp.obj"
 	/opt/android_toolchain/bin/arm-linux-androideabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/opencpn.dir/src/LinkPropDlg.cpp.obj -c /home/ignat99/Projects/OpenCPN/src/LinkPropDlg.cpp
 
@@ -1915,9 +1984,78 @@ CMakeFiles/opencpn.dir/src/LinkPropDlg.cpp.obj.provides: CMakeFiles/opencpn.dir/
 
 CMakeFiles/opencpn.dir/src/LinkPropDlg.cpp.obj.provides.build: CMakeFiles/opencpn.dir/src/LinkPropDlg.cpp.obj
 
+CMakeFiles/opencpn.dir/src/myframe1.cpp.obj: CMakeFiles/opencpn.dir/flags.make
+CMakeFiles/opencpn.dir/src/myframe1.cpp.obj: ../src/myframe1.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_85)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/opencpn.dir/src/myframe1.cpp.obj"
+	/opt/android_toolchain/bin/arm-linux-androideabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/opencpn.dir/src/myframe1.cpp.obj -c /home/ignat99/Projects/OpenCPN/src/myframe1.cpp
+
+CMakeFiles/opencpn.dir/src/myframe1.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/opencpn.dir/src/myframe1.cpp.i"
+	/opt/android_toolchain/bin/arm-linux-androideabi-g++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/ignat99/Projects/OpenCPN/src/myframe1.cpp > CMakeFiles/opencpn.dir/src/myframe1.cpp.i
+
+CMakeFiles/opencpn.dir/src/myframe1.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/opencpn.dir/src/myframe1.cpp.s"
+	/opt/android_toolchain/bin/arm-linux-androideabi-g++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/ignat99/Projects/OpenCPN/src/myframe1.cpp -o CMakeFiles/opencpn.dir/src/myframe1.cpp.s
+
+CMakeFiles/opencpn.dir/src/myframe1.cpp.obj.requires:
+.PHONY : CMakeFiles/opencpn.dir/src/myframe1.cpp.obj.requires
+
+CMakeFiles/opencpn.dir/src/myframe1.cpp.obj.provides: CMakeFiles/opencpn.dir/src/myframe1.cpp.obj.requires
+	$(MAKE) -f CMakeFiles/opencpn.dir/build.make CMakeFiles/opencpn.dir/src/myframe1.cpp.obj.provides.build
+.PHONY : CMakeFiles/opencpn.dir/src/myframe1.cpp.obj.provides
+
+CMakeFiles/opencpn.dir/src/myframe1.cpp.obj.provides.build: CMakeFiles/opencpn.dir/src/myframe1.cpp.obj
+
+CMakeFiles/opencpn.dir/src/ImagePanel.cpp.obj: CMakeFiles/opencpn.dir/flags.make
+CMakeFiles/opencpn.dir/src/ImagePanel.cpp.obj: ../src/ImagePanel.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_86)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/opencpn.dir/src/ImagePanel.cpp.obj"
+	/opt/android_toolchain/bin/arm-linux-androideabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/opencpn.dir/src/ImagePanel.cpp.obj -c /home/ignat99/Projects/OpenCPN/src/ImagePanel.cpp
+
+CMakeFiles/opencpn.dir/src/ImagePanel.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/opencpn.dir/src/ImagePanel.cpp.i"
+	/opt/android_toolchain/bin/arm-linux-androideabi-g++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/ignat99/Projects/OpenCPN/src/ImagePanel.cpp > CMakeFiles/opencpn.dir/src/ImagePanel.cpp.i
+
+CMakeFiles/opencpn.dir/src/ImagePanel.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/opencpn.dir/src/ImagePanel.cpp.s"
+	/opt/android_toolchain/bin/arm-linux-androideabi-g++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/ignat99/Projects/OpenCPN/src/ImagePanel.cpp -o CMakeFiles/opencpn.dir/src/ImagePanel.cpp.s
+
+CMakeFiles/opencpn.dir/src/ImagePanel.cpp.obj.requires:
+.PHONY : CMakeFiles/opencpn.dir/src/ImagePanel.cpp.obj.requires
+
+CMakeFiles/opencpn.dir/src/ImagePanel.cpp.obj.provides: CMakeFiles/opencpn.dir/src/ImagePanel.cpp.obj.requires
+	$(MAKE) -f CMakeFiles/opencpn.dir/build.make CMakeFiles/opencpn.dir/src/ImagePanel.cpp.obj.provides.build
+.PHONY : CMakeFiles/opencpn.dir/src/ImagePanel.cpp.obj.provides
+
+CMakeFiles/opencpn.dir/src/ImagePanel.cpp.obj.provides.build: CMakeFiles/opencpn.dir/src/ImagePanel.cpp.obj
+
+CMakeFiles/opencpn.dir/src/qrcodegen.c.obj: CMakeFiles/opencpn.dir/flags.make
+CMakeFiles/opencpn.dir/src/qrcodegen.c.obj: ../src/qrcodegen.c
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_87)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building C object CMakeFiles/opencpn.dir/src/qrcodegen.c.obj"
+	/opt/android_toolchain/bin/arm-linux-androideabi-gcc  $(C_DEFINES) $(C_FLAGS) -o CMakeFiles/opencpn.dir/src/qrcodegen.c.obj   -c /home/ignat99/Projects/OpenCPN/src/qrcodegen.c
+
+CMakeFiles/opencpn.dir/src/qrcodegen.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/opencpn.dir/src/qrcodegen.c.i"
+	/opt/android_toolchain/bin/arm-linux-androideabi-gcc  $(C_DEFINES) $(C_FLAGS) -E /home/ignat99/Projects/OpenCPN/src/qrcodegen.c > CMakeFiles/opencpn.dir/src/qrcodegen.c.i
+
+CMakeFiles/opencpn.dir/src/qrcodegen.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/opencpn.dir/src/qrcodegen.c.s"
+	/opt/android_toolchain/bin/arm-linux-androideabi-gcc  $(C_DEFINES) $(C_FLAGS) -S /home/ignat99/Projects/OpenCPN/src/qrcodegen.c -o CMakeFiles/opencpn.dir/src/qrcodegen.c.s
+
+CMakeFiles/opencpn.dir/src/qrcodegen.c.obj.requires:
+.PHONY : CMakeFiles/opencpn.dir/src/qrcodegen.c.obj.requires
+
+CMakeFiles/opencpn.dir/src/qrcodegen.c.obj.provides: CMakeFiles/opencpn.dir/src/qrcodegen.c.obj.requires
+	$(MAKE) -f CMakeFiles/opencpn.dir/build.make CMakeFiles/opencpn.dir/src/qrcodegen.c.obj.provides.build
+.PHONY : CMakeFiles/opencpn.dir/src/qrcodegen.c.obj.provides
+
+CMakeFiles/opencpn.dir/src/qrcodegen.c.obj.provides.build: CMakeFiles/opencpn.dir/src/qrcodegen.c.obj
+
 CMakeFiles/opencpn.dir/src/crashprint.cpp.obj: CMakeFiles/opencpn.dir/flags.make
 CMakeFiles/opencpn.dir/src/crashprint.cpp.obj: ../src/crashprint.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_82)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_88)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/opencpn.dir/src/crashprint.cpp.obj"
 	/opt/android_toolchain/bin/arm-linux-androideabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/opencpn.dir/src/crashprint.cpp.obj -c /home/ignat99/Projects/OpenCPN/src/crashprint.cpp
 
@@ -1940,7 +2078,7 @@ CMakeFiles/opencpn.dir/src/crashprint.cpp.obj.provides.build: CMakeFiles/opencpn
 
 CMakeFiles/opencpn.dir/src/tinyxml.cpp.obj: CMakeFiles/opencpn.dir/flags.make
 CMakeFiles/opencpn.dir/src/tinyxml.cpp.obj: ../src/tinyxml.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_83)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_89)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/opencpn.dir/src/tinyxml.cpp.obj"
 	/opt/android_toolchain/bin/arm-linux-androideabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/opencpn.dir/src/tinyxml.cpp.obj -c /home/ignat99/Projects/OpenCPN/src/tinyxml.cpp
 
@@ -1963,7 +2101,7 @@ CMakeFiles/opencpn.dir/src/tinyxml.cpp.obj.provides.build: CMakeFiles/opencpn.di
 
 CMakeFiles/opencpn.dir/src/tinyxmlerror.cpp.obj: CMakeFiles/opencpn.dir/flags.make
 CMakeFiles/opencpn.dir/src/tinyxmlerror.cpp.obj: ../src/tinyxmlerror.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_84)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_90)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/opencpn.dir/src/tinyxmlerror.cpp.obj"
 	/opt/android_toolchain/bin/arm-linux-androideabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/opencpn.dir/src/tinyxmlerror.cpp.obj -c /home/ignat99/Projects/OpenCPN/src/tinyxmlerror.cpp
 
@@ -1986,7 +2124,7 @@ CMakeFiles/opencpn.dir/src/tinyxmlerror.cpp.obj.provides.build: CMakeFiles/openc
 
 CMakeFiles/opencpn.dir/src/tinyxmlparser.cpp.obj: CMakeFiles/opencpn.dir/flags.make
 CMakeFiles/opencpn.dir/src/tinyxmlparser.cpp.obj: ../src/tinyxmlparser.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_85)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles $(CMAKE_PROGRESS_91)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/opencpn.dir/src/tinyxmlparser.cpp.obj"
 	/opt/android_toolchain/bin/arm-linux-androideabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/opencpn.dir/src/tinyxmlparser.cpp.obj -c /home/ignat99/Projects/OpenCPN/src/tinyxmlparser.cpp
 
@@ -2036,6 +2174,8 @@ opencpn_OBJECTS = \
 "CMakeFiles/opencpn.dir/src/NavObjectCollection.cpp.obj" \
 "CMakeFiles/opencpn.dir/src/RoutePoint.cpp.obj" \
 "CMakeFiles/opencpn.dir/src/Route.cpp.obj" \
+"CMakeFiles/opencpn.dir/src/LabelPoint.cpp.obj" \
+"CMakeFiles/opencpn.dir/src/Label.cpp.obj" \
 "CMakeFiles/opencpn.dir/src/SelectItem.cpp.obj" \
 "CMakeFiles/opencpn.dir/src/Select.cpp.obj" \
 "CMakeFiles/opencpn.dir/src/FontMgr.cpp.obj" \
@@ -2055,6 +2195,7 @@ opencpn_OBJECTS = \
 "CMakeFiles/opencpn.dir/src/routemanagerdialog.cpp.obj" \
 "CMakeFiles/opencpn.dir/src/routeprop.cpp.obj" \
 "CMakeFiles/opencpn.dir/src/routeprintout.cpp.obj" \
+"CMakeFiles/opencpn.dir/src/labelprintout.cpp.obj" \
 "CMakeFiles/opencpn.dir/src/PositionParser.cpp.obj" \
 "CMakeFiles/opencpn.dir/src/printtable.cpp.obj" \
 "CMakeFiles/opencpn.dir/src/statwin.cpp.obj" \
@@ -2090,6 +2231,9 @@ opencpn_OBJECTS = \
 "CMakeFiles/opencpn.dir/src/OCPNRegion.cpp.obj" \
 "CMakeFiles/opencpn.dir/src/TrackPropDlg.cpp.obj" \
 "CMakeFiles/opencpn.dir/src/LinkPropDlg.cpp.obj" \
+"CMakeFiles/opencpn.dir/src/myframe1.cpp.obj" \
+"CMakeFiles/opencpn.dir/src/ImagePanel.cpp.obj" \
+"CMakeFiles/opencpn.dir/src/qrcodegen.c.obj" \
 "CMakeFiles/opencpn.dir/src/crashprint.cpp.obj" \
 "CMakeFiles/opencpn.dir/src/tinyxml.cpp.obj" \
 "CMakeFiles/opencpn.dir/src/tinyxmlerror.cpp.obj" \
@@ -2125,6 +2269,8 @@ libopencpn.a: CMakeFiles/opencpn.dir/src/Hyperlink.cpp.obj
 libopencpn.a: CMakeFiles/opencpn.dir/src/NavObjectCollection.cpp.obj
 libopencpn.a: CMakeFiles/opencpn.dir/src/RoutePoint.cpp.obj
 libopencpn.a: CMakeFiles/opencpn.dir/src/Route.cpp.obj
+libopencpn.a: CMakeFiles/opencpn.dir/src/LabelPoint.cpp.obj
+libopencpn.a: CMakeFiles/opencpn.dir/src/Label.cpp.obj
 libopencpn.a: CMakeFiles/opencpn.dir/src/SelectItem.cpp.obj
 libopencpn.a: CMakeFiles/opencpn.dir/src/Select.cpp.obj
 libopencpn.a: CMakeFiles/opencpn.dir/src/FontMgr.cpp.obj
@@ -2144,6 +2290,7 @@ libopencpn.a: CMakeFiles/opencpn.dir/src/routeman.cpp.obj
 libopencpn.a: CMakeFiles/opencpn.dir/src/routemanagerdialog.cpp.obj
 libopencpn.a: CMakeFiles/opencpn.dir/src/routeprop.cpp.obj
 libopencpn.a: CMakeFiles/opencpn.dir/src/routeprintout.cpp.obj
+libopencpn.a: CMakeFiles/opencpn.dir/src/labelprintout.cpp.obj
 libopencpn.a: CMakeFiles/opencpn.dir/src/PositionParser.cpp.obj
 libopencpn.a: CMakeFiles/opencpn.dir/src/printtable.cpp.obj
 libopencpn.a: CMakeFiles/opencpn.dir/src/statwin.cpp.obj
@@ -2179,6 +2326,9 @@ libopencpn.a: CMakeFiles/opencpn.dir/src/pugixml.cpp.obj
 libopencpn.a: CMakeFiles/opencpn.dir/src/OCPNRegion.cpp.obj
 libopencpn.a: CMakeFiles/opencpn.dir/src/TrackPropDlg.cpp.obj
 libopencpn.a: CMakeFiles/opencpn.dir/src/LinkPropDlg.cpp.obj
+libopencpn.a: CMakeFiles/opencpn.dir/src/myframe1.cpp.obj
+libopencpn.a: CMakeFiles/opencpn.dir/src/ImagePanel.cpp.obj
+libopencpn.a: CMakeFiles/opencpn.dir/src/qrcodegen.c.obj
 libopencpn.a: CMakeFiles/opencpn.dir/src/crashprint.cpp.obj
 libopencpn.a: CMakeFiles/opencpn.dir/src/tinyxml.cpp.obj
 libopencpn.a: CMakeFiles/opencpn.dir/src/tinyxmlerror.cpp.obj
@@ -2220,6 +2370,8 @@ CMakeFiles/opencpn.dir/requires: CMakeFiles/opencpn.dir/src/Hyperlink.cpp.obj.re
 CMakeFiles/opencpn.dir/requires: CMakeFiles/opencpn.dir/src/NavObjectCollection.cpp.obj.requires
 CMakeFiles/opencpn.dir/requires: CMakeFiles/opencpn.dir/src/RoutePoint.cpp.obj.requires
 CMakeFiles/opencpn.dir/requires: CMakeFiles/opencpn.dir/src/Route.cpp.obj.requires
+CMakeFiles/opencpn.dir/requires: CMakeFiles/opencpn.dir/src/LabelPoint.cpp.obj.requires
+CMakeFiles/opencpn.dir/requires: CMakeFiles/opencpn.dir/src/Label.cpp.obj.requires
 CMakeFiles/opencpn.dir/requires: CMakeFiles/opencpn.dir/src/SelectItem.cpp.obj.requires
 CMakeFiles/opencpn.dir/requires: CMakeFiles/opencpn.dir/src/Select.cpp.obj.requires
 CMakeFiles/opencpn.dir/requires: CMakeFiles/opencpn.dir/src/FontMgr.cpp.obj.requires
@@ -2239,6 +2391,7 @@ CMakeFiles/opencpn.dir/requires: CMakeFiles/opencpn.dir/src/routeman.cpp.obj.req
 CMakeFiles/opencpn.dir/requires: CMakeFiles/opencpn.dir/src/routemanagerdialog.cpp.obj.requires
 CMakeFiles/opencpn.dir/requires: CMakeFiles/opencpn.dir/src/routeprop.cpp.obj.requires
 CMakeFiles/opencpn.dir/requires: CMakeFiles/opencpn.dir/src/routeprintout.cpp.obj.requires
+CMakeFiles/opencpn.dir/requires: CMakeFiles/opencpn.dir/src/labelprintout.cpp.obj.requires
 CMakeFiles/opencpn.dir/requires: CMakeFiles/opencpn.dir/src/PositionParser.cpp.obj.requires
 CMakeFiles/opencpn.dir/requires: CMakeFiles/opencpn.dir/src/printtable.cpp.obj.requires
 CMakeFiles/opencpn.dir/requires: CMakeFiles/opencpn.dir/src/statwin.cpp.obj.requires
@@ -2274,6 +2427,9 @@ CMakeFiles/opencpn.dir/requires: CMakeFiles/opencpn.dir/src/pugixml.cpp.obj.requ
 CMakeFiles/opencpn.dir/requires: CMakeFiles/opencpn.dir/src/OCPNRegion.cpp.obj.requires
 CMakeFiles/opencpn.dir/requires: CMakeFiles/opencpn.dir/src/TrackPropDlg.cpp.obj.requires
 CMakeFiles/opencpn.dir/requires: CMakeFiles/opencpn.dir/src/LinkPropDlg.cpp.obj.requires
+CMakeFiles/opencpn.dir/requires: CMakeFiles/opencpn.dir/src/myframe1.cpp.obj.requires
+CMakeFiles/opencpn.dir/requires: CMakeFiles/opencpn.dir/src/ImagePanel.cpp.obj.requires
+CMakeFiles/opencpn.dir/requires: CMakeFiles/opencpn.dir/src/qrcodegen.c.obj.requires
 CMakeFiles/opencpn.dir/requires: CMakeFiles/opencpn.dir/src/crashprint.cpp.obj.requires
 CMakeFiles/opencpn.dir/requires: CMakeFiles/opencpn.dir/src/tinyxml.cpp.obj.requires
 CMakeFiles/opencpn.dir/requires: CMakeFiles/opencpn.dir/src/tinyxmlerror.cpp.obj.requires

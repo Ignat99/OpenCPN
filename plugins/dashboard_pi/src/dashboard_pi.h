@@ -51,16 +51,17 @@
 #include "../../../include/ocpn_plugin.h"
 
 #include "nmea0183/nmea0183.h"
+#include "myweigh/myweigh.h"
 #include "instrument.h"
 #include "speedometer.h"
 #include "compass.h"
 #include "wind.h"
-#include "rudder_angle.h"
+//#include "rudder_angle.h"
 #include "gps.h"
 #include "depth.h"
 #include "clock.h"
-#include "wind_history.h"
-#include "baro_history.h"
+//#include "wind_history.h"
+//#include "baro_history.h"
 #include "from_ownship.h"
 
 class DashboardWindow;
@@ -133,8 +134,17 @@ public:
       wxString GetCommonName();
       wxString GetShortDescription();
       wxString GetLongDescription();
+      int pack;
+      int pack_cur;
+      int pack_cur_flag;
+      int pack_pcs;
+      int pcs_cur;
+      int pcs_last;
+//      int db_quantity;
+//      double db_weigh;
 
 //    The optional method overrides
+      void SetSentence(wxString &sentence);
       void SetNMEASentence(wxString &sentence);
       void SetPositionFix(PlugIn_Position_Fix &pfix);
       void SetCursorLatLon(double lat, double lon);
@@ -155,6 +165,7 @@ private:
       bool LoadConfig(void);
       void ApplyConfig(void);
       void SendSentenceToAllInstruments(int st, double value, wxString unit);
+      void SendSentenceToAllInstrumentsInt(int st, int value, wxString unit);
       void SendSatInfoToAllInstruments(int cnt, int seq, SAT_INFO sats[4]);
       void SendUtcTimeToAllInstruments( wxDateTime value );
 
@@ -167,11 +178,15 @@ private:
       int               m_hide_id;
 
       NMEA0183             m_NMEA0183;                 // Used to parse NMEA Sentences
+      MyWeigh              m_MyWeigh;
       short                mPriPosition, mPriCOGSOG, mPriHeadingM, mPriHeadingT, mPriVar, mPriDateTime, mPriAWA, mPriTWA, mPriDepth;
       double               mVar;
       // FFU
       double               mSatsInView;
       double               mHdm;
+      double               bascula_weigh;
+      double               db_weigh;
+      double               db_quantity;
       wxDateTime           mUTCDateTime;
       int                  m_config_version;
       wxString             m_VDO_accumulator;
@@ -179,6 +194,8 @@ private:
       int                  mHDT_Watchdog;
       int                  mGPS_Watchdog;
       int                  mVar_Watchdog;
+      DashboardInstrument  *instrument_progress_dialog;
+      wxProgressDialog     *progress_dialog;
 
 //protected:
 //      DECLARE_EVENT_TABLE();

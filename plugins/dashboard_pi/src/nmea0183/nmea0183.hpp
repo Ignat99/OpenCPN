@@ -112,6 +112,10 @@
 #include "vwt.hpp"
 #include "zda.hpp"
 #include "vlw.hpp"
+#include "xte.hpp"
+#include "uw.hpp"
+#include "gw.hpp"
+#include "tot.hpp"
 /*
 #include "ROT.hpp"
 #include "RPM.hpp"
@@ -248,6 +252,9 @@ class NMEA0183
       XTR Xtr;
 */
       ZDA Zda;
+      UW Uw;
+      GW Gw;
+      TOT Tot;
 /*
       ZFO Zfo;
       ZTG Ztg;
@@ -264,6 +271,9 @@ class NMEA0183
       bool IsGood( void ) const;
       bool Parse( void );
       bool PreParse( void );
+      bool IsGood1( void ) const;
+      bool Parse1( void );
+      bool PreParse1( void );
 
       NMEA0183& operator << ( wxString& source );
       NMEA0183& operator >> ( wxString& destination );

@@ -23,24 +23,20 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6.2)
 # This should be 2.8.0 to have FindGTK2 module
 IF (COMMAND cmake_policy)
-    CMAKE_POLICY(SET CMP0003 OLD)
-    CMAKE_POLICY(SET CMP0005 OLD)
-    CMAKE_POLICY(SET CMP0011 OLD)
+  if (POLICY CMP0043)
+    CMAKE_POLICY(SET CMP0043 NEW)
+  endif (POLICY CMP0043)
 ENDIF (COMMAND cmake_policy)
 
 PROJECT(dashboard_pi)
 
 SET(PACKAGE_NAME dashboard_pi)
 SET(PLUGIN_SOURCE_DIR .)
+MESSAGE (STATUS "")
 MESSAGE (STATUS "*** Staging to build ${PACKAGE_NAME} ***")
 
-# change the package name to include the wx configuration
-if(DEFINED _wx_selected_config)
-string(REGEX REPLACE "-.*$" "" WX_SHORT_CONFIG ${_wx_selected_config})
-string(REGEX REPLACE "_pi$" "_${WX_SHORT_CONFIG}_pi" PACKAGE_NAME ${PACKAGE_NAME})
-endif()
-
 #SET(CMAKE_BUILD_TYPE Debug)
+SET(CMAKE_MACOSX_RPATH "ON")
 
 INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/include ${CMAKE_SOURCE_DIR}/src)
 
@@ -49,8 +45,10 @@ INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/include ${CMAKE_SOURCE_DIR}/src)
 #TODO: Should we use  -fno-stack-protector
 #  IF NOT DEBUGGING CFLAGS="-O2 -march=native"
 IF(NOT WIN32 AND NOT APPLE)
-    ADD_DEFINITIONS( "-Wall -O3 -fexceptions -fvisibility=hidden" )
-    SET(CMAKE_SHARED_LINKER_FLAGS "-Wl,-Bsymbolic")
+    ADD_DEFINITIONS( "-Wall -O2 -fexceptions -fvisibility=hidden" )
+    IF(CMAKE_SYSTEM_NAME MATCHES ".*Linux")
+      SET(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,-Bsymbolic")
+    ENDIF(CMAKE_SYSTEM_NAME MATCHES ".*Linux")
 ENDIF(NOT WIN32 AND NOT APPLE)
 
 IF( APPLE )
@@ -59,26 +57,34 @@ IF( APPLE )
    SET(CMAKE_SHARED_LINKER_FLAGS "-Wl -undefined dynamic_lookup")
 ENDIF( APPLE )
 
-
-# Add some definitions to satisfy MS
-IF(WIN32)
+# Add some definitions to satisfy MSVC
+IF(MSVC)
     ADD_DEFINITIONS(-D__MSVC__)
     ADD_DEFINITIONS(-D_CRT_NONSTDC_NO_DEPRECATE -D_CRT_SECURE_NO_DEPRECATE)
-ENDIF(WIN32)
+ENDIF(MSVC)
 
 
-#SET(wxWidgets_USE_LIBS base core net xml html adv aui)
-#SET(BUILD_SHARED_LIBS TRUE)
-#SET( wxWidgets_USE_DEBUG OFF)
-#SET( wxWidgets_USE_UNICODE ON)
-#FIND_PACKAGE(wxWidgets REQUIRED)
 
-INCLUDE(${wxWidgets_USE_FILE})
+#  QT_ANDROID is a cross-build, so the native FIND_PACKAGE(wxWidgets...) and wxWidgets_USE_FILE is not useful.
+IF(NOT QT_ANDROID)
+IF(NOT DEFINED wxWidgets_USE_FILE)
+  SET(wxWidgets_USE_LIBS base core net xml html adv)
+  SET(BUILD_SHARED_LIBS TRUE)
+  FIND_PACKAGE(wxWidgets REQUIRED)
+ENDIF(NOT DEFINED wxWidgets_USE_FILE)
+
+  INCLUDE(${wxWidgets_USE_FILE})
+ENDIF(NOT QT_ANDROID)
 
 FIND_PACKAGE(Gettext REQUIRED)
 
 # For convenience we define the sources as a variable. You can add
 # header files and cpp/c files and CMake will sort them out
+
+#    src/wind_history.cpp
+#    src/wind_history.h
+#    src/baro_history.cpp
+#    src/baro_history.h
 
 
 SET(SRC_DASHBOARD
@@ -86,6 +92,8 @@ SET(SRC_DASHBOARD
     src/dashboard_pi.cpp
     src/instrument.cpp
     src/instrument.h
+    src/iirfilter.h
+    src/iirfilter.cpp
     src/compass.cpp
     src/compass.h
     src/dial.cpp
@@ -104,16 +112,16 @@ SET(SRC_DASHBOARD
     src/clock.h
     src/icons.cpp
     src/icons.h
-    src/wind_history.cpp
-    src/wind_history.h
-    src/baro_history.cpp
-    src/baro_history.h
     src/from_ownship.cpp
     src/from_ownship.h
     src/wxJSON/jsonval.cpp
     src/wxJSON/jsonreader.cpp
 
 )
+
+#    src/nmea0183/xdr.cpp
+#    src/nmea0183/xdr.hpp
+
 
 SET(SRC_NMEA0183
     src/nmea0183/LatLong.hpp
@@ -181,27 +189,67 @@ SET(SRC_NMEA0183
 )
 INCLUDE_DIRECTORIES(src/nmea0183)
 
+
+SET_PROPERTY(GLOBAL PROPERTY TARGET_SUPPORTS_SHARED_LIBS TRUE)
+SET(BUILD_SHARED_LIBS "ON")
 ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRC_DASHBOARD} ${SRC_NMEA0183} )
 
+
 IF(WIN32)
+  IF(MSVC)
     SET(OPENCPN_IMPORT_LIB "../../${CMAKE_CFG_INTDIR}/${PARENT}")
-    TARGET_LINK_LIBRARIES( ${PACKAGE_NAME} ${OPENCPN_IMPORT_LIB} )
-    ADD_DEPENDENCIES(${PACKAGE_NAME} ${PARENT})
+  ELSE(MSVC)
+    SET(OPENCPN_IMPORT_LIB "${PARENT}.dll")
+    SET( CMAKE_SHARED_LINKER_FLAGS "-L../../" )
+  ENDIF(MSVC)
+
+  TARGET_LINK_LIBRARIES( ${PACKAGE_NAME} ${OPENCPN_IMPORT_LIB} )
+  ADD_DEPENDENCIES(${PACKAGE_NAME} ${PARENT})
 ENDIF(WIN32)
 
-TARGET_LINK_LIBRARIES( ${PACKAGE_NAME} ${wxWidgets_LIBRARIES} )
+
+# On Android, PlugIns need a specific linkage set....
+IF (NOT QT_ANDROID )
+    TARGET_LINK_LIBRARIES( ${PACKAGE_NAME} ${wxWidgets_LIBRARIES} )
+    TARGET_LINK_LIBRARIES( ${PACKAGE_NAME} ${OCPN_Core_LIBRARIES} )
+ELSE(NOT QT_ANDROID)
+    ADD_DEFINITIONS("-Wno-inconsistent-missing-override -Wno-potentially-evaluated-expression")
+#    TARGET_LINK_LIBRARIES( ${PACKAGE_NAME}  ${CMAKE_CURRENT_BINARY_DIR}/../../libgorp.so )
+    TARGET_LINK_LIBRARIES( ${PACKAGE_NAME}  ${Qt_Base}/${Qt_Build}/lib/libQt5Gui.so )
+    TARGET_LINK_LIBRARIES( ${PACKAGE_NAME}  ${Qt_Base}/${Qt_Build}/lib/libQt5Core.so )
+    TARGET_LINK_LIBRARIES( ${PACKAGE_NAME}  ${Qt_Base}/${Qt_Build}/lib/libQt5Widgets.so )
+    SET(CMAKE_SHARED_LINKER_FLAGS "-Wl,-soname,lib${PACKAGE_NAME}.so ")
+    SET(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,-s")
+ENDIF(NOT QT_ANDROID)
+
 
 
 IF(APPLE)
     INSTALL(TARGETS ${PACKAGE_NAME} BUNDLE LIBRARY DESTINATION ${CMAKE_BINARY_DIR}/OpenCPN.app/Contents/PlugIns)
+   
+   IF(EXISTS ${PROJECT_SOURCE_DIR}/data)
+    INSTALL(DIRECTORY data DESTINATION ${CMAKE_BINARY_DIR}/OpenCPN.app/Contents/SharedSupport/plugins/${PACKAGE_NAME})
+    ENDIF()
+
 ENDIF(APPLE)
 
 IF(UNIX AND NOT APPLE)
     INSTALL(TARGETS ${PACKAGE_NAME} RUNTIME LIBRARY DESTINATION ${PREFIX_PLUGINS})
+
+    IF(EXISTS ${PROJECT_SOURCE_DIR}/data)
+        SET(PREFIX_PARENTDATA ${PREFIX_DATA}/${PARENT})
+        INSTALL(DIRECTORY data DESTINATION ${PREFIX_PARENTDATA}/plugins/${PACKAGE_NAME})
+    ENDIF()
 ENDIF(UNIX AND NOT APPLE)
 
 IF(WIN32)
     INSTALL(TARGETS ${PACKAGE_NAME} RUNTIME DESTINATION "plugins")
+  
+    SET(INSTALL_DIRECTORY "plugins\\\\${PACKAGE_NAME}")
+
+    IF(EXISTS ${PROJECT_SOURCE_DIR}/data)
+    INSTALL(DIRECTORY data DESTINATION "${INSTALL_DIRECTORY}")
+    ENDIF(EXISTS ${PROJECT_SOURCE_DIR}/data)
 ENDIF(WIN32)
 
 INCLUDE("../PluginLocalization.cmake")

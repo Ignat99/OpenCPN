@@ -27,6 +27,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/opencpn.dir/src/NavObjectCollection.cpp.obj"
   "CMakeFiles/opencpn.dir/src/RoutePoint.cpp.obj"
   "CMakeFiles/opencpn.dir/src/Route.cpp.obj"
+  "CMakeFiles/opencpn.dir/src/LabelPoint.cpp.obj"
+  "CMakeFiles/opencpn.dir/src/Label.cpp.obj"
   "CMakeFiles/opencpn.dir/src/SelectItem.cpp.obj"
   "CMakeFiles/opencpn.dir/src/Select.cpp.obj"
   "CMakeFiles/opencpn.dir/src/FontMgr.cpp.obj"
@@ -46,6 +48,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/opencpn.dir/src/routemanagerdialog.cpp.obj"
   "CMakeFiles/opencpn.dir/src/routeprop.cpp.obj"
   "CMakeFiles/opencpn.dir/src/routeprintout.cpp.obj"
+  "CMakeFiles/opencpn.dir/src/labelprintout.cpp.obj"
   "CMakeFiles/opencpn.dir/src/PositionParser.cpp.obj"
   "CMakeFiles/opencpn.dir/src/printtable.cpp.obj"
   "CMakeFiles/opencpn.dir/src/statwin.cpp.obj"
@@ -81,6 +84,9 @@ file(REMOVE_RECURSE
   "CMakeFiles/opencpn.dir/src/OCPNRegion.cpp.obj"
   "CMakeFiles/opencpn.dir/src/TrackPropDlg.cpp.obj"
   "CMakeFiles/opencpn.dir/src/LinkPropDlg.cpp.obj"
+  "CMakeFiles/opencpn.dir/src/myframe1.cpp.obj"
+  "CMakeFiles/opencpn.dir/src/ImagePanel.cpp.obj"
+  "CMakeFiles/opencpn.dir/src/qrcodegen.c.obj"
   "CMakeFiles/opencpn.dir/src/crashprint.cpp.obj"
   "CMakeFiles/opencpn.dir/src/tinyxml.cpp.obj"
   "CMakeFiles/opencpn.dir/src/tinyxmlerror.cpp.obj"
@@ -90,6 +96,6 @@ file(REMOVE_RECURSE
 )
 
 # Per-language clean rules from dependency scanning.
-foreach(lang CXX)
+foreach(lang C CXX)
   include(CMakeFiles/opencpn.dir/cmake_clean_${lang}.cmake OPTIONAL)
 endforeach()

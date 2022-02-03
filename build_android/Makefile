@@ -270,6 +270,58 @@ pot-update/fast:
 	$(MAKE) -f CMakeFiles/pot-update.dir/build.make CMakeFiles/pot-update.dir/build
 .PHONY : pot-update/fast
 
+#=============================================================================
+# Target rules for targets named dashboard-i18n
+
+# Build rule for target.
+dashboard-i18n: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 dashboard-i18n
+.PHONY : dashboard-i18n
+
+# fast build rule for target.
+dashboard-i18n/fast:
+	$(MAKE) -f plugins/dashboard_pi/CMakeFiles/dashboard-i18n.dir/build.make plugins/dashboard_pi/CMakeFiles/dashboard-i18n.dir/build
+.PHONY : dashboard-i18n/fast
+
+#=============================================================================
+# Target rules for targets named dashboard-po-update
+
+# Build rule for target.
+dashboard-po-update: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 dashboard-po-update
+.PHONY : dashboard-po-update
+
+# fast build rule for target.
+dashboard-po-update/fast:
+	$(MAKE) -f plugins/dashboard_pi/CMakeFiles/dashboard-po-update.dir/build.make plugins/dashboard_pi/CMakeFiles/dashboard-po-update.dir/build
+.PHONY : dashboard-po-update/fast
+
+#=============================================================================
+# Target rules for targets named dashboard-pot-update
+
+# Build rule for target.
+dashboard-pot-update: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 dashboard-pot-update
+.PHONY : dashboard-pot-update
+
+# fast build rule for target.
+dashboard-pot-update/fast:
+	$(MAKE) -f plugins/dashboard_pi/CMakeFiles/dashboard-pot-update.dir/build.make plugins/dashboard_pi/CMakeFiles/dashboard-pot-update.dir/build
+.PHONY : dashboard-pot-update/fast
+
+#=============================================================================
+# Target rules for targets named dashboard_pi
+
+# Build rule for target.
+dashboard_pi: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 dashboard_pi
+.PHONY : dashboard_pi
+
+# fast build rule for target.
+dashboard_pi/fast:
+	$(MAKE) -f plugins/dashboard_pi/CMakeFiles/dashboard_pi.dir/build.make plugins/dashboard_pi/CMakeFiles/dashboard_pi.dir/build
+.PHONY : dashboard_pi/fast
+
 src/AISTargetAlertDialog.obj: src/AISTargetAlertDialog.cpp.obj
 .PHONY : src/AISTargetAlertDialog.obj
 
@@ -605,6 +657,78 @@ src/IDX_entry.s: src/IDX_entry.cpp.s
 src/IDX_entry.cpp.s:
 	$(MAKE) -f CMakeFiles/opencpn.dir/build.make CMakeFiles/opencpn.dir/src/IDX_entry.cpp.s
 .PHONY : src/IDX_entry.cpp.s
+
+src/ImagePanel.obj: src/ImagePanel.cpp.obj
+.PHONY : src/ImagePanel.obj
+
+# target to build an object file
+src/ImagePanel.cpp.obj:
+	$(MAKE) -f CMakeFiles/opencpn.dir/build.make CMakeFiles/opencpn.dir/src/ImagePanel.cpp.obj
+.PHONY : src/ImagePanel.cpp.obj
+
+src/ImagePanel.i: src/ImagePanel.cpp.i
+.PHONY : src/ImagePanel.i
+
+# target to preprocess a source file
+src/ImagePanel.cpp.i:
+	$(MAKE) -f CMakeFiles/opencpn.dir/build.make CMakeFiles/opencpn.dir/src/ImagePanel.cpp.i
+.PHONY : src/ImagePanel.cpp.i
+
+src/ImagePanel.s: src/ImagePanel.cpp.s
+.PHONY : src/ImagePanel.s
+
+# target to generate assembly for a file
+src/ImagePanel.cpp.s:
+	$(MAKE) -f CMakeFiles/opencpn.dir/build.make CMakeFiles/opencpn.dir/src/ImagePanel.cpp.s
+.PHONY : src/ImagePanel.cpp.s
+
+src/Label.obj: src/Label.cpp.obj
+.PHONY : src/Label.obj
+
+# target to build an object file
+src/Label.cpp.obj:
+	$(MAKE) -f CMakeFiles/opencpn.dir/build.make CMakeFiles/opencpn.dir/src/Label.cpp.obj
+.PHONY : src/Label.cpp.obj
+
+src/Label.i: src/Label.cpp.i
+.PHONY : src/Label.i
+
+# target to preprocess a source file
+src/Label.cpp.i:
+	$(MAKE) -f CMakeFiles/opencpn.dir/build.make CMakeFiles/opencpn.dir/src/Label.cpp.i
+.PHONY : src/Label.cpp.i
+
+src/Label.s: src/Label.cpp.s
+.PHONY : src/Label.s
+
+# target to generate assembly for a file
+src/Label.cpp.s:
+	$(MAKE) -f CMakeFiles/opencpn.dir/build.make CMakeFiles/opencpn.dir/src/Label.cpp.s
+.PHONY : src/Label.cpp.s
+
+src/LabelPoint.obj: src/LabelPoint.cpp.obj
+.PHONY : src/LabelPoint.obj
+
+# target to build an object file
+src/LabelPoint.cpp.obj:
+	$(MAKE) -f CMakeFiles/opencpn.dir/build.make CMakeFiles/opencpn.dir/src/LabelPoint.cpp.obj
+.PHONY : src/LabelPoint.cpp.obj
+
+src/LabelPoint.i: src/LabelPoint.cpp.i
+.PHONY : src/LabelPoint.i
+
+# target to preprocess a source file
+src/LabelPoint.cpp.i:
+	$(MAKE) -f CMakeFiles/opencpn.dir/build.make CMakeFiles/opencpn.dir/src/LabelPoint.cpp.i
+.PHONY : src/LabelPoint.cpp.i
+
+src/LabelPoint.s: src/LabelPoint.cpp.s
+.PHONY : src/LabelPoint.s
+
+# target to generate assembly for a file
+src/LabelPoint.cpp.s:
+	$(MAKE) -f CMakeFiles/opencpn.dir/build.make CMakeFiles/opencpn.dir/src/LabelPoint.cpp.s
+.PHONY : src/LabelPoint.cpp.s
 
 src/Layer.obj: src/Layer.cpp.obj
 .PHONY : src/Layer.obj
@@ -2166,6 +2290,30 @@ src/kml.cpp.s:
 	$(MAKE) -f CMakeFiles/opencpn.dir/build.make CMakeFiles/opencpn.dir/src/kml.cpp.s
 .PHONY : src/kml.cpp.s
 
+src/labelprintout.obj: src/labelprintout.cpp.obj
+.PHONY : src/labelprintout.obj
+
+# target to build an object file
+src/labelprintout.cpp.obj:
+	$(MAKE) -f CMakeFiles/opencpn.dir/build.make CMakeFiles/opencpn.dir/src/labelprintout.cpp.obj
+.PHONY : src/labelprintout.cpp.obj
+
+src/labelprintout.i: src/labelprintout.cpp.i
+.PHONY : src/labelprintout.i
+
+# target to preprocess a source file
+src/labelprintout.cpp.i:
+	$(MAKE) -f CMakeFiles/opencpn.dir/build.make CMakeFiles/opencpn.dir/src/labelprintout.cpp.i
+.PHONY : src/labelprintout.cpp.i
+
+src/labelprintout.s: src/labelprintout.cpp.s
+.PHONY : src/labelprintout.s
+
+# target to generate assembly for a file
+src/labelprintout.cpp.s:
+	$(MAKE) -f CMakeFiles/opencpn.dir/build.make CMakeFiles/opencpn.dir/src/labelprintout.cpp.s
+.PHONY : src/labelprintout.cpp.s
+
 src/multiplexer.obj: src/multiplexer.cpp.obj
 .PHONY : src/multiplexer.obj
 
@@ -2189,6 +2337,30 @@ src/multiplexer.s: src/multiplexer.cpp.s
 src/multiplexer.cpp.s:
 	$(MAKE) -f CMakeFiles/opencpn.dir/build.make CMakeFiles/opencpn.dir/src/multiplexer.cpp.s
 .PHONY : src/multiplexer.cpp.s
+
+src/myframe1.obj: src/myframe1.cpp.obj
+.PHONY : src/myframe1.obj
+
+# target to build an object file
+src/myframe1.cpp.obj:
+	$(MAKE) -f CMakeFiles/opencpn.dir/build.make CMakeFiles/opencpn.dir/src/myframe1.cpp.obj
+.PHONY : src/myframe1.cpp.obj
+
+src/myframe1.i: src/myframe1.cpp.i
+.PHONY : src/myframe1.i
+
+# target to preprocess a source file
+src/myframe1.cpp.i:
+	$(MAKE) -f CMakeFiles/opencpn.dir/build.make CMakeFiles/opencpn.dir/src/myframe1.cpp.i
+.PHONY : src/myframe1.cpp.i
+
+src/myframe1.s: src/myframe1.cpp.s
+.PHONY : src/myframe1.s
+
+# target to generate assembly for a file
+src/myframe1.cpp.s:
+	$(MAKE) -f CMakeFiles/opencpn.dir/build.make CMakeFiles/opencpn.dir/src/myframe1.cpp.s
+.PHONY : src/myframe1.cpp.s
 
 src/navutil.obj: src/navutil.cpp.obj
 .PHONY : src/navutil.obj
@@ -2910,6 +3082,30 @@ src/pugixml.cpp.s:
 	$(MAKE) -f CMakeFiles/opencpn.dir/build.make CMakeFiles/opencpn.dir/src/pugixml.cpp.s
 .PHONY : src/pugixml.cpp.s
 
+src/qrcodegen.obj: src/qrcodegen.c.obj
+.PHONY : src/qrcodegen.obj
+
+# target to build an object file
+src/qrcodegen.c.obj:
+	$(MAKE) -f CMakeFiles/opencpn.dir/build.make CMakeFiles/opencpn.dir/src/qrcodegen.c.obj
+.PHONY : src/qrcodegen.c.obj
+
+src/qrcodegen.i: src/qrcodegen.c.i
+.PHONY : src/qrcodegen.i
+
+# target to preprocess a source file
+src/qrcodegen.c.i:
+	$(MAKE) -f CMakeFiles/opencpn.dir/build.make CMakeFiles/opencpn.dir/src/qrcodegen.c.i
+.PHONY : src/qrcodegen.c.i
+
+src/qrcodegen.s: src/qrcodegen.c.s
+.PHONY : src/qrcodegen.s
+
+# target to generate assembly for a file
+src/qrcodegen.c.s:
+	$(MAKE) -f CMakeFiles/opencpn.dir/build.make CMakeFiles/opencpn.dir/src/qrcodegen.c.s
+.PHONY : src/qrcodegen.c.s
+
 src/razdsparser.obj: src/razdsparser.cpp.obj
 .PHONY : src/razdsparser.obj
 
@@ -3340,6 +3536,10 @@ help:
 	@echo "... list_install_components"
 	@echo "... package_source"
 	@echo "... pot-update"
+	@echo "... dashboard-pot-update"
+	@echo "... dashboard-i18n"
+	@echo "... dashboard_pi"
+	@echo "... dashboard-po-update"
 	@echo "... src/AISTargetAlertDialog.obj"
 	@echo "... src/AISTargetAlertDialog.i"
 	@echo "... src/AISTargetAlertDialog.s"
@@ -3382,6 +3582,15 @@ help:
 	@echo "... src/IDX_entry.obj"
 	@echo "... src/IDX_entry.i"
 	@echo "... src/IDX_entry.s"
+	@echo "... src/ImagePanel.obj"
+	@echo "... src/ImagePanel.i"
+	@echo "... src/ImagePanel.s"
+	@echo "... src/Label.obj"
+	@echo "... src/Label.i"
+	@echo "... src/Label.s"
+	@echo "... src/LabelPoint.obj"
+	@echo "... src/LabelPoint.i"
+	@echo "... src/LabelPoint.s"
 	@echo "... src/Layer.obj"
 	@echo "... src/Layer.i"
 	@echo "... src/Layer.s"
@@ -3577,9 +3786,15 @@ help:
 	@echo "... src/kml.obj"
 	@echo "... src/kml.i"
 	@echo "... src/kml.s"
+	@echo "... src/labelprintout.obj"
+	@echo "... src/labelprintout.i"
+	@echo "... src/labelprintout.s"
 	@echo "... src/multiplexer.obj"
 	@echo "... src/multiplexer.i"
 	@echo "... src/multiplexer.s"
+	@echo "... src/myframe1.obj"
+	@echo "... src/myframe1.i"
+	@echo "... src/myframe1.s"
 	@echo "... src/navutil.obj"
 	@echo "... src/navutil.i"
 	@echo "... src/navutil.s"
@@ -3670,6 +3885,9 @@ help:
 	@echo "... src/pugixml.obj"
 	@echo "... src/pugixml.i"
 	@echo "... src/pugixml.s"
+	@echo "... src/qrcodegen.obj"
+	@echo "... src/qrcodegen.i"
+	@echo "... src/qrcodegen.s"
 	@echo "... src/razdsparser.obj"
 	@echo "... src/razdsparser.i"
 	@echo "... src/razdsparser.s"

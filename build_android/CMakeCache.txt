@@ -227,8 +227,29 @@ USE_S57:BOOL=ON
 //No help, variable specified on the command line.
 _wx_selected_config:UNINITIALIZED=androideabi-qt
 
+//Dependencies for target
+dashboard_androideabi_pi_LIB_DEPENDS:STATIC=
+
+//Value Computed by CMake
+dashboard_pi_BINARY_DIR:STATIC=/home/ignat99/Projects/OpenCPN/build_android/plugins/dashboard_pi
+
+//Dependencies for the target
+dashboard_pi_LIB_DEPENDS:STATIC=general;/opt/Qt5.5.1//lib/libQt5Gui.so;general;/opt/Qt5.5.1//lib/libQt5Core.so;general;/opt/Qt5.5.1//lib/libQt5Widgets.so;
+
+//Value Computed by CMake
+dashboard_pi_SOURCE_DIR:STATIC=/home/ignat99/Projects/OpenCPN/plugins/dashboard_pi
+
+//Value Computed by CMake
+grib_pi_BINARY_DIR:STATIC=/home/ignat99/Projects/OpenCPN/build_android/plugins/grib_pi
+
+//Value Computed by CMake
+grib_pi_SOURCE_DIR:STATIC=/home/ignat99/Projects/OpenCPN/plugins/grib_pi
+
 //Dependencies for the target
 opencpn_LIB_DEPENDS:STATIC=general;NMEA0183;general;GARMINHOST;general;SYMBOLS;
+
+//Location of wxWidgets library configuration provider binary (wx-config).
+wxWidgets_CONFIG_EXECUTABLE:FILEPATH=wxWidgets_CONFIG_EXECUTABLE-NOTFOUND
 
 
 ########################
@@ -323,7 +344,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_NM
 CMAKE_NM-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_LOCAL_GENERATORS:INTERNAL=1
+CMAKE_NUMBER_OF_LOCAL_GENERATORS:INTERNAL=3
 //ADVANCED property for variable: CMAKE_OBJCOPY
 CMAKE_OBJCOPY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_OBJDUMP

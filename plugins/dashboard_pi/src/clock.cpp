@@ -72,6 +72,7 @@ void DashboardInstrument_Clock::SetUtcTime( wxDateTime data )
     }
 }
 
+//      DashboardInstrument_Clock( parent, id, title, OCPN_DBP_PACK, _T("%i/4 %c") )
 DashboardInstrument_Moon::DashboardInstrument_Moon( wxWindow *parent, wxWindowID id, wxString title ) :
       DashboardInstrument_Clock( parent, id, title, OCPN_DBP_STC_CLK|OCPN_DBP_STC_LAT, _T("%i/4 %c") )
 {
@@ -235,6 +236,7 @@ wxDateTime convHrmn(double dhr) {
       return wxDateTime(hr, mn);
 };
 
+//    DashboardInstrument_Clock( parent, id, title, OCPN_DBP_PACK )
 DashboardInstrument_Sun::DashboardInstrument_Sun( wxWindow *parent, wxWindowID id, wxString title ) :
     DashboardInstrument_Clock( parent, id, title, OCPN_DBP_STC_LAT|OCPN_DBP_STC_LON|OCPN_DBP_STC_CLK )
 {

@@ -309,6 +309,8 @@ wx/string.h
 /home/ignat99/Projects/wxqt/wxWidgets/include/wx/wx/string.h
 wx/dynarray.h
 /home/ignat99/Projects/wxqt/wxWidgets/include/wx/wx/dynarray.h
+vector
+-
 wx/beforestd.h
 /home/ignat99/Projects/wxqt/wxWidgets/include/wx/wx/beforestd.h
 iterator
@@ -319,16 +321,16 @@ wx/afterstd.h
 /home/ignat99/Projects/wxqt/wxWidgets/include/wx/beforestd.h
 
 /home/ignat99/Projects/wxqt/wxWidgets/include/wx/buffer.h
-wx/chartype.h
-/home/ignat99/Projects/wxqt/wxWidgets/include/wx/wx/chartype.h
+wx/defs.h
+/home/ignat99/Projects/wxqt/wxWidgets/include/wx/wx/defs.h
 wx/wxcrtbase.h
 /home/ignat99/Projects/wxqt/wxWidgets/include/wx/wx/wxcrtbase.h
 stdlib.h
 -
 
 /home/ignat99/Projects/wxqt/wxWidgets/include/wx/chartype.h
-wx/platform.h
-/home/ignat99/Projects/wxqt/wxWidgets/include/wx/wx/platform.h
+wx/types.h
+/home/ignat99/Projects/wxqt/wxWidgets/include/wx/wx/types.h
 sys/types.h
 -
 wchar.h
@@ -338,8 +340,6 @@ wcstr.h
 stdlib.h
 -
 widec.h
--
-ctype.h
 -
 stddef.h
 -
@@ -357,8 +357,6 @@ wx/cpp.h
 /home/ignat99/Projects/wxqt/wxWidgets/include/wx/wx/cpp.h
 
 /home/ignat99/Projects/wxqt/wxWidgets/include/wx/chkconf.h
-wx/msw/wince/chkconf.h
-/home/ignat99/Projects/wxqt/wxWidgets/include/wx/wx/msw/wince/chkconf.h
 wx/msw/chkconf.h
 /home/ignat99/Projects/wxqt/wxWidgets/include/wx/wx/msw/chkconf.h
 wx/gtk/chkconf.h
@@ -399,8 +397,6 @@ wx/wxcrtvararg.h
 /home/ignat99/Projects/wxqt/wxWidgets/include/wx/datetime.h
 wx/defs.h
 /home/ignat99/Projects/wxqt/wxWidgets/include/wx/wx/defs.h
-wx/msw/wince/time.h
-/home/ignat99/Projects/wxqt/wxWidgets/include/wx/wx/msw/wince/time.h
 time.h
 -
 limits.h
@@ -425,6 +421,8 @@ wx/dlimpexp.h
 /home/ignat99/Projects/wxqt/wxWidgets/include/wx/wx/dlimpexp.h
 
 /home/ignat99/Projects/wxqt/wxWidgets/include/wx/defs.h
+wx/msw/winundef.h
+/home/ignat99/Projects/wxqt/wxWidgets/include/wx/wx/msw/winundef.h
 wx/platform.h
 /home/ignat99/Projects/wxqt/wxWidgets/include/wx/wx/platform.h
 wx/version.h
@@ -433,20 +431,14 @@ wx/dlimpexp.h
 /home/ignat99/Projects/wxqt/wxWidgets/include/wx/wx/dlimpexp.h
 stddef.h
 -
+wx/types.h
+/home/ignat99/Projects/wxqt/wxWidgets/include/wx/wx/types.h
 wx/debug.h
 /home/ignat99/Projects/wxqt/wxWidgets/include/wx/wx/debug.h
-sys/types.h
--
-sys/types.h
--
-wx/windowid.h
-/home/ignat99/Projects/wxqt/wxWidgets/include/wx/wx/windowid.h
 unistd.h
 -
 wx/qt/defs.h
 /home/ignat99/Projects/wxqt/wxWidgets/include/wx/wx/qt/defs.h
-wx/msw/winundef.h
-/home/ignat99/Projects/wxqt/wxWidgets/include/wx/wx/msw/winundef.h
 wx/features.h
 /home/ignat99/Projects/wxqt/wxWidgets/include/wx/wx/features.h
 
@@ -457,14 +449,8 @@ wx/features.h
 /home/ignat99/Projects/wxqt/wxWidgets/include/wx/dynarray.h
 wx/defs.h
 /home/ignat99/Projects/wxqt/wxWidgets/include/wx/wx/defs.h
-wx/beforestd.h
-/home/ignat99/Projects/wxqt/wxWidgets/include/wx/wx/beforestd.h
-vector
--
-algorithm
--
-wx/afterstd.h
-/home/ignat99/Projects/wxqt/wxWidgets/include/wx/wx/afterstd.h
+wx/vector.h
+/home/ignat99/Projects/wxqt/wxWidgets/include/wx/wx/vector.h
 
 /home/ignat99/Projects/wxqt/wxWidgets/include/wx/except.h
 wx/defs.h
@@ -509,8 +495,6 @@ wx/language.h
 /home/ignat99/Projects/wxqt/wxWidgets/include/wx/wx/language.h
 
 /home/ignat99/Projects/wxqt/wxWidgets/include/wx/iosfwrap.h
-iostream.h
--
 iosfwd
 -
 wx/msw/winundef.h
@@ -539,6 +523,8 @@ list
 -
 wx/afterstd.h
 /home/ignat99/Projects/wxqt/wxWidgets/include/wx/wx/afterstd.h
+iterator
+-
 
 /home/ignat99/Projects/wxqt/wxWidgets/include/wx/listimpl.cpp
 
@@ -559,6 +545,10 @@ wx/dynarray.h
 /home/ignat99/Projects/wxqt/wxWidgets/include/wx/wx/dynarray.h
 wx/hashmap.h
 /home/ignat99/Projects/wxqt/wxWidgets/include/wx/wx/hashmap.h
+wx/msgout.h
+/home/ignat99/Projects/wxqt/wxWidgets/include/wx/wx/msgout.h
+wx/time.h
+/home/ignat99/Projects/wxqt/wxWidgets/include/wx/wx/time.h
 wx/thread.h
 /home/ignat99/Projects/wxqt/wxWidgets/include/wx/wx/thread.h
 wx/iosfwrap.h
@@ -629,6 +619,8 @@ wx/strvararg.h
 /home/ignat99/Projects/wxqt/wxWidgets/include/wx/msw/chkconf.h
 
 /home/ignat99/Projects/wxqt/wxWidgets/include/wx/msw/gccpriv.h
+wx/msw/winver.h
+/home/ignat99/Projects/wxqt/wxWidgets/include/wx/msw/wx/msw/winver.h
 _mingw.h
 -
 w32api.h
@@ -652,9 +644,13 @@ wx/vector.h
 
 /home/ignat99/Projects/wxqt/wxWidgets/include/wx/msw/winundef.h
 
+/home/ignat99/Projects/wxqt/wxWidgets/include/wx/msw/winver.h
+
 /home/ignat99/Projects/wxqt/wxWidgets/include/wx/msw/wrapwin.h
 wx/platform.h
 /home/ignat99/Projects/wxqt/wxWidgets/include/wx/msw/wx/platform.h
+wx/msw/winver.h
+/home/ignat99/Projects/wxqt/wxWidgets/include/wx/msw/wx/msw/winver.h
 winsock2.h
 -
 windows.h
@@ -677,14 +673,10 @@ wx/msw/msvcrt.h
 /home/ignat99/Projects/wxqt/wxWidgets/include/wx/osx/chkconf.h
 wx/osx/iphone/chkconf.h
 /home/ignat99/Projects/wxqt/wxWidgets/include/wx/osx/wx/osx/iphone/chkconf.h
-wx/osx/carbon/chkconf.h
-/home/ignat99/Projects/wxqt/wxWidgets/include/wx/osx/wx/osx/carbon/chkconf.h
 wx/osx/cocoa/chkconf.h
 /home/ignat99/Projects/wxqt/wxWidgets/include/wx/osx/wx/osx/cocoa/chkconf.h
 
 /home/ignat99/Projects/wxqt/wxWidgets/include/wx/osx/cocoa/chkconf.h
-
-/home/ignat99/Projects/wxqt/wxWidgets/include/wx/osx/config_xcode.h
 
 /home/ignat99/Projects/wxqt/wxWidgets/include/wx/osx/iphone/chkconf.h
 
@@ -693,25 +685,21 @@ unistd.h
 -
 TargetConditionals.h
 -
-AvailabilityMacros.h
+Availability.h
 -
-wx/osx/config_xcode.h
-/home/ignat99/Projects/wxqt/wxWidgets/include/wx/wx/osx/config_xcode.h
 wx/android/config_android.h
 /home/ignat99/Projects/wxqt/wxWidgets/include/wx/wx/android/config_android.h
 wx/compiler.h
 /home/ignat99/Projects/wxqt/wxWidgets/include/wx/wx/compiler.h
 wx/setup.h
 /home/ignat99/Projects/wxqt/wxWidgets/include/wx/wx/setup.h
-wx/msw/wince/libraries.h
-/home/ignat99/Projects/wxqt/wxWidgets/include/wx/wx/msw/wince/libraries.h
 wx/msw/libraries.h
 /home/ignat99/Projects/wxqt/wxWidgets/include/wx/wx/msw/libraries.h
 wx/msw/gccpriv.h
 /home/ignat99/Projects/wxqt/wxWidgets/include/wx/wx/msw/gccpriv.h
 TargetConditionals.h
 -
-AvailabilityMacros.h
+Availability.h
 -
 wx/chkconf.h
 /home/ignat99/Projects/wxqt/wxWidgets/include/wx/wx/chkconf.h
@@ -779,6 +767,8 @@ wx/unichar.h
 /home/ignat99/Projects/wxqt/wxWidgets/include/wx/wx/unichar.h
 wx/tls.h
 /home/ignat99/Projects/wxqt/wxWidgets/include/wx/wx/tls.h
+functional
+-
 wx/iosfwrap.h
 /home/ignat99/Projects/wxqt/wxWidgets/include/wx/wx/iosfwrap.h
 wx/crt.h
@@ -836,6 +826,10 @@ wx/stringimpl.h
 wx/defs.h
 /home/ignat99/Projects/wxqt/wxWidgets/include/wx/wx/defs.h
 
+/home/ignat99/Projects/wxqt/wxWidgets/include/wx/time.h
+wx/longlong.h
+/home/ignat99/Projects/wxqt/wxWidgets/include/wx/wx/longlong.h
+
 /home/ignat99/Projects/wxqt/wxWidgets/include/wx/tls.h
 wx/defs.h
 /home/ignat99/Projects/wxqt/wxWidgets/include/wx/wx/defs.h
@@ -870,6 +864,14 @@ typeinfo
 string.h
 -
 
+/home/ignat99/Projects/wxqt/wxWidgets/include/wx/types.h
+wx/platform.h
+/home/ignat99/Projects/wxqt/wxWidgets/include/wx/wx/platform.h
+sys/types.h
+-
+sys/types.h
+-
+
 /home/ignat99/Projects/wxqt/wxWidgets/include/wx/unichar.h
 wx/defs.h
 /home/ignat99/Projects/wxqt/wxWidgets/include/wx/wx/defs.h
@@ -878,6 +880,8 @@ wx/chartype.h
 wx/stringimpl.h
 /home/ignat99/Projects/wxqt/wxWidgets/include/wx/wx/stringimpl.h
 algorithm
+-
+utility
 -
 
 /home/ignat99/Projects/wxqt/wxWidgets/include/wx/univ/chkconf.h
@@ -925,6 +929,8 @@ wx/meta/if.h
 /home/ignat99/Projects/wxqt/wxWidgets/include/wx/wx/meta/if.h
 wx/beforestd.h
 /home/ignat99/Projects/wxqt/wxWidgets/include/wx/wx/beforestd.h
+iterator
+-
 new
 -
 wx/afterstd.h
@@ -933,8 +939,6 @@ wx/afterstd.h
 /home/ignat99/Projects/wxqt/wxWidgets/include/wx/version.h
 wx/cpp.h
 /home/ignat99/Projects/wxqt/wxWidgets/include/wx/wx/cpp.h
-
-/home/ignat99/Projects/wxqt/wxWidgets/include/wx/windowid.h
 
 /home/ignat99/Projects/wxqt/wxWidgets/include/wx/wxcrt.h
 wx/wxcrtbase.h

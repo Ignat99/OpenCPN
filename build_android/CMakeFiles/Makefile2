@@ -62,7 +62,7 @@ CMAKE_BINARY_DIR = /home/ignat99/Projects/OpenCPN/build_android
 CMakeFiles/GARMINHOST.dir/all:
 	$(MAKE) -f CMakeFiles/GARMINHOST.dir/build.make CMakeFiles/GARMINHOST.dir/depend
 	$(MAKE) -f CMakeFiles/GARMINHOST.dir/build.make CMakeFiles/GARMINHOST.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles  1 2 3 4 5 6 7 8 9 10
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles  1 2 3 4 5 6
 	@echo "Built target GARMINHOST"
 .PHONY : CMakeFiles/GARMINHOST.dir/all
 
@@ -72,7 +72,7 @@ all: CMakeFiles/GARMINHOST.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/GARMINHOST.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles 10
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles 6
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/GARMINHOST.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles 0
 .PHONY : CMakeFiles/GARMINHOST.dir/rule
@@ -97,7 +97,7 @@ clean: CMakeFiles/GARMINHOST.dir/clean
 CMakeFiles/NMEA0183.dir/all:
 	$(MAKE) -f CMakeFiles/NMEA0183.dir/build.make CMakeFiles/NMEA0183.dir/depend
 	$(MAKE) -f CMakeFiles/NMEA0183.dir/build.make CMakeFiles/NMEA0183.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles  11 12 13 14 15 16 17 18 19 20 21 22
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles  7 8 9 10 11 12 13
 	@echo "Built target NMEA0183"
 .PHONY : CMakeFiles/NMEA0183.dir/all
 
@@ -107,7 +107,7 @@ all: CMakeFiles/NMEA0183.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/NMEA0183.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles 12
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles 7
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/NMEA0183.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles 0
 .PHONY : CMakeFiles/NMEA0183.dir/rule
@@ -132,7 +132,7 @@ clean: CMakeFiles/NMEA0183.dir/clean
 CMakeFiles/SYMBOLS.dir/all:
 	$(MAKE) -f CMakeFiles/SYMBOLS.dir/build.make CMakeFiles/SYMBOLS.dir/depend
 	$(MAKE) -f CMakeFiles/SYMBOLS.dir/build.make CMakeFiles/SYMBOLS.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles  23 24
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles  14
 	@echo "Built target SYMBOLS"
 .PHONY : CMakeFiles/SYMBOLS.dir/all
 
@@ -142,7 +142,7 @@ all: CMakeFiles/SYMBOLS.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/SYMBOLS.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles 2
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles 1
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/SYMBOLS.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles 0
 .PHONY : CMakeFiles/SYMBOLS.dir/rule
@@ -173,7 +173,7 @@ CMakeFiles/dummy.dir/all: CMakeFiles/opencpn.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/dummy.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles 86
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles 52
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/dummy.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles 0
 .PHONY : CMakeFiles/dummy.dir/rule
@@ -198,13 +198,13 @@ clean: CMakeFiles/dummy.dir/clean
 CMakeFiles/i18n.dir/all:
 	$(MAKE) -f CMakeFiles/i18n.dir/build.make CMakeFiles/i18n.dir/depend
 	$(MAKE) -f CMakeFiles/i18n.dir/build.make CMakeFiles/i18n.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles  25 26 27 28 29 30 31 32 33 34 35 36 37
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles  55 56 57 58 59 60 61
 	@echo "Built target i18n"
 .PHONY : CMakeFiles/i18n.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/i18n.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles 13
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles 7
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/i18n.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles 0
 .PHONY : CMakeFiles/i18n.dir/rule
@@ -226,13 +226,13 @@ clean: CMakeFiles/i18n.dir/clean
 # Target rules for target CMakeFiles/opencpn.dir
 
 # All Build rule for target.
+CMakeFiles/opencpn.dir/all: CMakeFiles/GARMINHOST.dir/all
 CMakeFiles/opencpn.dir/all: CMakeFiles/NMEA0183.dir/all
 CMakeFiles/opencpn.dir/all: CMakeFiles/SYMBOLS.dir/all
-CMakeFiles/opencpn.dir/all: CMakeFiles/GARMINHOST.dir/all
 CMakeFiles/opencpn.dir/all: CMakeFiles/i18n.dir/all
 	$(MAKE) -f CMakeFiles/opencpn.dir/build.make CMakeFiles/opencpn.dir/depend
 	$(MAKE) -f CMakeFiles/opencpn.dir/build.make CMakeFiles/opencpn.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles  38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles  62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92
 	@echo "Built target opencpn"
 .PHONY : CMakeFiles/opencpn.dir/all
 
@@ -242,7 +242,7 @@ all: CMakeFiles/opencpn.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/opencpn.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles 86
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles 52
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/opencpn.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles 0
 .PHONY : CMakeFiles/opencpn.dir/rule
@@ -267,13 +267,13 @@ clean: CMakeFiles/opencpn.dir/clean
 CMakeFiles/po-update.dir/all:
 	$(MAKE) -f CMakeFiles/po-update.dir/build.make CMakeFiles/po-update.dir/depend
 	$(MAKE) -f CMakeFiles/po-update.dir/build.make CMakeFiles/po-update.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles  87 88 89 90 91 92 93 94 95 96 97 98
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles  93 94 95 96 97 98 99
 	@echo "Built target po-update"
 .PHONY : CMakeFiles/po-update.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/po-update.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles 12
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles 7
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/po-update.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles 0
 .PHONY : CMakeFiles/po-update.dir/rule
@@ -298,13 +298,13 @@ clean: CMakeFiles/po-update.dir/clean
 CMakeFiles/pot-update.dir/all:
 	$(MAKE) -f CMakeFiles/pot-update.dir/build.make CMakeFiles/pot-update.dir/depend
 	$(MAKE) -f CMakeFiles/pot-update.dir/build.make CMakeFiles/pot-update.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles  99 100
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles  100
 	@echo "Built target pot-update"
 .PHONY : CMakeFiles/pot-update.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/pot-update.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles 2
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles 1
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/pot-update.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles 0
 .PHONY : CMakeFiles/pot-update.dir/rule
@@ -320,6 +320,167 @@ CMakeFiles/pot-update.dir/clean:
 
 # clean rule for target.
 clean: CMakeFiles/pot-update.dir/clean
+.PHONY : clean
+
+#=============================================================================
+# Directory level rules for directory plugins
+
+# Convenience name for "all" pass in the directory.
+plugins/all: plugins/dashboard_pi/all
+.PHONY : plugins/all
+
+# Convenience name for "clean" pass in the directory.
+plugins/clean: plugins/dashboard_pi/clean
+.PHONY : plugins/clean
+
+# Convenience name for "preinstall" pass in the directory.
+plugins/preinstall: plugins/dashboard_pi/preinstall
+.PHONY : plugins/preinstall
+
+#=============================================================================
+# Directory level rules for directory plugins/dashboard_pi
+
+# Convenience name for "all" pass in the directory.
+plugins/dashboard_pi/all: plugins/dashboard_pi/CMakeFiles/dashboard_pi.dir/all
+.PHONY : plugins/dashboard_pi/all
+
+# Convenience name for "clean" pass in the directory.
+plugins/dashboard_pi/clean: plugins/dashboard_pi/CMakeFiles/dashboard-i18n.dir/clean
+plugins/dashboard_pi/clean: plugins/dashboard_pi/CMakeFiles/dashboard-po-update.dir/clean
+plugins/dashboard_pi/clean: plugins/dashboard_pi/CMakeFiles/dashboard-pot-update.dir/clean
+plugins/dashboard_pi/clean: plugins/dashboard_pi/CMakeFiles/dashboard_pi.dir/clean
+.PHONY : plugins/dashboard_pi/clean
+
+# Convenience name for "preinstall" pass in the directory.
+plugins/dashboard_pi/preinstall:
+.PHONY : plugins/dashboard_pi/preinstall
+
+#=============================================================================
+# Target rules for target plugins/dashboard_pi/CMakeFiles/dashboard-i18n.dir
+
+# All Build rule for target.
+plugins/dashboard_pi/CMakeFiles/dashboard-i18n.dir/all:
+	$(MAKE) -f plugins/dashboard_pi/CMakeFiles/dashboard-i18n.dir/build.make plugins/dashboard_pi/CMakeFiles/dashboard-i18n.dir/depend
+	$(MAKE) -f plugins/dashboard_pi/CMakeFiles/dashboard-i18n.dir/build.make plugins/dashboard_pi/CMakeFiles/dashboard-i18n.dir/build
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles  15 16 17 18 19 20 21 22 23 24 25
+	@echo "Built target dashboard-i18n"
+.PHONY : plugins/dashboard_pi/CMakeFiles/dashboard-i18n.dir/all
+
+# Build rule for subdir invocation for target.
+plugins/dashboard_pi/CMakeFiles/dashboard-i18n.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles 11
+	$(MAKE) -f CMakeFiles/Makefile2 plugins/dashboard_pi/CMakeFiles/dashboard-i18n.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles 0
+.PHONY : plugins/dashboard_pi/CMakeFiles/dashboard-i18n.dir/rule
+
+# Convenience name for target.
+dashboard-i18n: plugins/dashboard_pi/CMakeFiles/dashboard-i18n.dir/rule
+.PHONY : dashboard-i18n
+
+# clean rule for target.
+plugins/dashboard_pi/CMakeFiles/dashboard-i18n.dir/clean:
+	$(MAKE) -f plugins/dashboard_pi/CMakeFiles/dashboard-i18n.dir/build.make plugins/dashboard_pi/CMakeFiles/dashboard-i18n.dir/clean
+.PHONY : plugins/dashboard_pi/CMakeFiles/dashboard-i18n.dir/clean
+
+# clean rule for target.
+clean: plugins/dashboard_pi/CMakeFiles/dashboard-i18n.dir/clean
+.PHONY : clean
+
+#=============================================================================
+# Target rules for target plugins/dashboard_pi/CMakeFiles/dashboard-po-update.dir
+
+# All Build rule for target.
+plugins/dashboard_pi/CMakeFiles/dashboard-po-update.dir/all:
+	$(MAKE) -f plugins/dashboard_pi/CMakeFiles/dashboard-po-update.dir/build.make plugins/dashboard_pi/CMakeFiles/dashboard-po-update.dir/depend
+	$(MAKE) -f plugins/dashboard_pi/CMakeFiles/dashboard-po-update.dir/build.make plugins/dashboard_pi/CMakeFiles/dashboard-po-update.dir/build
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles  26 27 28 29 30 31 32 33 34 35 36 37
+	@echo "Built target dashboard-po-update"
+.PHONY : plugins/dashboard_pi/CMakeFiles/dashboard-po-update.dir/all
+
+# Build rule for subdir invocation for target.
+plugins/dashboard_pi/CMakeFiles/dashboard-po-update.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles 12
+	$(MAKE) -f CMakeFiles/Makefile2 plugins/dashboard_pi/CMakeFiles/dashboard-po-update.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles 0
+.PHONY : plugins/dashboard_pi/CMakeFiles/dashboard-po-update.dir/rule
+
+# Convenience name for target.
+dashboard-po-update: plugins/dashboard_pi/CMakeFiles/dashboard-po-update.dir/rule
+.PHONY : dashboard-po-update
+
+# clean rule for target.
+plugins/dashboard_pi/CMakeFiles/dashboard-po-update.dir/clean:
+	$(MAKE) -f plugins/dashboard_pi/CMakeFiles/dashboard-po-update.dir/build.make plugins/dashboard_pi/CMakeFiles/dashboard-po-update.dir/clean
+.PHONY : plugins/dashboard_pi/CMakeFiles/dashboard-po-update.dir/clean
+
+# clean rule for target.
+clean: plugins/dashboard_pi/CMakeFiles/dashboard-po-update.dir/clean
+.PHONY : clean
+
+#=============================================================================
+# Target rules for target plugins/dashboard_pi/CMakeFiles/dashboard-pot-update.dir
+
+# All Build rule for target.
+plugins/dashboard_pi/CMakeFiles/dashboard-pot-update.dir/all:
+	$(MAKE) -f plugins/dashboard_pi/CMakeFiles/dashboard-pot-update.dir/build.make plugins/dashboard_pi/CMakeFiles/dashboard-pot-update.dir/depend
+	$(MAKE) -f plugins/dashboard_pi/CMakeFiles/dashboard-pot-update.dir/build.make plugins/dashboard_pi/CMakeFiles/dashboard-pot-update.dir/build
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles  38
+	@echo "Built target dashboard-pot-update"
+.PHONY : plugins/dashboard_pi/CMakeFiles/dashboard-pot-update.dir/all
+
+# Build rule for subdir invocation for target.
+plugins/dashboard_pi/CMakeFiles/dashboard-pot-update.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles 1
+	$(MAKE) -f CMakeFiles/Makefile2 plugins/dashboard_pi/CMakeFiles/dashboard-pot-update.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles 0
+.PHONY : plugins/dashboard_pi/CMakeFiles/dashboard-pot-update.dir/rule
+
+# Convenience name for target.
+dashboard-pot-update: plugins/dashboard_pi/CMakeFiles/dashboard-pot-update.dir/rule
+.PHONY : dashboard-pot-update
+
+# clean rule for target.
+plugins/dashboard_pi/CMakeFiles/dashboard-pot-update.dir/clean:
+	$(MAKE) -f plugins/dashboard_pi/CMakeFiles/dashboard-pot-update.dir/build.make plugins/dashboard_pi/CMakeFiles/dashboard-pot-update.dir/clean
+.PHONY : plugins/dashboard_pi/CMakeFiles/dashboard-pot-update.dir/clean
+
+# clean rule for target.
+clean: plugins/dashboard_pi/CMakeFiles/dashboard-pot-update.dir/clean
+.PHONY : clean
+
+#=============================================================================
+# Target rules for target plugins/dashboard_pi/CMakeFiles/dashboard_pi.dir
+
+# All Build rule for target.
+plugins/dashboard_pi/CMakeFiles/dashboard_pi.dir/all: plugins/dashboard_pi/CMakeFiles/dashboard-i18n.dir/all
+	$(MAKE) -f plugins/dashboard_pi/CMakeFiles/dashboard_pi.dir/build.make plugins/dashboard_pi/CMakeFiles/dashboard_pi.dir/depend
+	$(MAKE) -f plugins/dashboard_pi/CMakeFiles/dashboard_pi.dir/build.make plugins/dashboard_pi/CMakeFiles/dashboard_pi.dir/build
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles  39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54
+	@echo "Built target dashboard_pi"
+.PHONY : plugins/dashboard_pi/CMakeFiles/dashboard_pi.dir/all
+
+# Include target in all.
+all: plugins/dashboard_pi/CMakeFiles/dashboard_pi.dir/all
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+plugins/dashboard_pi/CMakeFiles/dashboard_pi.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles 27
+	$(MAKE) -f CMakeFiles/Makefile2 plugins/dashboard_pi/CMakeFiles/dashboard_pi.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ignat99/Projects/OpenCPN/build_android/CMakeFiles 0
+.PHONY : plugins/dashboard_pi/CMakeFiles/dashboard_pi.dir/rule
+
+# Convenience name for target.
+dashboard_pi: plugins/dashboard_pi/CMakeFiles/dashboard_pi.dir/rule
+.PHONY : dashboard_pi
+
+# clean rule for target.
+plugins/dashboard_pi/CMakeFiles/dashboard_pi.dir/clean:
+	$(MAKE) -f plugins/dashboard_pi/CMakeFiles/dashboard_pi.dir/build.make plugins/dashboard_pi/CMakeFiles/dashboard_pi.dir/clean
+.PHONY : plugins/dashboard_pi/CMakeFiles/dashboard_pi.dir/clean
+
+# clean rule for target.
+clean: plugins/dashboard_pi/CMakeFiles/dashboard_pi.dir/clean
 .PHONY : clean
 
 #=============================================================================

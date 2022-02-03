@@ -43,6 +43,7 @@
 // Required deg2rad
 #include "dial.h"
 
+//      DashboardInstrument(parent, id, title, OCPN_DBP_PACK)
 DashboardInstrument_GPS::DashboardInstrument_GPS( wxWindow *parent, wxWindowID id, wxString title) :
       DashboardInstrument(parent, id, title, OCPN_DBP_STC_GPS)
 {

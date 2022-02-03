@@ -1,8 +1,13 @@
 # The set of languages for which implicit dependencies are needed:
 set(CMAKE_DEPENDS_LANGUAGES
+  "C"
   "CXX"
   )
 # The set of files for implicit dependencies of each language:
+set(CMAKE_DEPENDS_CHECK_C
+  "/home/ignat99/Projects/OpenCPN/src/qrcodegen.c" "/home/ignat99/Projects/OpenCPN/build_android/CMakeFiles/opencpn.dir/src/qrcodegen.c.obj"
+  )
+set(CMAKE_C_COMPILER_ID "GNU")
 set(CMAKE_DEPENDS_CHECK_CXX
   "/home/ignat99/Projects/OpenCPN/src/AISTargetAlertDialog.cpp" "/home/ignat99/Projects/OpenCPN/build_android/CMakeFiles/opencpn.dir/src/AISTargetAlertDialog.cpp.obj"
   "/home/ignat99/Projects/OpenCPN/src/AISTargetListDialog.cpp" "/home/ignat99/Projects/OpenCPN/build_android/CMakeFiles/opencpn.dir/src/AISTargetListDialog.cpp.obj"
@@ -18,6 +23,9 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/home/ignat99/Projects/OpenCPN/src/GoToPositionDialog.cpp" "/home/ignat99/Projects/OpenCPN/build_android/CMakeFiles/opencpn.dir/src/GoToPositionDialog.cpp.obj"
   "/home/ignat99/Projects/OpenCPN/src/Hyperlink.cpp" "/home/ignat99/Projects/OpenCPN/build_android/CMakeFiles/opencpn.dir/src/Hyperlink.cpp.obj"
   "/home/ignat99/Projects/OpenCPN/src/IDX_entry.cpp" "/home/ignat99/Projects/OpenCPN/build_android/CMakeFiles/opencpn.dir/src/IDX_entry.cpp.obj"
+  "/home/ignat99/Projects/OpenCPN/src/ImagePanel.cpp" "/home/ignat99/Projects/OpenCPN/build_android/CMakeFiles/opencpn.dir/src/ImagePanel.cpp.obj"
+  "/home/ignat99/Projects/OpenCPN/src/Label.cpp" "/home/ignat99/Projects/OpenCPN/build_android/CMakeFiles/opencpn.dir/src/Label.cpp.obj"
+  "/home/ignat99/Projects/OpenCPN/src/LabelPoint.cpp" "/home/ignat99/Projects/OpenCPN/build_android/CMakeFiles/opencpn.dir/src/LabelPoint.cpp.obj"
   "/home/ignat99/Projects/OpenCPN/src/Layer.cpp" "/home/ignat99/Projects/OpenCPN/build_android/CMakeFiles/opencpn.dir/src/Layer.cpp.obj"
   "/home/ignat99/Projects/OpenCPN/src/LinkPropDlg.cpp" "/home/ignat99/Projects/OpenCPN/build_android/CMakeFiles/opencpn.dir/src/LinkPropDlg.cpp.obj"
   "/home/ignat99/Projects/OpenCPN/src/NMEALogWindow.cpp" "/home/ignat99/Projects/OpenCPN/build_android/CMakeFiles/opencpn.dir/src/NMEALogWindow.cpp.obj"
@@ -64,7 +72,9 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/home/ignat99/Projects/OpenCPN/src/gpxdocument.cpp" "/home/ignat99/Projects/OpenCPN/build_android/CMakeFiles/opencpn.dir/src/gpxdocument.cpp.obj"
   "/home/ignat99/Projects/OpenCPN/src/gshhs.cpp" "/home/ignat99/Projects/OpenCPN/build_android/CMakeFiles/opencpn.dir/src/gshhs.cpp.obj"
   "/home/ignat99/Projects/OpenCPN/src/kml.cpp" "/home/ignat99/Projects/OpenCPN/build_android/CMakeFiles/opencpn.dir/src/kml.cpp.obj"
+  "/home/ignat99/Projects/OpenCPN/src/labelprintout.cpp" "/home/ignat99/Projects/OpenCPN/build_android/CMakeFiles/opencpn.dir/src/labelprintout.cpp.obj"
   "/home/ignat99/Projects/OpenCPN/src/multiplexer.cpp" "/home/ignat99/Projects/OpenCPN/build_android/CMakeFiles/opencpn.dir/src/multiplexer.cpp.obj"
+  "/home/ignat99/Projects/OpenCPN/src/myframe1.cpp" "/home/ignat99/Projects/OpenCPN/build_android/CMakeFiles/opencpn.dir/src/myframe1.cpp.obj"
   "/home/ignat99/Projects/OpenCPN/src/navutil.cpp" "/home/ignat99/Projects/OpenCPN/build_android/CMakeFiles/opencpn.dir/src/navutil.cpp.obj"
   "/home/ignat99/Projects/OpenCPN/src/ocpCursor.cpp" "/home/ignat99/Projects/OpenCPN/build_android/CMakeFiles/opencpn.dir/src/ocpCursor.cpp.obj"
   "/home/ignat99/Projects/OpenCPN/src/ocpn_pixel.cpp" "/home/ignat99/Projects/OpenCPN/build_android/CMakeFiles/opencpn.dir/src/ocpn_pixel.cpp.obj"
